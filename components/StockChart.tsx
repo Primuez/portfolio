@@ -21,6 +21,8 @@ export function StockChart() {
     return () => clearInterval(interval);
   }, []);
 
+  if (data.length === 0) return null;
+
   return (
     <div className="w-full h-32 mt-4 bg-bg/50 border border-amber/20 rounded-lg p-2 overflow-hidden shadow-[inset_0_0_20px_rgba(245,166,35,0.05)]">
        <div className="text-[10px] uppercase font-mono text-amber/70 mb-2 pl-2">Live AI Analysis: <span className="animate-pulse">Active</span></div>

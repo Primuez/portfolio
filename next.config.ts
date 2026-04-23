@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  allowedDevOrigins: ['*.replit.dev', '*.replit.app'],
+  allowedDevOrigins: ['*.replit.dev', '*.replit.app', '*.worf.replit.dev', '*.repl.co'],
   images: {
     remotePatterns: [
       {
