@@ -34,6 +34,7 @@ export default function Home() {
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   
   // Modals state
   const [modalType, setModalType] = useState<'form' | 'cert' | 'workflow' | null>(null);
@@ -115,11 +116,12 @@ export default function Home() {
       <div className="fixed inset-0 z-0 bg-blueprint opacity-30 animate-grid"></div>
       
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/80 backdrop-blur-md border-b border-cyan/20' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="font-mono text-cyan text-xl tracking-widest font-bold hover:text-glow-cyan transition-all duration-300">
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/90 backdrop-blur-md border-b border-cyan/20' : 'bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
+          <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold hover:text-glow-cyan transition-all duration-300">
             PRIMUEZ
           </div>
+          {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-xs tracking-widest uppercase text-text-muted">
             <a href="#whoami" className="hover:text-cyan transition-colors">About</a>
             <a href="#projects" className="hover:text-cyan transition-colors">Projects</a>
@@ -129,12 +131,49 @@ export default function Home() {
             <a href="#credentials" className="hover:text-cyan transition-colors">Credentials</a>
             <a href="#contact" className="hover:text-cyan transition-colors">Contact</a>
           </div>
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50"
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-6 h-0.5 bg-cyan transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block w-6 h-0.5 bg-cyan transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-6 h-0.5 bg-cyan transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          </button>
         </div>
+        {/* Mobile menu drawer */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-bg/95 backdrop-blur-md border-b border-cyan/20 overflow-hidden"
+            >
+              <div className="flex flex-col px-6 py-4 gap-5 font-mono text-sm tracking-widest uppercase text-text-muted">
+                {['About:#whoami','Projects:#projects','GitHub:#github','Videos:#youtube','Stack:#stack','Credentials:#credentials','Contact:#contact'].map(item => {
+                  const [label, href] = item.split(':');
+                  return (
+                    <a
+                      key={href}
+                      href={href}
+                      onClick={() => setMenuOpen(false)}
+                      className="hover:text-cyan transition-colors border-b border-cyan/10 pb-3 last:border-0 last:pb-0"
+                    >
+                      {label}
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
         {/* HERO SECTION */}
-        <section id="hero" className="min-h-screen flex flex-col justify-center pt-20">
+        <section id="hero" className="min-h-screen flex flex-col justify-center pt-16 md:pt-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -182,7 +221,7 @@ export default function Home() {
         {/* 01. ABOUT */}
         <motion.section 
           id="whoami" 
-          className="pt-32"
+          className="pt-16 md:pt-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -224,7 +263,7 @@ export default function Home() {
         {/* 02. PROJECTS */}
         <motion.section 
           id="projects" 
-          className="pt-32"
+          className="pt-16 md:pt-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -304,7 +343,7 @@ export default function Home() {
           </ProjectGroup>
 
           {/* NEW SECTION: VISUAL WORKFLOWS & 3D ELEMENTS */}
-          <div className="mt-24 pt-16 border-t border-cyan/10">
+          <div className="mt-12 md:mt-24 pt-10 md:pt-16 border-t border-cyan/10">
             <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
             
             <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
@@ -379,7 +418,7 @@ export default function Home() {
         {/* 03. GITHUB */}
         <motion.section 
           id="github" 
-          className="pt-32"
+          className="pt-16 md:pt-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -437,7 +476,7 @@ export default function Home() {
         {/* 04. YOUTUBE CONTENT */}
         <motion.section 
           id="youtube" 
-          className="pt-32"
+          className="pt-16 md:pt-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -477,7 +516,7 @@ export default function Home() {
         {/* 05. TECH STACK */}
         <motion.section 
           id="stack" 
-          className="pt-32"
+          className="pt-16 md:pt-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -495,7 +534,7 @@ export default function Home() {
         {/* 06. CREDENTIALS */}
         <motion.section 
           id="credentials" 
-          className="pt-32"
+          className="pt-16 md:pt-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -567,7 +606,7 @@ export default function Home() {
         {/* 07. CONTACT */}
         <motion.section 
           id="contact" 
-          className="pt-32 text-center pb-20"
+          className="pt-16 md:pt-32 text-center pb-12 md:pb-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -908,39 +947,37 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, children }: { 
 function WorkflowCard({ name, desc, image, delay = 0 }: { name: string, desc: string, image: string, delay?: number }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 50, rotateX: 10 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-      transition={{ duration: 0.6, delay: delay / 1000, type: "spring", stiffness: 100 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: delay / 1000, type: "spring", stiffness: 100 }}
       viewport={{ once: true, margin: "-50px" }}
-      className="group w-full block h-full [perspective:1000px]"
+      className="group w-full block h-full md:[perspective:1000px]"
     >
-      <div className="w-full h-full bg-panel/80 border border-cyan/30 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu group-hover:rotate-x-12 group-hover:-rotate-y-12 group-hover:-translate-y-4 group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative [transform-style:preserve-3d]">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan/10 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 [transform:translateZ(-10px)]"></div>
+      <div className="w-full h-full bg-panel/80 border border-cyan/30 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d]">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan/10 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         
-        {/* 3D Image Banner */}
-        <div className="w-full h-48 relative overflow-hidden border-b border-cyan/20 bg-black/50 p-2">
-           <div className="w-full h-full relative rounded-lg overflow-hidden border border-white/10 [transform-style:preserve-3d] transition-transform duration-500 group-hover:[transform:translateZ(40px)] shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-bg/50 flex flex-col items-center justify-center text-center">
+        {/* Image Banner */}
+        <div className="w-full h-40 sm:h-48 relative overflow-hidden border-b border-cyan/20 bg-black/50 p-2">
+           <div className="w-full h-full relative rounded-lg overflow-hidden border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-bg/50">
              <img 
                src={image} 
                alt={name} 
                className="w-full h-full object-cover transform-gpu group-hover:scale-105 transition-transform duration-700" 
                referrerPolicy="no-referrer" 
              />
-             {/* Glitch line overlay */}
-             <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(translate-y-[-100%]_cyan,transparent)] z-20 opacity-0 group-hover:opacity-20 group-hover:animate-[slide_1.5s_infinite]"></div>
            </div>
         </div>
         
-        <div className="p-6 relative z-10 flex flex-col flex-grow [transform:translateZ(20px)] transition-transform duration-500">
+        <div className="p-4 sm:p-6 relative z-10 flex flex-col flex-grow">
           <div className="flex items-center gap-3 mb-3">
-             <div className="w-2 h-2 rounded-full bg-amber group-hover:shadow-[0_0_10px_#f5a623] transition-shadow"></div>
-             <h4 className="text-xl font-bold group-hover:text-cyan transition-colors drop-shadow-md">{name}</h4>
+             <div className="w-2 h-2 rounded-full bg-amber group-hover:shadow-[0_0_10px_#f5a623] transition-shadow shrink-0"></div>
+             <h4 className="text-base sm:text-xl font-bold group-hover:text-cyan transition-colors">{name}</h4>
           </div>
-          <p className="text-sm text-text-muted leading-relaxed flex-grow drop-shadow-sm">{desc}</p>
+          <p className="text-sm text-text-muted leading-relaxed flex-grow">{desc}</p>
           
-          <div className="mt-6 flex flex-wrap gap-2 text-[10px] font-mono uppercase">
-            <span className="bg-amber/10 text-amber border border-amber/20 px-2 py-1 rounded shadow-sm">n8n core</span>
-            <span className="bg-cyan/10 text-cyan border border-cyan/20 px-2 py-1 rounded group-hover:bg-cyan group-hover:text-bg transition-colors shadow-sm">SAM Controlled</span>
+          <div className="mt-4 sm:mt-6 flex flex-wrap gap-2 text-[10px] font-mono uppercase">
+            <span className="bg-amber/10 text-amber border border-amber/20 px-2 py-1 rounded">n8n core</span>
+            <span className="bg-cyan/10 text-cyan border border-cyan/20 px-2 py-1 rounded group-hover:bg-cyan group-hover:text-bg transition-colors">SAM Controlled</span>
           </div>
         </div>
       </div>
