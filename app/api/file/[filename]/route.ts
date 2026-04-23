@@ -6,10 +6,21 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ filename: string }> }
 ) {
+  const secret = process.env.FILE_ACCESS_SECRET;
+  if (!secret) {
+    return new NextResponse('File access is not configured', { status: 503 });
+  }
+
+  const authHeader = request.headers.get('Authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  if (!token || token !== secret) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
   try {
     const { filename } = await params;
     
-    // Safety check: ensure filename doesn't contain directory traversal sequences
     if (filename.includes('..') || filename.includes('/')) {
       return new NextResponse('Invalid filename', { status: 400 });
     }
@@ -19,7 +30,6 @@ export async function GET(
 
     const fileBuffer = await fs.readFile(filePath);
 
-    // Determine content type based on extension
     const ext = path.extname(filename).toLowerCase();
     let contentType = 'application/octet-stream';
     if (ext === '.pdf') contentType = 'application/pdf';
@@ -30,7 +40,6 @@ export async function GET(
     return new NextResponse(fileBuffer, {
       headers: {
         'Content-Type': contentType,
-        // Allow the browser to display inline
         'Content-Disposition': `inline; filename="${filename}"`
       },
     });
