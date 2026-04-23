@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0f;
+  --color-cyan: #00f0ff;
+  --color-amber: #f5a623;
+  --color-panel: #111827;
+  --color-text-main: #e0e0e0;
+  --color-text-muted: #888888;
+  
+  --font-sans: var(--font-syne), sans-serif;
+  --font-mono: var(--font-space-mono), monospace;
+}
+
+@layer utilities {
+  .bg-blueprint {
+    background-image: 
+      linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+  }
+
+  .border-glow-cyan {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  }
+}
+
+@keyframes grid-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-40px, -40px); }
+}
+
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+.animate-grid {
+  animation: grid-drift 10s linear infinite;
+}
