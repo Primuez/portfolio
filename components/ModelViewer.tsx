@@ -10,15 +10,15 @@ export function ModelViewer() {
     if (!mountRef.current) return;
     const mount = mountRef.current;
 
+    let mounted = true;
     let animId: number;
-    let renderer: THREE.WebGLRenderer | null = null;
     let cleanupFn: (() => void) | null = null;
 
     Promise.all([
       import('three'),
       import('three/examples/jsm/controls/OrbitControls.js'),
     ]).then(([T, { OrbitControls }]: [typeof THREE, { OrbitControls: typeof OrbitControlsType }]) => {
-      if (!mount) return;
+      if (!mounted || !mount) return;
 
       const w = mount.clientWidth;
       const h = mount.clientHeight;
@@ -27,7 +27,7 @@ export function ModelViewer() {
       const camera = new T.PerspectiveCamera(45, w / h, 0.1, 1000);
       camera.position.set(0, 0, 5.5);
 
-      renderer = new T.WebGLRenderer({ antialias: true, alpha: true });
+      const renderer = new T.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
       mount.appendChild(renderer.domElement);
@@ -55,88 +55,75 @@ export function ModelViewer() {
         starPos[i] = (Math.random() - 0.5) * 200;
       }
       starGeo.setAttribute('position', new T.BufferAttribute(starPos, 3));
-      scene.add(
-        new T.Points(
-          starGeo,
-          new T.PointsMaterial({ color: 0xffffff, size: 0.15, sizeAttenuation: true })
-        )
-      );
+      const starMat = new T.PointsMaterial({ color: 0xffffff, size: 0.15, sizeAttenuation: true });
+      scene.add(new T.Points(starGeo, starMat));
 
       const loader = new T.TextureLoader();
+      const disposables: { dispose(): void }[] = [starGeo, starMat];
 
       const earthGeo = new T.SphereGeometry(1.5, 64, 64);
       const earthMat = new T.MeshStandardMaterial({ roughness: 0.75, metalness: 0.1 });
       const earthMesh = new T.Mesh(earthGeo, earthMat);
       scene.add(earthMesh);
+      disposables.push(earthGeo, earthMat);
 
       loader.load('/textures/earth_color.jpg', (colorTex) => {
+        if (!mounted) { colorTex.dispose(); return; }
         earthMat.map = colorTex;
         earthMat.needsUpdate = true;
+        disposables.push(colorTex);
       });
       loader.load('/textures/earth_normal.jpg', (normalTex) => {
+        if (!mounted) { normalTex.dispose(); return; }
         earthMat.normalMap = normalTex;
         earthMat.normalScale = new T.Vector2(0.6, 0.6);
         earthMat.needsUpdate = true;
+        disposables.push(normalTex);
       });
 
-      const cloudMat = new T.MeshStandardMaterial({
-        transparent: true,
-        opacity: 0,
-        depthWrite: false,
-      });
-      const cloudMesh = new T.Mesh(new T.SphereGeometry(1.525, 64, 64), cloudMat);
+      const cloudGeo = new T.SphereGeometry(1.525, 64, 64);
+      const cloudMat = new T.MeshStandardMaterial({ transparent: true, opacity: 0, depthWrite: false });
+      const cloudMesh = new T.Mesh(cloudGeo, cloudMat);
       scene.add(cloudMesh);
+      disposables.push(cloudGeo, cloudMat);
+
       loader.load('/textures/earth_clouds.png', (cloudTex) => {
+        if (!mounted) { cloudTex.dispose(); return; }
         cloudMat.map = cloudTex;
         cloudMat.opacity = 0.35;
         cloudMat.needsUpdate = true;
+        disposables.push(cloudTex);
       });
 
-      scene.add(
-        new T.Mesh(
-          new T.SphereGeometry(1.62, 64, 64),
-          new T.MeshStandardMaterial({
-            color: 0x3399ff,
-            transparent: true,
-            opacity: 0.06,
-            side: T.BackSide,
-          })
-        )
-      );
+      const atmGeo = new T.SphereGeometry(1.62, 64, 64);
+      const atmMat = new T.MeshStandardMaterial({ color: 0x3399ff, transparent: true, opacity: 0.06, side: T.BackSide });
+      scene.add(new T.Mesh(atmGeo, atmMat));
+      disposables.push(atmGeo, atmMat);
 
-      const amberRing = new T.Mesh(
-        new T.TorusGeometry(2.5, 0.018, 16, 120),
-        new T.MeshStandardMaterial({
-          color: 0xf5a623,
-          emissive: new T.Color(0xf5a623),
-          emissiveIntensity: 2.5,
-        })
-      );
+      const amberGeo = new T.TorusGeometry(2.5, 0.018, 16, 120);
+      const amberMat = new T.MeshStandardMaterial({ color: 0xf5a623, emissive: new T.Color(0xf5a623), emissiveIntensity: 2.5 });
+      const amberRing = new T.Mesh(amberGeo, amberMat);
       amberRing.rotation.x = Math.PI / 2;
       scene.add(amberRing);
+      disposables.push(amberGeo, amberMat);
 
-      const cyanRing = new T.Mesh(
-        new T.TorusGeometry(2.9, 0.018, 16, 120),
-        new T.MeshStandardMaterial({
-          color: 0x00f0ff,
-          emissive: new T.Color(0x00f0ff),
-          emissiveIntensity: 1.5,
-        })
-      );
+      const cyanGeo = new T.TorusGeometry(2.9, 0.018, 16, 120);
+      const cyanMat = new T.MeshStandardMaterial({ color: 0x00f0ff, emissive: new T.Color(0x00f0ff), emissiveIntensity: 1.5 });
+      const cyanRing = new T.Mesh(cyanGeo, cyanMat);
       cyanRing.rotation.set(0.4, Math.PI / 4, 0.2);
       scene.add(cyanRing);
+      disposables.push(cyanGeo, cyanMat);
 
       const clock = new T.Clock();
       const animate = () => {
         animId = requestAnimationFrame(animate);
         cloudMesh.rotation.y += clock.getDelta() * 0.04;
         controls.update();
-        renderer!.render(scene, camera);
+        renderer.render(scene, camera);
       };
       animate();
 
       const onResize = () => {
-        if (!renderer) return;
         const nw = mount.clientWidth;
         const nh = mount.clientHeight;
         camera.aspect = nw / nh;
@@ -149,14 +136,16 @@ export function ModelViewer() {
         window.removeEventListener('resize', onResize);
         cancelAnimationFrame(animId);
         controls.dispose();
-        renderer?.dispose();
-        if (renderer?.domElement.parentNode === mount) {
+        for (const d of disposables) d.dispose();
+        renderer.dispose();
+        if (renderer.domElement.parentNode === mount) {
           mount.removeChild(renderer.domElement);
         }
       };
     });
 
     return () => {
+      mounted = false;
       cleanupFn?.();
     };
   }, []);
