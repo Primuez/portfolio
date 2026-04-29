@@ -1,10 +1,19 @@
 'use client';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
 
+const TOTAL_TEXTURES = 5;
+
 export function ModelViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const loadedRef = useRef(0);
+
+  const onTextureLoaded = useCallback(() => {
+    loadedRef.current += 1;
+    setLoadedCount(loadedRef.current);
+  }, []);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -106,26 +115,30 @@ export function ModelViewer() {
         earthMat.map = colorTex;
         earthMat.needsUpdate = true;
         disposables.push(colorTex);
-      });
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
       loader.load('/textures/earth_normal.jpg', (normalTex) => {
         if (!mounted) { normalTex.dispose(); return; }
         earthMat.normalMap = normalTex;
         earthMat.normalScale = new T.Vector2(0.6, 0.6);
         earthMat.needsUpdate = true;
         disposables.push(normalTex);
-      });
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
       loader.load('/textures/earth_lights.jpg', (lightsTex) => {
         if (!mounted) { lightsTex.dispose(); return; }
         earthMat.emissiveMap = lightsTex;
         earthMat.needsUpdate = true;
         disposables.push(lightsTex);
-      });
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
       loader.load('/textures/earth_specular.jpg', (specTex) => {
         if (!mounted) { specTex.dispose(); return; }
         earthMat.roughnessMap = specTex;
         earthMat.needsUpdate = true;
         disposables.push(specTex);
-      });
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
 
       const cloudGeo = new T.SphereGeometry(1.525, 64, 64);
       const cloudMat = new T.MeshStandardMaterial({ transparent: true, opacity: 0, depthWrite: false });
@@ -139,7 +152,8 @@ export function ModelViewer() {
         cloudMat.opacity = 0.35;
         cloudMat.needsUpdate = true;
         disposables.push(cloudTex);
-      });
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
 
       const atmGeo = new T.SphereGeometry(1.62, 64, 64);
       const atmMat = new T.MeshStandardMaterial({ color: 0x3399ff, transparent: true, opacity: 0.06, side: T.BackSide });
@@ -226,10 +240,24 @@ export function ModelViewer() {
       mounted = false;
       cleanupFn?.();
     };
-  }, []);
+  }, [onTextureLoaded]);
+
+  const isLoading = loadedCount < TOTAL_TEXTURES;
 
   return (
     <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg">
+      {/* Loading overlay — fades out once all textures are ready */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-label={isLoading ? 'Loading globe textures' : undefined}
+        className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-bg/80 backdrop-blur-sm transition-opacity duration-700 pointer-events-none"
+        style={{ opacity: isLoading ? 1 : 0 }}
+        aria-hidden={!isLoading}
+      >
+        <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
+        <span className="font-mono text-xs text-cyan tracking-widest">LOADING…</span>
+      </div>
       <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan tracking-widest bg-black/60 px-3 py-1 rounded border border-cyan/20 backdrop-blur-md">
         n8n_CORE_ORCHESTRATOR.obj
       </div>
