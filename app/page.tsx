@@ -11,6 +11,7 @@ import {
 import { StockChart } from '@/components/StockChart';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const phrases = [
   "AI Developer.",
@@ -40,6 +41,16 @@ export default function Home() {
   // Modals state
   const [modalType, setModalType] = useState<'form' | 'cert' | 'workflow' | null>(null);
   const [certData, setCertData] = useState<{title: string, issuer: string, date: string, id: string, pdfUrl?: string} | null>(null);
+  const isMobile = useIsMobile();
+
+  const openCert = (data: {title: string, issuer: string, date: string, id: string, pdfUrl?: string}) => {
+    if (isMobile && data.pdfUrl) {
+      window.open(data.pdfUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      setCertData(data);
+      setModalType('cert');
+    }
+  };
 
   // Github state
   const [repos, setRepos] = useState<GithubRepo[]>([]);
@@ -555,7 +566,7 @@ export default function Home() {
                 <p className="text-sm text-text-muted mb-4">Completed both official n8n course levels demonstrating advanced automation mastery.</p>
                 <div className="flex flex-wrap gap-2">
                   <button 
-                    onClick={() => { setCertData({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2', pdfUrl: '/documents/cert-n8n-1.pdf'}); setModalType('cert'); }}
+                    onClick={() => openCert({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2', pdfUrl: '/documents/cert-n8n-1.pdf'})}
                     className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                   >View Master Certificate</button>
                 </div>
@@ -564,7 +575,7 @@ export default function Home() {
               <CVAccordion title="SimpliLearn: n8n No Code AI Agent">
                 <p className="text-sm text-text-muted mb-4">Certificate #8723146 - Completed Aug 2, 2025.</p>
                 <button 
-                  onClick={() => { setCertData({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146', pdfUrl: '/documents/cert-n8n-2.pdf'}); setModalType('cert'); }}
+                  onClick={() => openCert({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146', pdfUrl: '/documents/cert-n8n-2.pdf'})}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
@@ -572,7 +583,7 @@ export default function Home() {
               <CVAccordion title="Outskill: Generative AI Mastermind">
                 <p className="text-sm text-text-muted mb-4">Successfully completed Generative AI Mastermind hosted by Vaibhav Sisinty.</p>
                 <button 
-                  onClick={() => { setCertData({title: 'Generative AI Mastermind', issuer: 'Outskill by Vaibhav Sisinty', date: 'Verified', id: 'OUT-GENAI-M'}); setModalType('cert'); }}
+                  onClick={() => openCert({title: 'Generative AI Mastermind', issuer: 'Outskill by Vaibhav Sisinty', date: 'Verified', id: 'OUT-GENAI-M'})}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
@@ -580,7 +591,7 @@ export default function Home() {
               <CVAccordion title="Kaggle × Google: AI Agents Intensive">
                 <p className="text-sm text-text-muted mb-4">5-Day AI Agents Intensive Course with Google. Earned Official Badge.</p>
                 <button 
-                  onClick={() => { setCertData({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG'}); setModalType('cert'); }}
+                  onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG'})}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Badge</button>
               </CVAccordion>
@@ -597,7 +608,7 @@ export default function Home() {
               <CVAccordion title="Rilo Hackathon 2026">
                 <p className="text-sm text-text-muted mb-4">Jan 10–11, 2026. Built and shipped a live automation workflow. Recognized for technical creativity.</p>
                 <button 
-                  onClick={() => { setCertData({title: 'Rilo Hackathon Participant', issuer: 'Rilo', date: 'Jan 11, 2026', id: 'RILO-26', pdfUrl: '/documents/cert-rilo-hackathon.pdf'}); setModalType('cert'); }}
+                  onClick={() => openCert({title: 'Rilo Hackathon Participant', issuer: 'Rilo', date: 'Jan 11, 2026', id: 'RILO-26', pdfUrl: '/documents/cert-rilo-hackathon.pdf'})}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
@@ -704,12 +715,28 @@ export default function Home() {
                     <div className="px-6 pt-8 pb-4 font-mono text-xs text-cyan uppercase tracking-widest border-b border-cyan/20">
                       {certData.title}
                     </div>
-                    <iframe
-                      src={certData.pdfUrl}
-                      className="w-full"
-                      style={{ height: '70vh', border: 'none' }}
-                      title={certData.title}
-                    />
+                    {isMobile ? (
+                      <div className="flex flex-col items-center justify-center gap-6 py-16 px-6">
+                        <p className="font-mono text-xs text-text-muted text-center uppercase tracking-widest">
+                          Tap below to view this certificate
+                        </p>
+                        <a
+                          href={certData.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan text-bg border border-cyan px-6 py-3 hover:bg-cyan/80 transition-colors"
+                        >
+                          <Download size={14} /> Open Certificate
+                        </a>
+                      </div>
+                    ) : (
+                      <iframe
+                        src={certData.pdfUrl}
+                        className="w-full"
+                        style={{ height: '70vh', border: 'none' }}
+                        title={certData.title}
+                      />
+                    )}
                     <div className="flex justify-center py-4 border-t border-white/5">
                       <a
                         href={certData.pdfUrl}
