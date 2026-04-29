@@ -286,14 +286,14 @@ export default function Home() {
           <ProjectGroup title="SaaS Products" color="cyan">
             <ProjectCard 
               name="InkTwin" 
-              url="https://ink-twin.primuez-tech.workers.dev"
+              url="https://ink-twin.primuez.com"
               desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
               tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
               logoUrl="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=200&h=200&q=80"
             />
             <ProjectCard 
               name="PrimuezSure Advisor" 
-              url="https://primuezsure-advisor.primueztech.workers.dev"
+              url="https://primuezsure.primuez.com"
               desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
               tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
               logoUrl="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=200&h=200&q=80"
