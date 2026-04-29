@@ -1,48 +1,63 @@
-# AI Studio Portfolio App
+# Primuez Portfolio — AI Studio App
 
-A Next.js 15 personal portfolio and AI studio showcase, featuring 3D interactive elements, GitHub integration, project showcases, and a dark terminal-inspired UI.
+Next.js 15 personal portfolio for Rahul "Primuez" Kasturiya. Features a 3D interactive Earth globe, automation workflow showcases, GitHub integration, and a dark terminal-inspired UI.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15.3.1 (App Router)
+- **Framework**: Next.js 15.5.15 (App Router, `'use client'` page)
 - **Styling**: Tailwind CSS v4 with custom theme
-- **3D**: Three.js + @react-three/fiber + @react-three/drei
-- **Animation**: Framer Motion (via `motion` package)
+- **3D Globe**: Raw Three.js (lazy-loaded via dynamic `import()` inside `useEffect` — zero SSR footprint)
+- **Animation**: Motion v12 (`motion/react`)
 - **Charts**: Recharts
-- **AI**: @google/genai (Gemini)
+- **Deployment**: Cloudflare Workers via `@opennextjs/cloudflare`
 
 ## Project Structure
 
 ```
-app/           - Next.js App Router pages and layouts
-  api/         - API route handlers
-  globals.css  - Global styles
-  layout.tsx   - Root layout
-  page.tsx     - Main portfolio page
-components/    - Shared UI components
-  ModelViewer.tsx  - 3D interactive model (Three.js)
-  StockChart.tsx   - Recharts stock visualization
-hooks/         - React hooks
-lib/           - Utilities
-public/        - Static assets
+app/
+  layout.tsx          - Root layout with full SEO metadata (OG, Twitter, favicon)
+  page.tsx            - Main portfolio page (hero, about, projects, stack, creds, contact)
+  opengraph-image.tsx - Dynamic OG image (ImageResponse, edge runtime)
+  icon.svg            - Site favicon (served automatically by Next.js)
+  apple-icon.svg      - Apple touch icon
+  globals.css         - Global styles + Tailwind theme
+components/
+  ModelViewer.tsx     - 3D Earth globe (Three.js, lazy-loaded, drag-to-rotate)
+  StockChart.tsx      - Recharts stock visualization
+  ErrorBoundary.tsx   - React error boundary wrapping ModelViewer
+public/
+  textures/           - earth_color.jpg, earth_normal.jpg, earth_clouds.png
 ```
 
 ## Running the App
 
 ```bash
-npm run dev    # Development server on port 5000
-npm run build  # Production build
-npm run start  # Production server on port 5000
+npm run dev              # Development server on port 5000
+npm run build            # Production build (run without dev server active)
+npm run build:cloudflare # Cloudflare Worker build → .open-next/worker.js
+npm run deploy:cloudflare # Deploy to Cloudflare Workers
 ```
+
+## Key Implementation Notes
+
+### 3D Globe (ModelViewer)
+- Three.js is imported via `Promise.all([ import('three'), import('three/examples/jsm/controls/OrbitControls.js') ])` inside `useEffect` — never in the server bundle
+- `import type * as THREE` at the top for TypeScript types only (erased at runtime)
+- Full cleanup: all geometries, materials, textures, controls, renderer disposed on unmount
+- `mounted` boolean guard prevents async import running after unmount (React Strict Mode safe)
+
+### Cloudflare Build
+- `open-next.config.ts` configures `@opennextjs/cloudflare` v1.19.4
+- `transpilePackages: ['motion']` must NOT be in `next.config.ts` (breaks SSR prerender)
+- `output: 'standalone'` must NOT be in `next.config.ts` (breaks OpenNext)
+- Production builds must be run without the dev server active (both write to `.next/`)
+
+### SEO / OG
+- `metadataBase: 'https://primuez.com'` in `layout.tsx`
+- OG image generated via `app/opengraph-image.tsx` (1200×630, edge runtime)
 
 ## Replit Configuration
 
 - Dev server runs on `0.0.0.0:5000` for Replit preview compatibility
-- `allowedDevOrigins` includes `*.replit.dev` and `*.replit.app`
-- Unsplash and picsum.photos are whitelisted in `next.config.ts` image remote patterns
-- Next.js pinned to 15.3.1 for SWC binary compatibility with Node.js 20
-
-## Environment Variables
-
-- `GEMINI_API_KEY` - Required for Gemini AI API calls
-- `APP_URL` - The URL where the app is hosted
+- Workflow: `npm run dev`
+- `allowedDevOrigins` in `next.config.ts` covers `*.replit.dev`, `*.replit.app`, `*.worf.replit.dev`
