@@ -706,11 +706,11 @@ export default function Home() {
                 {/* Background decorative elements */}
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan to-transparent"></div>
                 
-                <button onClick={() => setModalType(null)} className="absolute top-4 right-4 text-text-muted hover:text-white transition-colors z-20"><CheckCircle2 size={24}/></button>
+                <button onClick={() => setModalType(null)} className="absolute top-3 right-3 min-[375px]:top-4 min-[375px]:right-4 text-text-muted hover:text-white transition-colors z-20"><CheckCircle2 size={24}/></button>
 
                 {certData.pdfUrl ? (
                   <div className="flex flex-col w-full">
-                    <div className="px-6 pt-8 pb-4 font-mono text-xs text-cyan uppercase tracking-widest border-b border-cyan/20">
+                    <div className="px-4 pr-12 pt-6 pb-4 min-[375px]:px-6 min-[375px]:pt-8 font-mono text-xs text-cyan uppercase tracking-widest border-b border-cyan/20 break-words">
                       {certData.title}
                     </div>
                     {isMobile ? (
@@ -734,7 +734,7 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-5 md:p-7 font-sans">
+                  <div className="p-3 min-[375px]:p-5 md:p-7 font-sans">
                     {/* Certificate document — styled like a real certificate */}
                     <div className="relative flex overflow-hidden rounded border-2 border-[#c8a84b] shadow-2xl" style={{ background: '#f9f7f1', minHeight: '380px' }}>
                       
@@ -776,7 +776,7 @@ export default function Home() {
                       </div>
 
                       {/* Right main content */}
-                      <div className="flex-1 flex flex-col justify-center px-8 md:px-12 py-10 relative">
+                      <div className="flex-1 flex flex-col justify-center px-4 min-[375px]:px-6 md:px-12 py-6 min-[375px]:py-8 md:py-10 relative">
                         {/* VERIFIED watermark stamp */}
                         <div className="absolute bottom-8 right-8 opacity-[0.12] select-none pointer-events-none"
                           style={{ transform: 'rotate(-18deg)' }}>
@@ -786,15 +786,15 @@ export default function Home() {
                         </div>
 
                         {/* Certificate of Completion heading */}
-                        <div className="mb-6">
+                        <div className="mb-3 min-[375px]:mb-6">
                           <p className="text-[#c8a84b] text-[10px] uppercase tracking-[0.35em] font-semibold mb-0.5">Certificate of</p>
-                          <h2 className="text-[#0f2044] text-3xl md:text-4xl font-black tracking-wide leading-none" style={{ fontFamily: 'Georgia, serif' }}>COMPLETION</h2>
+                          <h2 className="text-[#0f2044] text-2xl min-[375px]:text-3xl md:text-4xl font-black tracking-wide leading-none" style={{ fontFamily: 'Georgia, serif' }}>COMPLETION</h2>
                         </div>
 
                         {/* Recipient */}
                         <div className="mb-1">
                           <p className="text-gray-500 text-xs mb-2">This is to certify that</p>
-                          <p className="text-gray-900 text-2xl md:text-3xl font-bold pb-1 border-b border-dotted border-gray-400" style={{ fontFamily: 'Georgia, serif' }}>
+                          <p className="text-gray-900 text-xl min-[375px]:text-2xl md:text-3xl font-bold pb-1 border-b border-dotted border-gray-400" style={{ fontFamily: 'Georgia, serif' }}>
                             Rahul Kasturiya
                           </p>
                         </div>
