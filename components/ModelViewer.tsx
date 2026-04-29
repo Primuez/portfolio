@@ -172,7 +172,7 @@ export function ModelViewer() {
         }
         animating = true;
         animId = requestAnimationFrame(animate);
-        const delta = clock.getDelta();
+        const delta = Math.min(clock.getDelta(), 0.1);
         elapsed += delta;
         cloudMesh.rotation.y += delta * 0.04;
         const orbitAngle = (elapsed / 60) * Math.PI * 2;
@@ -181,7 +181,7 @@ export function ModelViewer() {
         nightFill.position.set(-Math.sin(orbitAngle) * radius, -3, -Math.cos(orbitAngle) * radius);
         // Keep sun direction uniform in sync with the orbiting light (view space)
         sunDirUniform.value.copy(sun.position).normalize().transformDirection(camera.matrixWorldInverse);
-        controls.update();
+        controls.update(delta);
         renderer.render(scene, camera);
       };
 
