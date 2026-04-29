@@ -116,7 +116,15 @@ export function ModelViewer() {
 
       const clock = new T.Clock();
       let elapsed = 0;
+      let isVisible = true;
+      let animating = false;
+
       const animate = () => {
+        if (!isVisible) {
+          animating = false;
+          return;
+        }
+        animating = true;
         animId = requestAnimationFrame(animate);
         const delta = clock.getDelta();
         elapsed += delta;
@@ -128,6 +136,20 @@ export function ModelViewer() {
         controls.update();
         renderer.render(scene, camera);
       };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries[0].isIntersecting;
+          isVisible = visible;
+          if (visible && !animating) {
+            clock.getDelta();
+            animate();
+          }
+        },
+        { threshold: 0 }
+      );
+      observer.observe(mount);
+
       animate();
 
       const onResize = () => {
@@ -140,6 +162,7 @@ export function ModelViewer() {
       window.addEventListener('resize', onResize);
 
       cleanupFn = () => {
+        observer.disconnect();
         window.removeEventListener('resize', onResize);
         cancelAnimationFrame(animId);
         controls.dispose();
