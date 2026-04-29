@@ -176,7 +176,7 @@ export default function Home() {
         {/* HERO SECTION */}
         <section id="hero" className="min-h-screen flex flex-col justify-center pt-16 md:pt-20">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-3xl"
