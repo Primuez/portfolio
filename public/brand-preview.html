@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Primuez Brand Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#070b12;color:#d4dde8;font-family:'Syne',sans-serif;padding:3rem 2rem}
+h1{font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.3em;color:rgba(0,240,255,0.5);margin-bottom:3rem;text-transform:uppercase}
+.section{margin-bottom:4rem}
+.section-title{font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;color:#f5a623;margin-bottom:1.5rem;text-transform:uppercase;border-bottom:1px solid rgba(245,166,35,0.15);padding-bottom:0.5rem}
+.preview-box{background:#0d1117;border:1px solid rgba(0,240,255,0.1);border-radius:10px;padding:2.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.preview-box.light{background:#f0f0f0}
+.preview-box.white{background:#ffffff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.size-label{font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(0,240,255,0.4);text-align:center;margin-top:0.5rem}
+.usage-note{font-family:'Space Mono',monospace;font-size:0.72rem;color:#5a6a7e;line-height:1.6;margin-top:0.8rem}
+.tag{display:inline-block;font-family:'Space Mono',monospace;font-size:0.62rem;color:rgba(0,240,255,0.7);background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);padding:0.2rem 0.6rem;border-radius:3px;margin-right:0.4rem;margin-bottom:0.4rem}
+</style>
+</head>
+<body>
+
+<h1>> ./brand-kit --primuez</h1>
+
+<!-- MAIN LOGO -->
+<div class="section">
+  <div class="section-title">01 · Primary Logo — Dark Background</div>
+  <div class="preview-box">
+    <img src="primuez-logo.svg" alt="Primuez Logo" style="max-width:420px;width:100%">
+  </div>
+  <p class="usage-note">Use on: website header, email signatures, presentations, dark backgrounds</p>
+</div>
+
+<!-- LOGO ON LIGHT -->
+<div class="section">
+  <div class="section-title">02 · Logo — Light Background (not recommended)</div>
+  <div class="preview-box light">
+    <img src="primuez-logo.svg" alt="Primuez Logo Light" style="max-width:420px;width:100%;filter:invert(1) hue-rotate(180deg)">
+  </div>
+  <p class="usage-note">For light backgrounds use the SVG directly — it renders with transparent bg</p>
+</div>
+
+<!-- ICON VARIANTS -->
+<div class="section">
+  <div class="section-title">03 · Icon Mark — All Sizes</div>
+  <div class="grid4">
+    <div>
+      <div class="preview-box">
+        <img src="primuez-icon.svg" width="128" height="128" alt="128px icon">
+      </div>
+      <p class="size-label">128×128 — App icon</p>
+    </div>
+    <div>
+      <div class="preview-box">
+        <img src="primuez-icon.svg" width="64" height="64" alt="64px icon">
+      </div>
+      <p class="size-label">64×64 — Social avatar</p>
+    </div>
+    <div>
+      <div class="preview-box">
+        <img src="primuez-icon.svg" width="32" height="32" alt="32px icon">
+      </div>
+      <p class="size-label">32×32 — Favicon</p>
+    </div>
+    <div>
+      <div class="preview-box">
+        <img src="favicon.svg" width="32" height="32" alt="Favicon minimal">
+      </div>
+      <p class="size-label">32×32 — Favicon (minimal)</p>
+    </div>
+  </div>
+</div>
+
+<!-- FAVICON -->
+<div class="section">
+  <div class="section-title">04 · Favicon Preview — Browser Tab Simulation</div>
+  <div class="preview-box" style="justify-content:flex-start;padding:1.2rem 1.5rem">
+    <div style="background:#1a1a2e;border-radius:8px 8px 0 0;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;min-width:200px">
+      <img src="favicon.svg" width="16" height="16" alt="favicon">
+      <span style="font-family:'Space Mono',monospace;font-size:0.75rem;color:#aaa">Primuez — AI Systems Builder</span>
+    </div>
+  </div>
+  <p class="usage-note">Add to your HTML &lt;head&gt;: &lt;link rel="icon" type="image/svg+xml" href="/favicon.svg"&gt;</p>
+</div>
+
+<!-- COLOR PALETTE -->
+<div class="section">
+  <div class="section-title">05 · Brand Colors</div>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap">
+    <div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:8px;background:#070b12;border:1px solid rgba(255,255,255,0.1)"></div>
+      <p class="size-label" style="margin-top:0.5rem">#070b12<br>Background</p>
+    </div>
+    <div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:8px;background:#00f0ff;box-shadow:0 0 20px rgba(0,240,255,0.4)"></div>
+      <p class="size-label" style="margin-top:0.5rem">#00f0ff<br>Cyan Primary</p>
+    </div>
+    <div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:8px;background:#f5a623;box-shadow:0 0 20px rgba(245,166,35,0.3)"></div>
+      <p class="size-label" style="margin-top:0.5rem">#f5a623<br>Amber Accent</p>
+    </div>
+    <div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:8px;background:#00ff88"></div>
+      <p class="size-label" style="margin-top:0.5rem">#00ff88<br>Green Signal</p>
+    </div>
+    <div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:8px;background:#d4dde8"></div>
+      <p class="size-label" style="margin-top:0.5rem">#d4dde8<br>Text Primary</p>
+    </div>
+    <div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:8px;background:#0d1117;border:1px solid rgba(255,255,255,0.08)"></div>
+      <p class="size-label" style="margin-top:0.5rem">#0d1117<br>Card BG</p>
+    </div>
+  </div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div class="section">
+  <div class="section-title">06 · Typography</div>
+  <div class="preview-box" style="flex-direction:column;align-items:flex-start;gap:1.5rem">
+    <div>
+      <p style="font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(0,240,255,0.4);margin-bottom:0.3rem">DISPLAY / HEADINGS / TERMINAL — Space Mono</p>
+      <p style="font-family:'Space Mono',monospace;font-size:2rem;font-weight:700;color:#fff;letter-spacing:0.05em">PRIMUEZ</p>
+      <p style="font-family:'Space Mono',monospace;font-size:0.85rem;color:#00f0ff;letter-spacing:0.2em">> ./systems --autonomous</p>
+    </div>
+    <div>
+      <p style="font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(0,240,255,0.4);margin-bottom:0.3rem">BODY / UI — Syne</p>
+      <p style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff">I Build Systems That Work For You.</p>
+      <p style="font-family:'Syne',sans-serif;font-size:1rem;color:#5a6a7e">Autonomous agents, intelligent workflows, and real shipped products.</p>
+    </div>
+  </div>
+</div>
+
+<!-- USAGE GUIDE -->
+<div class="section">
+  <div class="section-title">07 · File Usage Guide</div>
+  <div class="preview-box" style="flex-direction:column;align-items:flex-start;gap:0.8rem;padding:1.5rem 2rem">
+    <div><span class="tag">primuez-logo.svg</span><span style="font-family:'Space Mono',monospace;font-size:0.72rem;color:#5a6a7e">— Navbar, email, presentations, full logo with wordmark</span></div>
+    <div><span class="tag">primuez-icon.svg</span><span style="font-family:'Space Mono',monospace;font-size:0.72rem;color:#5a6a7e">— Social media profile pic, app icon, OG image</span></div>
+    <div><span class="tag">favicon.svg</span><span style="font-family:'Space Mono',monospace;font-size:0.72rem;color:#5a6a7e">— Browser tab favicon, use as &lt;link rel="icon"&gt;</span></div>
+    <div style="margin-top:0.5rem;padding-top:0.8rem;border-top:1px solid rgba(0,240,255,0.08)">
+      <p style="font-family:'Space Mono',monospace;font-size:0.7rem;color:rgba(0,240,255,0.4)">// Add to &lt;head&gt; in your HTML:</p>
+      <p style="font-family:'Space Mono',monospace;font-size:0.72rem;color:#f5a623;margin-top:0.4rem">&lt;link rel="icon" type="image/svg+xml" href="/favicon.svg"&gt;</p>
+      <p style="font-family:'Space Mono',monospace;font-size:0.72rem;color:#f5a623;margin-top:0.2rem">&lt;link rel="apple-touch-icon" href="/primuez-icon.svg"&gt;</p>
+    </div>
+  </div>
+</div>
+
+<p style="font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(0,240,255,0.25);text-align:center;margin-top:3rem">© 2026 Primuez · Brand Kit v1.0</p>
+</body>
+</html>
