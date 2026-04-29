@@ -62,19 +62,30 @@ export function ModelViewer() {
       const disposables: { dispose(): void }[] = [starGeo, starMat];
 
       const earthGeo = new T.SphereGeometry(1.5, 64, 64);
-      const earthMat = new T.MeshStandardMaterial({ roughness: 0.75, metalness: 0.1, emissive: new T.Color(0xffffff) });
+      const earthMat = new T.MeshStandardMaterial({ roughness: 0.85, metalness: 0.1, emissive: new T.Color(0xffffff) });
 
       // Uniform holding the sun direction in view space, updated every frame
       const sunDirUniform = { value: new T.Vector3(0, 0, 1) };
 
-      // Patch the standard shader to mask emissive on the day side:
-      // nightFactor = max(0, -dot(normal, sunDir)) is 1 on the dark hemisphere,
-      // 0 on the lit hemisphere, with a smooth transition at the terminator.
+      // Patch the standard shader for two effects:
+      // 1. Invert roughnessMap: specular texture is bright=ocean, but roughnessMap
+      //    treats bright=rough. We flip the G channel so oceans are smooth & shiny.
+      // 2. Mask emissive (city lights) to the night hemisphere only.
       earthMat.onBeforeCompile = (shader) => {
         shader.uniforms.uSunDir = sunDirUniform;
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <common>',
           '#include <common>\nuniform vec3 uSunDir;'
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <roughnessmap_fragment>',
+          [
+            'float roughnessFactor = roughness;',
+            '#ifdef USE_ROUGHNESSMAP',
+            '  vec4 texelRoughness = texture2D( roughnessMap, vRoughnessMapUv );',
+            '  roughnessFactor *= (1.0 - texelRoughness.g);',
+            '#endif',
+          ].join('\n')
         );
         shader.fragmentShader = shader.fragmentShader.replace(
           'outgoingLight += totalEmissiveRadiance;',
@@ -108,6 +119,12 @@ export function ModelViewer() {
         earthMat.emissiveMap = lightsTex;
         earthMat.needsUpdate = true;
         disposables.push(lightsTex);
+      });
+      loader.load('/textures/earth_specular.jpg', (specTex) => {
+        if (!mounted) { specTex.dispose(); return; }
+        earthMat.roughnessMap = specTex;
+        earthMat.needsUpdate = true;
+        disposables.push(specTex);
       });
 
       const cloudGeo = new T.SphereGeometry(1.525, 64, 64);
