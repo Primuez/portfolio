@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { StockChart } from '@/components/StockChart';
 import { ModelViewer } from '@/components/ModelViewer';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 const phrases = [
   "AI Developer.",
@@ -359,7 +360,9 @@ export default function Home() {
                 </ul>
               </div>
               <div>
-                <ModelViewer />
+                <ErrorBoundary>
+                  <ModelViewer />
+                </ErrorBoundary>
               </div>
             </div>
 

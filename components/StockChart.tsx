@@ -24,9 +24,9 @@ export function StockChart() {
   if (data.length === 0) return null;
 
   return (
-    <div className="w-full h-32 mt-4 bg-bg/50 border border-amber/20 rounded-lg p-2 overflow-hidden shadow-[inset_0_0_20px_rgba(245,166,35,0.05)]">
-       <div className="text-[10px] uppercase font-mono text-amber/70 mb-2 pl-2">Live AI Analysis: <span className="animate-pulse">Active</span></div>
-       <ResponsiveContainer width="100%" height="80%">
+    <div className="w-full mt-4 bg-bg/50 border border-amber/20 rounded-lg p-2 overflow-hidden shadow-[inset_0_0_20px_rgba(245,166,35,0.05)]" style={{ minHeight: 128 }}>
+      <div className="text-[10px] uppercase font-mono text-amber/70 mb-2 pl-2">Live AI Analysis: <span className="animate-pulse">Active</span></div>
+      <ResponsiveContainer width="100%" aspect={5}>
         <LineChart data={data}>
           <Line 
             type="monotone" 
