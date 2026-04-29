@@ -40,13 +40,13 @@ export function ModelViewer() {
       controls.minPolarAngle = Math.PI / 4;
       controls.maxPolarAngle = (3 * Math.PI) / 4;
 
-      scene.add(new T.AmbientLight(0xffffff, 0.6));
+      scene.add(new T.AmbientLight(0xffffff, 0.35));
       const sun = new T.DirectionalLight(0xffffff, 2);
       sun.position.set(5, 3, 5);
       scene.add(sun);
-      const fill = new T.PointLight(0x2244ff, 0.4);
-      fill.position.set(-8, -4, -8);
-      scene.add(fill);
+      const nightFill = new T.PointLight(0x0a0a2e, 0.15);
+      nightFill.position.set(-5, -3, -5);
+      scene.add(nightFill);
 
       const starGeo = new T.BufferGeometry();
       const starCount = 1500;
@@ -115,9 +115,16 @@ export function ModelViewer() {
       disposables.push(cyanGeo, cyanMat);
 
       const clock = new T.Clock();
+      let elapsed = 0;
       const animate = () => {
         animId = requestAnimationFrame(animate);
-        cloudMesh.rotation.y += clock.getDelta() * 0.04;
+        const delta = clock.getDelta();
+        elapsed += delta;
+        cloudMesh.rotation.y += delta * 0.04;
+        const orbitAngle = (elapsed / 60) * Math.PI * 2;
+        const radius = 8;
+        sun.position.set(Math.sin(orbitAngle) * radius, 3, Math.cos(orbitAngle) * radius);
+        nightFill.position.set(-Math.sin(orbitAngle) * radius, -3, -Math.cos(orbitAngle) * radius);
         controls.update();
         renderer.render(scene, camera);
       };

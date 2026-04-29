@@ -6,7 +6,7 @@ import {
   Terminal, Code2, Link as IconLink, 
   MapPin, CheckCircle2, ChevronRight, ChevronDown,
   MonitorPlay, Youtube, Github, Twitter, Instagram, Linkedin, Send,
-  Star, GitFork, Activity
+  Star, GitFork, Activity, Download
 } from 'lucide-react';
 import { StockChart } from '@/components/StockChart';
 import { ModelViewer } from '@/components/ModelViewer';
@@ -39,7 +39,7 @@ export default function Home() {
   
   // Modals state
   const [modalType, setModalType] = useState<'form' | 'cert' | 'workflow' | null>(null);
-  const [certData, setCertData] = useState<{title: string, issuer: string, date: string, id: string} | null>(null);
+  const [certData, setCertData] = useState<{title: string, issuer: string, date: string, id: string, pdfUrl?: string} | null>(null);
 
   // Github state
   const [repos, setRepos] = useState<GithubRepo[]>([]);
@@ -206,6 +206,9 @@ export default function Home() {
               <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest hover:border-glow-cyan transition-all duration-300 text-center shadow-[0_0_20px_rgba(0,240,255,0.3)]">
                 Work With Me
               </button>
+              <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                <Download size={16} /> Download Resume
+              </a>
             </div>
 
             <div className="flex flex-wrap gap-3 font-mono text-xs">
@@ -552,7 +555,7 @@ export default function Home() {
                 <p className="text-sm text-text-muted mb-4">Completed both official n8n course levels demonstrating advanced automation mastery.</p>
                 <div className="flex flex-wrap gap-2">
                   <button 
-                    onClick={() => { setCertData({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2'}); setModalType('cert'); }}
+                    onClick={() => { setCertData({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2', pdfUrl: '/documents/cert-n8n-1.pdf'}); setModalType('cert'); }}
                     className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                   >View Master Certificate</button>
                 </div>
@@ -561,7 +564,7 @@ export default function Home() {
               <CVAccordion title="SimpliLearn: n8n No Code AI Agent">
                 <p className="text-sm text-text-muted mb-4">Certificate #8723146 - Completed Aug 2, 2025.</p>
                 <button 
-                  onClick={() => { setCertData({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146'}); setModalType('cert'); }}
+                  onClick={() => { setCertData({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146', pdfUrl: '/documents/cert-n8n-2.pdf'}); setModalType('cert'); }}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
@@ -594,7 +597,7 @@ export default function Home() {
               <CVAccordion title="Rilo Hackathon 2026">
                 <p className="text-sm text-text-muted mb-4">Jan 10–11, 2026. Built and shipped a live automation workflow. Recognized for technical creativity.</p>
                 <button 
-                  onClick={() => { setCertData({title: 'Rilo Hackathon Participant', issuer: 'Rilo', date: 'Jan 11, 2026', id: 'RILO-26'}); setModalType('cert'); }}
+                  onClick={() => { setCertData({title: 'Rilo Hackathon Participant', issuer: 'Rilo', date: 'Jan 11, 2026', id: 'RILO-26', pdfUrl: '/documents/cert-rilo-hackathon.pdf'}); setModalType('cert'); }}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
@@ -689,39 +692,65 @@ export default function Home() {
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-[#0f1520] border-2 border-cyan/50 rounded-lg w-full max-w-3xl shadow-[0_0_60px_rgba(0,240,255,0.15)] relative p-8 md:p-12 flex flex-col items-center text-center font-sans overflow-hidden"
+                className="bg-[#0f1520] border-2 border-cyan/50 rounded-lg w-full max-w-3xl shadow-[0_0_60px_rgba(0,240,255,0.15)] relative flex flex-col overflow-hidden"
               >
                 {/* Background decorative elements */}
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan to-transparent"></div>
-                <div className="absolute -top-32 -left-32 w-64 h-64 bg-cyan/10 rounded-full blur-[80px]"></div>
-                <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-amber/10 rounded-full blur-[80px]"></div>
                 
                 <button onClick={() => setModalType(null)} className="absolute top-4 right-4 text-text-muted hover:text-white transition-colors z-20"><CheckCircle2 size={24}/></button>
-                
-                <div className="w-16 h-16 border-4 border-amber/80 rounded-full flex items-center justify-center mb-6 mt-4 relative z-10 bg-[#0f1520]">
-                  <span className="text-amber font-serif italic text-2xl">✓</span>
-                </div>
-                <h3 className="relative z-10 font-mono text-cyan uppercase tracking-[0.3em] text-xs mb-8 border-b border-cyan/20 pb-2">Certificate of Completion</h3>
-                
-                <h1 className="relative z-10 text-3xl md:text-5xl font-bold text-white mb-6 font-serif tracking-tight leading-tight">{certData.title}</h1>
-                
-                <p className="relative z-10 text-lg text-text-muted mb-2">This acknowledges that</p>
-                <p className="relative z-10 text-2xl text-cyan font-bold mb-8 uppercase tracking-widest">Rahul Kasturiya</p>
-                
-                <p className="relative z-10 text-sm text-text-muted max-w-md mx-auto mb-12">
-                  has successfully completed all requirements and is officially certified by <strong className="text-white">{certData.issuer}</strong>.
-                </p>
-                
-                <div className="relative z-10 grid grid-cols-2 gap-12 w-full pt-8 border-t border-white/5 font-mono text-xs text-text-muted">
-                  <div className="flex flex-col gap-1 items-center">
-                    <span className="uppercase text-[10px] tracking-widest text-white/40">Credential ID</span>
-                    <span className="text-cyan/70">{certData.id}</span>
+
+                {certData.pdfUrl ? (
+                  <div className="flex flex-col w-full">
+                    <div className="px-6 pt-8 pb-4 font-mono text-xs text-cyan uppercase tracking-widest border-b border-cyan/20">
+                      {certData.title}
+                    </div>
+                    <iframe
+                      src={certData.pdfUrl}
+                      className="w-full"
+                      style={{ height: '70vh', border: 'none' }}
+                      title={certData.title}
+                    />
+                    <div className="flex justify-center py-4 border-t border-white/5">
+                      <a
+                        href={certData.pdfUrl}
+                        download
+                        className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-5 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                      >
+                        <Download size={14} /> Download Certificate
+                      </a>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1 items-center">
-                    <span className="uppercase text-[10px] tracking-widest text-white/40">Date Issued</span>
-                    <span>{certData.date}</span>
+                ) : (
+                  <div className="p-8 md:p-12 flex flex-col items-center text-center font-sans">
+                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-cyan/10 rounded-full blur-[80px]"></div>
+                    <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-amber/10 rounded-full blur-[80px]"></div>
+                    
+                    <div className="w-16 h-16 border-4 border-amber/80 rounded-full flex items-center justify-center mb-6 mt-4 relative z-10 bg-[#0f1520]">
+                      <span className="text-amber font-serif italic text-2xl">✓</span>
+                    </div>
+                    <h3 className="relative z-10 font-mono text-cyan uppercase tracking-[0.3em] text-xs mb-8 border-b border-cyan/20 pb-2">Certificate of Completion</h3>
+                    
+                    <h1 className="relative z-10 text-3xl md:text-5xl font-bold text-white mb-6 font-serif tracking-tight leading-tight">{certData.title}</h1>
+                    
+                    <p className="relative z-10 text-lg text-text-muted mb-2">This acknowledges that</p>
+                    <p className="relative z-10 text-2xl text-cyan font-bold mb-8 uppercase tracking-widest">Rahul Kasturiya</p>
+                    
+                    <p className="relative z-10 text-sm text-text-muted max-w-md mx-auto mb-12">
+                      has successfully completed all requirements and is officially certified by <strong className="text-white">{certData.issuer}</strong>.
+                    </p>
+                    
+                    <div className="relative z-10 grid grid-cols-2 gap-12 w-full pt-8 border-t border-white/5 font-mono text-xs text-text-muted">
+                      <div className="flex flex-col gap-1 items-center">
+                        <span className="uppercase text-[10px] tracking-widest text-white/40">Credential ID</span>
+                        <span className="text-cyan/70">{certData.id}</span>
+                      </div>
+                      <div className="flex flex-col gap-1 items-center">
+                        <span className="uppercase text-[10px] tracking-widest text-white/40">Date Issued</span>
+                        <span>{certData.date}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </motion.div>
             )}
 
