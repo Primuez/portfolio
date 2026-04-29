@@ -591,7 +591,7 @@ export default function Home() {
               <CVAccordion title="Kaggle × Google: AI Agents Intensive">
                 <p className="text-sm text-text-muted mb-4">5-Day AI Agents Intensive Course with Google. Earned Official Badge.</p>
                 <button 
-                  onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG'})}
+                  onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG', pdfUrl: '/documents/cert-kaggle-google.pdf#page=2'})}
                   className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Badge</button>
               </CVAccordion>
@@ -748,32 +748,90 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-8 md:p-12 flex flex-col items-center text-center font-sans">
-                    <div className="absolute -top-32 -left-32 w-64 h-64 bg-cyan/10 rounded-full blur-[80px]"></div>
-                    <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-amber/10 rounded-full blur-[80px]"></div>
-                    
-                    <div className="w-16 h-16 border-4 border-amber/80 rounded-full flex items-center justify-center mb-6 mt-4 relative z-10 bg-[#0f1520]">
-                      <span className="text-amber font-serif italic text-2xl">✓</span>
-                    </div>
-                    <h3 className="relative z-10 font-mono text-cyan uppercase tracking-[0.3em] text-xs mb-8 border-b border-cyan/20 pb-2">Certificate of Completion</h3>
-                    
-                    <h1 className="relative z-10 text-3xl md:text-5xl font-bold text-white mb-6 font-serif tracking-tight leading-tight">{certData.title}</h1>
-                    
-                    <p className="relative z-10 text-lg text-text-muted mb-2">This acknowledges that</p>
-                    <p className="relative z-10 text-2xl text-cyan font-bold mb-8 uppercase tracking-widest">Rahul Kasturiya</p>
-                    
-                    <p className="relative z-10 text-sm text-text-muted max-w-md mx-auto mb-12">
-                      has successfully completed all requirements and is officially certified by <strong className="text-white">{certData.issuer}</strong>.
-                    </p>
-                    
-                    <div className="relative z-10 grid grid-cols-2 gap-12 w-full pt-8 border-t border-white/5 font-mono text-xs text-text-muted">
-                      <div className="flex flex-col gap-1 items-center">
-                        <span className="uppercase text-[10px] tracking-widest text-white/40">Credential ID</span>
-                        <span className="text-cyan/70">{certData.id}</span>
+                  <div className="p-5 md:p-7 font-sans">
+                    {/* Certificate document — styled like a real certificate */}
+                    <div className="relative flex overflow-hidden rounded border-2 border-[#c8a84b] shadow-2xl" style={{ background: '#f9f7f1', minHeight: '380px' }}>
+                      
+                      {/* Gold corner ornaments */}
+                      <div className="absolute top-3 left-3 w-8 h-8 border-t-2 border-l-2 border-[#c8a84b] z-10 pointer-events-none" />
+                      <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-[#c8a84b] z-10 pointer-events-none" />
+                      <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-[#c8a84b] z-10 pointer-events-none" />
+                      <div className="absolute bottom-3 right-3 w-8 h-8 border-b-2 border-r-2 border-[#c8a84b] z-10 pointer-events-none" />
+
+                      {/* Left navy sidebar */}
+                      <div className="hidden sm:flex w-[30%] bg-[#0f2044] flex-col items-center justify-between py-10 px-4 relative overflow-hidden">
+                        {/* Diagonal accent stripe */}
+                        <div className="absolute top-0 right-0 w-3 h-full bg-[#c8a84b] opacity-80" />
+                        <div className="absolute top-0 right-3 w-1 h-full bg-[#c8a84b] opacity-30" />
+
+                        {/* Top issuer name */}
+                        <div className="text-center z-10">
+                          <div className="text-[#c8a84b] text-[10px] uppercase tracking-[0.3em] mb-1">Issued by</div>
+                          <div className="text-white text-sm font-bold leading-tight text-center">{certData.issuer}</div>
+                        </div>
+
+                        {/* Centre badge */}
+                        <div className="z-10 flex flex-col items-center gap-3">
+                          <svg width="80" height="80" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="36" fill="none" stroke="#c8a84b" strokeWidth="2.5"/>
+                            <circle cx="40" cy="40" r="29" fill="none" stroke="#c8a84b" strokeWidth="1" strokeDasharray="4 3"/>
+                            <circle cx="40" cy="40" r="22" fill="#c8a84b" opacity="0.15"/>
+                            <text x="40" y="37" textAnchor="middle" fill="#c8a84b" fontSize="9" fontFamily="serif" letterSpacing="1">CERTIFICATE</text>
+                            <text x="40" y="48" textAnchor="middle" fill="#c8a84b" fontSize="9" fontFamily="serif" letterSpacing="1">OF COMPLETION</text>
+                            <text x="40" y="59" textAnchor="middle" fill="#c8a84b" fontSize="16">✦</text>
+                          </svg>
+                        </div>
+
+                        {/* Bottom credential id */}
+                        <div className="text-center z-10">
+                          <div className="text-[#c8a84b] text-[9px] uppercase tracking-[0.3em] mb-1">Credential ID</div>
+                          <div className="text-white/60 text-[10px] font-mono">{certData.id}</div>
+                        </div>
                       </div>
-                      <div className="flex flex-col gap-1 items-center">
-                        <span className="uppercase text-[10px] tracking-widest text-white/40">Date Issued</span>
-                        <span>{certData.date}</span>
+
+                      {/* Right main content */}
+                      <div className="flex-1 flex flex-col justify-center px-8 md:px-12 py-10 relative">
+                        {/* VERIFIED watermark stamp */}
+                        <div className="absolute bottom-8 right-8 opacity-[0.12] select-none pointer-events-none"
+                          style={{ transform: 'rotate(-18deg)' }}>
+                          <div className="border-4 border-[#1a5cb0] rounded-full px-5 py-2 text-[#1a5cb0] text-xl font-black tracking-[0.3em]">
+                            VERIFIED
+                          </div>
+                        </div>
+
+                        {/* Certificate of Completion heading */}
+                        <div className="mb-6">
+                          <p className="text-[#c8a84b] text-[10px] uppercase tracking-[0.35em] font-semibold mb-0.5">Certificate of</p>
+                          <h2 className="text-[#0f2044] text-3xl md:text-4xl font-black tracking-wide leading-none" style={{ fontFamily: 'Georgia, serif' }}>COMPLETION</h2>
+                        </div>
+
+                        {/* Recipient */}
+                        <div className="mb-1">
+                          <p className="text-gray-500 text-xs mb-2">This is to certify that</p>
+                          <p className="text-gray-900 text-2xl md:text-3xl font-bold pb-1 border-b border-dotted border-gray-400" style={{ fontFamily: 'Georgia, serif' }}>
+                            Rahul Kasturiya
+                          </p>
+                        </div>
+
+                        {/* Course */}
+                        <div className="mt-4 mb-5">
+                          <p className="text-gray-500 text-xs mb-1">has successfully completed the course</p>
+                          <p className="text-[#0f2044] text-base md:text-lg font-bold leading-snug">{certData.title}</p>
+                        </div>
+
+                        {/* Footer row */}
+                        <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-200">
+                          <div>
+                            <p className="text-gray-400 text-[10px] uppercase tracking-widest">Date Issued</p>
+                            <p className="text-gray-700 text-sm font-medium">{certData.date}</p>
+                          </div>
+                          {/* Signature line */}
+                          <div className="text-right">
+                            <div className="text-gray-400 text-2xl mb-0.5" style={{ fontFamily: 'cursive' }}>✦</div>
+                            <div className="w-24 border-t border-gray-400" />
+                            <p className="text-gray-500 text-[10px] mt-1">Authorised Signatory</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
