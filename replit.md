@@ -18,15 +18,20 @@ app/
   layout.tsx          - Root layout with full SEO metadata (OG, Twitter, favicon)
   page.tsx            - Main portfolio page (hero, about, projects, stack, creds, contact)
   opengraph-image.tsx - Dynamic OG image (ImageResponse, edge runtime)
-  icon.svg            - Site favicon (served automatically by Next.js)
-  apple-icon.svg      - Apple touch icon
   globals.css         - Global styles + Tailwind theme
 components/
   ModelViewer.tsx     - 3D Earth globe (Three.js, lazy-loaded, drag-to-rotate)
   StockChart.tsx      - Recharts stock visualization
   ErrorBoundary.tsx   - React error boundary wrapping ModelViewer
 public/
-  textures/           - earth_color.jpg, earth_normal.jpg, earth_clouds.png
+  favicon.ico               - Multi-size ICO (16x16 + 32x32, generated from SVG)
+  favicon-16x16.png         - 16×16 PNG favicon
+  favicon-32x32.png         - 32×32 PNG favicon
+  favicon.svg               - SVG favicon (hex circuit logo, dark bg + cyan)
+  apple-touch-icon.png      - 180×180 Apple touch icon
+  android-chrome-192x192.png- 192×192 Android chrome icon
+  primuez-icon.svg          - Full 64×64 logo SVG (source for rasterised favicons)
+  textures/                 - earth_color.jpg, earth_normal.jpg, earth_clouds.png
 ```
 
 ## Running the App
