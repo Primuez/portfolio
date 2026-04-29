@@ -62,7 +62,30 @@ export function ModelViewer() {
       const disposables: { dispose(): void }[] = [starGeo, starMat];
 
       const earthGeo = new T.SphereGeometry(1.5, 64, 64);
-      const earthMat = new T.MeshStandardMaterial({ roughness: 0.75, metalness: 0.1 });
+      const earthMat = new T.MeshStandardMaterial({ roughness: 0.75, metalness: 0.1, emissive: new T.Color(0xffffff) });
+
+      // Uniform holding the sun direction in view space, updated every frame
+      const sunDirUniform = { value: new T.Vector3(0, 0, 1) };
+
+      // Patch the standard shader to mask emissive on the day side:
+      // nightFactor = max(0, -dot(normal, sunDir)) is 1 on the dark hemisphere,
+      // 0 on the lit hemisphere, with a smooth transition at the terminator.
+      earthMat.onBeforeCompile = (shader) => {
+        shader.uniforms.uSunDir = sunDirUniform;
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          '#include <common>\nuniform vec3 uSunDir;'
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          'outgoingLight += totalEmissiveRadiance;',
+          [
+            'float _nightFactor = max(0.0, -dot(normal, uSunDir));',
+            'float _smoothNight = smoothstep(0.0, 0.25, _nightFactor);',
+            'outgoingLight += totalEmissiveRadiance * _smoothNight;',
+          ].join('\n')
+        );
+      };
+
       const earthMesh = new T.Mesh(earthGeo, earthMat);
       scene.add(earthMesh);
       disposables.push(earthGeo, earthMat);
@@ -79,6 +102,12 @@ export function ModelViewer() {
         earthMat.normalScale = new T.Vector2(0.6, 0.6);
         earthMat.needsUpdate = true;
         disposables.push(normalTex);
+      });
+      loader.load('/textures/earth_lights.jpg', (lightsTex) => {
+        if (!mounted) { lightsTex.dispose(); return; }
+        earthMat.emissiveMap = lightsTex;
+        earthMat.needsUpdate = true;
+        disposables.push(lightsTex);
       });
 
       const cloudGeo = new T.SphereGeometry(1.525, 64, 64);
@@ -133,6 +162,8 @@ export function ModelViewer() {
         const radius = 8;
         sun.position.set(Math.sin(orbitAngle) * radius, 3, Math.cos(orbitAngle) * radius);
         nightFill.position.set(-Math.sin(orbitAngle) * radius, -3, -Math.cos(orbitAngle) * radius);
+        // Keep sun direction uniform in sync with the orbiting light (view space)
+        sunDirUniform.value.copy(sun.position).normalize().transformDirection(camera.matrixWorldInverse);
         controls.update();
         renderer.render(scene, camera);
       };
