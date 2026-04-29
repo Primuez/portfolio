@@ -1,0 +1,165 @@
+2026-04-29T09:34:24.981Z	Initializing build environment...
+2026-04-29T09:34:26.555Z	Success: Finished initializing build environment
+2026-04-29T09:34:27.358Z	Cloning repository...
+2026-04-29T09:34:28.752Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2026-04-29T09:34:28.753Z	Restoring from dependencies cache
+2026-04-29T09:34:28.756Z	Restoring from build output cache
+2026-04-29T09:34:30.271Z	Success: Build output restored from build cache.
+2026-04-29T09:34:35.703Z	Success: Dependencies restored from build cache.
+2026-04-29T09:34:35.705Z	Installing project dependencies: npm clean-install --progress=false
+2026-04-29T09:34:48.080Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2026-04-29T09:34:49.423Z	npm warn deprecated glob@9.3.5: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-04-29T09:34:49.467Z	npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-04-29T09:34:49.540Z	npm warn deprecated json-ptr@3.1.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-04-29T09:35:02.044Z	
+2026-04-29T09:35:02.045Z	added 1343 packages, and audited 1344 packages in 26s
+2026-04-29T09:35:02.045Z	
+2026-04-29T09:35:02.045Z	251 packages are looking for funding
+2026-04-29T09:35:02.045Z	  run `npm fund` for details
+2026-04-29T09:35:02.080Z	
+2026-04-29T09:35:02.081Z	8 moderate severity vulnerabilities
+2026-04-29T09:35:02.081Z	
+2026-04-29T09:35:02.081Z	To address all issues (including breaking changes), run:
+2026-04-29T09:35:02.081Z	  npm audit fix --force
+2026-04-29T09:35:02.081Z	
+2026-04-29T09:35:02.081Z	Run `npm audit` for details.
+2026-04-29T09:35:02.399Z	Executing user build command: npx @opennextjs/cloudflare build
+2026-04-29T09:35:07.768Z	
+2026-04-29T09:35:07.768Z	┌─────────────────────────────┐
+2026-04-29T09:35:07.770Z	│ OpenNext — Cloudflare build │
+2026-04-29T09:35:07.770Z	└─────────────────────────────┘
+2026-04-29T09:35:07.770Z	
+2026-04-29T09:35:07.865Z	App directory: /opt/buildhome/repo
+2026-04-29T09:35:07.866Z	Next.js version : 15.5.15
+2026-04-29T09:35:07.867Z	@opennextjs/cloudflare version: 1.19.4
+2026-04-29T09:35:07.868Z	@opennextjs/aws version: 3.10.4
+2026-04-29T09:35:07.875Z	
+2026-04-29T09:35:07.876Z	┌─────────────────────────────────┐
+2026-04-29T09:35:07.878Z	│ OpenNext — Building Next.js app │
+2026-04-29T09:35:07.878Z	└─────────────────────────────────┘
+2026-04-29T09:35:07.878Z	
+2026-04-29T09:35:08.021Z	
+2026-04-29T09:35:08.021Z	> ai-studio-applet@0.1.0 build
+2026-04-29T09:35:08.021Z	> next build
+2026-04-29T09:35:08.021Z	
+2026-04-29T09:35:08.822Z	   ▲ Next.js 15.5.15
+2026-04-29T09:35:08.822Z	
+2026-04-29T09:35:08.911Z	   Creating an optimized production build ...
+2026-04-29T09:35:25.157Z	 ✓ Compiled successfully in 16.1s
+2026-04-29T09:35:25.204Z	   Skipping linting
+2026-04-29T09:35:25.205Z	   Checking validity of types ...
+2026-04-29T09:35:30.021Z	   Collecting page data ...
+2026-04-29T09:35:30.476Z	 ⚠ Using edge runtime on a page currently disables static generation for that page
+2026-04-29T09:35:32.609Z	   Generating static pages (0/5) ...
+2026-04-29T09:35:33.587Z	   Generating static pages (1/5) 
+2026-04-29T09:35:33.587Z	   Generating static pages (2/5) 
+2026-04-29T09:35:33.587Z	   Generating static pages (3/5) 
+2026-04-29T09:35:33.587Z	 ✓ Generating static pages (5/5)
+2026-04-29T09:35:34.470Z	   Finalizing page optimization ...
+2026-04-29T09:35:34.470Z	   Collecting build traces ...
+2026-04-29T09:34:24.981Z	Initializing build environment...
+2026-04-29T09:34:26.555Z	Success: Finished initializing build environment
+2026-04-29T09:34:27.358Z	Cloning repository...
+2026-04-29T09:34:28.752Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2026-04-29T09:34:28.753Z	Restoring from dependencies cache
+2026-04-29T09:34:28.756Z	Restoring from build output cache
+2026-04-29T09:34:30.271Z	Success: Build output restored from build cache.
+2026-04-29T09:34:35.703Z	Success: Dependencies restored from build cache.
+2026-04-29T09:34:35.705Z	Installing project dependencies: npm clean-install --progress=false
+2026-04-29T09:34:48.080Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2026-04-29T09:34:49.423Z	npm warn deprecated glob@9.3.5: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-04-29T09:34:49.467Z	npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-04-29T09:34:49.540Z	npm warn deprecated json-ptr@3.1.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-04-29T09:35:02.044Z	
+2026-04-29T09:35:02.045Z	added 1343 packages, and audited 1344 packages in 26s
+2026-04-29T09:35:02.045Z	
+2026-04-29T09:35:02.045Z	251 packages are looking for funding
+2026-04-29T09:35:02.045Z	  run `npm fund` for details
+2026-04-29T09:35:02.080Z	
+2026-04-29T09:35:02.081Z	8 moderate severity vulnerabilities
+2026-04-29T09:35:02.081Z	
+2026-04-29T09:35:02.081Z	To address all issues (including breaking changes), run:
+2026-04-29T09:35:02.081Z	  npm audit fix --force
+2026-04-29T09:35:02.081Z	
+2026-04-29T09:35:02.081Z	Run `npm audit` for details.
+2026-04-29T09:35:02.399Z	Executing user build command: npx @opennextjs/cloudflare build
+2026-04-29T09:35:07.768Z	
+2026-04-29T09:35:07.768Z	┌─────────────────────────────┐
+2026-04-29T09:35:07.770Z	│ OpenNext — Cloudflare build │
+2026-04-29T09:35:07.770Z	└─────────────────────────────┘
+2026-04-29T09:35:07.770Z	
+2026-04-29T09:35:07.865Z	App directory: /opt/buildhome/repo
+2026-04-29T09:35:07.866Z	Next.js version : 15.5.15
+2026-04-29T09:35:07.867Z	@opennextjs/cloudflare version: 1.19.4
+2026-04-29T09:35:07.868Z	@opennextjs/aws version: 3.10.4
+2026-04-29T09:35:07.875Z	
+2026-04-29T09:35:07.876Z	┌─────────────────────────────────┐
+2026-04-29T09:35:07.878Z	│ OpenNext — Building Next.js app │
+2026-04-29T09:35:07.878Z	└─────────────────────────────────┘
+2026-04-29T09:35:07.878Z	
+2026-04-29T09:35:08.021Z	
+2026-04-29T09:35:08.021Z	> ai-studio-applet@0.1.0 build
+2026-04-29T09:35:08.021Z	> next build
+2026-04-29T09:35:08.021Z	
+2026-04-29T09:35:08.822Z	   ▲ Next.js 15.5.15
+2026-04-29T09:35:08.822Z	
+2026-04-29T09:35:08.911Z	   Creating an optimized production build ...
+2026-04-29T09:35:25.157Z	 ✓ Compiled successfully in 16.1s
+2026-04-29T09:35:25.204Z	   Skipping linting
+2026-04-29T09:35:25.205Z	   Checking validity of types ...
+2026-04-29T09:35:30.021Z	   Collecting page data ...
+2026-04-29T09:35:30.476Z	 ⚠ Using edge runtime on a page currently disables static generation for that page
+2026-04-29T09:35:32.609Z	   Generating static pages (0/5) ...
+2026-04-29T09:35:33.587Z	   Generating static pages (1/5) 
+2026-04-29T09:35:33.587Z	   Generating static pages (2/5) 
+2026-04-29T09:35:33.587Z	   Generating static pages (3/5) 
+2026-04-29T09:35:33.587Z	 ✓ Generating static pages (5/5)
+2026-04-29T09:35:34.470Z	   Finalizing page optimization ...
+2026-04-29T09:35:34.470Z	   Collecting build traces ...
+2026-04-29T09:35:54.501Z	
+2026-04-29T09:35:54.503Z	Route (app)                                 Size  First Load JS
+2026-04-29T09:35:54.503Z	┌ ○ /                                     148 kB         250 kB
+2026-04-29T09:35:54.503Z	├ ○ /_not-found                            993 B         103 kB
+2026-04-29T09:35:54.504Z	├ ○ /icon.svg                                0 B            0 B
+2026-04-29T09:35:54.504Z	└ ƒ /opengraph-image                       123 B         102 kB
+2026-04-29T09:35:54.504Z	+ First Load JS shared by all             102 kB
+2026-04-29T09:35:54.504Z	  ├ chunks/255-842f13cb89d91771.js       45.8 kB
+2026-04-29T09:35:54.504Z	  ├ chunks/4bd1b696-21f374d1156f834a.js  54.2 kB
+2026-04-29T09:35:54.504Z	  └ other shared chunks (total)          1.98 kB
+2026-04-29T09:35:54.504Z	
+2026-04-29T09:35:54.504Z	
+2026-04-29T09:35:54.504Z	○  (Static)   prerendered as static content
+2026-04-29T09:35:54.504Z	ƒ  (Dynamic)  server-rendered on demand
+2026-04-29T09:35:54.504Z	
+2026-04-29T09:35:54.634Z	
+2026-04-29T09:35:54.634Z	┌──────────────────────────────┐
+2026-04-29T09:35:54.634Z	│ OpenNext — Generating bundle │
+2026-04-29T09:35:54.634Z	└──────────────────────────────┘
+2026-04-29T09:35:54.634Z	
+2026-04-29T09:35:54.718Z	Bundling middleware function...
+2026-04-29T09:35:54.774Z	Bundling static assets...
+2026-04-29T09:35:54.803Z	Bundling cache assets...
+2026-04-29T09:35:54.810Z	Building server function: default...
+2026-04-29T09:35:54.838Z	file:///opt/buildhome/repo/node_modules/@opennextjs/aws/dist/build/copyTracedFiles.js:128
+2026-04-29T09:35:54.840Z	                throw new Error(`
+2026-04-29T09:35:54.840Z	                      ^
+2026-04-29T09:35:54.840Z	
+2026-04-29T09:35:54.840Z	Error: 
+2026-04-29T09:35:54.840Z	--------------------------------------------------------------------------------
+2026-04-29T09:35:54.840Z	app/opengraph-image/route cannot use the edge runtime.
+2026-04-29T09:35:54.840Z	OpenNext requires edge runtime function to be defined in a separate function.
+2026-04-29T09:35:54.840Z	See the docs for more information on how to bundle edge runtime functions.
+2026-04-29T09:35:54.840Z	--------------------------------------------------------------------------------
+2026-04-29T09:35:54.841Z	        
+2026-04-29T09:35:54.841Z	    at computeCopyFilesForPage (file:///opt/buildhome/repo/node_modules/@opennextjs/aws/dist/build/copyTracedFiles.js:128:23)
+2026-04-29T09:35:54.842Z	    at file:///opt/buildhome/repo/node_modules/@opennextjs/aws/dist/build/copyTracedFiles.js:193:9
+2026-04-29T09:35:54.842Z	    at Array.forEach (<anonymous>)
+2026-04-29T09:35:54.842Z	    at copyTracedFiles (file:///opt/buildhome/repo/node_modules/@opennextjs/aws/dist/build/copyTracedFiles.js:192:12)
+2026-04-29T09:35:54.842Z	    at generateBundle (file:///opt/buildhome/repo/node_modules/@opennextjs/cloudflare/dist/cli/build/open-next/createServerBundle.js:121:60)
+2026-04-29T09:35:54.842Z	    at createServerBundle (file:///opt/buildhome/repo/node_modules/@opennextjs/cloudflare/dist/cli/build/open-next/createServerBundle.js:75:11)
+2026-04-29T09:35:54.842Z	    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-04-29T09:35:54.842Z	    at async build (file:///opt/buildhome/repo/node_modules/@opennextjs/cloudflare/dist/cli/build/build.js:74:5)
+2026-04-29T09:35:54.842Z	    at async buildCommand (file:///opt/buildhome/repo/node_modules/@opennextjs/cloudflare/dist/cli/commands/build.js:40:5)
+2026-04-29T09:35:54.842Z	
+2026-04-29T09:35:54.842Z	Node.js v22.16.0
+2026-04-29T09:35:54.879Z	Failed: error occurred while running build command
