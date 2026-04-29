@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  serverExternalPackages: ['react-pdf', 'pdfjs-dist'],
   allowedDevOrigins: ['*.replit.dev', '*.replit.app', '*.worf.replit.dev', '*.repl.co'],
   images: {
     remotePatterns: [
@@ -37,10 +38,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, {dev}) => {
+  webpack: (config, {dev, isServer}) => {
     if (dev && process.env.DISABLE_HMR === 'true') {
       config.watchOptions = {
         ignored: /.*/,
+      };
+    }
+    if (isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        canvas: false,
       };
     }
     return config;

@@ -11,6 +11,8 @@ import {
 import { StockChart } from '@/components/StockChart';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import dynamic from 'next/dynamic';
+const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const phrases = [
@@ -44,12 +46,8 @@ export default function Home() {
   const isMobile = useIsMobile();
 
   const openCert = (data: {title: string, issuer: string, date: string, id: string, pdfUrl?: string}) => {
-    if (isMobile && data.pdfUrl) {
-      window.open(data.pdfUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      setCertData(data);
-      setModalType('cert');
-    }
+    setCertData(data);
+    setModalType('cert');
   };
 
   // Github state
@@ -716,19 +714,7 @@ export default function Home() {
                       {certData.title}
                     </div>
                     {isMobile ? (
-                      <div className="flex flex-col items-center justify-center gap-6 py-16 px-6">
-                        <p className="font-mono text-xs text-text-muted text-center uppercase tracking-widest">
-                          Tap below to view this certificate
-                        </p>
-                        <a
-                          href={certData.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan text-bg border border-cyan px-6 py-3 hover:bg-cyan/80 transition-colors"
-                        >
-                          <Download size={14} /> Open Certificate
-                        </a>
-                      </div>
+                      <CertPdfViewer url={certData.pdfUrl!} title={certData.title} />
                     ) : (
                       <iframe
                         src={certData.pdfUrl}
