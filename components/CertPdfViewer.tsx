@@ -1,24 +1,55 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 interface CertPdfViewerProps {
   url: string;
   title: string;
 }
 
+function parsePdfUrl(url: string): { src: string; startPage: number } {
+  const match = url.match(/#page=(\d+)/);
+  const startPage = match ? parseInt(match[1], 10) : 1;
+  const src = url.replace(/#.*$/, '');
+  return { src, startPage };
+}
+
 export function CertPdfViewer({ url, title }: CertPdfViewerProps) {
+  const { src, startPage } = parsePdfUrl(url);
   const [numPages, setNumPages] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [pageWidth, setPageWidth] = useState(340);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => setPageWidth(Math.min(el.clientWidth - 24, 600));
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && numPages > 0 && startPage > 1) {
+      const targetIndex = Math.min(startPage, numPages) - 1;
+      requestAnimationFrame(() => {
+        pageRefs.current[targetIndex]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  }, [loading, numPages, startPage]);
 
   return (
     <div
+      ref={containerRef}
       aria-label={title}
       className="w-full overflow-auto overscroll-contain"
       style={{ maxHeight: '70vh', touchAction: 'pan-y pinch-zoom', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -42,21 +73,25 @@ export function CertPdfViewer({ url, title }: CertPdfViewerProps) {
         </div>
       ) : (
         <Document
-          file={url}
+          file={src}
           onLoadSuccess={({ numPages }) => { setNumPages(numPages); setLoading(false); }}
           onLoadError={() => { setError(true); setLoading(false); }}
           loading={null}
           className="flex flex-col items-center gap-2 py-3"
         >
           {Array.from({ length: numPages }, (_, i) => (
-            <Page
+            <div
               key={i + 1}
-              pageNumber={i + 1}
-              width={Math.min(typeof window !== 'undefined' ? window.innerWidth - 32 : 340, 600)}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-              className="shadow-md"
-            />
+              ref={(el) => { pageRefs.current[i] = el; }}
+            >
+              <Page
+                pageNumber={i + 1}
+                width={pageWidth}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                className="shadow-md"
+              />
+            </div>
           ))}
         </Document>
       )}

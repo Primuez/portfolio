@@ -1,7 +1,13 @@
 'use client';
 import { useRef, useEffect, useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
+
+const MapOverlay = dynamic(
+  () => import('./MapOverlay').then((m) => m.MapOverlay),
+  { ssr: false }
+);
 
 const TOTAL_TEXTURES = 5;
 
@@ -9,6 +15,7 @@ export function ModelViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const [loadedCount, setLoadedCount] = useState(0);
   const loadedRef = useRef(0);
+  const [showMap, setShowMap] = useState(false);
 
   const onTextureLoaded = useCallback(() => {
     loadedRef.current += 1;
@@ -48,6 +55,24 @@ export function ModelViewer() {
       controls.autoRotateSpeed = 0.6;
       controls.minPolarAngle = Math.PI / 4;
       controls.maxPolarAngle = (3 * Math.PI) / 4;
+
+      // Double-click (desktop) opens satellite map
+      const handleDblClick = () => setShowMap(true);
+      renderer.domElement.addEventListener('dblclick', handleDblClick);
+
+      // Double-tap (mobile) — detect two taps within 350ms
+      let lastTapTime = 0;
+      const handleTouchEnd = (e: TouchEvent) => {
+        if (e.touches.length > 0) return; // still touching
+        const now = Date.now();
+        if (now - lastTapTime < 350) {
+          setShowMap(true);
+          lastTapTime = 0;
+        } else {
+          lastTapTime = now;
+        }
+      };
+      renderer.domElement.addEventListener('touchend', handleTouchEnd, { passive: true });
 
       scene.add(new T.AmbientLight(0xffffff, 0.35));
       const sun = new T.DirectionalLight(0xffffff, 2);
@@ -226,6 +251,8 @@ export function ModelViewer() {
       cleanupFn = () => {
         observer.disconnect();
         window.removeEventListener('resize', onResize);
+        renderer.domElement.removeEventListener('dblclick', handleDblClick);
+        renderer.domElement.removeEventListener('touchend', handleTouchEnd);
         cancelAnimationFrame(animId);
         controls.dispose();
         for (const d of disposables) d.dispose();
@@ -245,33 +272,37 @@ export function ModelViewer() {
   const isLoading = loadedCount < TOTAL_TEXTURES;
 
   return (
-    <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg">
-      {/* Loading overlay — fades out once all textures are ready */}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-label={isLoading ? 'Loading globe textures' : undefined}
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-bg/80 backdrop-blur-sm transition-opacity duration-700 pointer-events-none"
-        style={{ opacity: isLoading ? 1 : 0 }}
-        aria-hidden={!isLoading}
-      >
-        <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
-        <span className="font-mono text-xs text-cyan tracking-widest">LOADING…</span>
+    <>
+      {showMap && <MapOverlay onClose={() => setShowMap(false)} />}
+
+      <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg">
+        {/* Loading overlay — fades out once all textures are ready */}
+        <div
+          role="status"
+          aria-live="polite"
+          aria-label={isLoading ? 'Loading globe textures' : undefined}
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-bg/80 backdrop-blur-sm transition-opacity duration-700 pointer-events-none"
+          style={{ opacity: isLoading ? 1 : 0 }}
+          aria-hidden={!isLoading}
+        >
+          <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
+          <span className="font-mono text-xs text-cyan tracking-widest">LOADING…</span>
+        </div>
+        <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan tracking-widest bg-black/60 px-3 py-1 rounded border border-cyan/20 backdrop-blur-md">
+          n8n_CORE_ORCHESTRATOR.obj
+        </div>
+        <div className="absolute bottom-4 left-4 z-10 font-mono text-[10px] text-text-muted tracking-widest bg-black/40 px-2 py-1 rounded hidden sm:block">
+          drag · double-tap to explore
+        </div>
+        <div className="absolute bottom-4 right-4 z-10 flex gap-2 items-center">
+          <span className="w-2 h-2 rounded-full bg-amber animate-pulse"></span>
+          <span className="w-2 h-2 rounded-full bg-cyan animate-[pulse_2s_infinite]"></span>
+        </div>
+        <div
+          ref={mountRef}
+          className="w-full h-full cursor-grab active:cursor-grabbing"
+        />
       </div>
-      <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan tracking-widest bg-black/60 px-3 py-1 rounded border border-cyan/20 backdrop-blur-md">
-        n8n_CORE_ORCHESTRATOR.obj
-      </div>
-      <div className="absolute bottom-4 left-4 z-10 font-mono text-[10px] text-text-muted tracking-widest bg-black/40 px-2 py-1 rounded hidden sm:block">
-        drag to rotate
-      </div>
-      <div className="absolute bottom-4 right-4 z-10 flex gap-2 items-center">
-        <span className="w-2 h-2 rounded-full bg-amber animate-pulse"></span>
-        <span className="w-2 h-2 rounded-full bg-cyan animate-[pulse_2s_infinite]"></span>
-      </div>
-      <div
-        ref={mountRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing"
-      />
-    </div>
+    </>
   );
 }
