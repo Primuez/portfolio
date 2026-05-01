@@ -6,14 +6,11 @@ import {
   Terminal, Code2, Link as IconLink, 
   MapPin, CheckCircle2, ChevronRight, ChevronDown,
   MonitorPlay, Youtube, Github, Twitter, Instagram, Linkedin, Send,
-  Star, GitFork, Activity, Download
+  Star, GitFork, Activity, Download, ExternalLink
 } from 'lucide-react';
 import { StockChart } from '@/components/StockChart';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import dynamic from 'next/dynamic';
-const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const phrases = [
   "AI Developer.",
@@ -43,7 +40,6 @@ export default function Home() {
   // Modals state
   const [modalType, setModalType] = useState<'form' | 'cert' | 'workflow' | null>(null);
   const [certData, setCertData] = useState<{title: string, issuer: string, date: string, id: string, pdfUrl?: string} | null>(null);
-  const isMobile = useIsMobile();
 
   const openCert = (data: {title: string, issuer: string, date: string, id: string, pdfUrl?: string}) => {
     setCertData(data);
@@ -713,23 +709,30 @@ export default function Home() {
                     <div className="px-4 pr-12 pt-6 pb-4 min-[375px]:px-6 min-[375px]:pt-8 font-mono text-xs text-cyan uppercase tracking-widest border-b border-cyan/20 break-words">
                       {certData.title}
                     </div>
-                    {isMobile ? (
-                      <CertPdfViewer url={certData.pdfUrl!} title={certData.title} />
-                    ) : (
-                      <iframe
-                        src={certData.pdfUrl}
-                        className="w-full"
-                        style={{ height: '70vh', border: 'none' }}
-                        title={certData.title}
-                      />
-                    )}
-                    <div className="flex justify-center py-4 border-t border-white/5">
+
+                    {/* Native browser PDF viewer — works on all platforms, supports pinch-zoom */}
+                    <iframe
+                      src={certData.pdfUrl}
+                      className="w-full"
+                      style={{ height: '72vh', border: 'none', display: 'block' }}
+                      title={certData.title}
+                    />
+
+                    <div className="flex items-center justify-between px-4 py-3 border-t border-white/5 gap-3 flex-wrap">
                       <a
                         href={certData.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-mono text-[11px] text-text-muted hover:text-cyan transition-colors"
+                      >
+                        <ExternalLink size={12} /> Open in browser
+                      </a>
+                      <a
+                        href={certData.pdfUrl.replace(/#.*$/, '')}
                         download
                         className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-5 py-2 hover:bg-cyan hover:text-bg transition-colors"
                       >
-                        <Download size={14} /> Download Certificate
+                        <Download size={14} /> Download
                       </a>
                     </div>
                   </div>
