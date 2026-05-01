@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
-import { X, Globe } from 'lucide-react';
+import { X, Globe, ArrowLeft } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 
 interface MapOverlayProps {
@@ -87,10 +87,14 @@ export function MapOverlay({ onClose }: MapOverlayProps) {
         style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
       />
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
-        <span className="font-mono text-[10px] text-white/50 bg-black/60 px-3 py-1 rounded backdrop-blur-sm">
-          ESC or tap × to close
-        </span>
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000]">
+        <button
+          onClick={onClose}
+          className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest bg-[#070b12]/90 text-cyan border border-cyan/40 px-5 py-2.5 rounded backdrop-blur-sm hover:bg-cyan hover:text-bg transition-colors shadow-lg"
+        >
+          <ArrowLeft size={14} />
+          Back to Portfolio
+        </button>
       </div>
     </div>
   );
