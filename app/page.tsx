@@ -9,6 +9,7 @@ import {
   Star, GitFork, Activity, Download
 } from 'lucide-react';
 import { StockChart } from '@/components/StockChart';
+import { YouTubeThumb } from '@/components/YouTubeThumb';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import dynamic from 'next/dynamic';
@@ -314,7 +315,13 @@ export default function Home() {
               desc="Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms."
               tags={["Taxation", "RAG", "Automation", "Compliance"]}
               logoUrl="https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
-            />
+            >
+              <YouTubeThumb
+                videoId="a41yEmFC7jw"
+                url="https://www.youtube.com/watch?v=a41yEmFC7jw"
+                label="Watch demo"
+              />
+            </ProjectCard>
           </ProjectGroup>
 
           <ProjectGroup title="Automation Systems" color="cyan">
