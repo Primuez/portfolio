@@ -457,34 +457,41 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
-          <div className="grid lg:grid-cols-2 gap-8 mt-12">
-            
-            <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
-              <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
-                <IconLink className="text-cyan" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-sans">Automating Your Business & Playlists</h3>
-              <p className="text-text-muted mb-8 max-w-sm text-sm">
-                Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
-              </p>
-              <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/10 text-cyan px-8 py-4 hover:bg-cyan hover:text-bg transition-colors shadow-[0_0_15px_rgba(0,240,255,0.2)]">
-                 View Playlists
-              </a>
-            </div>
+          <div className="relative mt-12">
+            <PhysicsChipsLayer />
+            <div className="grid lg:grid-cols-2 gap-8 relative z-0">
 
-            <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
-              <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
-                <Youtube className="text-red-500" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-sans">Subscribe to Primuez</h3>
-              <p className="text-text-muted mb-8 max-w-sm text-sm">
-                Subscribe for detailed walkthroughs of n8n automation deployments, multi-agent AI setups, and live build sessions from scratch.
-              </p>
-              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-red-500/50 hover:border-red-500 text-red-500 px-8 py-4 hover:bg-red-500/10 transition-colors">
-                <MonitorPlay size={16} /> Watch Channel
-              </a>
-            </div>
+              <DropCard delay={0.05} initialRotate={-3}>
+                <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
+                  <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
+                    <IconLink className="text-cyan" size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 font-sans">Automating Your Business & Playlists</h3>
+                  <p className="text-text-muted mb-8 max-w-sm text-sm">
+                    Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
+                  </p>
+                  <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/10 text-cyan px-8 py-4 hover:bg-cyan hover:text-bg transition-colors shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                    View Playlists
+                  </a>
+                </div>
+              </DropCard>
 
+              <DropCard delay={0.22} initialRotate={2.5}>
+                <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
+                  <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
+                    <Youtube className="text-red-500" size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 font-sans">Subscribe to Primuez</h3>
+                  <p className="text-text-muted mb-8 max-w-sm text-sm">
+                    Subscribe for detailed walkthroughs of n8n automation deployments, multi-agent AI setups, and live build sessions from scratch.
+                  </p>
+                  <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-red-500/50 hover:border-red-500 text-red-500 px-8 py-4 hover:bg-red-500/10 transition-colors">
+                    <MonitorPlay size={16} /> Watch Channel
+                  </a>
+                </div>
+              </DropCard>
+
+            </div>
           </div>
         </motion.section>
 
@@ -918,6 +925,66 @@ function CVAccordion({ title, children }: { title: string, children: React.React
       </AnimatePresence>
     </div>
   )
+}
+
+function DropCard({ children, delay, initialRotate }: { children: React.ReactNode; delay: number; initialRotate: number }) {
+  return (
+    <motion.div
+      initial={{ y: -420, rotate: initialRotate * 4, opacity: 0 }}
+      whileInView={{ y: 0, rotate: 0, opacity: 1 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ type: 'spring', stiffness: 80, damping: 8, mass: 1.2, delay }}
+      whileHover={{ scale: 1.015, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+const PHYSICS_CHIPS: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number }[] = [
+  { label: 'n8n',         color: 'cyan',  x: '2%',  y: '4%',  delay: 0.10 },
+  { label: 'Supabase',    color: 'amber', x: '86%', y: '2%',  delay: 0.18 },
+  { label: 'Ollama',      color: 'cyan',  x: '0%',  y: '46%', delay: 0.30 },
+  { label: 'GPT-4',       color: 'red',   x: '90%', y: '50%', delay: 0.38 },
+  { label: 'Mistral',     color: 'red',   x: '44%', y: '-1%', delay: 0.46 },
+  { label: 'Docker',      color: 'amber', x: '4%',  y: '92%', delay: 0.54 },
+  { label: 'Python',      color: 'cyan',  x: '88%', y: '94%', delay: 0.62 },
+  { label: 'Cloudflare',  color: 'amber', x: '46%', y: '96%', delay: 0.70 },
+];
+
+function PhysicsChipsLayer() {
+  return (
+    <div aria-hidden className="hidden md:block absolute inset-0 pointer-events-none z-10 overflow-visible">
+      {PHYSICS_CHIPS.map((c) => (
+        <PhysicsChip key={c.label} {...c} />
+      ))}
+    </div>
+  );
+}
+
+function PhysicsChip({ label, color, x, y, delay }: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number }) {
+  const colorMap = {
+    cyan:  'border-cyan/50 text-cyan bg-cyan/10 shadow-[0_0_18px_rgba(0,240,255,0.30)]',
+    amber: 'border-amber/50 text-amber bg-amber/10 shadow-[0_0_18px_rgba(255,176,0,0.30)]',
+    red:   'border-red-500/50 text-red-400 bg-red-500/10 shadow-[0_0_18px_rgba(239,68,68,0.30)]',
+  };
+  return (
+    <motion.div
+      drag
+      dragSnapToOrigin
+      dragTransition={{ bounceStiffness: 280, bounceDamping: 14 }}
+      whileDrag={{ scale: 1.18, zIndex: 50, rotate: 8 }}
+      whileHover={{ scale: 1.1 }}
+      initial={{ y: -500, rotate: -30, opacity: 0 }}
+      whileInView={{ y: 0, rotate: 0, opacity: 1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ type: 'spring', stiffness: 90, damping: 9, mass: 1, delay }}
+      style={{ left: x, top: y, position: 'absolute', touchAction: 'none' }}
+      className={`pointer-events-auto select-none cursor-grab active:cursor-grabbing font-mono text-[11px] uppercase tracking-widest px-3 py-1.5 rounded-full border backdrop-blur-md ${colorMap[color]}`}
+    >
+      {label}
+    </motion.div>
+  );
 }
 
 type LiquidRepo = {
