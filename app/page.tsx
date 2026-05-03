@@ -396,6 +396,7 @@ export default function Home() {
                   desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
                   image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
                   delay={0}
+                  videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
                 />
                 <WorkflowCard 
                   name="Personal Jarvis (Updated)" 
@@ -1064,7 +1065,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
   );
 }
 
-function WorkflowCard({ name, desc, image, delay = 0 }: { name: string, desc: string, image: string, delay?: number }) {
+function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string, desc: string, image: string, delay?: number, videoUrl?: string }) {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
@@ -1075,6 +1076,15 @@ function WorkflowCard({ name, desc, image, delay = 0 }: { name: string, desc: st
     >
       <div className="w-full h-full bg-panel/80 border border-cyan/30 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d]">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan/10 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        {videoUrl && (
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} — watch demo`}
+            className="absolute inset-0 z-20 cursor-pointer"
+          />
+        )}
         
         {/* Image Banner */}
         <div className="w-full h-40 sm:h-48 relative overflow-hidden border-b border-cyan/20 bg-black/50 p-2">
