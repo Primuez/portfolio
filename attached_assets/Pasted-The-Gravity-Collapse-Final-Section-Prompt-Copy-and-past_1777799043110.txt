@@ -1,0 +1,36 @@
+The "Gravity Collapse" Final Section Prompt
+Copy and paste this into Replit:
+
+"I am building the final, bottom section of my portfolio website using HTML, CSS, and the Matter.js 2D physics engine. I want an 'Alan Becker' 4th-wall breaking effect where the actual HTML content loses its gravity and falls apart when the user scrolls to the very bottom of the page.
+
+Here are the specific requirements:
+
+1. Layout & Setup:
+
+Create a final <section id="terminal-collapse"> at the bottom of the page (e.g., a 'Contact Me' or 'Hire Me' section).
+
+The section should have a heading (e.g., 'Let's Build Autonomous Systems'), a short paragraph, and a large 'Contact' button.
+
+Visually, it should look like a perfectly normal, clean, high-tech UI at first.
+
+2. The Physics Engine (Matter.js):
+
+Set up a Matter.js world where the bottom of the viewport acts as a solid, static floor. The left and right sides of the viewport should be solid walls.
+
+Use JavaScript to map the HTML elements (the individual words of the heading, the paragraph lines, and the button) to rigid physical bodies in the Matter.js world.
+
+3. The 'Alan Becker' Interaction (The Collapse):
+
+Use IntersectionObserver or GSAP ScrollTrigger to detect exactly when this final section comes fully into view.
+
+The Trigger: The moment the user hits the bottom of the page, disable the CSS positioning of all the text and the button. Apply Matter.js gravity to them.
+
+Watch as the individual words and the button physically drop, bounce off each other, and pile up on the literal bottom edge of the browser window.
+
+4. Interactivity in the Debris:
+
+Add MouseConstraint to the Matter.js world so the user can grab the fallen words and buttons with their mouse and throw them around the screen.
+
+Crucial Detail: The 'Contact' button must remain fully clickable and functional, even while it is sitting sideways in a pile of fallen text at the bottom of the screen.
+
+Please write the complete HTML, CSS, and JS to make this happen, ensuring the DOM elements perfectly follow the physics bodies."
