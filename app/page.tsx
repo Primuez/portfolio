@@ -978,17 +978,30 @@ function CVAccordion({ title, children }: { title: string, children: React.React
 function SectionHeader({ number, command, title, center = false }: { number: string, command: string, title: string, center?: boolean }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      initial={{ opacity: 0, x: -60, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-80px" }}
       className={`mb-8 ${center ? 'text-center' : ''}`}
     >
-      <div className="font-mono text-xs tracking-[0.2em] text-cyan/70 mb-2">
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-80px" }}
+        className="font-mono text-xs tracking-[0.2em] text-cyan/70 mb-2"
+      >
         {"//"} {number} &nbsp; {command}
-      </div>
-      <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-text-muted inline-block">
+      </motion.div>
+      <motion.h2
+        initial={{ opacity: 0, y: 24, scale: 0.96 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true, margin: "-80px" }}
+        className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-text-muted inline-block"
+      >
         {title}
-      </h2>
+      </motion.h2>
     </motion.div>
   );
 }
@@ -1012,9 +1025,10 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
 function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, children?: React.ReactNode }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
+      initial={{ opacity: 0, y: 80, scale: 0.92, filter: "blur(10px)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-60px" }}
       whileHover={{ scale: 1.02, y: -8, boxShadow: "0 15px 50px -10px rgba(0,240,255,0.3)" }}
       className="bg-panel border border-cyan/10 rounded-xl p-6 transition-colors duration-300 group overflow-hidden relative flex flex-col"
     >
@@ -1074,11 +1088,12 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
 function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string, desc: string, image: string, delay?: number, videoUrl?: string }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: delay / 1000, type: "spring", stiffness: 100 }}
-      viewport={{ once: true, margin: "-50px" }}
+      initial={{ opacity: 0, y: 100, scale: 0.88, rotateX: 18, filter: "blur(12px)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: "blur(0px)" }}
+      transition={{ duration: 1.05, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-60px" }}
       className="group w-full block h-full md:[perspective:1000px]"
+      style={{ transformPerspective: 1200 }}
     >
       <div className="w-full h-full bg-panel/80 border border-cyan/30 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d]">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan/10 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
