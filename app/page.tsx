@@ -329,6 +329,7 @@ export default function Home() {
               name="AI WhatsApp Agent" 
               desc="Semi-autonomous conversational AI agent with full token lifecycle management. Handles 60-day token expiry and auto-refresh entirely through n8n."
               tags={["n8n", "WhatsApp", "Evolution API", "Token Automation"]}
+              videoUrl="https://youtu.be/r31--1h7FV0?si=P7Rm8En5NSSU4MgL"
             />
             <ProjectCard 
               name="CA Automation Suite" 
@@ -1001,7 +1002,7 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
   );
 }
 
-function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, children?: React.ReactNode }) {
+function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, children?: React.ReactNode }) {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
@@ -1011,6 +1012,15 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, children }: { 
       className="bg-panel border border-cyan/10 rounded-xl p-6 transition-colors duration-300 group overflow-hidden relative flex flex-col"
     >
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-cyan/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      {videoUrl && (
+        <a
+          href={videoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${name} — watch demo`}
+          className="absolute inset-0 z-10 cursor-pointer"
+        />
+      )}
       
       {bannerUrl && (
         <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-cyan/20 relative shadow-[0_0_20px_rgba(0,240,255,0.1)]">
