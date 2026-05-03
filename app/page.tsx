@@ -908,7 +908,22 @@ function CVAccordion({ title, children }: { title: string, children: React.React
 function GravityCollapse({ onContact }: { onContact: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(false);
+  const [reassembling, setReassembling] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMobile = useIsMobile();
+
+  const reassemble = () => {
+    if (reassembling) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setReassembling(true);
+    setCollapsed(false);
+    timerRef.current = setTimeout(() => {
+      setCollapsed(true);
+      setReassembling(false);
+    }, 2800);
+  };
+
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
   const xs = isMobile ? 0.45 : 1;
   const ys = isMobile ? 0.7 : 1;
 
