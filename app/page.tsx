@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
-import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform, MotionValue } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, Code2, Link as IconLink, 
   MapPin, CheckCircle2, ChevronRight, ChevronDown,
@@ -243,37 +243,7 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="01" command="> whoami" title="About" />
-          <div className="grid md:grid-cols-2 gap-12 mt-12 bg-panel/50 border border-cyan/10 p-8 md:p-12 backdrop-blur-sm rounded-xl">
-            <div className="space-y-6 text-text-main leading-relaxed">
-              <p>
-                I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — a self-taught AI developer and automation engineer. I don&apos;t just use AI tools. I design systems that use tools, adapt, and execute workflows autonomously.
-              </p>
-              <p>
-                My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, hackathon submissions, and client-facing AI systems — without a CS degree, without a team, from central India.
-              </p>
-              <p>
-                I think in systems before I write a single line of logic. I build for modularity, fallback reliability, and zero manual intervention.
-              </p>
-            </div>
-            <div className="flex flex-col gap-4 font-mono text-sm justify-center">
-              <div className="p-4 border-l-2 border-amber bg-bg/50">
-                <span className="text-text-muted mb-1 block">Education</span>
-                Commerce Graduate · KPS, Dunda
-              </div>
-              <div className="p-4 border-l-2 border-cyan bg-bg/50">
-                <span className="text-text-muted mb-1 block">Experience</span>
-                AI Automation · Since July 2025
-              </div>
-              <div className="p-4 border-l-2 border-amber bg-bg/50">
-                <span className="text-text-muted mb-1 block">Location</span>
-                <span className="flex items-center gap-2"><MapPin size={14} /> Indore, Madhya Pradesh, India</span>
-              </div>
-              <div className="p-4 border-l-2 border-cyan bg-bg/50">
-                <span className="text-text-muted mb-1 block">Languages</span>
-                Hindi · English (C2) · Sindhi (C2)
-              </div>
-            </div>
-          </div>
+          <AboutZoom />
         </motion.section>
 
         {/* 02. PROJECTS */}
@@ -975,6 +945,109 @@ function CVAccordion({ title, children }: { title: string, children: React.React
       </AnimatePresence>
     </div>
   )
+}
+
+function ZoomItem({
+  progress,
+  index,
+  total,
+  children,
+  className = '',
+}: {
+  progress: MotionValue<number>;
+  index: number;
+  total: number;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const span = 0.55;
+  const stepStart = 0.08 + (index / total) * span;
+  const stepEnd = stepStart + 0.28;
+
+  const scale = useTransform(progress, [stepStart, stepEnd], [0.18, 1]);
+  const opacity = useTransform(
+    progress,
+    [stepStart, stepStart + 0.06, stepEnd - 0.04, stepEnd + 0.25, 1],
+    [0, 1, 1, 1, 1]
+  );
+  const filter = useTransform(
+    progress,
+    [stepStart, stepEnd],
+    ['blur(14px)', 'blur(0px)']
+  );
+  const z = useTransform(progress, [stepStart, stepEnd], [-400, 0]);
+  const rotateX = useTransform(progress, [stepStart, stepEnd], [12, 0]);
+
+  return (
+    <motion.div
+      style={{ scale, opacity, filter, z, rotateX, transformStyle: 'preserve-3d' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function AboutZoom() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+
+  const total = 7;
+
+  return (
+    <div
+      ref={ref}
+      className="grid md:grid-cols-2 gap-12 mt-12 bg-panel/50 border border-cyan/10 p-8 md:p-12 backdrop-blur-sm rounded-xl"
+      style={{ perspective: '1200px' }}
+    >
+      <div className="space-y-6 text-text-main leading-relaxed">
+        <ZoomItem progress={scrollYProgress} index={0} total={total}>
+          <p>
+            I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — a self-taught AI developer and automation engineer. I don&apos;t just use AI tools. I design systems that use tools, adapt, and execute workflows autonomously.
+          </p>
+        </ZoomItem>
+        <ZoomItem progress={scrollYProgress} index={1} total={total}>
+          <p>
+            My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, hackathon submissions, and client-facing AI systems — without a CS degree, without a team, from central India.
+          </p>
+        </ZoomItem>
+        <ZoomItem progress={scrollYProgress} index={2} total={total}>
+          <p>
+            I think in systems before I write a single line of logic. I build for modularity, fallback reliability, and zero manual intervention.
+          </p>
+        </ZoomItem>
+      </div>
+      <div className="flex flex-col gap-4 font-mono text-sm justify-center">
+        <ZoomItem progress={scrollYProgress} index={3} total={total}>
+          <div className="p-4 border-l-2 border-amber bg-bg/50">
+            <span className="text-text-muted mb-1 block">Education</span>
+            Commerce Graduate · KPS, Dunda
+          </div>
+        </ZoomItem>
+        <ZoomItem progress={scrollYProgress} index={4} total={total}>
+          <div className="p-4 border-l-2 border-cyan bg-bg/50">
+            <span className="text-text-muted mb-1 block">Experience</span>
+            AI Automation · Since July 2025
+          </div>
+        </ZoomItem>
+        <ZoomItem progress={scrollYProgress} index={5} total={total}>
+          <div className="p-4 border-l-2 border-amber bg-bg/50">
+            <span className="text-text-muted mb-1 block">Location</span>
+            <span className="flex items-center gap-2"><MapPin size={14} /> Indore, Madhya Pradesh, India</span>
+          </div>
+        </ZoomItem>
+        <ZoomItem progress={scrollYProgress} index={6} total={total}>
+          <div className="p-4 border-l-2 border-cyan bg-bg/50">
+            <span className="text-text-muted mb-1 block">Languages</span>
+            Hindi · English (C2) · Sindhi (C2)
+          </div>
+        </ZoomItem>
+      </div>
+    </div>
+  );
 }
 
 function ScrollProgressBar() {
