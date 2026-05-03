@@ -1,0 +1,41 @@
+It can definitely be frustrating when AI coding assistants hit a wall with video links! Because the Replit agent can’t "watch" the video to feel the vibe or see the timing, you have to act as its eyes and translate that visual magic into **technical web development terminology**. 
+
+The video you shared showcases a **2.5D Parallax Vertical Slider**. It creates a 3D illusion by layering 2D images (backgrounds, clouds, subjects) and moving them at different speeds when you scroll. 
+
+Here is exactly how to prompt Replit to get this specific style. Copy and paste the prompt below.
+
+### The "Technical Blueprint" Prompt for Replit
+
+**Copy and paste this into Replit:**
+
+> "I want to build a full-screen, interactive vertical scrolling website with a deep 3D parallax effect, similar to high-end Slider Revolution templates. Please use HTML, CSS, and JavaScript, leveraging **GSAP (GreenSock)** and the **ScrollTrigger** plugin for smooth animations. 
+>
+> **Here are the specific requirements:**
+> 
+> **1. Layout & Structure:**
+> * Create 4 full-screen sections (`100vh` and `100vw`).
+> * Each section must have multiple absolute-positioned layers to create depth: a background layer (e.g., sky), a mid-ground layer (e.g., clouds, planets), a foreground subject (e.g., a car or astronaut), and a UI/Text layer.
+> 
+> **2. The Parallax Scroll Animation:**
+> * Tie the scroll event to the animation so the user controls the timeline by scrolling.
+> * As the user scrolls to the next section, the layers must move on the Y-axis at **different speeds**. 
+> * The background should move the slowest, the mid-ground faster, and the foreground subject the fastest. This creates the 'magical' 3D depth effect.
+> 
+> **3. Text & Typography:**
+> * Make the typography large, modern, and bold. 
+> * When a new slide enters the viewport, the text should stagger in, fading from `opacity: 0` and sliding up from a lower Y position with smooth easing.
+> 
+> **4. Responsiveness:**
+> * Ensure the animations and layout are completely fluid and responsive for both mobile and desktop. 
+> * Touch-swiping on mobile should trigger the same smooth parallax transitions as the mouse wheel does on a desktop.
+> 
+> Please write the code for this, structure the layers clearly so I can swap in my own transparent PNG images later, and ensure GSAP is properly imported."
+
+---
+
+### Why this prompt works better:
+* **Names the specific tools:** Telling it to use **GSAP and ScrollTrigger** gives the AI the exact industry-standard library needed for this kind of "magical" scroll binding. Native CSS is often too clunky for this specific effect.
+* **Explains the physics:** Instead of saying "magically appear," it tells the AI *how* the magic works (moving layers at different speeds on the Y-axis).
+* **Prepares for your assets:** It asks the AI to set up the code so you can easily drop in your own transparent images (like the car, planets, or clouds from your video) later.
+
+**Pro-Tip for your images:** To get this effect to look as good as the video, you will need your images separated into layers. For example, your subject (like the car or astronaut) needs to be a transparent PNG with no background, so the background layers can slide independently behind it!

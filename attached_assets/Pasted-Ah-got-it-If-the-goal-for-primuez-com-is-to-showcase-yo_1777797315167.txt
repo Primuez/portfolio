@@ -1,0 +1,42 @@
+Ah, got it! If the goal for primuez.com is to showcase your data, text, and project details rather than layered images, we need to pivot the instructions. We still want that high-end, smooth "magical" feel, but applied to **slide transitions and text reveals** instead of an image parallax.
+
+To keep that 3D interactive vibe, we can ask Replit to add smooth scroll-snapping (so the slides lock perfectly into place) and subtle 3D tilt effects or elegant staggered fade-ins for your information.
+
+Here is the adjusted prompt to feed directly into Replit. Notice I’ve tailored the placeholders to fit an AI and automation developer portfolio so the AI generates highly relevant boilerplate code for you.
+
+***
+
+### The "Slide & Data Reveal" Prompt for Replit
+
+**Copy and paste this into Replit:**
+
+> "I am building my personal portfolio website, primuez.com, and I want a full-screen, interactive vertical scrolling layout. Instead of image parallax, I want full-page slides that smoothly and 'magically' reveal my professional data and project info as I scroll. Please use HTML, CSS, and JavaScript, leveraging **GSAP (GreenSock)** and the **ScrollTrigger** plugin.
+> 
+> **Here are the specific requirements:**
+> 
+> **1. Layout & Structure:**
+> * Create 4 full-screen sections (`100vh` and `100vw`).
+> * Structure the sections as: 1. Hero/Intro, 2. AI & SaaS Projects (e.g., Primuez Guard), 3. Automation Stack (e.g., n8n, Supabase, LLMs), and 4. Contact.
+> * Use CSS Scroll Snapping (`scroll-snap-type: y mandatory`) or GSAP's Observer to ensure that one scroll wheel movement cleanly locks the next slide into the viewport.
+> 
+> **2. The 'Magical' Data Reveal Animations:**
+> * When a slide enters the viewport, the information and data on it should not just be static. 
+> * Animate the text and data cards to **stagger in slowly**—fading from `opacity: 0` and sliding up slightly along the Y-axis. 
+> * Add a subtle, interactive 3D tilt effect (using CSS `transform: perspective`) to the data cards when the user hovers over them on desktop, giving it a modern, interactive feel.
+> 
+> **3. Styling & Typography:**
+> * Keep the design sleek, minimal, and modern to highlight the data. 
+> * Use a dark mode aesthetic with high-contrast, bold typography for the headings.
+> 
+> **4. Responsiveness:**
+> * Ensure the scroll-snapping and GSAP animations work flawlessly on both mobile (touch swipe) and desktop (mouse wheel).
+> * The data cards must stack cleanly on mobile screens while retaining their slow fade-in animation.
+> 
+> Please provide the complete code, ensuring GSAP is properly imported, and structure the HTML cleanly so I can easily drop in my specific portfolio data."
+
+***
+
+### Why this works for primuez.com:
+* **Scroll Snapping:** This is the secret to making it feel like a "presentation slide" on a website. It prevents the user from stopping halfway between two sections, keeping it polished.
+* **Staggered Animations:** By telling GSAP to stagger the text, your information will load sequentially (e.g., Title appears, then a fraction of a second later the description appears, then the tech stack). This creates that elegant, slow reveal you liked in the video.
+* **3D Hover States:** Even without layered images, adding a subtle perspective tilt to your project cards keeps the website feeling tactile and interactive.

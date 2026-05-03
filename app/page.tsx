@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 import React, { useState, useEffect } from 'react';
 import { 
   Terminal, Code2, Link as IconLink, 
@@ -181,6 +181,8 @@ export default function Home() {
           )}
         </AnimatePresence>
       </nav>
+
+      <ScrollProgressBar />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
         {/* HERO SECTION */}
@@ -975,6 +977,17 @@ function CVAccordion({ title, children }: { title: string, children: React.React
   )
 }
 
+function ScrollProgressBar() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
+  return (
+    <motion.div
+      style={{ scaleX, transformOrigin: '0% 50%' }}
+      className="fixed top-0 left-0 right-0 h-[2px] z-[60] bg-gradient-to-r from-cyan via-cyan/80 to-amber shadow-[0_0_10px_rgba(0,240,255,0.6)] pointer-events-none"
+    />
+  );
+}
+
 function SectionHeader({ number, command, title, center = false }: { number: string, command: string, title: string, center?: boolean }) {
   return (
     <motion.div 
@@ -1141,16 +1154,38 @@ function StackGroup({ title, items, border }: { title: string, items: string[], 
   const textColor = border === 'cyan' ? 'text-cyan' : 'text-amber';
 
   return (
-    <div className={`bg-panel border border-cyan/10 p-6 rounded-xl hover:${borderColor} transition-colors duration-300`}>
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.95, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-50px" }}
+      className={`bg-panel border border-cyan/10 p-6 rounded-xl hover:${borderColor} transition-colors duration-300`}
+    >
       <div className={`text-xs uppercase tracking-widest mb-4 ${textColor}`}>[ {title} ]</div>
-      <ul className="space-y-3 block">
+      <motion.ul
+        className="space-y-3 block"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={{
+          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+          hidden: {},
+        }}
+      >
         {items.map((item, i) => (
-          <li key={i} className="text-sm text-text-muted flex items-center gap-2 border-b border-white/5 pb-2 last:border-0 last:pb-0">
+          <motion.li
+            key={i}
+            variants={{
+              hidden: { opacity: 0, x: -16, filter: "blur(4px)" },
+              visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+            }}
+            className="text-sm text-text-muted flex items-center gap-2 border-b border-white/5 pb-2 last:border-0 last:pb-0"
+          >
             <span className="w-1.5 h-1.5 rounded-full bg-cyan/40"></span> {item}
-          </li>
+          </motion.li>
         ))}
-      </ul>
-    </div>
+      </motion.ul>
+    </motion.div>
   );
 }
 
