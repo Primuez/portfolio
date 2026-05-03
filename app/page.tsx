@@ -523,7 +523,8 @@ export default function Home() {
         >
           <SectionHeader number="06" command="> ./credentials --verified" title="Credentials & Hackathons" />
           
-          <div className="grid md:grid-cols-2 gap-8 mt-12 relative z-10 w-full max-w-5xl mx-auto">
+          <RubiksCredentials>
+          <div className="grid md:grid-cols-2 gap-8 relative z-10">
             <div className="flex flex-col gap-4">
               <h3 className="text-amber uppercase font-mono tracking-widest text-sm mb-2 pl-2 border-l-2 border-amber">[ CERTIFICATIONS ]</h3>
               
@@ -583,6 +584,7 @@ export default function Home() {
               </CVAccordion>
             </div>
           </div>
+          </RubiksCredentials>
         </motion.section>
 
         {/* 07. CONTACT */}
@@ -925,6 +927,85 @@ function CVAccordion({ title, children }: { title: string, children: React.React
       </AnimatePresence>
     </div>
   )
+}
+
+function RubiksCredentials({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'start 25%'],
+  });
+
+  const cols = [
+    { dir: -1, speed: 1.4, delay: 0.00, label: 'RESOLVING' },
+    { dir:  1, speed: 1.0, delay: 0.06, label: 'SHUFFLE' },
+    { dir: -1, speed: 1.7, delay: 0.02, label: 'ALIGN' },
+    { dir:  1, speed: 1.2, delay: 0.10, label: 'SCAN' },
+    { dir: -1, speed: 1.1, delay: 0.04, label: 'SYNC' },
+    { dir:  1, speed: 1.5, delay: 0.08, label: 'LOCK' },
+    { dir: -1, speed: 1.3, delay: 0.01, label: 'READY' },
+  ];
+
+  return (
+    <div ref={ref} className="relative w-full max-w-5xl mx-auto mt-12">
+      {children}
+      <div className="absolute inset-0 pointer-events-none flex z-20 overflow-hidden rounded-md">
+        {cols.map((c, i) => (
+          <RubiksColumn key={i} progress={scrollYProgress} {...c} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RubiksColumn({
+  progress,
+  dir,
+  speed,
+  delay,
+  label,
+}: {
+  progress: MotionValue<number>;
+  dir: number;
+  speed: number;
+  delay: number;
+  label: string;
+}) {
+  const start = delay;
+  const end = Math.min(0.98, delay + 1 / speed);
+  const y = useTransform(progress, [start, end], ['0%', `${dir * 115}%`]);
+  const opacity = useTransform(progress, [end - 0.08, end], [1, 0]);
+
+  return (
+    <motion.div
+      style={{ y, opacity, flex: '1 1 0' }}
+      className="relative bg-bg border-r border-cyan/15 last:border-0"
+    >
+      <div
+        className="absolute left-0 right-0 top-0 h-12"
+        style={{
+          background:
+            dir === 1
+              ? 'linear-gradient(to bottom, rgba(0,240,255,0.18), transparent)'
+              : 'linear-gradient(to bottom, transparent, transparent)',
+        }}
+      />
+      <div
+        className="absolute left-0 right-0 bottom-0 h-12"
+        style={{
+          background:
+            dir === -1
+              ? 'linear-gradient(to top, rgba(0,240,255,0.18), transparent)'
+              : 'linear-gradient(to top, transparent, transparent)',
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="font-mono text-[9px] text-cyan/40 tracking-[0.4em] -rotate-90 whitespace-nowrap select-none">
+          [ {label} ]
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 function DropCard({ children, delay, initialRotate }: { children: React.ReactNode; delay: number; initialRotate: number }) {
