@@ -1576,6 +1576,8 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode, label: strin
       href={href} 
       target="_blank" 
       rel="noopener noreferrer" 
+      draggable={false}
+      onDragStart={(e) => e.preventDefault()}
       className="group relative flex items-center justify-center w-12 h-12 bg-panel border border-cyan/20 rounded-lg text-text-muted hover:text-cyan hover:border-cyan hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-all duration-300 hover:-translate-y-1"
     >
       {icon}
