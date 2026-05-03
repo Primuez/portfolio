@@ -434,6 +434,12 @@ export default function Home() {
                   image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
                   delay={600}
                 />
+                <WorkflowCard 
+                  name="Voice AI Agent" 
+                  desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
+                  image="/voice-ai-agent.png"
+                  delay={700}
+                />
               </div>
             </div>
           </div>
