@@ -10,13 +10,12 @@ function generateStockData(length: number): { time: number; value: number }[] {
   let price = 150;
   let trend = 0;
   for (let i = 0; i < length; i++) {
-    // Occasionally flip trend direction for dramatic up/down movement
-    if (Math.random() < 0.18) trend = (Math.random() - 0.5) * 6;
-    // Random walk with trend bias and occasional spikes
-    const spike = Math.random() < 0.08 ? (Math.random() - 0.5) * 14 : 0;
-    price += trend + (Math.random() - 0.5) * 4 + spike;
-    // Soft bounds so it stays visible
-    price = Math.max(110, Math.min(200, price));
+    // Frequently flip trend direction for sharp zigzag movement
+    if (Math.random() < 0.35) trend = (Math.random() - 0.5) * 14;
+    // Aggressive random walk with frequent spikes (real stock chart feel)
+    const spike = Math.random() < 0.22 ? (Math.random() - 0.5) * 28 : 0;
+    price += trend + (Math.random() - 0.5) * 9 + spike;
+    price = Math.max(80, Math.min(230, price));
     out.push({ time: i, value: price });
   }
   return out;
@@ -32,14 +31,14 @@ export function StockChart() {
       setData((prev) => {
         if (prev.length === 0) return prev;
         const last = prev[prev.length - 1].value;
-        // More volatile random walk for stock-like feel
-        const drift = (Math.random() - 0.5) * 7;
-        const spike = Math.random() < 0.12 ? (Math.random() - 0.5) * 14 : 0;
+        // Sharp, volatile tick-by-tick movement
+        const drift = (Math.random() - 0.5) * 16;
+        const spike = Math.random() < 0.28 ? (Math.random() - 0.5) * 30 : 0;
         let next = last + drift + spike;
-        next = Math.max(110, Math.min(200, next));
+        next = Math.max(80, Math.min(230, next));
         return [...prev.slice(1), { time: prev[prev.length - 1].time + 1, value: next }];
       });
-    }, 800);
+    }, 700);
     return () => clearInterval(interval);
   }, []);
 
@@ -82,14 +81,14 @@ export function StockChart() {
             </linearGradient>
           </defs>
           <Area
-            type="monotone"
+            type="linear"
             dataKey="value"
             stroke="#f5a623"
-            strokeWidth={1.8}
+            strokeWidth={1.6}
             fill="url(#amberFill)"
             dot={false}
             isAnimationActive={true}
-            animationDuration={300}
+            animationDuration={250}
             animationEasing="linear"
           />
         </AreaChart>
