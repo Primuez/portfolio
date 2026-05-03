@@ -1005,6 +1005,25 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
+
+      <AnimatePresence>
+        {collapsed && (
+          <motion.button
+            key="reassemble"
+            onClick={reassemble}
+            disabled={reassembling}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ delay: 1.0, duration: 0.5 }}
+            className="absolute left-1/2 -translate-x-1/2 bottom-6 md:bottom-10 z-[60] font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-cyan/40 bg-bg/70 backdrop-blur-sm text-cyan hover:bg-cyan hover:text-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center gap-2"
+            aria-label="Reassemble fallen elements"
+          >
+            <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
+            {reassembling ? '> rebuilding... gravity in 3s' : '> ./reassemble --gravity-off'}
+          </motion.button>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
