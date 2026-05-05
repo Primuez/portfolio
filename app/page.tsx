@@ -478,8 +478,8 @@ export default function Home() {
 
               <DropCard delay={0.22} initialRotate={2.5}>
                 <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
-                  <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
-                    <Youtube className="text-red-500" size={32} />
+                  <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+                    <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" />
                   </div>
                   <h3 className="text-xl font-bold mb-4 font-sans">Subscribe to Primuez</h3>
                   <p className="text-text-muted mb-8 max-w-sm text-sm">
@@ -1161,28 +1161,30 @@ function DropCard({ children, delay, initialRotate }: { children: React.ReactNod
   );
 }
 
-const PHYSICS_CHIPS: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number }[] = [
-  { label: 'n8n',         color: 'cyan',  x: '2%',  y: '3%',   delay: 0.10 },
-  { label: 'LangChain',   color: 'cyan',  x: '22%', y: '8%',   delay: 0.14 },
-  { label: 'Mistral',     color: 'red',   x: '44%', y: '-1%',  delay: 0.18 },
-  { label: 'Pinecone',    color: 'amber', x: '64%', y: '7%',   delay: 0.22 },
-  { label: 'Supabase',    color: 'amber', x: '84%', y: '2%',   delay: 0.26 },
-
-  { label: 'Ollama',      color: 'cyan',  x: '0%',  y: '34%',  delay: 0.32 },
-  { label: 'Redis',       color: 'red',   x: '14%', y: '54%',  delay: 0.36 },
-  { label: 'Whisper',     color: 'cyan',  x: '78%', y: '36%',  delay: 0.40 },
-  { label: 'GPT-4',       color: 'red',   x: '90%', y: '52%',  delay: 0.44 },
-
-  { label: 'Docker',      color: 'amber', x: '3%',  y: '90%',  delay: 0.50 },
-  { label: 'FastAPI',     color: 'amber', x: '24%', y: '96%',  delay: 0.54 },
-  { label: 'Cloudflare',  color: 'amber', x: '46%', y: '96%',  delay: 0.58 },
-  { label: 'Vercel',      color: 'cyan',  x: '66%', y: '98%',  delay: 0.62 },
-  { label: 'Python',      color: 'cyan',  x: '86%', y: '92%',  delay: 0.66 },
+const PHYSICS_CHIPS: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number; desktopOnly?: boolean }[] = [
+  // ── Top row: always visible ──────────────────────────────────────
+  { label: 'n8n',        color: 'cyan',  x: '2%',  y: '-5%',  delay: 0.10 },
+  { label: 'Mistral',    color: 'red',   x: '33%', y: '-5%',  delay: 0.16 },
+  { label: 'Supabase',   color: 'amber', x: '62%', y: '-5%',  delay: 0.22 },
+  { label: 'Python',     color: 'cyan',  x: '83%', y: '-5%',  delay: 0.28 },
+  // ── Top row: desktop-only extras ────────────────────────────────
+  { label: 'LangChain',  color: 'cyan',  x: '17%', y: '-2%',  delay: 0.13, desktopOnly: true },
+  { label: 'Pinecone',   color: 'amber', x: '47%', y: '-2%',  delay: 0.19, desktopOnly: true },
+  { label: 'Ollama',     color: 'cyan',  x: '72%', y: '-2%',  delay: 0.25, desktopOnly: true },
+  // ── Side edges: desktop-only ────────────────────────────────────
+  { label: 'Redis',      color: 'red',   x: '-1%', y: '32%',  delay: 0.34, desktopOnly: true },
+  { label: 'Whisper',    color: 'cyan',  x: '89%', y: '32%',  delay: 0.40, desktopOnly: true },
+  { label: 'GPT-4',      color: 'red',   x: '89%', y: '62%',  delay: 0.46, desktopOnly: true },
+  // ── Bottom row: always visible ───────────────────────────────────
+  { label: 'Docker',     color: 'amber', x: '2%',  y: '103%', delay: 0.52 },
+  { label: 'Cloudflare', color: 'amber', x: '33%', y: '103%', delay: 0.56 },
+  { label: 'Vercel',     color: 'cyan',  x: '62%', y: '103%', delay: 0.60 },
+  { label: 'FastAPI',    color: 'amber', x: '83%', y: '103%', delay: 0.64 },
 ];
 
 function PhysicsChipsLayer() {
   return (
-    <div aria-hidden className="block absolute inset-0 pointer-events-none z-10 overflow-visible">
+    <div aria-hidden className="absolute inset-0 pointer-events-none z-10 overflow-visible">
       {PHYSICS_CHIPS.map((c) => (
         <PhysicsChip key={c.label} {...c} />
       ))}
@@ -1190,7 +1192,7 @@ function PhysicsChipsLayer() {
   );
 }
 
-function PhysicsChip({ label, color, x, y, delay }: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number }) {
+function PhysicsChip({ label, color, x, y, delay, desktopOnly }: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number; desktopOnly?: boolean }) {
   const colorMap = {
     cyan:  'border-cyan/50 text-cyan bg-cyan/10 shadow-[0_0_18px_rgba(0,240,255,0.30)]',
     amber: 'border-amber/50 text-amber bg-amber/10 shadow-[0_0_18px_rgba(255,176,0,0.30)]',
@@ -1208,7 +1210,7 @@ function PhysicsChip({ label, color, x, y, delay }: { label: string; color: 'cya
       viewport={{ once: true, margin: '-60px' }}
       transition={{ type: 'spring', stiffness: 90, damping: 9, mass: 1, delay }}
       style={{ left: x, top: y, position: 'absolute', touchAction: 'none' }}
-      className={`pointer-events-auto select-none cursor-grab active:cursor-grabbing font-mono text-[9px] md:text-[11px] uppercase tracking-widest px-2 md:px-3 py-1 md:py-1.5 rounded-full border backdrop-blur-md whitespace-nowrap ${colorMap[color]}`}
+      className={`${desktopOnly ? 'hidden md:flex' : 'flex'} pointer-events-auto select-none cursor-grab active:cursor-grabbing font-mono text-[9px] md:text-[11px] uppercase tracking-widest px-2 md:px-3 py-1 md:py-1.5 rounded-full border backdrop-blur-md whitespace-nowrap items-center ${colorMap[color]}`}
     >
       {label}
     </motion.div>
