@@ -133,13 +133,14 @@ export default function Home() {
             PRIMUEZ
           </div>
           {/* Desktop nav */}
-          <div className="hidden md:flex gap-8 font-mono text-xs tracking-widest uppercase text-text-muted">
+          <div className="hidden md:flex gap-6 font-mono text-xs tracking-widest uppercase text-text-muted">
             <a href="#whoami" className="hover:text-cyan transition-colors">About</a>
             <a href="#projects" className="hover:text-cyan transition-colors">Projects</a>
+            <a href="#services" className="hover:text-cyan transition-colors">Services</a>
+            <a href="#pricing" className="hover:text-cyan transition-colors text-amber">Pricing</a>
             <a href="#github" className="hover:text-cyan transition-colors">GitHub</a>
-            <a href="#youtube" className="hover:text-cyan transition-colors">Videos</a>
             <a href="#stack" className="hover:text-cyan transition-colors">Stack</a>
-            <a href="#credentials" className="hover:text-cyan transition-colors">Credentials</a>
+            <a href="#faq" className="hover:text-cyan transition-colors">FAQ</a>
             <a href="#contact" className="hover:text-cyan transition-colors">Contact</a>
           </div>
           {/* Mobile hamburger */}
@@ -163,7 +164,7 @@ export default function Home() {
               className="md:hidden bg-bg/95 backdrop-blur-md border-b border-cyan/20 overflow-hidden"
             >
               <div className="flex flex-col px-6 py-4 gap-5 font-mono text-sm tracking-widest uppercase text-text-muted">
-                {['About:#whoami','Projects:#projects','GitHub:#github','Videos:#youtube','Stack:#stack','Credentials:#credentials','Contact:#contact'].map(item => {
+                {['About:#whoami','Projects:#projects','Services:#services','Pricing:#pricing','GitHub:#github','Videos:#youtube','Stack:#stack','Credentials:#credentials','FAQ:#faq','Contact:#contact'].map(item => {
                   const [label, href] = item.split(':');
                   return (
                     <a
@@ -417,7 +418,149 @@ export default function Home() {
           </div>
         </motion.section>
 
-        {/* 03. GITHUB */}
+        {/* 03. SERVICES */}
+        <motion.section
+          id="services"
+          className="pt-16 md:pt-32"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <SectionHeader number="03" command="> ./services --what-i-build-for-you" title="What I Build For You" />
+          <p className="text-text-muted mt-4 mb-12 max-w-2xl text-base leading-relaxed">
+            Every service below ships as a working system — not a prototype, not a template. You describe the outcome you need; I design, build, and hand it over ready to run.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <ServiceCard
+              icon="⚙️"
+              title="n8n Workflow Automation"
+              outcome="Your manual processes run themselves"
+              desc="Custom n8n workflows that automate lead capture, CRM injection, email sequences, GST reconciliation, WhatsApp outreach — whatever you're doing by hand today."
+              tags={["n8n", "Webhooks", "API Chains", "Scheduling"]}
+              color="cyan"
+            />
+            <ServiceCard
+              icon="🎙️"
+              title="Voice AI Agents"
+              outcome="An agent that listens, reasons & acts"
+              desc="Voice-first AI agents that go beyond talking — they execute multi-step tasks across your stack while your hands stay free. Deployable to WhatsApp, web, or phone."
+              tags={["Voice AI", "LLM", "n8n", "Real-Time"]}
+              color="amber"
+            />
+            <ServiceCard
+              icon="🔗"
+              title="Custom API Integration"
+              outcome="Any system connected to any other"
+              desc="ERP ↔ CRM ↔ WhatsApp ↔ payment gateway ↔ government portals. If there's an API or webhook, I can wire it into your workflow with full error handling and fallback logic."
+              tags={["REST APIs", "Webhooks", "OAuth", "Odoo", "IndiaMART"]}
+              color="cyan"
+            />
+            <ServiceCard
+              icon="🎵"
+              title="AI Music Generation"
+              outcome="Original tracks on demand, zero licensing fees"
+              desc="Automated music generation pipelines via Suno — jingles, background scores, brand tracks, YouTube intros. Fully automated, batch-ready, and copyright-clean."
+              tags={["Suno", "AI Audio", "Automation", "Content"]}
+              color="amber"
+            />
+            <ServiceCard
+              icon="🎬"
+              title="AI Video / Movie Clips"
+              outcome="UGC-style ad creatives at scale"
+              desc="AI-generated video clips for ads, product demos, and social content. UGC-style scripts, voiceovers, and visuals — all automated and batch-produced."
+              tags={["UGC Ads", "AI Video", "Content Automation"]}
+              color="cyan"
+            />
+            <ServiceCard
+              icon="🚀"
+              title="SaaS MVP Build"
+              outcome="A working product your users can log into"
+              desc="Full-stack SaaS products built on Cloudflare Workers — fast, globally deployed, no server bills. From idea to live URL. InkTwin and PrimuezSure are examples of what ships."
+              tags={["Next.js", "Cloudflare Workers", "AI", "Full-Stack"]}
+              color="amber"
+            />
+          </div>
+          <div className="mt-10 text-center">
+            <p className="font-mono text-xs text-text-muted tracking-widest mb-4">[ NOT SURE WHICH ONE YOU NEED? ]</p>
+            <button
+              onClick={() => setModalType('form')}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-cyan text-cyan font-mono text-sm uppercase tracking-widest hover:bg-cyan/10 transition-all duration-300"
+            >
+              Describe your project → I'll figure out the rest
+            </button>
+          </div>
+        </motion.section>
+
+        {/* 04. PRICING */}
+        <motion.section
+          id="pricing"
+          className="pt-16 md:pt-32"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <SectionHeader number="04" command="> ./pricing --transparent" title="Pricing" />
+          <p className="text-text-muted mt-4 mb-12 max-w-2xl text-base leading-relaxed">
+            No hidden rates. No surprise scope creep. Pick the tier that fits your budget — or tell me what you need and I'll tell you which one applies.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <PricingCard
+              tier="Micro-Build"
+              priceINR="< ₹5,000"
+              priceUSD="< $60"
+              desc="Small automations, single-workflow builds, quick integrations or fixes."
+              features={["1 workflow or integration", "Delivered in 2–4 days", "1 revision round", "WhatsApp handover walkthrough"]}
+              cta="Start a Micro-Build"
+              color="muted"
+            />
+            <PricingCard
+              tier="Professional Automation"
+              priceINR="₹5k – ₹20k"
+              priceUSD="$60 – $250"
+              desc="Multi-step workflows, CRM setups, AI agent builds, n8n pipelines with full error handling."
+              features={["3–6 node workflow or agent", "Delivered in 5–10 days", "2 revision rounds", "Full documentation + handover call", "30-day bug support"]}
+              cta="Get Professional Build"
+              color="cyan"
+              popular
+            />
+            <PricingCard
+              tier="Premium AI Integration"
+              priceINR="₹20k – ₹50k"
+              priceUSD="$250 – $600"
+              desc="End-to-end AI systems — voice agents, multi-model orchestration, SaaS MVPs, enterprise pipelines."
+              features={["Full system architecture", "Delivered in 2–4 weeks", "Unlimited revisions in scope", "Priority async support", "60-day bug support"]}
+              cta="Build Something Premium"
+              color="amber"
+            />
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 mt-6">
+            <PricingCard
+              tier="Custom Scaling / High-Volume"
+              priceINR="₹50,000+"
+              priceUSD="$600+"
+              desc="Enterprise architecture, multi-department automation, complex ERP integrations, or full autonomous business pipelines."
+              features={["Scoped after discovery call", "Dedicated build timeline", "Full architecture ownership", "Ongoing async support"]}
+              cta="Request Custom Scope"
+              color="cyan"
+              wide
+            />
+            <PricingCard
+              tier="Monthly Retainer / Fractional CTO"
+              priceINR="Open for discussion"
+              priceUSD=""
+              desc="Ongoing builds, maintenance, new feature additions, and strategic AI advisory — on a monthly basis."
+              features={["Weekly async check-ins", "Priority queue on all requests", "Architecture reviews", "Roadmap planning"]}
+              cta="Discuss Retainer"
+              color="amber"
+              wide
+            />
+          </div>
+          <div className="mt-10 text-center font-mono text-xs text-text-muted tracking-widest">
+            All prices are project-based, not hourly. Scope is agreed before any work begins.
+          </div>
+        </motion.section>
+
+        {/* 05. GITHUB */}
         <motion.section 
           id="github" 
           className="pt-16 md:pt-32"
@@ -587,7 +730,47 @@ export default function Home() {
           </RubiksCredentials>
         </motion.section>
 
-        {/* 07. CONTACT */}
+        {/* 09. FAQ */}
+        <motion.section
+          id="faq"
+          className="pt-16 md:pt-32"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <SectionHeader number="09" command="> ./faq --resolve-objections" title="Frequently Asked Questions" />
+          <p className="text-text-muted mt-4 mb-12 max-w-2xl text-base leading-relaxed">
+            Real answers to the questions clients ask before reaching out — so you don&apos;t have to wait for a reply to decide.
+          </p>
+          <div className="max-w-3xl space-y-3">
+            <FAQItem question="How long does a project typically take?">
+              Micro-Builds are delivered in 2–4 days. Professional Automation projects take 5–10 days. Premium AI Integration or SaaS MVPs take 2–4 weeks depending on scope. Timeline is agreed before work begins — no vague &quot;it depends.&quot;
+            </FAQItem>
+            <FAQItem question="Do I need to manage you or check in constantly?">
+              No. You describe the outcome you need, I ask any clarifying questions upfront, then disappear and build. You get async updates and a final handover call. You don&apos;t need to know how any of it works technically.
+            </FAQItem>
+            <FAQItem question="You&apos;re self-taught — how do I know the work will be solid?">
+              Look at what shipped: InkTwin (live SaaS), PrimuezSure (live SaaS), the Odoo Enterprise architecture presented at a business show in Raipur, the CA Automation Suite used by actual firms. Self-taught means I learned by building real systems, not passing exams. The credentials section has the verifiable proof.
+            </FAQItem>
+            <FAQItem question="What if I don&apos;t know exactly what I need?">
+              That&apos;s fine — most clients don&apos;t. Fill the &quot;Work With Me&quot; form and describe the problem you&apos;re trying to solve, not the solution. I&apos;ll come back with a scoped proposal including what I&apos;d build and which tier it falls under.
+            </FAQItem>
+            <FAQItem question="Can you integrate with tools I already use?">
+              Almost certainly yes. If it has an API, webhook, or can export data — I can connect it. Current integrations include Odoo, Zoho, WhatsApp (via Evolution API), GST portal, IndiaMART, Kickbox, Cloudflare, Vercel, Google Workspace, and any standard REST/HTTP endpoint.
+            </FAQItem>
+            <FAQItem question="What happens if something breaks after delivery?">
+              Micro-Builds come with 0 days post-delivery support (it&apos;s priced that way). Professional builds include 30-day bug support. Premium builds include 60 days. Monthly retainers include ongoing support as part of the deal. Bugs caused by my code are always fixed at no extra cost within the support window.
+            </FAQItem>
+            <FAQItem question="Do you work with international clients?">
+              Yes. Pricing is listed in both INR and USD. Communication is async-first and timezone-flexible. Payment in USD, EUR, or INR — all accepted.
+            </FAQItem>
+            <FAQItem question="I have a big project. Where do I start?">
+              Book a scope call via the &quot;Work With Me&quot; form. Large projects are broken into scoped phases so you&apos;re never paying for everything upfront. We agree on Phase 1, I build it, you see it working — then we plan Phase 2.
+            </FAQItem>
+          </div>
+        </motion.section>
+
+        {/* 10. CONTACT */}
         <motion.section 
           id="contact" 
           className="pt-16 md:pt-32 text-center pb-12 md:pb-20"
@@ -595,7 +778,7 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <SectionHeader number="07" command="> ./contact --init" title="Connect" center />
+          <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
           
           <GravityCollapse onContact={() => setModalType('form')} />
         </motion.section>
@@ -1630,5 +1813,134 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode, label: strin
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-cyan/30"></div>
       </span>
     </a>
+  );
+}
+
+function ServiceCard({ icon, title, outcome, desc, tags, color }: {
+  icon: string;
+  title: string;
+  outcome: string;
+  desc: string;
+  tags: string[];
+  color: 'cyan' | 'amber';
+}) {
+  const borderColor = color === 'cyan' ? 'border-cyan/20 hover:border-cyan/50 hover:shadow-[0_8px_40px_rgba(0,240,255,0.15)]' : 'border-amber/20 hover:border-amber/50 hover:shadow-[0_8px_40px_rgba(245,166,35,0.15)]';
+  const outcomeColor = color === 'cyan' ? 'text-cyan' : 'text-amber';
+  const tagColor = color === 'cyan' ? 'bg-cyan/10 text-cyan border-cyan/20' : 'bg-amber/10 text-amber border-amber/20';
+  const topBar = color === 'cyan' ? 'from-cyan/60 to-transparent' : 'from-amber/60 to-transparent';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 60, scale: 0.95, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '-60px' }}
+      className={`group bg-panel border ${borderColor} rounded-xl p-6 flex flex-col transition-all duration-300 relative overflow-hidden`}
+    >
+      <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r ${topBar} opacity-0 group-hover:opacity-100 transition-opacity`} />
+      <div className="text-3xl mb-4">{icon}</div>
+      <h4 className="text-lg font-bold mb-1 group-hover:text-white transition-colors">{title}</h4>
+      <p className={`font-mono text-xs uppercase tracking-widest mb-4 ${outcomeColor}`}>→ {outcome}</p>
+      <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{desc}</p>
+      <div className="flex flex-wrap gap-2 mt-auto">
+        {tags.map((tag, i) => (
+          <span key={i} className={`font-mono text-[10px] uppercase px-2 py-1 rounded border ${tagColor}`}>{tag}</span>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function PricingCard({ tier, priceINR, priceUSD, desc, features, cta, color, popular, wide }: {
+  tier: string;
+  priceINR: string;
+  priceUSD: string;
+  desc: string;
+  features: string[];
+  cta: string;
+  color: 'cyan' | 'amber' | 'muted';
+  popular?: boolean;
+  wide?: boolean;
+}) {
+  const borderClass = color === 'cyan'
+    ? 'border-cyan/40 shadow-[0_0_30px_rgba(0,240,255,0.08)]'
+    : color === 'amber'
+    ? 'border-amber/40 shadow-[0_0_30px_rgba(245,166,35,0.08)]'
+    : 'border-white/10';
+  const priceColor = color === 'cyan' ? 'text-cyan' : color === 'amber' ? 'text-amber' : 'text-text-main';
+  const btnClass = color === 'cyan'
+    ? 'border-cyan text-cyan hover:bg-cyan hover:text-bg'
+    : color === 'amber'
+    ? 'border-amber text-amber hover:bg-amber hover:text-bg'
+    : 'border-white/20 text-text-muted hover:border-white/40 hover:text-white';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '-60px' }}
+      className={`relative bg-panel border ${borderClass} rounded-xl p-6 flex flex-col ${popular ? 'ring-1 ring-cyan/30' : ''}`}
+    >
+      {popular && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest bg-cyan text-bg px-4 py-1 rounded-full">
+          Most Popular
+        </div>
+      )}
+      <h4 className="text-base font-bold mb-2">{tier}</h4>
+      <div className={`font-mono font-bold text-2xl mb-1 ${priceColor}`}>{priceINR}</div>
+      {priceUSD && <div className="font-mono text-xs text-text-muted mb-4">{priceUSD}</div>}
+      <p className="text-text-muted text-sm leading-relaxed mb-6">{desc}</p>
+      <ul className="space-y-2 mb-8 flex-1">
+        {features.map((f, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-text-main">
+            <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${priceColor}`} />
+            {f}
+          </li>
+        ))}
+      </ul>
+      <button
+        onClick={() => {
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        className={`w-full font-mono text-xs uppercase tracking-widest border py-3 transition-all duration-300 ${btnClass}`}
+      >
+        {cta}
+      </button>
+    </motion.div>
+  );
+}
+
+function FAQItem({ question, children }: { question: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-white/8 rounded-xl overflow-hidden bg-panel/60 transition-all duration-300 hover:border-cyan/20">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group"
+      >
+        <span className="font-sans text-sm md:text-base text-text-main group-hover:text-white transition-colors leading-snug">
+          {question}
+        </span>
+        <span className={`shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-300 ${open ? 'border-cyan bg-cyan/10 rotate-45' : 'border-white/20 group-hover:border-cyan/40'}`}>
+          <ChevronRight size={12} className={`transition-colors ${open ? 'text-cyan' : 'text-text-muted group-hover:text-cyan'}`} />
+        </span>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-6 pb-5 pt-1 text-sm text-text-muted leading-relaxed border-t border-white/5">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
