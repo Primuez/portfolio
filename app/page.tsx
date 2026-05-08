@@ -54,6 +54,7 @@ export default function Home() {
   // Github state
   const [repos, setRepos] = useState<GithubRepo[]>([]);
   const [loadingRepos, setLoadingRepos] = useState(true);
+  const [isNoWrapMode, setIsNoWrapMode] = useState(false);
 
   useEffect(() => {
     // Ensure the page boots at the very top.
@@ -778,7 +779,31 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
+          <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
+            <div>
+              <SectionHeader number="10" command="> ./contact --init" title="Connect" center={false} />
+            </div>
+            <motion.button
+              onClick={() => setIsNoWrapMode(!isNoWrapMode)}
+              className="relative inline-flex items-center justify-center w-16 h-8 rounded-full transition-colors duration-300"
+              style={{
+                backgroundColor: isNoWrapMode ? 'rgba(0, 240, 255, 0.3)' : 'rgba(0, 240, 255, 0.1)',
+                border: '1.5px solid rgba(0, 240, 255, 0.4)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title="Prevent text wrapping"
+            >
+              <motion.div
+                className="absolute w-6 h-6 bg-cyan rounded-full shadow-lg shadow-cyan/50"
+                animate={{ x: isNoWrapMode ? 20 : 2 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              />
+              <span className="absolute text-xs font-mono font-bold text-cyan/60 pointer-events-none">
+                {isNoWrapMode ? 'ON' : 'OFF'}
+              </span>
+            </motion.button>
+          </div>
           
           <GravityCollapse onContact={() => setModalType('form')} />
         </motion.section>
