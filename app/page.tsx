@@ -779,29 +779,56 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
-            <div>
-              <SectionHeader number="10" command="> ./contact --init" title="Connect" center={false} />
-            </div>
-            <motion.button
-              onClick={() => setIsNoWrapMode(!isNoWrapMode)}
-              className="relative inline-flex items-center justify-center w-16 h-8 rounded-full transition-colors duration-300"
-              style={{
-                backgroundColor: isNoWrapMode ? 'rgba(0, 240, 255, 0.3)' : 'rgba(0, 240, 255, 0.1)',
-                border: '1.5px solid rgba(0, 240, 255, 0.4)'
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              title="Prevent text wrapping"
+          <div className="flex items-center justify-center gap-2 md:gap-4 mb-8 flex-wrap justify-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -60, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, margin: "-80px" }}
+              className="flex flex-col items-center"
             >
               <motion.div
-                className="absolute w-6 h-6 bg-cyan rounded-full shadow-lg shadow-cyan/50"
-                animate={{ x: isNoWrapMode ? 20 : 2 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                initial={{ opacity: 0, y: -8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+                viewport={{ once: true, margin: "-80px" }}
+                className="font-mono text-xs tracking-[0.2em] text-cyan/70 mb-2"
+              >
+                {"//"} 10 &nbsp; {"> ./contact --init"}
+              </motion.div>
+              <motion.h2
+                initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true, margin: "-80px" }}
+                className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-text-muted inline-block"
+                style={{ whiteSpace: isNoWrapMode ? 'nowrap' : 'normal' }}
+              >
+                Connect
+              </motion.h2>
+            </motion.div>
+
+            <motion.button
+              onClick={() => setIsNoWrapMode(!isNoWrapMode)}
+              className="relative inline-flex items-center justify-center w-14 h-7 rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer"
+              style={{
+                backgroundColor: isNoWrapMode ? 'rgba(0, 240, 255, 0.25)' : 'rgba(0, 240, 255, 0.08)',
+                border: '1px solid',
+                borderColor: isNoWrapMode ? 'rgba(0, 240, 255, 0.6)' : 'rgba(0, 240, 255, 0.25)',
+                boxShadow: isNoWrapMode ? '0 0 16px rgba(0, 240, 255, 0.15)' : 'none'
+              }}
+              whileHover={{ scale: 1.08, backgroundColor: isNoWrapMode ? 'rgba(0, 240, 255, 0.3)' : 'rgba(0, 240, 255, 0.12)' }}
+              whileTap={{ scale: 0.96 }}
+              title={isNoWrapMode ? 'Disable no-wrap mode' : 'Enable no-wrap mode'}
+            >
+              <motion.div
+                className="absolute w-5 h-5 bg-gradient-to-br from-cyan to-cyan/80 rounded-full"
+                animate={{ x: isNoWrapMode ? 22 : 3 }}
+                transition={{ type: 'spring', stiffness: 600, damping: 25 }}
+                style={{
+                  boxShadow: isNoWrapMode ? '0 0 12px rgba(0, 240, 255, 0.6)' : '0 0 6px rgba(0, 240, 255, 0.3)'
+                }}
               />
-              <span className="absolute text-xs font-mono font-bold text-cyan/60 pointer-events-none">
-                {isNoWrapMode ? 'ON' : 'OFF'}
-              </span>
             </motion.button>
           </div>
           
