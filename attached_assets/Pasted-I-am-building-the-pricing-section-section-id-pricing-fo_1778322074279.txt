@@ -1,0 +1,62 @@
+I am building the pricing section (<section id='pricing'>) for my AI Automation portfolio. You have no previous context, so please write the complete HTML, CSS, and JavaScript from scratch. I am using a dark-mode aesthetic with neon accents.
+
+TECH STACK: HTML, CSS, JavaScript, GSAP, and the ScrollTrigger plugin.
+
+1. THE CONTENT & LAYOUT (3-Column Grid):
+Create 3 pricing cards. The primary price must be in USD (Large, bold), and the INR price underneath (Smaller, muted).
+
+Card 1: Professional Automation
+
+Price: <h2 class="price-usd">Starts at $150</h2> | <span class="price-inr">₹12,000+</span>
+
+Features: Multi-step workflows & CRM setups, Full error handling & logging, 3-6 node workflow or AI agent, Documentation + handover call, 30-day bug support.
+
+Button: 'Get Professional Build'
+
+Footer Note: 'Need a micro-fix under $150? Let's discuss it.'
+
+Card 2: Premium AI Integration (MUST HAVE BADGE)
+
+BADGE: Add a 'MOST POPULAR' badge overlapping the top border. To ensure it is highly visible, give the badge a solid, bright background (e.g., #00FFCC cyan or bright gold) with dark, bold text. Do not make it transparent.
+
+Price: <h2 class="price-usd">$300 - $800</h2> | <span class="price-inr">₹25,000 - ₹65,000</span>
+
+Features: End-to-end AI systems, Multi-model orchestration, SaaS MVPs & enterprise pipelines, Full system architecture, Unlimited revisions in scope.
+
+Button: 'Build Something Premium'
+
+Card 3: Advanced Enterprise Systems
+
+Price: <h2 class="price-usd">Up to $1,000</h2> | <span class="price-inr">₹75,000 - ₹1,00,000+</span>
+
+Features: High-level complex architectures, Full architecture ownership, Multi-department automation, Ongoing async support, Architecture reviews & Roadmap planning.
+
+Button: 'Discuss Scope'
+
+2. CSS STYLING:
+
+Dark background (#0A0A0E).
+
+Cards should have thin, subtle borders that glow slightly with their respective tier colors (e.g., blue, gold, purple).
+
+Use a monospace or highly technical sans-serif font for the numbers.
+
+On Desktop, display as a 3-column flex/grid. On Mobile, stack them vertically.
+
+3. THE BUTTERY-SMOOTH 'RECEIPT PRINTER' ANIMATION (GSAP):
+
+Initial State: Only the headers of the cards (Title, USD Price, INR Price) should be visible. The 'body' (features list and button) must be hidden.
+
+Crucial Performance Fix: Do NOT animate height. Instead, use CSS clip-path: inset(0 0 100% 0) on the card body to hide it.
+
+The Scroll Interaction: Use GSAP ScrollTrigger to animate the clip-path to inset(0 0 0% 0) as the user scrolls, effectively 'unrolling' or printing the receipt downwards.
+
+Smoothness: Add scrub: 1 to the ScrollTrigger to add a 1-second lag to the scroll tie-in, making the animation feel incredibly smooth and fluid rather than rigidly locked to the mouse wheel.
+
+4. MOBILE ANIMATION FIX (gsap.matchMedia):
+
+Animations MUST work on mobile. Use gsap.matchMedia().
+
+On Desktop: The ScrollTrigger should unroll all 3 cards simultaneously as the user scrolls down the section.
+
+On Mobile (Stacked): Do NOT unroll them all at once. Create a separate ScrollTrigger for each individual card. As the user swipes down, Card 1 should unroll when it hits the center of the screen, then Card 2 unrolls when it hits the center, etc.

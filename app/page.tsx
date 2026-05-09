@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocity, useMotionValue, MotionValue } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocity, useMotionValue, useInView, animate, MotionValue } from 'motion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, Code2, Link as IconLink, 
@@ -1821,8 +1821,8 @@ const RECEIPT_CARDS = [
   },
   {
     tier: 'Premium AI Integration',
-    usd: '$300 – $800',
-    inr: '₹25,000 – ₹65,000',
+    usd: '$300 - $800',
+    inr: '₹25,000 - ₹65,000',
     color: 'amber' as const,
     popular: true,
     features: [
@@ -1831,23 +1831,20 @@ const RECEIPT_CARDS = [
       'SaaS MVPs & enterprise pipelines',
       'Full system architecture',
       'Unlimited revisions in scope',
-      'Priority async support',
-      '60-day bug support',
     ],
     cta: 'Build Something Premium',
   },
   {
-    tier: 'Enterprise / Fractional CTO',
-    usd: 'Custom / Retainer',
-    inr: 'Open for discussion',
+    tier: 'Advanced Enterprise Systems',
+    usd: 'Up to $1,000',
+    inr: '₹75,000 - ₹1,00,000+',
     color: 'violet' as const,
     features: [
+      'High-level complex architectures',
       'Full architecture ownership',
       'Multi-department automation',
       'Ongoing async support',
-      'Weekly strategic check-ins',
-      'Architecture reviews',
-      'Roadmap planning',
+      'Architecture reviews & Roadmap planning',
     ],
     cta: 'Discuss Scope',
   },
@@ -1855,7 +1852,26 @@ const RECEIPT_CARDS = [
 
 type ReceiptCardData = (typeof RECEIPT_CARDS)[0];
 
-function ReceiptCard({
+function cardClasses(c: string) {
+  return {
+    border:   c === 'cyan' ? 'border-cyan/40'   : c === 'amber' ? 'border-amber/50'   : 'border-violet-400/40',
+    ring:     c === 'cyan' ? 'ring-cyan/25'      : c === 'amber' ? 'ring-amber/30'      : 'ring-violet-400/25',
+    text:     c === 'cyan' ? 'text-cyan'         : c === 'amber' ? 'text-amber'         : 'text-violet-400',
+    divider:  c === 'cyan' ? 'bg-cyan/20'        : c === 'amber' ? 'bg-amber/20'        : 'bg-violet-400/20',
+    line:     c === 'cyan'
+      ? 'bg-cyan shadow-[0_0_6px_#00f0ff,0_0_16px_rgba(0,240,255,0.4)]'
+      : c === 'amber'
+      ? 'bg-amber shadow-[0_0_6px_#f5a623,0_0_16px_rgba(245,166,35,0.4)]'
+      : 'bg-violet-400 shadow-[0_0_6px_#a78bfa,0_0_16px_rgba(167,139,250,0.4)]',
+    btn:      c === 'cyan'
+      ? 'border-cyan text-cyan hover:bg-cyan hover:text-bg shadow-[0_0_14px_rgba(0,240,255,0.15)]'
+      : c === 'amber'
+      ? 'border-amber text-amber hover:bg-amber hover:text-bg shadow-[0_0_14px_rgba(245,166,35,0.15)]'
+      : 'border-violet-400 text-violet-400 hover:bg-violet-400 hover:text-bg shadow-[0_0_14px_rgba(167,139,250,0.15)]',
+  };
+}
+
+function ReceiptCardInner({
   card,
   clipPct,
   ctaOpacity,
@@ -1866,65 +1882,55 @@ function ReceiptCard({
   ctaOpacity: MotionValue<number>;
   ctaY: MotionValue<number>;
 }) {
+  const cls = cardClasses(card.color);
   const clipPath    = useTransform(clipPct, v => `inset(0 0 ${v.toFixed(1)}% 0)`);
   const lineTop     = useTransform(clipPct, v => `${(100 - v).toFixed(1)}%`);
   const lineOpacity = useTransform(clipPct, [0, 4, 96, 100], [0, 1, 1, 0]);
 
-  const c = card.color;
-  const borderCls  = c === 'cyan'   ? 'border-cyan/40'      : c === 'amber' ? 'border-amber/40'      : 'border-violet-400/40';
-  const ringCls    = c === 'cyan'   ? 'ring-cyan/25'         : c === 'amber' ? 'ring-amber/25'         : 'ring-violet-400/25';
-  const textCls    = c === 'cyan'   ? 'text-cyan'            : c === 'amber' ? 'text-amber'            : 'text-violet-400';
-  const dividerCls = c === 'cyan'   ? 'bg-cyan/20'           : c === 'amber' ? 'bg-amber/20'           : 'bg-violet-400/20';
-  const lineCls    = c === 'cyan'
-    ? 'bg-cyan shadow-[0_0_6px_#00f0ff,0_0_16px_rgba(0,240,255,0.4)]'
-    : c === 'amber'
-    ? 'bg-amber shadow-[0_0_6px_#f5a623,0_0_16px_rgba(245,166,35,0.4)]'
-    : 'bg-violet-400 shadow-[0_0_6px_#a78bfa,0_0_16px_rgba(167,139,250,0.4)]';
-  const btnCls     = c === 'cyan'
-    ? 'border-cyan text-cyan hover:bg-cyan hover:text-bg shadow-[0_0_14px_rgba(0,240,255,0.15)]'
-    : c === 'amber'
-    ? 'border-amber text-amber hover:bg-amber hover:text-bg shadow-[0_0_14px_rgba(245,166,35,0.15)]'
-    : 'border-violet-400 text-violet-400 hover:bg-violet-400 hover:text-bg shadow-[0_0_14px_rgba(167,139,250,0.15)]';
-  const popularBg  = c === 'amber' ? 'bg-amber text-bg' : 'bg-cyan text-bg';
-
   return (
     <div
-      className={`relative flex flex-col bg-panel border ${borderCls} rounded-xl overflow-hidden
+      className={`relative flex flex-col bg-panel border ${cls.border} rounded-xl overflow-visible
         shadow-[0_14px_44px_rgba(0,0,0,0.65),0_3px_10px_rgba(0,0,0,0.45)]
-        ${card.popular ? `ring-1 ${ringCls}` : ''}`}
+        ${card.popular ? `ring-1 ${cls.ring}` : ''}`}
     >
+      {/* ── MOST POPULAR badge — solid, bright, highly visible ── */}
       {card.popular && (
-        <div className={`absolute -top-3 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest ${popularBg} px-4 py-1 rounded-full z-10`}>
-          Most Popular
+        <div
+          className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 px-5 py-1.5 rounded-full
+            font-mono text-[11px] font-bold uppercase tracking-widest whitespace-nowrap
+            bg-[#00FFCC] text-[#0a0a0f]
+            shadow-[0_0_18px_rgba(0,255,204,0.7),0_2px_8px_rgba(0,0,0,0.5)]"
+        >
+          ★ Most Popular
         </div>
       )}
 
       {/* ── HEADER — always visible ── */}
-      <div className="p-6 pb-4">
+      <div className={`p-6 pb-4 ${card.popular ? 'pt-8' : ''}`}>
         <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-3">{card.tier}</p>
-        <h2 className={`font-sans font-bold text-3xl leading-tight ${textCls}`}>{card.usd}</h2>
+        <h2 className={`font-sans font-bold text-3xl leading-tight ${cls.text}`}>{card.usd}</h2>
         <span className="font-mono text-sm text-text-muted block mt-1">{card.inr}</span>
       </div>
 
       {/* paper edge divider */}
-      <div className={`h-px mx-6 ${dividerCls}`} />
+      <div className={`h-px mx-6 ${cls.divider}`} />
 
       {/* ── RECEIPT BODY — scroll-printed ── */}
-      <div className="relative flex-1">
-        <motion.div style={{ clipPath }} className="px-6 pt-4 overflow-hidden">
+      <div className="relative flex-1 overflow-hidden rounded-b-xl">
+        <motion.div style={{ clipPath }} className="px-6 pt-4">
           <ul className="space-y-2.5 pb-6">
             {card.features.map((f, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-text-main font-mono">
-                <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${textCls}`} />
+                <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${cls.text}`} />
                 {f}
               </li>
             ))}
           </ul>
         </motion.div>
 
-        {/* glowing print line at the clip boundary */}
+        {/* glowing print line */}
         <motion.div
-          className={`absolute left-4 right-4 h-px pointer-events-none ${lineCls}`}
+          className={`absolute left-4 right-4 h-px pointer-events-none ${cls.line}`}
           style={{ top: lineTop, opacity: lineOpacity }}
         />
       </div>
@@ -1933,7 +1939,7 @@ function ReceiptCard({
       <motion.div style={{ opacity: ctaOpacity, y: ctaY }} className="px-6 pb-6 pt-2">
         <button
           onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-          className={`w-full font-mono text-xs uppercase tracking-widest border py-3 transition-all duration-300 rounded ${btnCls}`}
+          className={`w-full font-mono text-xs uppercase tracking-widest border py-3 transition-all duration-300 rounded ${cls.btn}`}
         >
           {card.cta}
         </button>
@@ -1945,33 +1951,45 @@ function ReceiptCard({
   );
 }
 
+// Mobile card — each unrolls independently when it enters the viewport center
+function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
+  const clipPct    = useMotionValue(100);
+  const ctaOpacity = useMotionValue(0);
+  const ctaY       = useMotionValue(14);
+  const ref        = useRef<HTMLDivElement>(null);
+  const inView     = useInView(ref, { once: true, margin: '-20% 0px -20% 0px' });
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(clipPct, 0, { duration: 1.1, ease: [0.22, 1, 0.36, 1] });
+    const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
+    const ctaYCtrl = animate(ctaY, 0, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
+    return () => { controls.stop(); ctaCtrl.stop(); ctaYCtrl.stop(); };
+  }, [inView, clipPct, ctaOpacity, ctaY]);
+
+  return (
+    <div ref={ref}>
+      <ReceiptCardInner card={card} clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
+    </div>
+  );
+}
+
 function ReceiptPricingSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
-  const smoothP = useSpring(scrollYProgress, { stiffness: 200, damping: 50, restDelta: 0.001 });
-
-  // desktop scroll-driven values
+  const smoothP    = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
   const clipPct    = useTransform(smoothP, [0.08, 0.76], [100, 0]);
   const ctaOpacity = useTransform(smoothP, [0.75, 0.91], [0, 1]);
   const ctaY       = useTransform(smoothP, [0.75, 0.91], [14, 0]);
-
-  // mobile static values — show everything immediately
-  const zeroClip   = useMotionValue(0);
-  const oneCta     = useMotionValue(1);
-  const zeroCtaY   = useMotionValue(0);
-
-  const activeClip    = isMobile ? zeroClip   : clipPct;
-  const activeCtaOp   = isMobile ? oneCta     : ctaOpacity;
-  const activeCtaY    = isMobile ? zeroCtaY   : ctaY;
 
   return (
     <section
       id="pricing"
       ref={containerRef}
       style={isMobile ? undefined : { height: '185vh', position: 'relative' }}
-      className={isMobile ? 'pt-16 md:pt-32' : ''}
+      className={isMobile ? 'pt-16' : ''}
     >
       <div
         style={isMobile ? undefined : { position: 'sticky', top: '72px' }}
@@ -1994,17 +2012,29 @@ function ReceiptPricingSection() {
           )}
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          {RECEIPT_CARDS.map((card, i) => (
-            <ReceiptCard
-              key={i}
-              card={card}
-              clipPct={activeClip}
-              ctaOpacity={activeCtaOp}
-              ctaY={activeCtaY}
-            />
-          ))}
-        </div>
+        {/* Desktop: all 3 cards animate together tied to scroll */}
+        {!isMobile && (
+          <div className="grid lg:grid-cols-3 gap-6 pt-6">
+            {RECEIPT_CARDS.map((card, i) => (
+              <ReceiptCardInner
+                key={i}
+                card={card}
+                clipPct={clipPct}
+                ctaOpacity={ctaOpacity}
+                ctaY={ctaY}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Mobile: each card unrolls individually when it hits viewport center */}
+        {isMobile && (
+          <div className="flex flex-col gap-8 pt-6">
+            {RECEIPT_CARDS.map((card, i) => (
+              <MobileReceiptCard key={i} card={card} />
+            ))}
+          </div>
+        )}
 
         <p className="mt-10 text-center font-mono text-xs text-text-muted tracking-widest">
           All prices are project-based, not hourly. Scope is agreed before any work begins.
