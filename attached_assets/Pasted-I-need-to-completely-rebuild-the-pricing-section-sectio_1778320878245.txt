@@ -1,0 +1,45 @@
+I need to completely rebuild the pricing section (<section id='pricing-receipts'>) of my portfolio to reflect a premium, global AI development brand. I want to use HTML, CSS, and GSAP ScrollTrigger to create a 'Dynamic Receipt Printer' animation.
+
+1. The Global Pricing Content (Crucial Typography):
+
+Create a 3-column pricing grid.
+
+Card 1: Professional Automation. >     * Main Price: <h2 class="price-usd">Starts at $150</h2> (Large, bold, prominent).
+
+Sub Price: <span class="price-inr">₹12,000+</span> (Smaller, muted color beneath the USD).
+
+Features: Multi-step workflows, CRM setups, full error handling.
+
+Footer Note: Add small muted text at the very bottom: 'Need a micro-fix under $150? Let's discuss it.'
+
+Card 2: Premium AI Integration (Highlight as 'Most Popular').
+
+Main Price: <h2 class="price-usd">$300 - $800</h2>
+
+Sub Price: <span class="price-inr">₹25,000 - ₹65,000</span>
+
+Features: End-to-end AI systems, multi-model orchestration, SaaS MVPs.
+
+Card 3: Enterprise / Fractional CTO.
+
+Main Price: <h2 class="price-usd">Custom / Retainer</h2>
+
+Sub Price: <span class="price-inr">Open for discussion</span>
+
+Features: Full architecture ownership, ongoing async support, weekly check-ins.
+
+2. The 'Receipt Printer' Animation Strategy:
+
+Initial State: When the section first appears, only the top 'Headers' of the pricing plans (the Tier Name, the large USD price, and the small INR price) should be visible. The main body of the card containing the features must be hidden with height: 0 and overflow: hidden.
+
+The Scroll Interaction: Bind the scroll progress to the height of the feature lists using GSAP ScrollTrigger with scrub: true.
+
+As the user scrolls down through the section, the cards should smoothly 'unroll' downwards together, animating from height: 0 to their full natural height.
+
+3. The Reveal Styling:
+
+As the card unrolls, use a CSS clip-path or staggered opacity fade to make the individual text features and checkmark icons appear exactly at the 'print line' (the bottom edge of the expanding card) so it looks like they are being printed in real-time.
+
+When the unroll hits 100%, pop in a glowing call-to-action button at the bottom of each receipt.
+
+Add a subtle, dark paper-like drop shadow (box-shadow) to the cards to give them physical depth against my dark background.

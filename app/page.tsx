@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocity, MotionValue } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocity, useMotionValue, MotionValue } from 'motion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, Code2, Link as IconLink, 
@@ -505,73 +505,7 @@ export default function Home() {
         </section>
 
         {/* 04. PRICING */}
-        <motion.section
-          id="pricing"
-          className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <SectionHeader number="04" command="> ./pricing --transparent" title="Pricing" />
-          <p className="text-text-muted mt-4 mb-12 max-w-2xl text-base leading-relaxed">
-            No hidden rates. No surprise scope creep. Pick the tier that fits your budget — or tell me what you need and I'll tell you which one applies.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <PricingCard
-              tier="Micro-Build"
-              priceINR="< ₹5,000"
-              priceUSD="< $60"
-              desc="Small automations, single-workflow builds, quick integrations or fixes."
-              features={["1 workflow or integration", "Delivered in 2–4 days", "1 revision round", "WhatsApp handover walkthrough"]}
-              cta="Start a Micro-Build"
-              color="muted"
-            />
-            <PricingCard
-              tier="Professional Automation"
-              priceINR="₹5k – ₹20k"
-              priceUSD="$60 – $250"
-              desc="Multi-step workflows, CRM setups, AI agent builds, n8n pipelines with full error handling."
-              features={["3–6 node workflow or agent", "Delivered in 5–10 days", "2 revision rounds", "Full documentation + handover call", "30-day bug support"]}
-              cta="Get Professional Build"
-              color="cyan"
-              popular
-            />
-            <PricingCard
-              tier="Premium AI Integration"
-              priceINR="₹20k – ₹50k"
-              priceUSD="$250 – $600"
-              desc="End-to-end AI systems — voice agents, multi-model orchestration, SaaS MVPs, enterprise pipelines."
-              features={["Full system architecture", "Delivered in 2–4 weeks", "Unlimited revisions in scope", "Priority async support", "60-day bug support"]}
-              cta="Build Something Premium"
-              color="amber"
-            />
-          </div>
-          <div className="grid md:grid-cols-2 gap-6 mt-6">
-            <PricingCard
-              tier="Custom Scaling / High-Volume"
-              priceINR="₹50,000+"
-              priceUSD="$600+"
-              desc="Enterprise architecture, multi-department automation, complex ERP integrations, or full autonomous business pipelines."
-              features={["Scoped after discovery call", "Dedicated build timeline", "Full architecture ownership", "Ongoing async support"]}
-              cta="Request Custom Scope"
-              color="cyan"
-              wide
-            />
-            <PricingCard
-              tier="Monthly Retainer / Fractional CTO"
-              priceINR="Open for discussion"
-              priceUSD=""
-              desc="Ongoing builds, maintenance, new feature additions, and strategic AI advisory — on a monthly basis."
-              features={["Weekly async check-ins", "Priority queue on all requests", "Architecture reviews", "Roadmap planning"]}
-              cta="Discuss Retainer"
-              color="amber"
-              wide
-            />
-          </div>
-          <div className="mt-10 text-center font-mono text-xs text-text-muted tracking-widest">
-            All prices are project-based, not hourly. Scope is agreed before any work begins.
-          </div>
-        </motion.section>
+        <ReceiptPricingSection />
 
         {/* 05. GITHUB */}
         <motion.section 
@@ -1867,63 +1801,216 @@ function ServiceCard({ icon, title, outcome, desc, tags, color }: {
   );
 }
 
-function PricingCard({ tier, priceINR, priceUSD, desc, features, cta, color, popular, wide }: {
-  tier: string;
-  priceINR: string;
-  priceUSD: string;
-  desc: string;
-  features: string[];
-  cta: string;
-  color: 'cyan' | 'amber' | 'muted';
-  popular?: boolean;
-  wide?: boolean;
+// ─── Receipt Printer Pricing ──────────────────────────────────────────────────
+
+const RECEIPT_CARDS = [
+  {
+    tier: 'Professional Automation',
+    usd: 'Starts at $150',
+    inr: '₹12,000+',
+    color: 'cyan' as const,
+    features: [
+      'Multi-step workflows & CRM setups',
+      'Full error handling & logging',
+      '3–6 node workflow or AI agent',
+      'Documentation + handover call',
+      '30-day bug support',
+    ],
+    cta: 'Get Professional Build',
+    footerNote: "Need a micro-fix under $150? Let's discuss it.",
+  },
+  {
+    tier: 'Premium AI Integration',
+    usd: '$300 – $800',
+    inr: '₹25,000 – ₹65,000',
+    color: 'amber' as const,
+    popular: true,
+    features: [
+      'End-to-end AI systems',
+      'Multi-model orchestration',
+      'SaaS MVPs & enterprise pipelines',
+      'Full system architecture',
+      'Unlimited revisions in scope',
+      'Priority async support',
+      '60-day bug support',
+    ],
+    cta: 'Build Something Premium',
+  },
+  {
+    tier: 'Enterprise / Fractional CTO',
+    usd: 'Custom / Retainer',
+    inr: 'Open for discussion',
+    color: 'violet' as const,
+    features: [
+      'Full architecture ownership',
+      'Multi-department automation',
+      'Ongoing async support',
+      'Weekly strategic check-ins',
+      'Architecture reviews',
+      'Roadmap planning',
+    ],
+    cta: 'Discuss Scope',
+  },
+];
+
+type ReceiptCardData = (typeof RECEIPT_CARDS)[0];
+
+function ReceiptCard({
+  card,
+  clipPct,
+  ctaOpacity,
+  ctaY,
+}: {
+  card: ReceiptCardData;
+  clipPct: MotionValue<number>;
+  ctaOpacity: MotionValue<number>;
+  ctaY: MotionValue<number>;
 }) {
-  const borderClass = color === 'cyan'
-    ? 'border-cyan/40 shadow-[0_0_30px_rgba(0,240,255,0.08)]'
-    : color === 'amber'
-    ? 'border-amber/40 shadow-[0_0_30px_rgba(245,166,35,0.08)]'
-    : 'border-white/10';
-  const priceColor = color === 'cyan' ? 'text-cyan' : color === 'amber' ? 'text-amber' : 'text-text-main';
-  const btnClass = color === 'cyan'
-    ? 'border-cyan text-cyan hover:bg-cyan hover:text-bg'
-    : color === 'amber'
-    ? 'border-amber text-amber hover:bg-amber hover:text-bg'
-    : 'border-white/20 text-text-muted hover:border-white/40 hover:text-white';
+  const clipPath    = useTransform(clipPct, v => `inset(0 0 ${v.toFixed(1)}% 0)`);
+  const lineTop     = useTransform(clipPct, v => `${(100 - v).toFixed(1)}%`);
+  const lineOpacity = useTransform(clipPct, [0, 4, 96, 100], [0, 1, 1, 0]);
+
+  const c = card.color;
+  const borderCls  = c === 'cyan'   ? 'border-cyan/40'      : c === 'amber' ? 'border-amber/40'      : 'border-violet-400/40';
+  const ringCls    = c === 'cyan'   ? 'ring-cyan/25'         : c === 'amber' ? 'ring-amber/25'         : 'ring-violet-400/25';
+  const textCls    = c === 'cyan'   ? 'text-cyan'            : c === 'amber' ? 'text-amber'            : 'text-violet-400';
+  const dividerCls = c === 'cyan'   ? 'bg-cyan/20'           : c === 'amber' ? 'bg-amber/20'           : 'bg-violet-400/20';
+  const lineCls    = c === 'cyan'
+    ? 'bg-cyan shadow-[0_0_6px_#00f0ff,0_0_16px_rgba(0,240,255,0.4)]'
+    : c === 'amber'
+    ? 'bg-amber shadow-[0_0_6px_#f5a623,0_0_16px_rgba(245,166,35,0.4)]'
+    : 'bg-violet-400 shadow-[0_0_6px_#a78bfa,0_0_16px_rgba(167,139,250,0.4)]';
+  const btnCls     = c === 'cyan'
+    ? 'border-cyan text-cyan hover:bg-cyan hover:text-bg shadow-[0_0_14px_rgba(0,240,255,0.15)]'
+    : c === 'amber'
+    ? 'border-amber text-amber hover:bg-amber hover:text-bg shadow-[0_0_14px_rgba(245,166,35,0.15)]'
+    : 'border-violet-400 text-violet-400 hover:bg-violet-400 hover:text-bg shadow-[0_0_14px_rgba(167,139,250,0.15)]';
+  const popularBg  = c === 'amber' ? 'bg-amber text-bg' : 'bg-cyan text-bg';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      viewport={{ once: true, margin: '-60px' }}
-      className={`relative bg-panel border ${borderClass} rounded-xl p-6 flex flex-col ${popular ? 'ring-1 ring-cyan/30' : ''}`}
+    <div
+      className={`relative flex flex-col bg-panel border ${borderCls} rounded-xl overflow-hidden
+        shadow-[0_14px_44px_rgba(0,0,0,0.65),0_3px_10px_rgba(0,0,0,0.45)]
+        ${card.popular ? `ring-1 ${ringCls}` : ''}`}
     >
-      {popular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest bg-cyan text-bg px-4 py-1 rounded-full">
+      {card.popular && (
+        <div className={`absolute -top-3 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest ${popularBg} px-4 py-1 rounded-full z-10`}>
           Most Popular
         </div>
       )}
-      <h4 className="text-base font-bold mb-2">{tier}</h4>
-      <div className={`font-mono font-bold text-2xl mb-1 ${priceColor}`}>{priceINR}</div>
-      {priceUSD && <div className="font-mono text-xs text-text-muted mb-4">{priceUSD}</div>}
-      <p className="text-text-muted text-sm leading-relaxed mb-6">{desc}</p>
-      <ul className="space-y-2 mb-8 flex-1">
-        {features.map((f, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-text-main">
-            <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${priceColor}`} />
-            {f}
-          </li>
-        ))}
-      </ul>
-      <button
-        onClick={() => {
-          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-        }}
-        className={`w-full font-mono text-xs uppercase tracking-widest border py-3 transition-all duration-300 ${btnClass}`}
+
+      {/* ── HEADER — always visible ── */}
+      <div className="p-6 pb-4">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-3">{card.tier}</p>
+        <h2 className={`font-sans font-bold text-3xl leading-tight ${textCls}`}>{card.usd}</h2>
+        <span className="font-mono text-sm text-text-muted block mt-1">{card.inr}</span>
+      </div>
+
+      {/* paper edge divider */}
+      <div className={`h-px mx-6 ${dividerCls}`} />
+
+      {/* ── RECEIPT BODY — scroll-printed ── */}
+      <div className="relative flex-1">
+        <motion.div style={{ clipPath }} className="px-6 pt-4 overflow-hidden">
+          <ul className="space-y-2.5 pb-6">
+            {card.features.map((f, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-sm text-text-main font-mono">
+                <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${textCls}`} />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+
+        {/* glowing print line at the clip boundary */}
+        <motion.div
+          className={`absolute left-4 right-4 h-px pointer-events-none ${lineCls}`}
+          style={{ top: lineTop, opacity: lineOpacity }}
+        />
+      </div>
+
+      {/* ── CTA — pops in when fully printed ── */}
+      <motion.div style={{ opacity: ctaOpacity, y: ctaY }} className="px-6 pb-6 pt-2">
+        <button
+          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          className={`w-full font-mono text-xs uppercase tracking-widest border py-3 transition-all duration-300 rounded ${btnCls}`}
+        >
+          {card.cta}
+        </button>
+        {card.footerNote && (
+          <p className="text-center text-[11px] text-text-muted mt-2.5 font-mono leading-snug">{card.footerNote}</p>
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
+function ReceiptPricingSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
+  const smoothP = useSpring(scrollYProgress, { stiffness: 200, damping: 50, restDelta: 0.001 });
+
+  // desktop scroll-driven values
+  const clipPct    = useTransform(smoothP, [0.08, 0.76], [100, 0]);
+  const ctaOpacity = useTransform(smoothP, [0.75, 0.91], [0, 1]);
+  const ctaY       = useTransform(smoothP, [0.75, 0.91], [14, 0]);
+
+  // mobile static values — show everything immediately
+  const zeroClip   = useMotionValue(0);
+  const oneCta     = useMotionValue(1);
+  const zeroCtaY   = useMotionValue(0);
+
+  const activeClip    = isMobile ? zeroClip   : clipPct;
+  const activeCtaOp   = isMobile ? oneCta     : ctaOpacity;
+  const activeCtaY    = isMobile ? zeroCtaY   : ctaY;
+
+  return (
+    <section
+      id="pricing"
+      ref={containerRef}
+      style={isMobile ? undefined : { height: '185vh', position: 'relative' }}
+      className={isMobile ? 'pt-16 md:pt-32' : ''}
+    >
+      <div
+        style={isMobile ? undefined : { position: 'sticky', top: '72px' }}
+        className={isMobile ? '' : 'pt-16 md:pt-20 pb-16'}
       >
-        {cta}
-      </button>
-    </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <SectionHeader number="04" command="> ./pricing --transparent" title="Pricing" />
+          <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
+            No hidden rates. No surprise scope creep. Pick the tier that fits — or tell me what you need and I&apos;ll tell you which applies.
+          </p>
+          {!isMobile && (
+            <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2">
+              <span className="text-cyan animate-pulse">▼</span> scroll to print pricing
+            </p>
+          )}
+        </motion.div>
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {RECEIPT_CARDS.map((card, i) => (
+            <ReceiptCard
+              key={i}
+              card={card}
+              clipPct={activeClip}
+              ctaOpacity={activeCtaOp}
+              ctaY={activeCtaY}
+            />
+          ))}
+        </div>
+
+        <p className="mt-10 text-center font-mono text-xs text-text-muted tracking-widest">
+          All prices are project-based, not hourly. Scope is agreed before any work begins.
+        </p>
+      </div>
+    </section>
   );
 }
 
