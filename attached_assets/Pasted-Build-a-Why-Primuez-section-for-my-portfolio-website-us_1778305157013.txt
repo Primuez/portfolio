@@ -1,0 +1,26 @@
+Build a "Why Primuez?" section for my portfolio website using HTML, CSS, and GSAP ScrollTrigger with a Split-Panel Asymmetric Scroll animation.
+
+Content for the section:
+Left Panel titles (in order):
+1. We Ship, Not Just Plan
+2. Automation-First Thinking
+3. Certified & Self-Taught
+4. Young, Hungry & Agile
+
+Right Panel detail cards (matching order):
+1. Real products. Live URLs. InkTwin and PrimuezSure aren't concepts on a slide deck — they're deployed, working SaaS tools built by a solo developer from Raipur.
+2. Every solution starts with: what can be automated? Powered by n8n, LLMs, autonomous agents, and custom API pipelines — we remove the manual work before it becomes your problem.
+3. n8n Official Badge Holder. SimpliLearn Certified. But more importantly — everything here was built by doing, not just studying.
+4. Still in college, already running a SaaS brand. Zero bureaucratic red tape. That means faster turnaround, lower overhead, and direct access to the architect.
+
+Animation Requirements:
+1. Split screen into two vertical halves (50vw each) on desktop. Stack vertically on mobile.
+2. Left Panel holds the short punchy titles. Right Panel holds the detail cards.
+3. Asymmetric scroll: as the user scrolls down, Right Panel cards move UP into view. Left Panel titles move DOWN into view. Both meet and lock at the vertical center of the screen simultaneously.
+4. Use CSS clip-path reveal so text unmasks itself as both sides lock into center — like two puzzle pieces snapping together.
+5. Add smooth opacity fade (0 to 1) as each pair locks in.
+6. Scroll snapping should feel tight — each title/card pair snaps cleanly before the next begins.
+7. Mobile Fallback: On screens under 768px, disable the asymmetric scroll and stack the title and detail cards in standard vertical view with a simple fade-up-on-scroll animation.
+8. Color scheme: dark background (#0a0a0a), white titles on left, light gray card text on right, single accent color #6366f1 (indigo) for the lock-in line that appears when both sides meet.
+9. Font: use Inter from Google Fonts.
+10. Ensure GSAP and ScrollTrigger are loaded via CDN and the JavaScript logic is clearly separated or placed at the bottom of the body.
