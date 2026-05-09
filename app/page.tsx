@@ -1859,7 +1859,7 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
           /* Mobile: each card fades+slides in as user scrolls — simpler but still smooth */
           <div className="grid grid-cols-1 gap-6 mt-8">
             {SERVICES_DATA.map((s, i) => (
-              <MobileServiceCard key={i} card={s} index={i} />
+              <MobileServiceCard key={i} card={s} />
             ))}
           </div>
         )}
@@ -1879,18 +1879,61 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
   );
 }
 
-function MobileServiceCard({ card, index }: { card: (typeof SERVICES_DATA)[0]; index: number }) {
-  const ref    = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-15% 0px -15% 0px' });
+function MobileServiceCard({ card }: { card: (typeof SERVICES_DATA)[0] }) {
+  const scanEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.7, delay: 0, ease: [0.22, 1, 0.36, 1] }}
+      className="relative"
+      whileInView="visible"
+      initial="hidden"
+      viewport={{ margin: '-22% 0px -22% 0px', once: true }}
     >
-      <RenderedCard {...card} />
+      {/* ── Bottom layer: Wireframe blueprint ── */}
+      <div className="flex flex-col p-6 rounded-xl border-2 border-dashed border-[#333] bg-transparent min-h-[260px]">
+        <div className="text-3xl mb-4 grayscale opacity-40">{card.icon}</div>
+        <h4 className="text-base font-bold mb-1 text-[#666]">{card.title}</h4>
+        <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#555]">→ {card.outcome}</p>
+        <p className="text-[#444] text-sm leading-relaxed mb-6 flex-1">{card.desc}</p>
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {card.tags.map((tag, i) => (
+            <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-[#333] text-[#555] bg-transparent">{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Top layer: Rendered card, revealed by clip-path scan ── */}
+      <motion.div
+        className="absolute inset-0 flex flex-col p-6 rounded-xl border border-cyan/20 bg-[#12161E] min-h-[260px] shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
+        variants={{
+          hidden:  { clipPath: 'inset(0 0 100% 0)' },
+          visible: { clipPath: 'inset(0 0 0% 0)' },
+        }}
+        transition={{ duration: 1.1, ease: scanEase }}
+      >
+        <div className="text-3xl mb-4">{card.icon}</div>
+        <h4 className="text-base font-bold mb-1 text-white">{card.title}</h4>
+        <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#00FFCC]">→ {card.outcome}</p>
+        <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{card.desc}</p>
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {card.tags.map((tag, i) => (
+            <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/25 text-cyan bg-cyan/5">{tag}</span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── Laser line: sweeps from top to bottom in sync with the reveal ── */}
+      <motion.div
+        className="absolute left-0 right-0 pointer-events-none z-10"
+        variants={{
+          hidden:  { top: '0%' },
+          visible: { top: '100%' },
+        }}
+        transition={{ duration: 1.1, ease: scanEase }}
+      >
+        <div className="w-full h-[2px] bg-[#00FFCC]"
+          style={{ boxShadow: '0 0 15px #00FFCC, 0 0 30px rgba(0,255,204,0.5)' }} />
+      </motion.div>
     </motion.div>
   );
 }

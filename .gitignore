@@ -3,6 +3,7 @@ node_modules/
 coverage/
 .DS_Store
 *.log
-.env*
-!.env.example
+# !.env.example # Removed by Orchids to allow .env files
 .dyad/
+node_modules
+.venv
