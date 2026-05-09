@@ -56,11 +56,14 @@ export default function Home() {
   const [loadingRepos, setLoadingRepos] = useState(true);
 
   useEffect(() => {
-    // Ensure the page boots at the very top.
+    // Ensure the page boots at the very top, clearing any hash the browser may have jumped to.
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-    window.scrollTo(0, 0);
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);

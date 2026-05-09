@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${spaceMono.variable} ${syne.variable} scroll-smooth`}>
+    <html lang="en" className={`${spaceMono.variable} ${syne.variable}`}>
       <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e0e0e0] font-sans antialiased selection:bg-[#00f0ff] selection:text-[#0a0a0f] overflow-x-hidden">
         {children}
       </body>
