@@ -1,0 +1,37 @@
+"I am building a <section id='faq-decryption'> for my AI portfolio. I want a highly premium 'Quantum Decryption' effect using HTML, CSS, custom JavaScript, and GSAP (with ScrollTrigger). The scrolling animation MUST feel 'sexy' and perfectly optimized for BOTH mobile touch-scrolling and desktop mouse-scrolling.
+
+Follow these strict architectural requirements:
+
+1. The Layout & Typography:
+
+Build a sleek, minimalist FAQ list. Use standard CSS to ensure it looks perfectly readable in its default state.
+
+Hide the answers by default. Do NOT use standard CSS transitions for the height; we will handle the reveal with JS.
+
+2. The Velocity-Linked Scroll Glitch (The 'Sexy' Part):
+
+Use ScrollTrigger.getVelocity() to track how fast the user is scrolling through this specific section.
+
+Bind this velocity to a custom CSS glitch effect applied to the entire FAQ container.
+
+The Effect: As scroll speed increases, dynamically increase an RGB-split text-shadow (cyan and red pulling apart) and apply a slight transform: skewX() to the FAQ container.
+
+The Snap: The moment the scrolling stops (velocity hits 0), use GSAP with a snappy ease (e.g., ease: "elastic.out(1, 0.3)") to instantly snap the text back to a perfect, readable, un-glitched state.
+
+3. Mobile vs. Desktop Handling (gsap.matchMedia):
+
+Use gsap.matchMedia() to split the logic.
+
+Desktop (Hover): When hovering over a question, apply a subtle, continuous scramble effect to the question text (swapping 1 or 2 letters with random binary/ASCII characters) to indicate interactivity.
+
+Mobile (Touch): Strictly DISABLE all hover states to prevent the 'sticky hover' bug on iOS/Android. The glitch should ONLY trigger on physical scroll velocity or a direct tap.
+
+4. The Decryption Reveal (The Click/Tap):
+
+When a question is clicked/tapped, expand the answer container smoothly.
+
+Instead of the text just appearing, run a 'Decryption' JavaScript function.
+
+The answer text should initially render as a block of randomized symbols (e.g., < > / * & # 0 1).
+
+Over a duration of 1.2 seconds, rapidly iterate through the string, swapping the random symbols out for the actual correct letters from left to right, ending in the perfectly readable answer."
