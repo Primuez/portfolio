@@ -1,0 +1,72 @@
+"I am building the pricing section (<section id='pricing'>) for my AI Automation portfolio. You have no previous context, so please write the complete HTML, CSS, and JavaScript from scratch. I am using a dark-mode aesthetic with neon accents.
+
+TECH STACK: HTML, CSS, JavaScript, GSAP, and the ScrollTrigger plugin.
+
+1. THE CONTENT & LAYOUT:
+Create a CSS Grid layout. The top row should have a 3-column grid for standard projects. Below that, create a 1-column, full-width card for the retainer. The primary price must be in USD (Large, bold), and the INR price underneath (Smaller, muted).
+
+Top Row (3 Columns):
+
+Card 1: Professional Automation
+
+Price: <h2 class="price-usd">Starts at $150</h2> | <span class="price-inr">₹12,000+</span>
+
+Features: Multi-step workflows & CRM setups, Full error handling & logging, 3-6 node workflow or AI agent.
+
+Button: 'Get Professional Build'
+
+Footer Note: 'Need a micro-fix under $150? Let's discuss it.'
+
+Card 2: Premium AI Integration (MUST HAVE BADGE)
+
+BADGE: Add a 'MOST POPULAR' badge overlapping the top border. Give it a solid, bright cyan (#00FFCC) background with dark, bold text.
+
+Price: <h2 class="price-usd">$300 - $800</h2> | <span class="price-inr">₹25,000 - ₹65,000</span>
+
+Features: End-to-end AI systems, Multi-model orchestration, SaaS MVPs.
+
+Button: 'Build Something Premium'
+
+Card 3: Advanced Enterprise Systems
+
+Price: <h2 class="price-usd">Up to $1,000</h2> | <span class="price-inr">₹75,000 - ₹1,00,000+</span>
+
+Features: Complex architectures, Full architecture ownership, Multi-department automation.
+
+Button: 'Discuss Scope'
+
+Bottom Row (Full Width 'VIP' Card):
+
+Card 4: Monthly Retainer / Fractional CTO
+
+Price: <h2 class="price-usd">Open for discussion</h2> | <span class="price-inr">Custom Retainer</span>
+
+Features: Display features in a 3-column flex row inside this wide card: 'Ongoing async support', 'Weekly strategic check-ins', 'Roadmap planning'.
+
+Button: 'Discuss Retainer'
+
+2. CSS STYLING:
+
+Dark background (#0A0A0E).
+
+Cards should have thin, subtle borders that glow slightly with their respective tier colors on hover.
+
+Use a monospace or highly technical sans-serif font for the numbers.
+
+On Mobile, stack all 4 cards vertically.
+
+3. THE BUTTERY-SMOOTH 'RECEIPT PRINTER' ANIMATION (GSAP):
+
+Initial State: Only the headers of all 4 cards (Title, USD Price, INR Price) should be visible. The 'body' (features list and button) must be hidden.
+
+Crucial Performance Fix: Do NOT animate height. Use CSS clip-path: inset(0 0 100% 0) on the card body to hide it.
+
+The Scroll Interaction: Use GSAP ScrollTrigger to animate the clip-path to inset(0 0 0% 0) as the user scrolls, effectively 'unrolling' the receipt downwards.
+
+Smoothness: Add scrub: 1 to the ScrollTrigger to make the animation feel incredibly smooth.
+
+4. MOBILE ANIMATION FIX (gsap.matchMedia):
+
+On Desktop: Unroll the top 3 cards simultaneously as the user scrolls. As they scroll further down, unroll the bottom full-width Retainer card.
+
+On Mobile: Create a separate ScrollTrigger for each individual card. As the user swipes down, each card should unroll sequentially when it hits the center of the screen."
