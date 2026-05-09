@@ -2014,15 +2014,15 @@ function WhyPrimuezSlide({
 }) {
   const start = index / total;
   const end = (index + 1) / total;
-  const inEnd = start + (end - start) * 0.35;
-  const outStart = start + (end - start) * 0.65;
+  const inEnd = start + (end - start) * 0.40;
+  const outStart = start + (end - start) * 0.60;
 
   const isFirst = index === 0;
   const opacityInput  = isFirst ? [outStart, end]         : [start, inEnd, outStart, end];
   const opacityOutput = isFirst ? [1, 0]                  : [0, 1, 1, 0];
   const opacity    = useTransform(scrollYProgress, opacityInput,  opacityOutput);
-  const leftY      = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [-80, 0]);
-  const rightY     = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [80, 0]);
+  const leftY      = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [-50, 0]);
+  const rightY     = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [50, 0]);
   const leftClip   = useTransform(scrollYProgress, [start, inEnd], isFirst ? ['inset(0 0 0% 0)', 'inset(0 0 0% 0)'] : ['inset(0 0 110% 0)', 'inset(0 0 0% 0)']);
   const rightClip  = useTransform(scrollYProgress, [start, inEnd], isFirst ? ['inset(0% 0 0 0)', 'inset(0% 0 0 0)'] : ['inset(110% 0 0 0)', 'inset(0% 0 0 0)']);
   const lineScaleY = useTransform(scrollYProgress, isFirst ? [start, outStart, end] : [start, inEnd, outStart, end], isFirst ? [1, 1, 0] : [0, 1, 1, 0]);
@@ -2069,7 +2069,7 @@ function WhyPrimuez() {
     target: containerRef,
     offset: ['start start', 'end end'],
   });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 70, damping: 18 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 180, damping: 45, restDelta: 0.001 });
 
   if (isMobile) {
     return (
