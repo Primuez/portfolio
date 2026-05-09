@@ -423,77 +423,7 @@ export default function Home() {
         </motion.section>
 
         {/* 03. SERVICES */}
-        <motion.section
-          id="services"
-          className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <SectionHeader number="03" command="> ./services --what-i-build-for-you" title="What I Build For You" />
-          <p className="text-text-muted mt-4 mb-12 max-w-2xl text-base leading-relaxed">
-            Every service below ships as a working system — not a prototype, not a template. You describe the outcome you need; I design, build, and hand it over ready to run.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ServiceCard
-              icon="⚙️"
-              title="n8n Workflow Automation"
-              outcome="Your manual processes run themselves"
-              desc="Custom n8n workflows that automate lead capture, CRM injection, email sequences, GST reconciliation, WhatsApp outreach — whatever you're doing by hand today."
-              tags={["n8n", "Webhooks", "API Chains", "Scheduling"]}
-              color="cyan"
-            />
-            <ServiceCard
-              icon="🎙️"
-              title="Voice AI Agents"
-              outcome="An agent that listens, reasons & acts"
-              desc="Voice-first AI agents that go beyond talking — they execute multi-step tasks across your stack while your hands stay free. Deployable to WhatsApp, web, or phone."
-              tags={["Voice AI", "LLM", "n8n", "Real-Time"]}
-              color="amber"
-            />
-            <ServiceCard
-              icon="🔗"
-              title="Custom API Integration"
-              outcome="Any system connected to any other"
-              desc="ERP ↔ CRM ↔ WhatsApp ↔ payment gateway ↔ government portals. If there's an API or webhook, I can wire it into your workflow with full error handling and fallback logic."
-              tags={["REST APIs", "Webhooks", "OAuth", "Odoo", "IndiaMART"]}
-              color="cyan"
-            />
-            <ServiceCard
-              icon="🎵"
-              title="AI Music Generation"
-              outcome="Original tracks on demand, zero licensing fees"
-              desc="Automated music generation pipelines via Suno — jingles, background scores, brand tracks, YouTube intros. Fully automated, batch-ready, and copyright-clean."
-              tags={["Suno", "AI Audio", "Automation", "Content"]}
-              color="amber"
-            />
-            <ServiceCard
-              icon="🎬"
-              title="AI Video / Movie Clips"
-              outcome="UGC-style ad creatives at scale"
-              desc="AI-generated video clips for ads, product demos, and social content. UGC-style scripts, voiceovers, and visuals — all automated and batch-produced."
-              tags={["UGC Ads", "AI Video", "Content Automation"]}
-              color="cyan"
-            />
-            <ServiceCard
-              icon="🚀"
-              title="SaaS MVP Build"
-              outcome="A working product your users can log into"
-              desc="Full-stack SaaS products built on Cloudflare Workers — fast, globally deployed, no server bills. From idea to live URL. InkTwin and PrimuezSure are examples of what ships."
-              tags={["Next.js", "Cloudflare Workers", "AI", "Full-Stack"]}
-              color="amber"
-            />
-          </div>
-          <div className="mt-10 text-center">
-            <p className="font-mono text-xs text-text-muted tracking-widest mb-4">[ NOT SURE WHICH ONE YOU NEED? ]</p>
-            <button
-              onClick={() => setModalType('form')}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-cyan text-cyan font-mono text-sm uppercase tracking-widest hover:bg-cyan/10 transition-all duration-300"
-            >
-              Describe your project → I'll figure out the rest
-            </button>
-          </div>
-        </motion.section>
+        <BlueprintServicesSection onWorkWithMe={() => setModalType('form')} />
 
         {/* WHY PRIMUEZ */}
         <section id="why-primuez" className="pt-16 md:pt-32">
@@ -1763,6 +1693,205 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode, label: strin
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-cyan/30"></div>
       </span>
     </a>
+  );
+}
+
+// ─── Blueprint to Reality Scanner — Services ──────────────────────────────────
+
+const SERVICES_DATA = [
+  {
+    icon: '⚙️',
+    title: 'n8n Workflow Automation',
+    outcome: 'Your manual processes run themselves',
+    desc: "Custom n8n workflows that automate lead capture, CRM injection, email sequences, GST reconciliation, WhatsApp outreach — whatever you're doing by hand today.",
+    tags: ['n8n', 'Webhooks', 'API Chains', 'Scheduling'],
+  },
+  {
+    icon: '🎙️',
+    title: 'Voice AI Agents',
+    outcome: 'An agent that listens, reasons & acts',
+    desc: 'Voice-first AI agents that go beyond talking — they execute multi-step tasks across your stack while your hands stay free. Deployable to WhatsApp, web, or phone.',
+    tags: ['Voice AI', 'LLM', 'n8n', 'Real-Time'],
+  },
+  {
+    icon: '🔗',
+    title: 'Custom API Integration',
+    outcome: 'Any system connected to any other',
+    desc: 'ERP ↔ CRM ↔ WhatsApp ↔ payment gateway ↔ government portals. If there\'s an API or webhook, I can wire it into your workflow with full error handling and fallback logic.',
+    tags: ['REST APIs', 'Webhooks', 'OAuth', 'Odoo', 'IndiaMART'],
+  },
+  {
+    icon: '🎵',
+    title: 'AI Music Generation',
+    outcome: 'Original tracks on demand, zero licensing fees',
+    desc: 'Automated music generation pipelines via Suno — jingles, background scores, brand tracks, YouTube intros. Fully automated, batch-ready, and copyright-clean.',
+    tags: ['Suno', 'AI Audio', 'Automation', 'Content'],
+  },
+  {
+    icon: '🎬',
+    title: 'AI Video / Movie Clips',
+    outcome: 'UGC-style ad creatives at scale',
+    desc: 'AI-generated video clips for ads, product demos, and social content. UGC-style scripts, voiceovers, and visuals — all automated and batch-produced.',
+    tags: ['UGC Ads', 'AI Video', 'Content Automation'],
+  },
+  {
+    icon: '🚀',
+    title: 'SaaS MVP Build',
+    outcome: 'A working product your users can log into',
+    desc: 'Full-stack SaaS products built on Cloudflare Workers — fast, globally deployed, no server bills. From idea to live URL. InkTwin and PrimuezSure are examples of what ships.',
+    tags: ['Next.js', 'Cloudflare Workers', 'AI', 'Full-Stack'],
+  },
+];
+
+function WireframeCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DATA)[0]) {
+  return (
+    <div className="flex flex-col p-6 rounded-xl border-2 border-dashed border-[#333] bg-transparent min-h-[260px]">
+      <div className="text-3xl mb-4 grayscale opacity-40">{icon}</div>
+      <h4 className="text-base font-bold mb-1 text-[#555]">{title}</h4>
+      <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#444]">→ {outcome}</p>
+      <p className="text-[#3a3a3a] text-sm leading-relaxed mb-6 flex-1">{desc}</p>
+      <div className="flex flex-wrap gap-2 mt-auto">
+        {tags.map((tag, i) => (
+          <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-[#333] text-[#444] bg-transparent">{tag}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RenderedCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DATA)[0]) {
+  return (
+    <div className="flex flex-col p-6 rounded-xl border border-cyan/20 bg-[#12161E] min-h-[260px]
+      shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
+      <div className="text-3xl mb-4">{icon}</div>
+      <h4 className="text-base font-bold mb-1 text-white">{title}</h4>
+      <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#00FFCC]">→ {outcome}</p>
+      <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{desc}</p>
+      <div className="flex flex-wrap gap-2 mt-auto">
+        {tags.map((tag, i) => (
+          <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/25 text-cyan bg-cyan/5">{tag}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile     = useIsMobile();
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // scrub: smooth lag (equivalent to GSAP scrub: 1)
+  const smoothP = useSpring(scrollYProgress, { stiffness: 55, damping: 18, restDelta: 0.001 });
+
+  // clipBottom: 100 → 0 as user scrolls through section
+  const clipBottom  = useTransform(smoothP, [0.04, 0.88], [100, 0]);
+  const clipPath    = useTransform(clipBottom, v => `inset(0 0 ${v.toFixed(2)}% 0)`);
+
+  // laser sits right at the clip boundary
+  const laserTop    = useTransform(clipBottom, v => `${(100 - v).toFixed(2)}%`);
+  const laserOpacity= useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
+
+  // section height: desktop ~280vh gives plenty of scroll room through 2 card rows
+  // mobile ~380vh gives room for the taller 1-column stacked grid
+  const sectionHeight = isMobile ? '420vh' : '290vh';
+
+  return (
+    <section
+      id="services"
+      ref={containerRef}
+      style={isMobile ? undefined : { height: sectionHeight, position: 'relative' }}
+      className={isMobile ? 'pt-16' : ''}
+    >
+      <div
+        style={isMobile ? undefined : { position: 'sticky', top: '72px' }}
+        className={isMobile ? '' : 'pt-16 md:pt-20 pb-16'}
+      >
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <SectionHeader number="03" command="> ./services --what-i-build-for-you" title="What I Build For You" />
+          <p className="text-text-muted mt-4 mb-3 max-w-2xl text-base leading-relaxed">
+            Every service below ships as a working system — not a prototype, not a template. You describe the outcome you need; I design, build, and hand it over ready to run.
+          </p>
+          {!isMobile && (
+            <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2">
+              <span className="text-[#00FFCC] animate-pulse">▼</span> scroll to scan services
+            </p>
+          )}
+        </motion.div>
+
+        {/* ── Blueprint Scanner Grid ── */}
+        {!isMobile ? (
+          /* Desktop: scroll-driven laser scanner */
+          <div className="relative" style={{ position: 'relative' }}>
+            {/* Bottom layer — wireframe blueprint */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {SERVICES_DATA.map((s, i) => <WireframeCard key={i} {...s} />)}
+            </div>
+
+            {/* Top layer — rendered, clipped by laser */}
+            <motion.div
+              className="absolute inset-0 grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+              style={{ clipPath }}
+            >
+              {SERVICES_DATA.map((s, i) => <RenderedCard key={i} {...s} />)}
+            </motion.div>
+
+            {/* Glowing laser line */}
+            <motion.div
+              className="absolute left-0 right-0 pointer-events-none z-10"
+              style={{ top: laserTop, opacity: laserOpacity }}
+            >
+              <div className="w-full h-[2px] bg-[#00FFCC]
+                shadow-[0_0_8px_#00FFCC,0_0_20px_#00FFCC,0_0_40px_rgba(0,255,204,0.6)]" />
+            </motion.div>
+          </div>
+        ) : (
+          /* Mobile: each card fades+slides in as user scrolls — simpler but still smooth */
+          <div className="grid grid-cols-1 gap-6 mt-8">
+            {SERVICES_DATA.map((s, i) => (
+              <MobileServiceCard key={i} card={s} index={i} />
+            ))}
+          </div>
+        )}
+
+        {/* CTA */}
+        <div className="mt-10 text-center">
+          <p className="font-mono text-xs text-text-muted tracking-widest mb-4">[ NOT SURE WHICH ONE YOU NEED? ]</p>
+          <button
+            onClick={onWorkWithMe}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-cyan text-cyan font-mono text-sm uppercase tracking-widest hover:bg-cyan/10 transition-all duration-300"
+          >
+            Describe your project → I&apos;ll figure out the rest
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileServiceCard({ card, index }: { card: (typeof SERVICES_DATA)[0]; index: number }) {
+  const ref    = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-15% 0px -15% 0px' });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.7, delay: 0, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <RenderedCard {...card} />
+    </motion.div>
   );
 }
 

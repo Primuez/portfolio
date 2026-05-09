@@ -1,0 +1,40 @@
+I need to build my Services section (<section id='services-scan'>). You have no previous context, so write the HTML, CSS, JavaScript, and GSAP from scratch.
+
+The Animation Concept: 'Blueprint to Reality Scanner'
+I want two identical 3x2 CSS grids overlapping each other exactly. The bottom layer is a 'Wireframe' version. The top layer is the 'Fully Rendered' version. A glowing horizontal laser will move down the screen via scroll, unmasking the rendered version.
+
+1. THE CONTENT (Use this for all 6 cards in both layers):
+
+Card 1: Icon: ⚙️ | Title: n8n Workflow Automation | Sub: → Your manual processes run themselves | Desc: Custom n8n workflows that automate lead capture... | Tags: n8n, Webhooks, API Chains, Scheduling
+
+Card 2: Icon: 🎙️ | Title: Voice AI Agents | Sub: → An agent that listens, reasons & acts | Desc: Voice-first AI agents that go beyond talking... | Tags: Voice AI, LLM, n8n, Real-Time
+
+Card 3: Icon: 🔗 | Title: Custom API Integration | Sub: → Any system connected to any other | Desc: ERP ↔ CRM ↔ WhatsApp... | Tags: REST APIs, Webhooks, OAuth, Odoo, IndiaMART
+
+Card 4: Icon: 🎵 | Title: AI Music Generation | Sub: → Original tracks on demand... | Desc: Automated music generation pipelines via Suno... | Tags: Suno, AI Audio, Automation, Content
+
+Card 5: Icon: 🎬 | Title: AI Video / Movie Clips | Sub: → UGC-style ad creatives at scale | Desc: AI-generated video clips for ads, product demos... | Tags: UGC Ads, AI Video, Content Automation
+
+Card 6: Icon: 🚀 | Title: SaaS MVP Build | Sub: → A working product your users can log into | Desc: Full-stack SaaS products built on Cloudflare Workers... | Tags: Next.js, Cloudflare Workers, AI, Full-Stack
+
+2. CSS STYLING (The Two Layers):
+
+Base Setup: Create a position: relative wrapper. Inside, place .grid-wireframe and .grid-rendered on top of each other using position: absolute; top: 0; left: 0; width: 100%;. Both use CSS Grid (3 columns on Desktop, 1 column on Mobile).
+
+The Wireframe Layer (Bottom): Give the cards transparent backgrounds, 2px dashed #333 borders, and dull #666 gray text. Remove all box-shadows. It should look like an unfinished blueprint.
+
+The Rendered Layer (Top): Give the cards #12161E dark backgrounds, solid thin borders, bright white headings, and cyan (#00FFCC) glowing text for the Sub-titles. Make the tags look like pills with borders.
+
+3. THE LASER & MASK (GSAP ScrollTrigger):
+
+The Laser: Create a div that is a horizontal line (width: 100%; height: 2px; background: #00FFCC; box-shadow: 0 0 15px #00FFCC; position: absolute; z-index: 10;).
+
+The Setup: Hide the Rendered Layer entirely using clip-path: inset(0 0 100% 0).
+
+The Interaction: Bind the scroll progress to both the Laser and the Rendered Layer. As the user scrolls down through the section, move the Laser down the Y-axis from 0% to 100%.
+
+The Magic: Exactly synced with the Laser, animate the clip-path of the Rendered layer to inset(0 0 0% 0). This makes it look like the laser is leaving the finished UI in its wake as it scans downward. Use scrub: 1 for buttery smoothness.
+
+4. MOBILE HANDLING:
+
+Since the CSS Grid automatically stacks to 1 column on mobile, the exact same clip-path and laser logic will work flawlessly. The laser will just travel further down the long, single-column list as they swipe down.
