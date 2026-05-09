@@ -1103,7 +1103,17 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   const [collapsed, setCollapsed] = useState(false);
   const [reassembling, setReassembling] = useState(false);
   const [permanent, setPermanent] = useState(false);
+  const [copied, setCopied] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const copyRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('rahulkasturiya420@gmail.com').then(() => {
+      setCopied(true);
+      if (copyRef.current) clearTimeout(copyRef.current);
+      copyRef.current = setTimeout(() => setCopied(false), 2000);
+    });
+  };
   const isMobile = useIsMobile();
 
   const reassemble = () => {
@@ -1124,7 +1134,10 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
     setPermanent(true);
   };
 
-  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+  useEffect(() => () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (copyRef.current) clearTimeout(copyRef.current);
+  }, []);
   const xs = isMobile ? 0.45 : 1;
   const ys = isMobile ? 0.7 : 1;
 
@@ -1189,8 +1202,15 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
         <div className="mt-12 flex justify-center">
           <FallingPiece container={containerRef} collapsed={collapsed} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
-            <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2">
+            <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center">
               Or direct comm-link: <a href="mailto:rahulkasturiya420@gmail.com" className="text-amber hover:text-cyan transition-colors">rahulkasturiya420@gmail.com</a>
+              <button
+                onClick={copyEmail}
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
+                aria-label="Copy email address"
+              >
+                {copied ? '✓ copied' : 'copy'}
+              </button>
             </p>
           </FallingPiece>
         </div>
