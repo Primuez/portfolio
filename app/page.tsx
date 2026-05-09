@@ -1102,6 +1102,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(false);
   const [reassembling, setReassembling] = useState(false);
+  const [permanent, setPermanent] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMobile = useIsMobile();
 
@@ -1114,6 +1115,13 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       setCollapsed(true);
       setReassembling(false);
     }, 2800);
+  };
+
+  const reassemblePermanent = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setReassembling(false);
+    setCollapsed(false);
+    setPermanent(true);
   };
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
@@ -1141,7 +1149,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
     <motion.div
       ref={containerRef}
       className="relative min-h-[85vh] overflow-hidden"
-      onViewportEnter={() => setCollapsed(true)}
+      onViewportEnter={() => { if (!permanent) setCollapsed(true); }}
       viewport={{ amount: 0.4, once: true }}
     >
       <div className="text-center pt-12 pointer-events-none">
@@ -1200,21 +1208,33 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
 
       <AnimatePresence>
-        {collapsed && (
-          <motion.button
-            key="reassemble"
-            onClick={reassemble}
-            disabled={reassembling}
+        {collapsed && !permanent && (
+          <motion.div
+            key="reassemble-group"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ delay: 1.0, duration: 0.5 }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-6 md:bottom-10 z-[60] font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-cyan/40 bg-bg/70 backdrop-blur-sm text-cyan hover:bg-cyan hover:text-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center gap-2"
-            aria-label="Reassemble fallen elements"
+            className="absolute left-1/2 -translate-x-1/2 bottom-6 md:bottom-10 z-[60] flex flex-col items-center gap-2"
           >
-            <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
-            {reassembling ? '> rebuilding... gravity in 3s' : '> ./reassemble --gravity-off'}
-          </motion.button>
+            <button
+              onClick={reassemble}
+              disabled={reassembling}
+              className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-cyan/40 bg-bg/70 backdrop-blur-sm text-cyan hover:bg-cyan hover:text-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center gap-2"
+              aria-label="Reassemble fallen elements"
+            >
+              <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
+              {reassembling ? '> rebuilding... gravity in 3s' : '> ./reassemble --gravity-off'}
+            </button>
+            <button
+              onClick={reassemblePermanent}
+              className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-white/20 bg-bg/70 backdrop-blur-sm text-white/60 hover:border-white/50 hover:text-white transition-colors shadow-[0_0_20px_rgba(255,255,255,0.05)] flex items-center gap-2"
+              aria-label="Reassemble permanently"
+            >
+              <span className="inline-block w-2 h-2 rounded-full bg-white/40" />
+              &gt; ./reassemble --permanent
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
     </motion.div>
