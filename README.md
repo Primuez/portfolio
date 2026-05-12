@@ -9,7 +9,7 @@
 ## Overview
 This is the public repository for my personal portfolio website. I am an AI Developer and SaaS Entrepreneur specializing in autonomous AI agents, workflow automations (n8n), and robust AI SaaS platforms. 
 
-This repository serves as a live demonstration of my frontend architecture and design capabilities, showcasing the intersection of clean code and high-end web aesthetics.
+This repository serves as a live demonstration of my frontend architecture and design capabilities, showcasing the intersection of clean code, Next.js performance, and high-end web aesthetics.
 
 ## Design & Animations
 The UI/UX is built to stand out, featuring advanced, custom-built web animations:
@@ -20,14 +20,15 @@ The UI/UX is built to stand out, featuring advanced, custom-built web animations
 ## Featured SaaS Projects Highlighted
 While the proprietary code for these projects remains private, this portfolio highlights their mechanics:
 * **Ink Twin:** A BYOK 4-phase AI handwriting synthesis and homework automation platform.
-* **Primosure:** A B2B global RAG pipeline for insurance policy analysis, gap detection, and customized advisory.
-* **Autonomous AI Agents:** Including a custom AI news anchor integrating WhatsApp Business API, TTS, and LLM processing.
+* **PrimuezSure:** A B2B global RAG pipeline for insurance policy analysis, gap detection, and customized advisory.
+* **Autonomous AI Agents:** Custom workflow automations including an AI news anchor integrating the WhatsApp Business API, TTS, and LLM processing.
 
-## Tech Stack
-* **Frontend:** HTML5, CSS3, Vanilla JavaScript
+## Tech Stack & Deployment
+* **Framework:** Next.js
 * **Animation Engine:** GSAP (GreenSock Animation Platform) & ScrollTrigger
-* **Development Environment:** Replit
-* **Deployment:** Cloudflare
+* **Prototyping & Structure:** Built natively via Google AI Studio
+* **Development Environment:** Edited and refined in Replit
+* **Hosting & Infrastructure:** Deployed on Cloudflare for edge-network speed
 
 ## License & Usage Notification
 Copyright (c) 2026 Rahul Kasturiya. All Rights Reserved.
