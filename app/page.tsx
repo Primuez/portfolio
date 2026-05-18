@@ -12,6 +12,8 @@ import { StockChart } from '@/components/StockChart';
 import { YouTubeThumb } from '@/components/YouTubeThumb';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ShaderBackground } from '@/components/ShaderBackground';
+import { ShaderText, ShaderLogo, ShaderGlowLine } from '@/components/ShaderText';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -104,14 +106,16 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
-      {/* Blueprint animated background */}
-      <div className="fixed inset-0 z-0 bg-blueprint opacity-20 animate-grid"></div>
+      {/* Interactive WebGL shader background */}
+      <ShaderBackground />
+      {/* Blueprint animated grid overlay */}
+      <div className="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none"></div>
       
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
-            PRIMUEZ
+            <ShaderLogo>PRIMUEZ</ShaderLogo>
           </div>
           {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
@@ -202,7 +206,7 @@ export default function Home() {
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
               I Build Systems <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-cyan/80 to-amber/60">That Work For You.</span>
+              <ShaderText preset="chrome" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderText>
             </h1>
 
             <p className="text-text-muted text-lg md:text-xl max-w-2xl mb-12 leading-relaxed font-sans text-balance">
@@ -622,7 +626,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
-              <span className="font-mono text-cyan text-lg tracking-widest font-bold">PRIMUEZ</span>
+              <span className="font-mono text-cyan text-lg tracking-widest font-bold"><ShaderLogo>PRIMUEZ</ShaderLogo></span>
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
             </div>
             <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
@@ -1301,7 +1305,7 @@ type LiquidRepo = {
 function LiquidRepoGrid({ repos }: { repos: LiquidRepo[] }) {
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
-  const smoothV = useSpring(velocity, { stiffness: 180, damping: 40, mass: 0.6 });
+  const smoothV = useSpring(velocity, { stiffness: 100, damping: 35, mass: 0.8 });
 
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: '1400px' }}>
@@ -1324,25 +1328,26 @@ function LiquidRepoCard({
   const isMobile = useIsMobile();
   const col = index % 3;
   const colSign = col === 0 ? -1 : col === 2 ? 1 : 0;
-  const sensitivity = 1 + (index % 4) * 0.12;
+  const sensitivity = 1 + (index % 4) * 0.08;
 
+  // Apple-style: gentler distortion with smoother interpolation
   const skewY = useTransform(velocity, (v) => {
     if (isMobile) return '0deg';
-    const raw = (v / 220) * sensitivity;
-    return `${Math.max(-9, Math.min(9, raw))}deg`;
+    const raw = (v / 320) * sensitivity;
+    return `${Math.max(-6, Math.min(6, raw))}deg`;
   });
   const skewX = useTransform(velocity, (v) => {
     if (isMobile) return '0deg';
-    const raw = (v / 800) * colSign * sensitivity;
-    return `${Math.max(-3, Math.min(3, raw))}deg`;
+    const raw = (v / 1000) * colSign * sensitivity;
+    return `${Math.max(-2, Math.min(2, raw))}deg`;
   });
-  const scaleY = useTransform(velocity, (v) => isMobile ? 1 : 1 + Math.min(0.14, Math.abs(v) / 6500));
-  const scaleX = useTransform(velocity, (v) => isMobile ? 1 : 1 - Math.min(0.07, Math.abs(v) / 13000));
-  const filter = useTransform(velocity, (v) => isMobile ? 'blur(0px)' : `blur(${Math.min(3.5, Math.abs(v) / 700)}px)`);
+  const scaleY = useTransform(velocity, (v) => isMobile ? 1 : 1 + Math.min(0.08, Math.abs(v) / 8000));
+  const scaleX = useTransform(velocity, (v) => isMobile ? 1 : 1 - Math.min(0.04, Math.abs(v) / 16000));
+  const filter = useTransform(velocity, (v) => isMobile ? 'blur(0px)' : `blur(${Math.min(2, Math.abs(v) / 1000)}px)`);
   const rotateZ = useTransform(velocity, (v) => {
     if (isMobile) return '0deg';
-    const raw = (v / 1400) * colSign;
-    return `${Math.max(-2.2, Math.min(2.2, raw))}deg`;
+    const raw = (v / 1800) * colSign;
+    return `${Math.max(-1.5, Math.min(1.5, raw))}deg`;
   });
 
   return (
@@ -1351,7 +1356,11 @@ function LiquidRepoCard({
       target="_blank"
       rel="noopener noreferrer"
       style={{ skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }}
       className="bg-panel border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform"
     >
       <div>
@@ -1513,8 +1522,9 @@ function SectionHeader({ number, command, title, center = false }: { number: str
         viewport={{ once: true, margin: "-80px" }}
         className="text-3xl md:text-4xl font-bold text-white tracking-tight"
       >
-        {title}
+        <ShaderText preset="aurora">{title}</ShaderText>
       </motion.h2>
+      <ShaderGlowLine className="mt-3 max-w-[200px]" />
     </motion.div>
   );
 }
@@ -1529,54 +1539,61 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
     offset: ['start end', 'end start'],
   });
 
-  // Liquid glass scroll-driven transforms
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  const opacity = useTransform(smoothProgress, [0, 0.15, 0.5, 0.85, 1], [0.2, 1, 1, 1, 0.2]);
-  const scale = useTransform(smoothProgress, [0, 0.18, 0.5, 0.82, 1], [0.92, 1, 1, 1, 0.92]);
-  const rotateX = useTransform(smoothProgress, [0, 0.18, 0.5, 0.82, 1], [8, 0, 0, 0, -8]);
-  const y = useTransform(smoothProgress, [0, 0.18, 0.5, 0.82, 1], [80, 0, 0, 0, -80]);
-  const backdropBlur = useTransform(smoothProgress, [0, 0.2, 0.5, 0.8, 1], [12, 0, 0, 0, 12]);
-  const glassOpacity = useTransform(smoothProgress, [0, 0.25, 0.75, 1], [0, 0.7, 0.7, 0]);
+  // Apple-style liquid glass: smoother spring for buttery feel
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 25, restDelta: 0.0005 });
+  
+  // Gentler, more refined transforms (Apple prefers subtlety)
+  const opacity = useTransform(smoothProgress, [0, 0.12, 0.3, 0.7, 0.88, 1], [0, 0.6, 1, 1, 0.6, 0]);
+  const scale = useTransform(smoothProgress, [0, 0.15, 0.3, 0.7, 0.85, 1], [0.96, 0.98, 1, 1, 0.98, 0.96]);
+  const rotateX = useTransform(smoothProgress, [0, 0.2, 0.5, 0.8, 1], [4, 1, 0, -1, -4]);
+  const y = useTransform(smoothProgress, [0, 0.2, 0.5, 0.8, 1], [50, 12, 0, -12, -50]);
+  
+  // Glass backdrop effects: more nuanced
+  const backdropBlur = useTransform(smoothProgress, [0, 0.15, 0.3, 0.7, 0.85, 1], [8, 3, 0, 0, 3, 8]);
+  const glassOpacity = useTransform(smoothProgress, [0, 0.2, 0.35, 0.65, 0.8, 1], [0, 0.4, 0.8, 0.8, 0.4, 0]);
+  // Subtle horizontal shift for depth perception
+  const x = useTransform(smoothProgress, [0, 0.2, 0.5, 0.8, 1], [-8, -2, 0, 2, 8]);
   
   return (
     <motion.div 
       ref={ref}
-      className="mt-16 relative"
+      className="mt-16 relative liquid-glass-v2"
       style={{
         opacity,
         scale,
         rotateX,
         y,
-        perspective: '1200px',
+        x,
+        perspective: '1400px',
         transformStyle: 'preserve-3d',
       }}
     >
-      {/* Apple-style liquid glass backdrop glow */}
+      {/* Apple-style liquid glass backdrop glow — softer, larger */}
       <motion.div
-        className="absolute -inset-6 rounded-3xl pointer-events-none -z-10"
+        className="absolute -inset-8 rounded-3xl pointer-events-none -z-10"
         style={{
-          background: `radial-gradient(ellipse at 50% 40%, ${glowColor}, transparent 70%)`,
-          filter: useTransform(backdropBlur, (v) => `blur(${v * 3}px)`),
+          background: `radial-gradient(ellipse at 50% 35%, ${glowColor}, transparent 65%)`,
+          filter: useTransform(backdropBlur, (v) => `blur(${v * 4}px)`),
           opacity: glassOpacity,
         }}
       />
-      {/* Frosted glass border overlay */}
+      {/* Frosted glass border overlay — refined edge treatment */}
       <motion.div
-        className="absolute -inset-3 rounded-2xl pointer-events-none -z-10 border border-white/[0.04]"
+        className="absolute -inset-4 rounded-2xl pointer-events-none -z-10 border border-white/[0.03]"
         style={{
-          backdropFilter: useTransform(backdropBlur, (v) => `blur(${Math.max(v * 1.5, 0)}px) saturate(1.6)`),
-          WebkitBackdropFilter: useTransform(backdropBlur, (v) => `blur(${Math.max(v * 1.5, 0)}px) saturate(1.6)`),
+          backdropFilter: useTransform(backdropBlur, (v) => `blur(${Math.max(v * 1.2, 0)}px) saturate(1.4)`),
+          WebkitBackdropFilter: useTransform(backdropBlur, (v) => `blur(${Math.max(v * 1.2, 0)}px) saturate(1.4)`),
           opacity: glassOpacity,
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%)',
+          background: 'linear-gradient(160deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.005) 40%, rgba(0,240,255,0.015) 100%)',
         }}
       />
-      {/* Animated shimmer line at top */}
+      {/* Animated shimmer line at top — Apple-style highlight */}
       <motion.div
-        className="absolute -top-px left-0 right-0 h-px pointer-events-none -z-10"
+        className="absolute -top-px left-[10%] right-[10%] h-px pointer-events-none -z-10 rounded-full"
         style={{
           background: color === 'cyan'
-            ? 'linear-gradient(90deg, transparent, rgba(0,240,255,0.3), transparent)'
-            : 'linear-gradient(90deg, transparent, rgba(245,166,35,0.3), transparent)',
+            ? 'linear-gradient(90deg, transparent, rgba(0,240,255,0.4), rgba(255,255,255,0.15), rgba(0,240,255,0.4), transparent)'
+            : 'linear-gradient(90deg, transparent, rgba(245,166,35,0.4), rgba(255,255,255,0.15), rgba(245,166,35,0.4), transparent)',
           opacity: glassOpacity,
         }}
       />
@@ -2538,23 +2555,7 @@ function WhyPrimuez() {
 
   if (isMobile) {
     return (
-      <div className="space-y-6 mt-2">
-        {WHY_ITEMS.map((item, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="border border-indigo-500/20 rounded-xl p-6 bg-indigo-950/10"
-          >
-            <div className="font-mono text-indigo-400 text-xs uppercase tracking-widest mb-2">{item.num}</div>
-            <h3 className="text-xl font-bold text-white mb-3">{item.title.replace('\n', ' ')}</h3>
-            <div className="h-px bg-indigo-500/30 mb-3" />
-            <p className="text-gray-300 text-sm leading-relaxed">{item.detail}</p>
-          </motion.div>
-        ))}
-      </div>
+      <MobileWhyPrimuez />
     );
   }
 
@@ -2591,6 +2592,104 @@ function WhyPrimuez() {
         </div>
       </div>
     </div>
+  );
+}
+
+/** Mobile-optimized WhyPrimuez with horizontal scroll-driven card transitions */
+function MobileWhyPrimuez() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 35, restDelta: 0.001 });
+
+  return (
+    <div ref={containerRef} className="space-y-0 mt-2 relative">
+      {/* Dot progress indicator — fixed on right */}
+      <div className="sticky top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2 items-center float-right mr-2 pt-4">
+        {WHY_ITEMS.map((_, i) => (
+          <MobileWhyDot key={i} index={i} total={WHY_ITEMS.length} scrollYProgress={smoothProgress} />
+        ))}
+      </div>
+
+      {WHY_ITEMS.map((item, i) => (
+        <MobileWhyCard key={i} item={item} index={i} total={WHY_ITEMS.length} />
+      ))}
+    </div>
+  );
+}
+
+function MobileWhyDot({
+  index, total, scrollYProgress,
+}: { index: number; total: number; scrollYProgress: MotionValue<number> }) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const opacity = useTransform(scrollYProgress, (v) => (v >= start && v < end) ? 1 : 0.25);
+  const scale = useTransform(scrollYProgress, [start, Math.min(start + 0.05, end), Math.max(end - 0.05, start), end], [1, 1.8, 1.8, 1]);
+  return (
+    <motion.div
+      className="w-1.5 h-1.5 rounded-full bg-indigo-400"
+      style={{ opacity, scale }}
+    />
+  );
+}
+
+function MobileWhyCard({ item, index, total }: { item: typeof WHY_ITEMS[0]; index: number; total: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  // Animations: slide in from left, scale up, slight rotation
+  const x = useTransform(smoothProgress, [0, 0.3, 0.5, 0.7, 1], [-40, 0, 0, 0, -20]);
+  const opacity = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], [0, 1, 1, 1, 0.3]);
+  const scale = useTransform(smoothProgress, [0, 0.3, 0.5, 0.7, 1], [0.92, 1, 1, 1, 0.95]);
+  const rotateY = useTransform(smoothProgress, [0, 0.3, 0.5, 0.7, 1], [-8, 0, 0, 0, 4]);
+  const blurFilter = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(2px)']);
+  
+  // Animated accent line
+  const lineScaleX = useTransform(smoothProgress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
+
+  return (
+    <motion.div
+      ref={ref}
+      className="py-4"
+      style={{
+        x,
+        opacity,
+        scale,
+        rotateY,
+        filter: blurFilter,
+        perspective: '800px',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      <div className="border border-indigo-500/20 rounded-xl p-6 bg-indigo-950/10 backdrop-blur-sm relative overflow-hidden">
+        {/* Shimmer top border */}
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent"
+          style={{ scaleX: lineScaleX, transformOrigin: 'left center' }}
+        />
+        
+        <div className="flex items-start gap-4">
+          <div className="font-mono text-indigo-400 text-2xl font-bold opacity-40 shrink-0">{item.num}</div>
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-white mb-2 leading-tight">{item.title.replace('\n', ' ')}</h3>
+            <motion.div
+              className="h-px bg-indigo-500/30 mb-3"
+              style={{ scaleX: lineScaleX, transformOrigin: 'left center' }}
+            />
+            <p className="text-gray-300 text-sm leading-relaxed">{item.detail}</p>
+          </div>
+        </div>
+
+        {/* Background glow */}
+        <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
+      </div>
+    </motion.div>
   );
 }
 
