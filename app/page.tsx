@@ -14,6 +14,8 @@ import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ShaderBackground } from '@/components/ShaderBackground';
 import { ShaderText, ShaderLogo, ShaderGlowLine } from '@/components/ShaderText';
+import { CustomCursor } from '@/components/CustomCursor';
+import { HexShaderBackground } from '@/components/HexShaderBackground';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -106,6 +108,8 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
+      {/* Custom cursor & touch response */}
+      <CustomCursor />
       {/* Interactive WebGL shader background */}
       <ShaderBackground />
       {/* Blueprint animated grid overlay */}
@@ -119,12 +123,12 @@ export default function Home() {
           </div>
           {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
-            <a href="#whoami" className="hover:text-white transition-colors duration-200">About</a>
-            <a href="#projects" className="hover:text-white transition-colors duration-200">Work</a>
-            <a href="#services" className="hover:text-white transition-colors duration-200">Services</a>
-            <a href="#pricing" className="hover:text-white transition-colors duration-200 text-amber/80">Pricing</a>
-            <a href="#stack" className="hover:text-white transition-colors duration-200">Stack</a>
-            <a href="#contact" className="hover:text-white transition-colors duration-200 border border-white/20 px-3 py-1 -my-1 rounded hover:border-white/50">Contact</a>
+            <a href="#whoami" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">About</a>
+            <a href="#projects" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">Work</a>
+            <a href="#services" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">Services</a>
+            <a href="#pricing" className="hover:text-white transition-colors duration-200 text-amber/80 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber after:transition-all after:duration-300 hover:after:w-full">Pricing</a>
+            <a href="#stack" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">Stack</a>
+            <a href="#contact" className="hover:text-white transition-colors duration-200 border border-white/20 px-3 py-1 -my-1 rounded hover:border-cyan/50 hover:shadow-[0_0_12px_rgba(0,240,255,0.15)]">Contact</a>
           </div>
           {/* Mobile hamburger */}
           <button
@@ -168,6 +172,12 @@ export default function Home() {
                     <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-1">{label}</a>
                   );
                 })}
+                <button 
+                  onClick={() => { setMenuOpen(false); setModalType('form'); }}
+                  className="mt-4 w-full py-3 bg-cyan text-bg font-mono font-bold text-xs uppercase tracking-widest rounded cta-glow active:scale-[0.97] transition-transform"
+                >
+                  Work With Me
+                </button>
               </div>
             </motion.div>
           )}
@@ -178,12 +188,16 @@ export default function Home() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
         {/* HERO SECTION */}
-        <section id="hero" className="min-h-screen flex flex-col justify-center pt-16 md:pt-20">
+        <section id="hero" className="min-h-screen flex flex-col justify-center pt-16 md:pt-20 relative overflow-hidden">
+          {/* Interactive Hex Path shader — glows on cursor hover */}
+          <div className="absolute inset-0 -mx-4 sm:-mx-6">
+            <HexShaderBackground />
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl"
+            className="max-w-3xl relative z-10"
           >
             <div className="font-mono text-amber/80 text-sm mb-6 flex items-center gap-2">
               <Terminal size={14} /> <span className="opacity-60">Available for Projects</span>
@@ -217,7 +231,7 @@ export default function Home() {
               <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <ChevronRight size={16} /> View My Work
               </a>
-              <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest transition-all duration-300 text-center cta-glow hover:scale-[1.02]">
+              <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest transition-all duration-300 text-center cta-glow hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,240,255,0.4),0_4px_20px_rgba(0,0,0,0.3)] active:scale-[0.98]">
                 Work With Me
               </button>
               <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
@@ -261,14 +275,14 @@ export default function Home() {
           <ProjectGroup title="SaaS Products" color="cyan">
             <ProjectCard 
               name="InkTwin" 
-              url="https://ink-twin.primuez.com"
+              url="https://ink-twin.primueztech.workers.dev"
               desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
               tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
               logoUrl="/logo-inktwin.png"
             />
             <ProjectCard 
               name="PrimuezSure Advisor" 
-              url="https://primuezsure.primuez.com"
+              url="https://primuezsure-advisor.primueztech.workers.dev"
               desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
               tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
               logoUrl="/logo-primuezsure.png"
@@ -622,6 +636,25 @@ export default function Home() {
 
       </div>
 
+      {/* Scroll to top button */}
+      <AnimatePresence>
+        {scrolled && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group"
+            aria-label="Scroll to top"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-y-0.5 transition-transform">
+              <path d="M8 13V3M3 7l5-5 5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <footer className="border-t border-white/[0.06] bg-bg relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -630,9 +663,9 @@ export default function Home() {
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
             </div>
             <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
-              <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">YouTube</a>
-              <a href="https://www.linkedin.com/in/rahul-kasturiya-796910363" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">GitHub</a>
+              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">YouTube</a>
+              <a href="https://www.linkedin.com/in/rahul-kasturiya-796910363" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">LinkedIn</a>
             </div>
             <div className="font-mono text-xs text-text-muted/60">
               &copy; 2026 Primuez &middot; Built with intent.
@@ -1431,7 +1464,7 @@ function AboutZoom() {
     offset: ['start end', 'end start'],
   });
 
-  const total = 7;
+  const total = 8;
 
   return (
     <div
@@ -1465,17 +1498,23 @@ function AboutZoom() {
         </ZoomItem>
         <ZoomItem progress={scrollYProgress} index={4} total={total}>
           <div className="p-4 border-l-2 border-cyan bg-bg/50">
+            <span className="text-text-muted mb-1 block">Currently Pursuing</span>
+            Bachelor of Computer Applications (BCA) · Shri Shankaracharya Institute of Professional Studies
+          </div>
+        </ZoomItem>
+        <ZoomItem progress={scrollYProgress} index={5} total={total}>
+          <div className="p-4 border-l-2 border-cyan bg-bg/50">
             <span className="text-text-muted mb-1 block">Experience</span>
             AI Automation · Since July 2025
           </div>
         </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={5} total={total}>
+        <ZoomItem progress={scrollYProgress} index={6} total={total}>
           <div className="p-4 border-l-2 border-amber bg-bg/50">
             <span className="text-text-muted mb-1 block">Location</span>
             <span className="flex items-center gap-2"><MapPin size={14} /> Indore, Madhya Pradesh, India</span>
           </div>
         </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={6} total={total}>
+        <ZoomItem progress={scrollYProgress} index={7} total={total}>
           <div className="p-4 border-l-2 border-cyan bg-bg/50">
             <span className="text-text-muted mb-1 block">Languages</span>
             Hindi · English (C2) · Sindhi (C2)
@@ -1610,15 +1649,36 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
 }
 
 function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, children?: React.ReactNode }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    });
+  };
+
   return (
     <motion.div 
+      ref={cardRef}
       initial={{ opacity: 0, y: 60, scale: 0.96 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, margin: "-60px" }}
       whileHover={{ y: -4, transition: { duration: 0.3 } }}
+      onMouseMove={handleMouseMove}
       className="bg-panel/80 border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)]"
     >
+      {/* Liquid glass refraction overlay — follows mouse */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl z-0"
+        style={{
+          background: `radial-gradient(300px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(0,240,255,0.06), transparent 60%)`,
+        }}
+      />
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-cyan/40 via-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       {videoUrl && (
         <a
@@ -1637,7 +1697,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
         </div>
       )}
 
-      <div className="flex justify-between items-start mb-4 gap-4">
+      <div className="flex justify-between items-start mb-4 gap-4 relative z-[1]">
         <div className="flex items-center gap-4">
           {logoUrl && (
             <div className="w-11 h-11 rounded-lg border border-white/[0.08] overflow-hidden shrink-0 group-hover:border-cyan/30 transition-all duration-300">
@@ -1653,7 +1713,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
         )}
       </div>
       
-      <p className="text-text-muted text-sm leading-relaxed mb-6">{desc}</p>
+      <p className="text-text-muted text-sm leading-relaxed mb-6 relative z-[1]">{desc}</p>
       
       {children && (
         <div className="mb-6 relative z-10">
@@ -1661,7 +1721,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 mt-auto relative z-10">
+      <div className="flex flex-wrap gap-2 mt-auto relative z-[1]">
         {tags.map((tag, i) => (
           <span key={i} className="font-mono text-[10px] uppercase text-text-muted/70 bg-white/[0.03] px-2 py-1 rounded border border-white/[0.06] group-hover:border-white/10 transition-colors">
             {tag}
@@ -1679,6 +1739,7 @@ function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string
       whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: "blur(0px)" }}
       transition={{ duration: 1.05, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, margin: "-60px" }}
+      whileTap={{ scale: 0.97 }}
       className="group w-full block h-full md:[perspective:1000px]"
       style={{ transformPerspective: 1200 }}
     >
@@ -2595,28 +2656,101 @@ function WhyPrimuez() {
   );
 }
 
-/** Mobile-optimized WhyPrimuez with horizontal scroll-driven card transitions */
+/** Mobile-optimized WhyPrimuez — now mirrors desktop scroll-driven split animation */
 function MobileWhyPrimuez() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start end', 'end start'],
+    offset: ['start start', 'end end'],
   });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 35, restDelta: 0.001 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
 
   return (
-    <div ref={containerRef} className="space-y-0 mt-2 relative">
-      {/* Dot progress indicator — fixed on right */}
-      <div className="sticky top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2 items-center float-right mr-2 pt-4">
-        {WHY_ITEMS.map((_, i) => (
-          <MobileWhyDot key={i} index={i} total={WHY_ITEMS.length} scrollYProgress={smoothProgress} />
-        ))}
-      </div>
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 80}vh` }} className="relative -mx-4 sm:-mx-6">
+      <div
+        className="sticky top-0 h-screen overflow-hidden flex items-center"
+        style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
+      >
+        <div className="relative w-full h-full">
+          {WHY_ITEMS.map((item, i) => (
+            <MobileWhySlide
+              key={i}
+              item={item}
+              index={i}
+              total={WHY_ITEMS.length}
+              scrollYProgress={smoothProgress}
+            />
+          ))}
 
-      {WHY_ITEMS.map((item, i) => (
-        <MobileWhyCard key={i} item={item} index={i} total={WHY_ITEMS.length} />
-      ))}
+          {/* Dot nav */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+            {WHY_ITEMS.map((_, i) => (
+              <MobileWhyDot key={i} index={i} total={WHY_ITEMS.length} scrollYProgress={smoothProgress} />
+            ))}
+          </div>
+
+          {/* Scroll hint */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[9px] uppercase tracking-[0.3em] text-gray-600 flex items-center gap-2 pointer-events-none">
+            <span className="w-3 h-px bg-gray-700" />
+            scroll
+            <span className="w-3 h-px bg-gray-700" />
+          </div>
+        </div>
+      </div>
     </div>
+  );
+}
+
+/** Mobile slide — mirrors desktop WhyPrimuezSlide with vertically stacked layout */
+function MobileWhySlide({
+  item, index, total, scrollYProgress,
+}: {
+  item: typeof WHY_ITEMS[0];
+  index: number;
+  total: number;
+  scrollYProgress: MotionValue<number>;
+}) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const inEnd = start + (end - start) * 0.40;
+  const outStart = start + (end - start) * 0.60;
+
+  const isFirst = index === 0;
+  const opacityInput  = isFirst ? [outStart, end]         : [start, inEnd, outStart, end];
+  const opacityOutput = isFirst ? [1, 0]                  : [0, 1, 1, 0];
+  const opacity    = useTransform(scrollYProgress, opacityInput, opacityOutput);
+  const titleY     = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [-30, 0]);
+  const detailY    = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [30, 0]);
+  const lineScaleY = useTransform(scrollYProgress, isFirst ? [start, outStart, end] : [start, inEnd, outStart, end], isFirst ? [1, 1, 0] : [0, 1, 1, 0]);
+
+  return (
+    <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-6" style={{ opacity }}>
+      {/* Title */}
+      <motion.div style={{ y: titleY }} className="text-center mb-6">
+        <span className="font-mono text-indigo-400 text-xs uppercase tracking-[0.25em] block mb-3">
+          {item.num} / 04
+        </span>
+        <h3
+          className="text-2xl sm:text-3xl font-bold text-white leading-tight"
+          style={{ whiteSpace: 'pre-line' }}
+        >
+          {item.title}
+        </h3>
+      </motion.div>
+
+      {/* Center lock line */}
+      <motion.div
+        className="w-px bg-indigo-500 mb-6"
+        style={{ scaleY: lineScaleY, height: '50px', originY: '50%' }}
+      />
+
+      {/* Detail */}
+      <motion.div style={{ y: detailY }} className="max-w-xs text-center">
+        <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-sans">
+          {item.detail}
+        </p>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -2635,63 +2769,7 @@ function MobileWhyDot({
   );
 }
 
-function MobileWhyCard({ item, index, total }: { item: typeof WHY_ITEMS[0]; index: number; total: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-  // Animations: slide in from left, scale up, slight rotation
-  const x = useTransform(smoothProgress, [0, 0.3, 0.5, 0.7, 1], [-40, 0, 0, 0, -20]);
-  const opacity = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], [0, 1, 1, 1, 0.3]);
-  const scale = useTransform(smoothProgress, [0, 0.3, 0.5, 0.7, 1], [0.92, 1, 1, 1, 0.95]);
-  const rotateY = useTransform(smoothProgress, [0, 0.3, 0.5, 0.7, 1], [-8, 0, 0, 0, 4]);
-  const blurFilter = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], ['blur(4px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(2px)']);
-  
-  // Animated accent line
-  const lineScaleX = useTransform(smoothProgress, [0, 0.35, 0.65, 1], [0, 1, 1, 0]);
-
-  return (
-    <motion.div
-      ref={ref}
-      className="py-4"
-      style={{
-        x,
-        opacity,
-        scale,
-        rotateY,
-        filter: blurFilter,
-        perspective: '800px',
-        transformStyle: 'preserve-3d',
-      }}
-    >
-      <div className="border border-indigo-500/20 rounded-xl p-6 bg-indigo-950/10 backdrop-blur-sm relative overflow-hidden">
-        {/* Shimmer top border */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent"
-          style={{ scaleX: lineScaleX, transformOrigin: 'left center' }}
-        />
-        
-        <div className="flex items-start gap-4">
-          <div className="font-mono text-indigo-400 text-2xl font-bold opacity-40 shrink-0">{item.num}</div>
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-white mb-2 leading-tight">{item.title.replace('\n', ' ')}</h3>
-            <motion.div
-              className="h-px bg-indigo-500/30 mb-3"
-              style={{ scaleX: lineScaleX, transformOrigin: 'left center' }}
-            />
-            <p className="text-gray-300 text-sm leading-relaxed">{item.detail}</p>
-          </div>
-        </div>
-
-        {/* Background glow */}
-        <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
-      </div>
-    </motion.div>
-  );
-}
 
 // ─── Quantum Decryption FAQ ───────────────────────────────────────────────────
 
