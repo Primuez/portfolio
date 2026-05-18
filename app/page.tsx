@@ -262,14 +262,14 @@ export default function Home() {
           <ProjectGroup title="SaaS Products" color="cyan">
             <ProjectCard 
               name="InkTwin" 
-              url="https://ink-twin.primuez.com"
+              url="https://ink-twin.primueztech.workers.dev/"
               desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
               tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
               logoUrl="/logo-inktwin.png"
             />
             <ProjectCard 
               name="PrimuezSure Advisor" 
-              url="https://primuezsure.primuez.com"
+              url="https://primuezsure-advisor.primueztech.workers.dev/"
               desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
               tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
               logoUrl="/logo-primuezsure.png"
@@ -1452,7 +1452,9 @@ function AboutZoom() {
         <ZoomItem progress={scrollYProgress} index={3} total={total}>
           <div className="p-4 border-l-2 border-amber bg-bg/50">
             <span className="text-text-muted mb-1 block">Education</span>
-            Commerce Graduate · KPS, Dunda
+            <div>Bachelor of Computer Applications (BCA)</div>
+            <div className="text-text-muted/70 text-[11px] mt-0.5">Shri Shankaracharya Institute of Professional Studies · Currently Pursuing</div>
+            <div className="text-text-muted/50 text-[11px] mt-1">Commerce Graduate · KPS, Dunda</div>
           </div>
         </ZoomItem>
         <ZoomItem progress={scrollYProgress} index={4} total={total}>
@@ -1523,16 +1525,56 @@ function SectionHeader({ number, command, title, center = false }: { number: str
 function ProjectGroup({ title, children, color }: { title: string, children: React.ReactNode, color: string }) {
   const borderColor = color === 'cyan' ? 'border-cyan/30' : 'border-amber/30';
   const textColor = color === 'cyan' ? 'text-cyan' : 'text-amber';
-  
+  const glowColor = color === 'cyan' ? 'rgba(0, 240, 255, 0.12)' : 'rgba(245, 166, 35, 0.12)';
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  const blur = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [8, 0, 0, 0, 8]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.5, 0.85, 1], [0.3, 1, 1, 1, 0.3]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0.92, 1, 1, 1, 0.92]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [6, 0, 0, 0, -6]);
+  const y = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [60, 0, 0, 0, -60]);
+
   return (
-    <div className="mt-16">
-      <h3 className={`font-mono text-xs uppercase tracking-[0.2em] ${textColor} mb-6 pb-2 border-b ${borderColor} inline-block`}>
-        ▸ {title}
-      </h3>
-      <div className="grid md:grid-cols-2 gap-6">
-        {children}
+    <motion.div 
+      ref={ref}
+      className="mt-16 relative"
+      style={{
+        opacity,
+        scale,
+        rotateX,
+        y,
+        perspective: '1200px',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      {/* Liquid glass background effect */}
+      <motion.div
+        className="absolute -inset-4 rounded-2xl pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 50% 50%, ${glowColor}, transparent 70%)`,
+          filter: useTransform(blur, (v) => `blur(${v}px)`),
+          opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.6, 0.6, 0]),
+        }}
+      />
+      <motion.div
+        className="absolute -inset-2 rounded-2xl pointer-events-none border border-white/[0.04]"
+        style={{
+          backdropFilter: useTransform(blur, (v) => `blur(${Math.max(v * 2, 0)}px) saturate(1.4)`),
+          opacity: useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 0.5, 0.5, 0]),
+        }}
+      />
+      <div className="relative z-10">
+        <h3 className={`font-mono text-xs uppercase tracking-[0.2em] ${textColor} mb-6 pb-2 border-b ${borderColor} inline-block`}>
+          ▸ {title}
+        </h3>
+        <div className="grid md:grid-cols-2 gap-6">
+          {children}
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
