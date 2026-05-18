@@ -116,7 +116,7 @@ html {
   animation: shader-chrome-shift 8s ease-in-out infinite;
 }
 
-/* Shader Text: Aurora — northern lights gradient */
+/* Shader Text: Aurora — northern lights gradient (used for section headers) */
 @keyframes shader-aurora-shift {
   0%   { background-position: 0% 50%; }
   33%  { background-position: 50% 100%; }
@@ -128,17 +128,17 @@ html {
   background: linear-gradient(
     160deg,
     #00f0ff 0%,
-    #22d3ee 15%,
-    #6366f1 30%,
-    #a78bfa 50%,
-    #06b6d4 70%,
+    #06b6d4 20%,
+    #a78bfa 40%,
+    #00f0ff 60%,
+    #f5a623 80%,
     #00f0ff 100%
   );
   background-size: 400% 400%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shader-aurora-shift 12s ease-in-out infinite;
+  animation: shader-aurora-shift 10s ease-in-out infinite;
 }
 
 /* Shader Text: Ember — warm fire gradient */
@@ -341,4 +341,126 @@ html {
 .mobile-why-line {
   transform-origin: left center;
   animation: mobile-why-line-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+
+/* ─── CURSOR & TOUCH ANIMATIONS ────────────────────────────────────────────── */
+
+/* Touch ripple animation */
+@keyframes touch-ripple {
+  0%   { transform: scale(0); opacity: 0.7; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.touch-ripple {
+  animation: touch-ripple 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Interactive hover glow for cards */
+@keyframes card-glow-pulse {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── HEX SHADER SECTION ENHANCEMENTS ──────────────────────────────────────── */
+
+@keyframes hex-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 0.9; }
+}
+
+.hex-shader-enter {
+  animation: hex-fade-in 1.5s ease-out forwards;
+}
+
+/* ─── ENHANCED LIQUID GLASS — Apple Scroll-Driven ──────────────────────────── */
+
+@keyframes glass-refract {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+.liquid-glass-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liquid-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.04) 0%,
+    transparent 50%,
+    rgba(0, 240, 255, 0.02) 100%
+  );
+  background-size: 200% 200%;
+  animation: glass-refract 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.liquid-glass-card:hover::before {
+  opacity: 1;
+}
+
+/* ─── UX IMPROVEMENTS — Smooth Micro-interactions ──────────────────────────── */
+
+/* Smooth section transitions */
+section {
+  transition: opacity 0.3s ease;
+}
+
+/* Better button press feedback */
+button:active:not(:disabled),
+a:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* Smoother link underline on hover */
+a[href^="#"]:hover {
+  text-decoration: none;
+}
+
+/* Interactive card press effect */
+.group:active {
+  transform: scale(0.985);
+  transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Scroll-linked parallax feel for floating elements */
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.float-animation {
+  animation: float-subtle 4s ease-in-out infinite;
+}
+
+/* Custom scrollbar that matches theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 15, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.4);
 }
