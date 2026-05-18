@@ -34,10 +34,7 @@ interface GithubRepo {
 }
 
 export default function Home() {
-  const [typedText, setTypedText] = useState('');
   const [phraseIndex, setPhraseIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   
@@ -72,32 +69,13 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Typing effect
+  // Phrase cycling effect
   useEffect(() => {
-    const currentPhrase = phrases[phraseIndex];
-    let timeout: NodeJS.Timeout;
-
-    if (!isDeleting && charIndex < currentPhrase.length) {
-      timeout = setTimeout(() => {
-        setTypedText(currentPhrase.substring(0, charIndex + 1));
-        setCharIndex(c => c + 1);
-      }, 50);
-    } else if (isDeleting && charIndex > 0) {
-      timeout = setTimeout(() => {
-        setTypedText(currentPhrase.substring(0, charIndex - 1));
-        setCharIndex(c => c - 1);
-      }, 30);
-    } else if (!isDeleting && charIndex === currentPhrase.length) {
-      timeout = setTimeout(() => setIsDeleting(true), 2000);
-    } else if (isDeleting && charIndex === 0) {
-      timeout = setTimeout(() => {
-        setIsDeleting(false);
-        setPhraseIndex((p) => (p + 1) % phrases.length);
-      }, 50);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, phraseIndex]);
+    const interval = setInterval(() => {
+      setPhraseIndex((p) => (p + 1) % phrases.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Fetch Github
   useEffect(() => {
@@ -142,7 +120,7 @@ export default function Home() {
             <a href="#services" className="hover:text-white transition-colors duration-200">Services</a>
             <a href="#pricing" className="hover:text-white transition-colors duration-200 text-amber/80">Pricing</a>
             <a href="#stack" className="hover:text-white transition-colors duration-200">Stack</a>
-            <a href="#contact" className="hover:text-white transition-colors duration-200 border border-white/20 px-3 py-1 -my-1 rounded hover:border-cyan/50 hover:text-cyan">Contact</a>
+            <a href="#contact" className="hover:text-white transition-colors duration-200 border border-white/20 px-3 py-1 -my-1 rounded hover:border-white/50">Contact</a>
           </div>
           {/* Mobile hamburger */}
           <button
@@ -165,19 +143,53 @@ export default function Home() {
               className="md:hidden bg-bg/95 backdrop-blur-md border-b border-cyan/20 overflow-hidden"
             >
               <div className="flex flex-col px-6 py-4 gap-5 font-mono text-sm tracking-widest uppercase text-text-muted">
-                {['About:#whoami','Projects:#projects','Services:#services','Why Us:#why-primuez','Pricing:#pricing','GitHub:#github','Videos:#youtube','Stack:#stack','Credentials:#credentials','FAQ:#faq','Contact:#contact'].map(item => {
-                  const [label, href] = item.split(':');
-                  return (
-                    <a
-                      key={href}
-                      href={href}
-                      onClick={() => setMenuOpen(false)}
-                      className="hover:text-cyan transition-colors border-b border-cyan/10 pb-3 last:border-0 last:pb-0"
-                    >
-                      {label}
-                    </a>
-                  );
-                })}
+                <div className="text-[10px] text-cyan/50 tracking-[0.3em] pt-1">Work</div>
+                {[
+                  { label: 'About', href: '#whoami' },
+                  { label: 'Projects', href: '#projects' },
+                  { label: 'Services', href: '#services' },
+                ].map(item => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-white transition-colors border-b border-cyan/10 pb-3"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div className="text-[10px] text-cyan/50 tracking-[0.3em] pt-2">Info</div>
+                {[
+                  { label: 'Why Us', href: '#why-primuez' },
+                  { label: 'Pricing', href: '#pricing' },
+                  { label: 'Stack', href: '#stack' },
+                  { label: 'Credentials', href: '#credentials' },
+                  { label: 'FAQ', href: '#faq' },
+                ].map(item => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-white transition-colors border-b border-cyan/10 pb-3"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div className="text-[10px] text-cyan/50 tracking-[0.3em] pt-2">Connect</div>
+                {[
+                  { label: 'GitHub', href: '#github' },
+                  { label: 'Videos', href: '#youtube' },
+                  { label: 'Contact', href: '#contact' },
+                ].map(item => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:text-white transition-colors border-b border-cyan/10 pb-3 last:border-0 last:pb-0"
+                  >
+                    {item.label}
+                  </a>
+                ))}
               </div>
             </motion.div>
           )}
@@ -196,13 +208,22 @@ export default function Home() {
             className="max-w-3xl"
           >
             <div className="font-mono text-amber/80 text-sm mb-6 flex items-center gap-2">
-              <Terminal size={14} /> <span className="opacity-60">SYS.INIT()</span>
+              <Terminal size={14} /> <span className="opacity-60">Available for Projects</span>
             </div>
             
-            <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center">
+            <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden">
               <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
-              {typedText}
-              <span className="inline-block w-[2px] h-6 md:h-7 bg-cyan ml-1 animate-[cursor-blink_1s_steps(1)_infinite]"></span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={phraseIndex}
+                  initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {phrases[phraseIndex]}
+                </motion.span>
+              </AnimatePresence>
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
@@ -221,9 +242,6 @@ export default function Home() {
               <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest transition-all duration-300 text-center cta-glow hover:scale-[1.02]">
                 Work With Me
               </button>
-              <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
-                <Download size={16} /> Resume
-              </a>
             </div>
 
             <div className="flex flex-wrap gap-3 font-mono text-xs">
@@ -231,7 +249,7 @@ export default function Home() {
                 <Code2 size={14} className="text-amber" /> 10+ Projects Shipped
               </span>
               <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
-                <Terminal size={14} className="text-cyan/70" /> Self-Taught Builder
+                <Terminal size={14} className="text-cyan/70" /> 10+ Systems Shipped
               </span>
             </div>
           </motion.div>
@@ -497,7 +515,7 @@ export default function Home() {
               <DropCard delay={0.22} initialRotate={2.5}>
                 <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
                   <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
-                    <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" />
+                    <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" loading="lazy" />
                   </div>
                   <h3 className="text-xl font-bold mb-4 font-sans">Subscribe to Primuez</h3>
                   <p className="text-text-muted mb-8 max-w-sm text-sm">
@@ -634,6 +652,7 @@ export default function Home() {
               <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
               <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">YouTube</a>
               <a href="https://www.linkedin.com/in/rahul-kasturiya-796910363" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="hover:text-white transition-colors flex items-center gap-1"><Download size={12} /> Resume</a>
             </div>
             <div className="font-mono text-xs text-text-muted/60">
               &copy; 2026 Primuez &middot; Built with intent.
@@ -662,7 +681,7 @@ export default function Home() {
                 className="bg-panel border border-cyan/30 rounded-xl w-full max-w-4xl shadow-[0_0_40px_rgba(0,240,255,0.2)] relative h-[85vh] flex flex-col overflow-hidden"
               >
                 <div className="bg-bg/80 border-b border-cyan/20 px-6 py-4 flex justify-between items-center font-mono text-sm">
-                  <span className="text-cyan flex items-center gap-2"><Send size={14}/> [ SECURE COMM-LINK ESTABLISHED ]</span>
+                  <span className="text-cyan flex items-center gap-2"><Send size={14}/> Send Your Project Details</span>
                   <button onClick={() => setModalType(null)} className="text-text-muted hover:text-white transition-colors">✕ CLOSE</button>
                 </div>
                 <div className="flex-1 w-full relative bg-bg">
@@ -1004,7 +1023,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   return (
     <motion.div
       ref={containerRef}
-      className="relative min-h-[85vh] overflow-hidden"
+      className="relative min-h-[70vh] md:min-h-[85vh] overflow-hidden"
       onViewportEnter={() => { if (!permanent) setCollapsed(true); }}
       viewport={{ amount: 0.4, once: true }}
     >
@@ -1046,7 +1065,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         <div className="mt-12 flex justify-center">
           <FallingPiece container={containerRef} collapsed={collapsed} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
             <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center">
-              Or direct comm-link: <a href="mailto:rahulkasturiya420@gmail.com" className="text-amber hover:text-cyan transition-colors">rahulkasturiya420@gmail.com</a>
+              Or direct comm-link: <a href="mailto:rahulkasturiya420@gmail.com" className="text-amber hover:text-white transition-colors">rahulkasturiya420@gmail.com</a>
               <button
                 onClick={copyEmail}
                 className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
@@ -1087,7 +1106,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               aria-label="Reassemble fallen elements"
             >
               <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
-              {reassembling ? '> rebuilding... gravity in 3s' : '> ./reassemble --gravity-off'}
+              {reassembling ? '> rebuilding... gravity in 3s' : 'Reset Layout'}
             </button>
             <button
               onClick={reassemblePermanent}
@@ -1095,7 +1114,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               aria-label="Reassemble permanently"
             >
               <span className="inline-block w-2 h-2 rounded-full bg-white/40" />
-              &gt; ./reassemble --permanent
+              &gt; Keep Layout Fixed
             </button>
           </motion.div>
         )}
@@ -1326,22 +1345,26 @@ function LiquidRepoCard({
   velocity: MotionValue<number>;
   index: number;
 }) {
+  const isMobile = useIsMobile();
   const col = index % 3;
   const colSign = col === 0 ? -1 : col === 2 ? 1 : 0;
   const sensitivity = 1 + (index % 4) * 0.12;
 
   const skewY = useTransform(velocity, (v) => {
+    if (isMobile) return '0deg';
     const raw = (v / 220) * sensitivity;
     return `${Math.max(-9, Math.min(9, raw))}deg`;
   });
   const skewX = useTransform(velocity, (v) => {
+    if (isMobile) return '0deg';
     const raw = (v / 800) * colSign * sensitivity;
     return `${Math.max(-3, Math.min(3, raw))}deg`;
   });
-  const scaleY = useTransform(velocity, (v) => 1 + Math.min(0.14, Math.abs(v) / 6500));
-  const scaleX = useTransform(velocity, (v) => 1 - Math.min(0.07, Math.abs(v) / 13000));
-  const filter = useTransform(velocity, (v) => `blur(${Math.min(3.5, Math.abs(v) / 700)}px)`);
+  const scaleY = useTransform(velocity, (v) => isMobile ? 1 : 1 + Math.min(0.14, Math.abs(v) / 6500));
+  const scaleX = useTransform(velocity, (v) => isMobile ? 1 : 1 - Math.min(0.07, Math.abs(v) / 13000));
+  const filter = useTransform(velocity, (v) => isMobile ? 'blur(0px)' : `blur(${Math.min(3.5, Math.abs(v) / 700)}px)`);
   const rotateZ = useTransform(velocity, (v) => {
+    if (isMobile) return '0deg';
     const raw = (v / 1400) * colSign;
     return `${Math.max(-2.2, Math.min(2.2, raw))}deg`;
   });
@@ -1357,13 +1380,13 @@ function LiquidRepoCard({
     >
       <div>
         <div className="flex items-start justify-between mb-4">
-          <Github className="text-text-muted group-hover:text-cyan group-hover:scale-110 transition-all" size={24} />
+          <Github className="text-text-muted group-hover:text-white group-hover:scale-110 transition-all" size={24} />
           <div className="flex gap-3 text-xs font-mono text-text-muted">
             <span className="flex items-center gap-1 group-hover:text-amber transition-colors"><Star size={12} /> {repo.stargazers_count}</span>
             <span className="flex items-center gap-1 group-hover:text-amber transition-colors"><GitFork size={12} /> {repo.forks_count}</span>
           </div>
         </div>
-        <h3 className="font-bold text-lg mb-2 text-white group-hover:text-cyan transition-colors line-clamp-1">{repo.name}</h3>
+        <h3 className="font-bold text-lg mb-2 text-white group-hover:text-white transition-colors line-clamp-1">{repo.name}</h3>
         <p className="text-sm text-text-muted line-clamp-2">{repo.description || 'No description provided.'}</p>
       </div>
       {repo.language && (
@@ -1560,7 +1583,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
       {bannerUrl && (
         <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-white/[0.06] relative">
           <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent z-10"></div>
-          <img src={bannerUrl} alt={`${name} schematic`} className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" referrerPolicy="no-referrer" />
+          <img src={bannerUrl} alt={`${name} schematic`} className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" referrerPolicy="no-referrer" loading="lazy" />
         </div>
       )}
 
@@ -1568,10 +1591,10 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
         <div className="flex items-center gap-4">
           {logoUrl && (
             <div className="w-11 h-11 rounded-lg border border-white/[0.08] overflow-hidden shrink-0 group-hover:border-cyan/30 transition-all duration-300">
-              <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" referrerPolicy="no-referrer" />
+              <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" referrerPolicy="no-referrer" loading="lazy" />
             </div>
           )}
-          <h4 className="text-lg font-bold group-hover:text-cyan transition-colors duration-300">{name}</h4>
+          <h4 className="text-lg font-bold group-hover:text-white transition-colors duration-300">{name}</h4>
         </div>
         {url && (
           <a href={url} target="_blank" rel="noopener noreferrer" className="flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase px-2 py-1 bg-white/5 text-text-muted border border-white/10 rounded hover:bg-cyan/10 hover:text-cyan hover:border-cyan/30 transition-colors relative z-20">
@@ -1628,7 +1651,8 @@ function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string
                src={image} 
                alt={name} 
                className="w-full h-full object-cover transform-gpu group-hover:scale-105 transition-transform duration-700" 
-               referrerPolicy="no-referrer" 
+               referrerPolicy="no-referrer"
+               loading="lazy"
              />
            </div>
         </div>
@@ -1636,7 +1660,7 @@ function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string
         <div className="p-4 sm:p-6 relative z-10 flex flex-col flex-grow">
           <div className="flex items-center gap-3 mb-3">
              <div className="w-2 h-2 rounded-full bg-amber group-hover:shadow-[0_0_10px_#f5a623] transition-shadow shrink-0"></div>
-             <h4 className="text-base sm:text-xl font-bold group-hover:text-cyan transition-colors">{name}</h4>
+             <h4 className="text-base sm:text-xl font-bold group-hover:text-white transition-colors">{name}</h4>
           </div>
           <p className="text-sm text-text-muted leading-relaxed flex-grow">{desc}</p>
           
@@ -1697,7 +1721,7 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode, label: strin
       rel="noopener noreferrer" 
       draggable={false}
       onDragStart={(e) => e.preventDefault()}
-      className="group relative flex items-center justify-center w-12 h-12 bg-panel border border-cyan/20 rounded-lg text-text-muted hover:text-cyan hover:border-cyan hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-all duration-300 hover:-translate-y-1"
+      className="group relative flex items-center justify-center w-12 h-12 bg-panel border border-cyan/20 rounded-lg text-text-muted hover:text-white hover:border-white/50 hover:shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 hover:-translate-y-1"
     >
       {icon}
       <span className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-panel border border-cyan/30 text-cyan text-xs font-mono px-3 py-1 rounded pointer-events-none whitespace-nowrap shadow-[0_0_10px_rgba(0,240,255,0.2)] flex flex-col items-center">
@@ -2666,7 +2690,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
           {displayQ}
         </span>
         <span className={`shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-300 ${open ? 'border-cyan bg-cyan/10 rotate-45' : 'border-white/20 group-hover:border-cyan/40'}`}>
-          <ChevronRight size={12} className={`transition-colors ${open ? 'text-cyan' : 'text-text-muted group-hover:text-cyan'}`} />
+          <ChevronRight size={12} className={`transition-colors ${open ? 'text-cyan' : 'text-text-muted group-hover:text-white'}`} />
         </span>
       </button>
       <AnimatePresence>
@@ -2678,7 +2702,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-5 pt-2 text-sm text-[#00f0ff]/70 leading-relaxed border-t border-white/5 font-mono whitespace-pre-wrap break-words">
+            <div className="px-6 pb-5 pt-2 text-sm text-[#00f0ff]/70 leading-relaxed border-t border-white/5 font-sans whitespace-pre-wrap break-words">
               {displayA || a}
             </div>
           </motion.div>
