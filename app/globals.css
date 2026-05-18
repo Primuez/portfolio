@@ -5,8 +5,8 @@
   --color-cyan: #00f0ff;
   --color-amber: #f5a623;
   --color-panel: #111827;
-  --color-text-main: #e0e0e0;
-  --color-text-muted: #888888;
+  --color-text-main: #e8e8ec;
+  --color-text-muted: #9ca3af;
   
   --font-sans: var(--font-syne), sans-serif;
   --font-mono: var(--font-space-mono), monospace;
@@ -15,17 +15,27 @@
 @layer utilities {
   .bg-blueprint {
     background-image: 
-      linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
   .text-glow-cyan {
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
   }
 
   .border-glow-cyan {
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+  }
+
+  /* Impeccable: Selective glow — only on primary CTAs */
+  .cta-glow {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Impeccable: Subtle text hierarchy via optical weight */
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
@@ -39,6 +49,23 @@
   100% { transform: translateX(400%); }
 }
 
+/* Impeccable: Refined typewriter cursor — less aggressive pulse */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .animate-grid {
   animation: grid-drift 10s linear infinite;
+}
+
+/* Impeccable: Smooth scroll behavior for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Impeccable: Better focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
 }

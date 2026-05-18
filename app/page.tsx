@@ -127,25 +127,22 @@ export default function Home() {
   return (
     <main className="relative min-h-screen">
       {/* Blueprint animated background */}
-      <div className="fixed inset-0 z-0 bg-blueprint opacity-30 animate-grid"></div>
+      <div className="fixed inset-0 z-0 bg-blueprint opacity-20 animate-grid"></div>
       
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/90 backdrop-blur-md border-b border-cyan/20' : 'bg-transparent'}`}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
-          <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold hover:text-glow-cyan transition-all duration-300">
+          <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
             PRIMUEZ
           </div>
           {/* Desktop nav */}
-          <div className="hidden md:flex gap-6 font-mono text-xs tracking-widest uppercase text-text-muted">
-            <a href="#whoami" className="hover:text-cyan transition-colors">About</a>
-            <a href="#projects" className="hover:text-cyan transition-colors">Projects</a>
-            <a href="#services" className="hover:text-cyan transition-colors">Services</a>
-            <a href="#why-primuez" className="hover:text-cyan transition-colors">Why Us</a>
-            <a href="#pricing" className="hover:text-cyan transition-colors text-amber">Pricing</a>
-            <a href="#github" className="hover:text-cyan transition-colors">GitHub</a>
-            <a href="#stack" className="hover:text-cyan transition-colors">Stack</a>
-            <a href="#faq" className="hover:text-cyan transition-colors">FAQ</a>
-            <a href="#contact" className="hover:text-cyan transition-colors">Contact</a>
+          <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
+            <a href="#whoami" className="hover:text-white transition-colors duration-200">About</a>
+            <a href="#projects" className="hover:text-white transition-colors duration-200">Work</a>
+            <a href="#services" className="hover:text-white transition-colors duration-200">Services</a>
+            <a href="#pricing" className="hover:text-white transition-colors duration-200 text-amber/80">Pricing</a>
+            <a href="#stack" className="hover:text-white transition-colors duration-200">Stack</a>
+            <a href="#contact" className="hover:text-white transition-colors duration-200 border border-white/20 px-3 py-1 -my-1 rounded hover:border-cyan/50 hover:text-cyan">Contact</a>
           </div>
           {/* Mobile hamburger */}
           <button
@@ -193,47 +190,48 @@ export default function Home() {
         {/* HERO SECTION */}
         <section id="hero" className="min-h-screen flex flex-col justify-center pt-16 md:pt-20">
           <motion.div
-            initial={{ opacity: 1, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl"
           >
-            <div className="font-mono text-amber text-sm mb-6 flex items-center gap-2">
-              <Terminal size={14} /> SYS.INIT()
+            <div className="font-mono text-amber/80 text-sm mb-6 flex items-center gap-2">
+              <Terminal size={14} /> <span className="opacity-60">SYS.INIT()</span>
             </div>
             
-            <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan break-words">
+            <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center">
+              <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
               {typedText}
-              <span className="inline-block w-2.5 h-6 md:h-8 bg-cyan ml-1 animate-pulse"></span>
+              <span className="inline-block w-[2px] h-6 md:h-7 bg-cyan ml-1 animate-[cursor-blink_1s_steps(1)_infinite]"></span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
               I Build Systems <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-white">That Work For You.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-cyan/80 to-amber/60">That Work For You.</span>
             </h1>
 
-            <p className="text-text-muted text-lg md:text-xl max-w-2xl mb-10 leading-relaxed font-sans">
+            <p className="text-text-muted text-lg md:text-xl max-w-2xl mb-12 leading-relaxed font-sans text-balance">
               Autonomous agents, intelligent workflows, and real shipped products — from Indore, India.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <a href="#projects" className="px-8 py-4 bg-transparent border border-cyan text-cyan font-mono text-sm uppercase tracking-widest hover:bg-cyan/10 hover:border-glow-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
+            <div className="flex flex-col sm:flex-row gap-4 mb-14">
+              <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <ChevronRight size={16} /> View My Work
               </a>
-              <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest hover:border-glow-cyan transition-all duration-300 text-center shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+              <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest transition-all duration-300 text-center cta-glow hover:scale-[1.02]">
                 Work With Me
               </button>
-              <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 transition-all duration-300 text-center flex items-center justify-center gap-2">
-                <Download size={16} /> Download Resume
+              <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                <Download size={16} /> Resume
               </a>
             </div>
 
             <div className="flex flex-wrap gap-3 font-mono text-xs">
-              <span className="bg-panel border border-cyan/20 text-text-main px-3 py-1.5 rounded flex items-center gap-2">
-                <Code2 size={14} className="text-amber" /> 10+ Projects Built
+              <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
+                <Code2 size={14} className="text-amber" /> 10+ Projects Shipped
               </span>
-              <span className="bg-panel border border-cyan/20 text-text-main px-3 py-1.5 rounded flex items-center gap-2">
-                <Terminal size={14} className="text-cyan" /> Self-Taught, No CS Degree
+              <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
+                <Terminal size={14} className="text-cyan/70" /> Self-Taught Builder
               </span>
             </div>
           </motion.div>
@@ -625,8 +623,23 @@ export default function Home() {
 
       </div>
 
-      <footer className="border-t border-cyan/10 bg-bg p-8 text-center font-mono text-sm text-text-muted mt-20 relative z-10">
-        &copy; 2026 Primuez · Built with intent.
+      <footer className="border-t border-white/[0.06] bg-bg relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col items-center md:items-start gap-2">
+              <span className="font-mono text-cyan text-lg tracking-widest font-bold">PRIMUEZ</span>
+              <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
+            </div>
+            <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
+              <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">YouTube</a>
+              <a href="https://www.linkedin.com/in/rahul-kasturiya-796910363" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+            </div>
+            <div className="font-mono text-xs text-text-muted/60">
+              &copy; 2026 Primuez &middot; Built with intent.
+            </div>
+          </div>
+        </div>
       </footer>
 
       {/* ALL MODALS */}
@@ -1471,7 +1484,7 @@ function ScrollProgressBar() {
   return (
     <motion.div
       style={{ scaleX, transformOrigin: '0% 50%' }}
-      className="fixed top-0 left-0 right-0 h-[2px] z-[60] bg-gradient-to-r from-cyan via-cyan/80 to-amber shadow-[0_0_10px_rgba(0,240,255,0.6)] pointer-events-none"
+      className="fixed top-0 left-0 right-0 h-[1px] z-[60] bg-gradient-to-r from-cyan via-cyan/60 to-amber/40 pointer-events-none"
     />
   );
 }
@@ -1479,27 +1492,27 @@ function ScrollProgressBar() {
 function SectionHeader({ number, command, title, center = false }: { number: string, command: string, title: string, center?: boolean }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, x: -60, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, x: -40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, margin: "-80px" }}
-      className={`mb-8 ${center ? 'text-center' : ''}`}
+      className={`mb-10 ${center ? 'text-center' : ''}`}
     >
       <motion.div
-        initial={{ opacity: 0, y: -8 }}
+        initial={{ opacity: 0, y: -6 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
         viewport={{ once: true, margin: "-80px" }}
-        className="font-mono text-xs tracking-[0.2em] text-cyan/70 mb-2"
+        className="font-mono text-[11px] tracking-[0.25em] text-text-muted/60 mb-3"
       >
-        {"//"} {number} &nbsp; {command}
+        <span className="text-cyan/50">{number}</span> &nbsp; <span className="text-text-muted/40">{command}</span>
       </motion.div>
       <motion.h2
-        initial={{ opacity: 0, y: 24, scale: 0.96 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         viewport={{ once: true, margin: "-80px" }}
-        className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-text-muted inline-block"
+        className="text-3xl md:text-4xl font-bold text-white tracking-tight"
       >
         {title}
       </motion.h2>
@@ -1526,14 +1539,14 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
 function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, children?: React.ReactNode }) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 80, scale: 0.92, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 60, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, margin: "-60px" }}
-      whileHover={{ scale: 1.02, y: -8, boxShadow: "0 15px 50px -10px rgba(0,240,255,0.3)" }}
-      className="bg-panel border border-cyan/10 rounded-xl p-6 transition-colors duration-300 group overflow-hidden relative flex flex-col"
+      whileHover={{ y: -4, transition: { duration: 0.3 } }}
+      className="bg-panel/80 border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)]"
     >
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-cyan/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-cyan/40 via-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       {videoUrl && (
         <a
           href={videoUrl}
@@ -1545,23 +1558,23 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
       )}
       
       {bannerUrl && (
-        <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-cyan/20 relative shadow-[0_0_20px_rgba(0,240,255,0.1)]">
+        <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-white/[0.06] relative">
           <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent z-10"></div>
-          <img src={bannerUrl} alt={`${name} schematic`} className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 hover:scale-105" referrerPolicy="no-referrer" />
+          <img src={bannerUrl} alt={`${name} schematic`} className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" referrerPolicy="no-referrer" />
         </div>
       )}
 
       <div className="flex justify-between items-start mb-4 gap-4">
         <div className="flex items-center gap-4">
           {logoUrl && (
-            <div className="w-12 h-12 rounded-lg border border-cyan/20 overflow-hidden shrink-0 shadow-[0_0_15px_rgba(0,240,255,0.1)] group-hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-shadow">
-              <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" referrerPolicy="no-referrer" />
+            <div className="w-11 h-11 rounded-lg border border-white/[0.08] overflow-hidden shrink-0 group-hover:border-cyan/30 transition-all duration-300">
+              <img src={logoUrl} alt={`${name} logo`} className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" referrerPolicy="no-referrer" />
             </div>
           )}
-          <h4 className="text-xl font-bold group-hover:text-cyan transition-colors">{name}</h4>
+          <h4 className="text-lg font-bold group-hover:text-cyan transition-colors duration-300">{name}</h4>
         </div>
         {url && (
-          <a href={url} target="_blank" rel="noopener noreferrer" className="flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase px-2 py-1 bg-cyan/10 text-cyan border border-cyan/20 rounded hover:bg-cyan hover:text-bg transition-colors relative z-20">
+          <a href={url} target="_blank" rel="noopener noreferrer" className="flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase px-2 py-1 bg-white/5 text-text-muted border border-white/10 rounded hover:bg-cyan/10 hover:text-cyan hover:border-cyan/30 transition-colors relative z-20">
             <IconLink size={12} /> Live
           </a>
         )}
@@ -1577,7 +1590,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
 
       <div className="flex flex-wrap gap-2 mt-auto relative z-10">
         {tags.map((tag, i) => (
-          <span key={i} className="font-mono text-[10px] uppercase text-text-muted bg-bg/50 px-2 py-1 rounded border border-white/5 group-hover:border-cyan/20 transition-colors">
+          <span key={i} className="font-mono text-[10px] uppercase text-text-muted/70 bg-white/[0.03] px-2 py-1 rounded border border-white/[0.06] group-hover:border-white/10 transition-colors">
             {tag}
           </span>
         ))}
@@ -1638,25 +1651,24 @@ function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string
 }
 
 function StackGroup({ title, items, border }: { title: string, items: string[], border: string }) {
-  const borderColor = border === 'cyan' ? 'border-cyan/30' : 'border-amber/30';
-  const textColor = border === 'cyan' ? 'text-cyan' : 'text-amber';
+  const textColor = border === 'cyan' ? 'text-cyan/80' : 'text-amber/80';
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.95, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, margin: "-50px" }}
-      className={`bg-panel border border-cyan/10 p-6 rounded-xl hover:${borderColor} transition-colors duration-300`}
+      className="bg-panel/60 border border-white/[0.06] p-6 rounded-xl hover:border-white/[0.12] transition-colors duration-300"
     >
-      <div className={`text-xs uppercase tracking-widest mb-4 ${textColor}`}>[ {title} ]</div>
+      <div className={`text-[11px] uppercase tracking-[0.2em] mb-5 ${textColor} font-semibold`}>[ {title} ]</div>
       <motion.ul
         className="space-y-3 block"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         variants={{
-          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+          visible: { transition: { staggerChildren: 0.05, delayChildren: 0.15 } },
           hidden: {},
         }}
       >
@@ -1664,12 +1676,12 @@ function StackGroup({ title, items, border }: { title: string, items: string[], 
           <motion.li
             key={i}
             variants={{
-              hidden: { opacity: 0, x: -16, filter: "blur(4px)" },
-              visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+              hidden: { opacity: 0, x: -12 },
+              visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
             }}
-            className="text-sm text-text-muted flex items-center gap-2 border-b border-white/5 pb-2 last:border-0 last:pb-0"
+            className="text-sm text-text-muted flex items-center gap-2 border-b border-white/[0.04] pb-2 last:border-0 last:pb-0"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan/40"></span> {item}
+            <span className="w-1 h-1 rounded-full bg-cyan/50"></span> {item}
           </motion.li>
         ))}
       </motion.ul>
