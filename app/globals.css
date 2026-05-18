@@ -69,3 +69,23 @@ html {
   outline: 2px solid var(--color-cyan);
   outline-offset: 3px;
 }
+
+
+/* Liquid Glass Scrolling Animations */
+@keyframes liquid-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.liquid-glass-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(0, 240, 255, 0.04) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: liquid-shimmer 5s ease-in-out infinite;
+}
