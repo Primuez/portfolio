@@ -140,7 +140,7 @@ export default function Home() {
           </div>
           {/* Mobile hamburger */}
           <button
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50"
+            className="md:hidden flex flex-col justify-center items-center w-12 h-12 gap-1.5 z-50 rounded-lg active:bg-white/5 transition-colors"
             onClick={() => setMenuOpen(o => !o)}
             aria-label="Toggle menu"
           >
@@ -198,7 +198,7 @@ export default function Home() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
         {/* HERO SECTION */}
-        <section id="hero" className="min-h-screen flex flex-col justify-center pt-16 md:pt-20 relative overflow-hidden">
+        <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
           {/* Interactive Hex Path shader — glows on cursor hover */}
           <div className="absolute inset-0 -mx-4 sm:-mx-6">
             <HexShaderBackground />
@@ -209,8 +209,9 @@ export default function Home() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl relative z-10"
           >
-            <div className="font-mono text-amber/80 text-sm mb-6 flex items-center gap-2">
-              <Terminal size={14} /> <span className="opacity-60">Available for Projects</span>
+            <div className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="opacity-80">Available for Projects</span>
             </div>
             
             <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden">
@@ -228,18 +229,18 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
+            <h1 className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight">
               <LiquidGlassTitle>
                 I Build Systems <br/>
                 <ShaderText preset="chrome" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderText>
               </LiquidGlassTitle>
             </h1>
 
-            <p className="text-text-muted text-lg md:text-xl max-w-2xl mb-12 leading-relaxed font-sans text-balance">
+            <p className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance">
               Autonomous agents, intelligent workflows, and real shipped products — from Indore, India.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-14">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14">
               <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <ChevronRight size={16} /> View My Work
               </a>
@@ -759,7 +760,7 @@ export default function Home() {
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group"
+            className="fixed bottom-6 right-6 z-50 w-12 h-12 md:w-11 md:h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
             aria-label="Scroll to top"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-y-0.5 transition-transform">
@@ -1568,7 +1569,7 @@ function SectionHeader({ number, command, title, center = false }: { number: str
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         viewport={{ once: true, margin: "-80px" }}
-        className="text-3xl md:text-4xl font-bold text-white tracking-tight"
+        className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight"
       >
         <ShaderText preset="aurora">{title}</ShaderText>
       </motion.h2>
