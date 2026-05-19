@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import { Space_Mono, Syne } from 'next/font/google';
 import './globals.css';
+import FloatingMobileCTA from '@/components/FloatingMobileCTA';
 
 const spaceMono = Space_Mono({
   weight: ['400', '700'],
@@ -66,6 +67,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       </head>
       <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
         {children}
+        <FloatingMobileCTA />
       </body>
     </html>
   );
