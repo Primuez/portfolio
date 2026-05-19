@@ -1954,10 +1954,16 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
 
   // clipBottom: 100 → 0 as user scrolls through section
   const clipBottom  = useTransform(smoothP, [0.04, 0.88], [100, 0]);
-  const clipPath    = useTransform(clipBottom, v => `inset(0 0 ${v.toFixed(2)}% 0)`);
+  const clipPath    = useTransform(clipBottom, v => {
+    const clamped = Math.max(0, Math.min(100, isNaN(v) ? 100 : v));
+    return `inset(0 0 ${clamped.toFixed(2)}% 0)`;
+  });
 
   // laser sits right at the clip boundary
-  const laserTop    = useTransform(clipBottom, v => `${(100 - v).toFixed(2)}%`);
+  const laserTop    = useTransform(clipBottom, v => {
+    const clamped = Math.max(0, Math.min(100, isNaN(v) ? 100 : v));
+    return `${(100 - clamped).toFixed(2)}%`;
+  });
   const laserOpacity= useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
 
   // section height: desktop ~280vh gives plenty of scroll room through 2 card rows
@@ -2053,7 +2059,7 @@ function MobileServiceCard({ card }: { card: (typeof SERVICES_DATA)[0] }) {
       className="relative"
       whileInView="visible"
       initial="hidden"
-      viewport={{ margin: '-22% 0px -22% 0px', once: true }}
+      viewport={{ margin: '-80px 0px -80px 0px', once: true }}
     >
       {/* ── Bottom layer: Wireframe blueprint ── */}
       <div className="flex flex-col p-6 rounded-xl border-2 border-dashed border-[#333] bg-transparent min-h-[260px]">
@@ -2310,7 +2316,7 @@ function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
   const ctaOpacity = useMotionValue(0);
   const ctaY       = useMotionValue(14);
   const ref        = useRef<HTMLDivElement>(null);
-  const inView     = useInView(ref, { once: true, margin: '-20% 0px -20% 0px' });
+  const inView     = useInView(ref, { once: true, margin: '-80px 0px -80px 0px' });
 
   useEffect(() => {
     if (!inView) return;
@@ -2423,7 +2429,7 @@ function MobileVipCard() {
   const ctaOpacity = useMotionValue(0);
   const ctaY       = useMotionValue(14);
   const ref        = useRef<HTMLDivElement>(null);
-  const inView     = useInView(ref, { once: true, margin: '-20% 0px -20% 0px' });
+  const inView     = useInView(ref, { once: true, margin: '-80px 0px -80px 0px' });
 
   useEffect(() => {
     if (!inView) return;
@@ -2905,12 +2911,13 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
   }
 
   return (
-    <div className="border border-white/8 rounded-xl overflow-hidden bg-panel/60 transition-colors duration-300 hover:border-cyan/20">
+    <div className="border border-white/8 rounded-xl overflow-hidden bg-panel/60 transition-colors duration-300 hover:border-cyan/20 active:border-cyan/30">
       <button
         onClick={handleClick}
         onMouseEnter={startScramble}
         onMouseLeave={stopScramble}
-        className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left group cursor-pointer"
+        className="w-full flex items-center justify-between gap-4 px-5 py-5 md:px-6 text-left group cursor-pointer min-h-[56px]"
+        aria-expanded={open}
       >
         <span
           className="font-mono text-sm md:text-base text-text-main group-hover:text-white transition-colors leading-snug tracking-tight"
@@ -2918,7 +2925,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
         >
           {displayQ}
         </span>
-        <span className={`shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-300 ${open ? 'border-cyan bg-cyan/10 rotate-45' : 'border-white/20 group-hover:border-cyan/40'}`}>
+        <span className={`shrink-0 w-7 h-7 md:w-6 md:h-6 rounded-full border flex items-center justify-center transition-all duration-300 ${open ? 'border-cyan bg-cyan/10 rotate-45' : 'border-white/20 group-hover:border-cyan/40 group-active:border-cyan/60'}`}>
           <ChevronRight size={12} className={`transition-colors ${open ? 'text-cyan' : 'text-text-muted group-hover:text-white'}`} />
         </span>
       </button>
@@ -2931,7 +2938,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-5 pt-2 text-sm text-[#00f0ff]/70 leading-relaxed border-t border-white/5 font-sans whitespace-pre-wrap break-words">
+            <div className="px-5 md:px-6 pb-5 pt-3 text-sm md:text-[15px] text-[#00f0ff]/80 leading-relaxed border-t border-white/5 font-sans whitespace-pre-wrap break-words">
               {displayA || a}
             </div>
           </motion.div>
@@ -2944,8 +2951,12 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
 function FAQDecryptionSection() {
   const listRef = useRef<HTMLDivElement>(null);
   const glitch = useRef({ split: 0, skew: 0, raf: 0 });
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Disable scroll-driven glitch on mobile — it causes jank and is disorienting
+    if (isMobile) return;
+
     const el = listRef.current;
     if (!el) return;
 
@@ -2993,7 +3004,7 @@ function FAQDecryptionSection() {
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(glitch.current.raf);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <motion.section
@@ -3004,10 +3015,10 @@ function FAQDecryptionSection() {
       viewport={{ once: true, margin: '-100px' }}
     >
       <SectionHeader number="09" command="> ./faq --resolve-objections" title="Frequently Asked Questions" />
-      <p className="text-text-muted mt-4 mb-12 max-w-2xl text-base leading-relaxed">
+      <p className="text-text-muted mt-4 mb-8 md:mb-12 max-w-2xl text-sm md:text-base leading-relaxed">
         Real answers to the questions clients ask before reaching out — so you don&apos;t have to wait for a reply to decide.
       </p>
-      <div ref={listRef} className="max-w-3xl space-y-3" style={{ transformOrigin: 'center center' }}>
+      <div ref={listRef} className="max-w-3xl space-y-3 md:space-y-3" style={{ transformOrigin: 'center center' }}>
         {FAQ_DATA.map((item, i) => (
           <FAQDecryptItem key={i} q={item.q} a={item.a} />
         ))}

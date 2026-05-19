@@ -72,27 +72,29 @@ export function StockChart() {
           </span>
         </div>
       </div>
-      <ResponsiveContainer width="100%" aspect={5}>
-        <AreaChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
-          <defs>
-            <linearGradient id="amberFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f5a623" stopOpacity={0.35} />
-              <stop offset="100%" stopColor="#f5a623" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <Area
-            type="linear"
-            dataKey="value"
-            stroke="#f5a623"
-            strokeWidth={1.6}
-            fill="url(#amberFill)"
-            dot={false}
-            isAnimationActive={true}
-            animationDuration={250}
-            animationEasing="linear"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <div className="w-full min-h-[80px]">
+        <ResponsiveContainer width="100%" height={80}>
+          <AreaChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
+            <defs>
+              <linearGradient id="amberFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#f5a623" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#f5a623" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <Area
+              type="linear"
+              dataKey="value"
+              stroke="#f5a623"
+              strokeWidth={1.6}
+              fill="url(#amberFill)"
+              dot={false}
+              isAnimationActive={true}
+              animationDuration={250}
+              animationEasing="linear"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </a>
   );
 }

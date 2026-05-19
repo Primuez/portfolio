@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 // Base64-encoded WebP displacement map for SVG liquid glass filter
-const WEBP_DISPLACEMENT_MAP = "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoQABAAAgA0JYgCdAEO/hepgAAA/vxH+X/MP5F9Sf+F7i/5x/If0j/sf8B/Jf6b/v/9h7gH7T/1HuAfsr/Y/4D/Mf5v/ff7v/se8t/+veA/loAAA==";
+const WEBP_DISPLACEMENT_MAP = "https://assets.codepen.io/252820/glass-displacement.webp";
 
 const glassButtonVariants = cva(
   "relative inline-flex items-center justify-center rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer select-none overflow-hidden border border-white/[0.08] hover:border-white/[0.15] active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan",
