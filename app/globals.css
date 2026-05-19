@@ -511,3 +511,92 @@ a[href^="#"]:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 240, 255, 0.4);
 }
+
+
+/* ─── CONTAINER SCROLL 3D CARD ─────────────────────────────────────────────── */
+
+@keyframes container-card-ambient {
+  0%   { box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), 0 0 120px rgba(0, 0, 0, 0.3); }
+  50%  { box-shadow: 0 0 80px rgba(0, 240, 255, 0.08), 0 0 160px rgba(0, 0, 0, 0.4); }
+  100% { box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), 0 0 120px rgba(0, 0, 0, 0.3); }
+}
+
+.container-scroll-card-glow {
+  animation: container-card-ambient 5s ease-in-out infinite;
+}
+
+/* ─── INTERACTIVE SECTION SHADER DIVIDERS ──────────────────────────────────── */
+
+@keyframes shader-divider-flow {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shader-section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.0) 10%,
+    rgba(0, 240, 255, 0.3) 30%,
+    rgba(167, 139, 250, 0.4) 50%,
+    rgba(0, 240, 255, 0.3) 70%,
+    rgba(0, 240, 255, 0.0) 90%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shader-divider-flow 4s linear infinite;
+}
+
+/* ─── BLUR REVEAL ANIMATION UTILITY ───────────────────────────────────────── */
+
+@keyframes blur-reveal {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.animate-blur-reveal {
+  animation: blur-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+/* ─── INTERACTIVE CARD HOVER SHADER — cursor-reactive gradient ─────────────── */
+
+@keyframes card-shader-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.7; }
+}
+
+.interactive-shader-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-shader-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(0, 240, 255, 0.04),
+    rgba(167, 139, 250, 0.03),
+    rgba(245, 166, 35, 0.02),
+    rgba(0, 240, 255, 0.04)
+  );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: card-shader-pulse 4s ease-in-out infinite;
+}
+
+.interactive-shader-card:hover::after {
+  opacity: 1;
+}

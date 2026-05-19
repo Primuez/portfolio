@@ -17,8 +17,9 @@ import { ShaderText, ShaderLogo, ShaderGlowLine } from '@/components/ShaderText'
 import { CustomCursor } from '@/components/CustomCursor';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
-import { LiquidGlassContainer, LiquidGlassParallaxSection, InteractiveGlassBackground } from '@/components/ui/liquid-glass-container';
+import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
 import { LiquidGlassLogo, LiquidGlassTitle, GlassRefractionOverlay } from '@/components/ui/liquid-glass-logo';
+import { ContainerScroll } from '@/components/ui/container-scroll';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -275,7 +276,51 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="01" command="> whoami" title="About" />
-          <AboutZoom />
+          <ContainerScroll
+            titleComponent={
+              <div className="flex flex-col items-center">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4">
+                  <ShaderText preset="chrome">Architecting Autonomy</ShaderText>
+                </h2>
+                <p className="text-text-muted text-base md:text-lg max-w-2xl">
+                  Systems thinker. Self-taught engineer. Building from central India.
+                </p>
+              </div>
+            }
+          >
+            {/* Card content: Bio + Info Grid */}
+            <div className="flex flex-col h-full justify-between gap-6 text-left">
+              <div className="space-y-4 max-w-3xl">
+                <p className="text-zinc-300 text-sm md:text-base leading-relaxed">
+                  I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — a self-taught AI developer and automation engineer. I don&apos;t just use AI tools. I design systems that use tools, adapt, and execute workflows autonomously.
+                </p>
+                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                  My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, hackathon submissions, and client-facing AI systems — without a CS degree, without a team, from central India.
+                </p>
+                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                  I think in systems before I write a single line of logic. I build for modularity, fallback reliability, and zero manual intervention.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 pt-4 border-t border-zinc-700/60">
+                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Education</span>
+                  <span className="text-zinc-200 text-xs font-medium">KPS, Dunda · SSIPS (BCA)</span>
+                </div>
+                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Experience</span>
+                  <span className="text-zinc-200 text-xs font-medium">AI Automation · Since July 2025</span>
+                </div>
+                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Location</span>
+                  <span className="text-zinc-200 text-xs font-medium flex items-center gap-1"><MapPin size={10} /> Indore, MP, India</span>
+                </div>
+                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
+                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Languages</span>
+                  <span className="text-zinc-200 text-xs font-medium">Hindi · English C2 · Sindhi C2</span>
+                </div>
+              </div>
+            </div>
+          </ContainerScroll>
         </motion.section>
 
         {/* 02. PROJECTS */}
@@ -380,19 +425,58 @@ export default function Home() {
           </LiquidGlassParallaxSection>
 
           {/* NEW SECTION: VISUAL WORKFLOWS & 3D ELEMENTS */}
-          <div className="mt-12 md:mt-24 pt-10 md:pt-16 border-t border-cyan/10">
+          <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
+            <div className="shader-section-divider absolute top-0 left-0 right-0" />
             <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
             
             <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
               <div>
-                <h3 className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4">Interactive 3D Orchestration Core</h3>
-                <p className="text-text-muted mb-6 leading-relaxed">
+                <motion.h3
+                  initial={{ filter: 'blur(10px)', opacity: 0 }}
+                  whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4"
+                >
+                  Interactive 3D Orchestration Core
+                </motion.h3>
+                <motion.p
+                  initial={{ filter: 'blur(10px)', opacity: 0 }}
+                  whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="text-text-muted mb-6 leading-relaxed"
+                >
                   Hover and grab the core object to rotate. This interactive 3D model powered by Three.js and React Three Fiber serves as an abstraction of my n8n central orchestrator—routing payloads, scaling compute, and connecting multiple AI pipelines.
-                </p>
+                </motion.p>
                 <ul className="space-y-2 font-mono text-xs text-text-muted">
-                  <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span> @react-three/fiber processing</li>
-                  <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse delay-75"></span> MeshDistortMaterial applied</li>
-                  <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse delay-150"></span> Interactive rotation axes mapped</li>
+                  <motion.li
+                    initial={{ filter: 'blur(10px)', opacity: 0 }}
+                    whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                    transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="flex items-center gap-2"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span> @react-three/fiber processing
+                  </motion.li>
+                  <motion.li
+                    initial={{ filter: 'blur(10px)', opacity: 0 }}
+                    whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                    transition={{ duration: 0.7, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="flex items-center gap-2"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse delay-75"></span> MeshDistortMaterial applied
+                  </motion.li>
+                  <motion.li
+                    initial={{ filter: 'blur(10px)', opacity: 0 }}
+                    whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                    transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="flex items-center gap-2"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse delay-150"></span> Interactive rotation axes mapped
+                  </motion.li>
                 </ul>
               </div>
               <div>
@@ -1447,119 +1531,6 @@ function LiquidRepoCard({
         </div>
       )}
     </motion.a>
-  );
-}
-
-function ZoomItem({
-  progress,
-  index,
-  total,
-  children,
-  className = '',
-}: {
-  progress: MotionValue<number>;
-  index: number;
-  total: number;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const span = 0.55;
-  const stepStart = 0.08 + (index / total) * span;
-  const stepEnd = stepStart + 0.28;
-
-  const scale = useTransform(progress, [stepStart, stepEnd], [0.18, 1]);
-  const opacity = useTransform(
-    progress,
-    [stepStart, stepStart + 0.06, stepEnd - 0.04, stepEnd + 0.25, 1],
-    [0, 1, 1, 1, 1]
-  );
-  const filter = useTransform(
-    progress,
-    [stepStart, stepEnd],
-    ['blur(14px)', 'blur(0px)']
-  );
-  const z = useTransform(progress, [stepStart, stepEnd], [-400, 0]);
-  const rotateX = useTransform(progress, [stepStart, stepEnd], [12, 0]);
-
-  return (
-    <motion.div
-      style={{ scale, opacity, filter, z, rotateX, transformStyle: 'preserve-3d' }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-function AboutZoom() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  const total = 8;
-
-  return (
-    <div
-      ref={ref}
-      className="grid md:grid-cols-2 gap-12 mt-12 bg-panel/40 border border-white/[0.06] p-8 md:p-12 backdrop-blur-lg rounded-2xl relative overflow-hidden group"
-      style={{ perspective: '1200px' }}
-    >
-      {/* Interactive glass background for About section */}
-      <InteractiveGlassBackground />
-      {/* Glass edge highlights */}
-      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none z-10" />
-      <div className="space-y-6 text-text-main leading-relaxed">
-        <ZoomItem progress={scrollYProgress} index={0} total={total}>
-          <p>
-            I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — a self-taught AI developer and automation engineer. I don&apos;t just use AI tools. I design systems that use tools, adapt, and execute workflows autonomously.
-          </p>
-        </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={1} total={total}>
-          <p>
-            My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, hackathon submissions, and client-facing AI systems — without a CS degree, without a team, from central India.
-          </p>
-        </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={2} total={total}>
-          <p>
-            I think in systems before I write a single line of logic. I build for modularity, fallback reliability, and zero manual intervention.
-          </p>
-        </ZoomItem>
-      </div>
-      <div className="flex flex-col gap-4 font-mono text-sm justify-center">
-        <ZoomItem progress={scrollYProgress} index={3} total={total}>
-          <div className="p-4 border-l-2 border-amber bg-bg/50">
-            <span className="text-text-muted mb-1 block">Education</span>
-            Commerce Graduate · KPS, Dunda
-          </div>
-        </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={4} total={total}>
-          <div className="p-4 border-l-2 border-cyan bg-bg/50">
-            <span className="text-text-muted mb-1 block">Currently Pursuing</span>
-            Bachelor of Computer Applications (BCA) · Shri Shankaracharya Institute of Professional Studies
-          </div>
-        </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={5} total={total}>
-          <div className="p-4 border-l-2 border-cyan bg-bg/50">
-            <span className="text-text-muted mb-1 block">Experience</span>
-            AI Automation · Since July 2025
-          </div>
-        </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={6} total={total}>
-          <div className="p-4 border-l-2 border-amber bg-bg/50">
-            <span className="text-text-muted mb-1 block">Location</span>
-            <span className="flex items-center gap-2"><MapPin size={14} /> Indore, Madhya Pradesh, India</span>
-          </div>
-        </ZoomItem>
-        <ZoomItem progress={scrollYProgress} index={7} total={total}>
-          <div className="p-4 border-l-2 border-cyan bg-bg/50">
-            <span className="text-text-muted mb-1 block">Languages</span>
-            Hindi · English (C2) · Sindhi (C2)
-          </div>
-        </ZoomItem>
-      </div>
-    </div>
   );
 }
 
