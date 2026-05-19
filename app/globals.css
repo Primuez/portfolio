@@ -259,6 +259,53 @@ html {
   opacity: 1;
 }
 
+/* ─── APPLE TAHOE LIQUID GLASS BUTTON ──────────────────────────────────────── */
+
+.glass-btn-glow {
+  position: relative;
+}
+
+.glass-btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.2),
+    rgba(167, 139, 250, 0.15),
+    rgba(0, 240, 255, 0.2)
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.glass-btn-glow:hover::before {
+  opacity: 1;
+}
+
+/* Interactive glass background — mouse-reactive gradient */
+@keyframes glass-ambient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.glass-interactive-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.02) 0%,
+    rgba(167, 139, 250, 0.015) 25%,
+    rgba(0, 240, 255, 0.01) 50%,
+    rgba(245, 166, 35, 0.01) 75%,
+    rgba(0, 240, 255, 0.02) 100%
+  );
+  background-size: 400% 400%;
+  animation: glass-ambient 12s ease-in-out infinite;
+}
+
 /* ─── APPLE LIQUID GLASS v2 ────────────────────────────────────────────────── */
 
 @keyframes liquid-glass-breathe {
