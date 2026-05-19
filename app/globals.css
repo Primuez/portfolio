@@ -600,3 +600,124 @@ a[href^="#"]:hover {
 .interactive-shader-card:hover::after {
   opacity: 1;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE UX OVERHAUL — UI/UX Pro Max Skill v2.0 Principles
+   Target: Business owners on mobile (375px-768px) for first-impression conversion
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* 1. TOUCH TARGETS — Minimum 44px (Apple HIG + WCAG 2.5.5) */
+@media (max-width: 767px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* 2. READABLE TEXT — Prevent browser zoom on focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* 3. CONTENT BREATHING ROOM — Better spacing on narrow screens */
+  section {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  /* 4. HERO SECTION — Maximum impact on first view */
+  #hero h1 {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  #hero p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* 5. CTA BUTTONS — Full-width on mobile for easier tapping */
+  #hero .flex-col a,
+  #hero .flex-col button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    justify-content: center;
+  }
+
+  /* 6. FAQ — Better mobile touch UX */
+  #faq button {
+    padding: 1.125rem 1rem;
+    min-height: 56px;
+  }
+
+  /* 7. PRICING CARDS — Better readability */
+  #pricing h2 {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+
+  /* 8. NAVIGATION — Larger touch targets */
+  nav button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* 9. SCROLL PERFORMANCE — Reduce layout thrashing */
+  .will-change-transform {
+    will-change: transform;
+    contain: layout style;
+  }
+
+  /* 10. SMOOTH SCROLLING — Better scroll feel on iOS */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 11. CARD GRID — Single column with consistent spacing */
+  .grid.md\\:grid-cols-2,
+  .grid.md\\:grid-cols-3,
+  .grid.lg\\:grid-cols-3,
+  .grid.lg\\:grid-cols-4 {
+    gap: 1rem;
+  }
+
+  /* 12. FOOTER — Better spacing on mobile */
+  footer .flex-col {
+    gap: 1.5rem;
+    text-align: center;
+  }
+}
+
+/* 13. SAFE AREA INSETS — Notch-safe for iPhone */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* 14. REDUCED MOTION — Respect user preferences (UX Pro Max rule) */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 15. FOCUS VISIBLE — Keyboard navigation (accessibility requirement) */
+:focus-visible {
+  outline: 2px solid #00f0ff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 16. MOBILE CTA STICKY HELPER — Floating CTA for conversion */
+@media (max-width: 767px) {
+  .glass-btn-glow {
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.3), 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+}
