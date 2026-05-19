@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://primuez.com'),
   title: 'Primuez | AI Systems Builder & Automation Engineer',
   description: 'Portfolio of Rahul Kasturiya (Primuez). Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, India. I build autonomous workflows and live products.',
+  other: {
+    'msapplication-TileColor': '#0a0a0f',
+  },
   openGraph: {
     url: 'https://primuez.com',
     siteName: 'Primuez',
@@ -44,16 +47,23 @@ export const metadata: Metadata = {
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={`${spaceMono.variable} ${syne.variable}`}>
+      <head>
+        <meta name="theme-color" content="#00f0ff" />
+        <meta name="msapplication-TileColor" content="#0a0a0f" />
+      </head>
       <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
         {children}
       </body>
