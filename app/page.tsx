@@ -16,6 +16,9 @@ import { ShaderBackground } from '@/components/ShaderBackground';
 import { ShaderText, ShaderLogo, ShaderGlowLine } from '@/components/ShaderText';
 import { CustomCursor } from '@/components/CustomCursor';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
+import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
+import { LiquidGlassContainer, LiquidGlassParallaxSection, InteractiveGlassBackground } from '@/components/ui/liquid-glass-container';
+import { LiquidGlassLogo, LiquidGlassTitle, GlassRefractionOverlay } from '@/components/ui/liquid-glass-logo';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -112,6 +115,8 @@ export default function Home() {
       <CustomCursor />
       {/* Interactive WebGL shader background */}
       <ShaderBackground />
+      {/* Interactive liquid glass refraction overlay — responds to cursor/touch */}
+      <GlassRefractionOverlay />
       {/* Blueprint animated grid overlay */}
       <div className="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none"></div>
       
@@ -119,7 +124,9 @@ export default function Home() {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
-            <ShaderLogo>PRIMUEZ</ShaderLogo>
+            <LiquidGlassLogo>
+              <ShaderLogo>PRIMUEZ</ShaderLogo>
+            </LiquidGlassLogo>
           </div>
           {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
@@ -172,12 +179,14 @@ export default function Home() {
                     <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-1">{label}</a>
                   );
                 })}
-                <button 
+                <GlassButton 
+                  size="lg"
                   onClick={() => { setMenuOpen(false); setModalType('form'); }}
-                  className="mt-4 w-full py-3 bg-cyan text-bg font-mono font-bold text-xs uppercase tracking-widest rounded cta-glow active:scale-[0.97] transition-transform"
+                  glowColor="rgba(0, 240, 255, 0.3)"
+                  className="mt-4 w-full glass-btn-glow text-cyan"
                 >
                   Work With Me
-                </button>
+                </GlassButton>
               </div>
             </motion.div>
           )}
@@ -219,8 +228,10 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
-              I Build Systems <br/>
-              <ShaderText preset="chrome" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderText>
+              <LiquidGlassTitle>
+                I Build Systems <br/>
+                <ShaderText preset="chrome" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderText>
+              </LiquidGlassTitle>
             </h1>
 
             <p className="text-text-muted text-lg md:text-xl max-w-2xl mb-12 leading-relaxed font-sans text-balance">
@@ -231,9 +242,14 @@ export default function Home() {
               <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <ChevronRight size={16} /> View My Work
               </a>
-              <button onClick={() => setModalType('form')} className="px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest transition-all duration-300 text-center cta-glow hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,240,255,0.4),0_4px_20px_rgba(0,0,0,0.3)] active:scale-[0.98]">
+              <GlassButton 
+                size="lg" 
+                onClick={() => setModalType('form')} 
+                glowColor="rgba(0, 240, 255, 0.25)"
+                className="glass-btn-glow text-cyan hover:text-white"
+              >
                 Work With Me
-              </button>
+              </GlassButton>
               <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <Download size={16} /> Resume
               </a>
@@ -270,8 +286,11 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <SectionHeader number="02" command="> ./projects --all" title="Projects & Automated Systems" />
+          <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
+            <SectionHeader number="02" command="> ./projects --all" title="Projects & Automated Systems" />
+          </LiquidGlassTitle>
           
+          <LiquidGlassParallaxSection parallaxDistance={40}>
           <ProjectGroup title="SaaS Products" color="cyan">
             <ProjectCard 
               name="InkTwin" 
@@ -288,7 +307,9 @@ export default function Home() {
               logoUrl="/logo-primuezsure.png"
             />
           </ProjectGroup>
+          </LiquidGlassParallaxSection>
 
+          <LiquidGlassParallaxSection parallaxDistance={50}>
           <ProjectGroup title="Autonomous Advisors" color="amber">
             <ProjectCard 
               name="AI Powered Stock Market Advisor" 
@@ -311,7 +332,9 @@ export default function Home() {
               />
             </ProjectCard>
           </ProjectGroup>
+          </LiquidGlassParallaxSection>
 
+          <LiquidGlassParallaxSection parallaxDistance={45}>
           <ProjectGroup title="Automation Systems" color="cyan">
             <ProjectCard 
               name="AI WhatsApp Agent" 
@@ -330,7 +353,9 @@ export default function Home() {
               tags={["Ollama", "Multi-Model", "Fallback Logic", "LLM Orchestration"]}
             />
           </ProjectGroup>
+          </LiquidGlassParallaxSection>
           
+          <LiquidGlassParallaxSection parallaxDistance={45}>
           <ProjectGroup title="Enterprise Architecture" color="cyan">
             <div className="md:col-span-2">
               <ProjectCard 
@@ -342,14 +367,17 @@ export default function Home() {
             </div>
             
             <div className="md:col-span-2 mt-4 flex justify-center">
-              <button 
+              <GlassButton 
+                size="lg"
                 onClick={() => setModalType('workflow')}
-                className="w-full md:w-auto px-8 py-4 bg-panel border border-cyan/40 rounded-xl hover:border-cyan text-cyan font-mono text-sm uppercase tracking-widest transition-all hover:bg-cyan/10 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_30px_rgba(0,240,255,0.3)]"
+                glowColor="rgba(0, 240, 255, 0.2)"
+                className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white"
               >
                 <Activity size={18} /> View Interactive Architecture Diagram
-              </button>
+              </GlassButton>
             </div>
           </ProjectGroup>
+          </LiquidGlassParallaxSection>
 
           {/* NEW SECTION: VISUAL WORKFLOWS & 3D ELEMENTS */}
           <div className="mt-12 md:mt-24 pt-10 md:pt-16 border-t border-cyan/10">
@@ -493,7 +521,8 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-8 relative z-0">
 
               <DropCard delay={0.05} initialRotate={-3}>
-                <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
+                <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
+                  <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none"></div>
                   <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
                     <IconLink className="text-cyan" size={32} />
                   </div>
@@ -501,14 +530,15 @@ export default function Home() {
                   <p className="text-text-muted mb-8 max-w-sm text-sm">
                     Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
                   </p>
-                  <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/10 text-cyan px-8 py-4 hover:bg-cyan hover:text-bg transition-colors shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                  <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/5 text-cyan px-8 py-4 rounded-xl hover:bg-cyan/15 hover:border-cyan/80 transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.2)] backdrop-blur-sm">
                     View Playlists
                   </a>
                 </div>
               </DropCard>
 
               <DropCard delay={0.22} initialRotate={2.5}>
-                <div className="bg-panel border border-cyan/20 p-8 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center font-mono">
+                <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
+                  <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none"></div>
                   <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
                     <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" />
                   </div>
@@ -659,7 +689,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
-              <span className="font-mono text-cyan text-lg tracking-widest font-bold"><ShaderLogo>PRIMUEZ</ShaderLogo></span>
+              <span className="font-mono text-cyan text-lg tracking-widest font-bold"><LiquidGlassLogo><ShaderLogo>PRIMUEZ</ShaderLogo></LiquidGlassLogo></span>
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
             </div>
             <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
@@ -1066,12 +1096,14 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
         <div className="mt-10 flex justify-center">
           <FallingPiece container={containerRef} collapsed={collapsed} dx={120 * xs} dy={240 * ys} rotate={12} delay={0.4}>
-            <button
+            <GlassButton
+              size="lg"
               onClick={onContact}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-cyan text-bg font-mono font-bold text-sm uppercase tracking-widest hover:bg-cyan/90 transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.3)]"
+              glowColor="rgba(0, 240, 255, 0.3)"
+              className="glass-btn-glow text-cyan hover:text-white"
             >
               <Send size={16} /> Work With Me
-            </button>
+            </GlassButton>
           </FallingPiece>
         </div>
 
@@ -1394,8 +1426,10 @@ function LiquidRepoCard({
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }}
-      className="bg-panel border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform"
+      className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
     >
+      {/* Glass highlight */}
+      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div>
         <div className="flex items-start justify-between mb-4">
           <Github className="text-text-muted group-hover:text-white group-hover:scale-110 transition-all" size={24} />
@@ -1469,9 +1503,13 @@ function AboutZoom() {
   return (
     <div
       ref={ref}
-      className="grid md:grid-cols-2 gap-12 mt-12 bg-panel/50 border border-cyan/10 p-8 md:p-12 backdrop-blur-sm rounded-xl"
+      className="grid md:grid-cols-2 gap-12 mt-12 bg-panel/40 border border-white/[0.06] p-8 md:p-12 backdrop-blur-lg rounded-2xl relative overflow-hidden group"
       style={{ perspective: '1200px' }}
     >
+      {/* Interactive glass background for About section */}
+      <InteractiveGlassBackground />
+      {/* Glass edge highlights */}
+      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none z-10" />
       <div className="space-y-6 text-text-main leading-relaxed">
         <ZoomItem progress={scrollYProgress} index={0} total={total}>
           <p>
@@ -1670,7 +1708,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
       viewport={{ once: true, margin: "-60px" }}
       whileHover={{ y: -4, transition: { duration: 0.3 } }}
       onMouseMove={handleMouseMove}
-      className="bg-panel/80 border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)]"
+      className="bg-panel/60 backdrop-blur-md border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)] liquid-glass-card"
     >
       {/* Liquid glass refraction overlay — follows mouse */}
       <div
@@ -1679,7 +1717,10 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
           background: `radial-gradient(300px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(0,240,255,0.06), transparent 60%)`,
         }}
       />
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-cyan/40 via-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      {/* Glass top edge highlight */}
+      <div className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"></div>
+      {/* Glass bottom refraction */}
+      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent pointer-events-none z-10"></div>
       {videoUrl && (
         <a
           href={videoUrl}
@@ -1743,8 +1784,11 @@ function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string
       className="group w-full block h-full md:[perspective:1000px]"
       style={{ transformPerspective: 1200 }}
     >
-      <div className="w-full h-full bg-panel/80 border border-cyan/30 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d]">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan/10 to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="w-full h-full bg-panel/60 backdrop-blur-md border border-cyan/20 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d] liquid-glass-card">
+        {/* Glassmorphism shimmer overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] via-transparent to-white/[0.02] z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+        {/* Top edge glass refraction */}
+        <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent pointer-events-none z-20"></div>
         {videoUrl && (
           <a
             href={videoUrl}
@@ -1908,8 +1952,10 @@ function WireframeCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DA
 
 function RenderedCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DATA)[0]) {
   return (
-    <div className="flex flex-col p-6 rounded-xl border border-cyan/20 bg-[#12161E] min-h-[260px]
-      shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
+    <div className="flex flex-col p-6 rounded-xl border border-cyan/20 bg-[#12161E]/80 backdrop-blur-md min-h-[260px]
+      shadow-[0_4px_24px_rgba(0,0,0,0.4)] relative overflow-hidden liquid-glass-card group">
+      {/* Glass edge highlight */}
+      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none z-10"></div>
       <div className="text-3xl mb-4">{icon}</div>
       <h4 className="text-base font-bold mb-1 text-white">{title}</h4>
       <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#00FFCC]">→ {outcome}</p>
@@ -2014,12 +2060,14 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
         {/* CTA */}
         <div className="mt-10 text-center">
           <p className="font-mono text-xs text-text-muted tracking-widest mb-4">[ NOT SURE WHICH ONE YOU NEED? ]</p>
-          <button
+          <GlassButton
+            size="lg"
             onClick={onWorkWithMe}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-cyan text-cyan font-mono text-sm uppercase tracking-widest hover:bg-cyan/10 transition-all duration-300"
+            glowColor="rgba(0, 240, 255, 0.2)"
+            className="glass-btn-glow text-cyan hover:text-white"
           >
-            Describe your project → I&apos;ll figure out the rest
-          </button>
+            Describe your project &rarr; I&apos;ll figure out the rest
+          </GlassButton>
         </div>
       </div>
     </section>
