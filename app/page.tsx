@@ -114,10 +114,12 @@ export default function Home() {
     <main className="relative min-h-screen">
       {/* Custom cursor & touch response */}
       <CustomCursor />
-      {/* Interactive WebGL shader background */}
-      <ShaderBackground />
+      {/* Interactive WebGL shader background — ONLY mount on desktop to prevent mobile memory crash */}
+      {!isMobile && <ShaderBackground />}
+      {/* Mobile fallback gradient background */}
+      {isMobile && <div className="fixed inset-0 z-0 bg-gradient-to-b from-[#0a0a0a] via-[#0d1117] to-[#111]" />}
       {/* Interactive liquid glass refraction overlay — responds to cursor/touch */}
-      <GlassRefractionOverlay />
+      {!isMobile && <GlassRefractionOverlay />}
       {/* Blueprint animated grid overlay */}
       <div className="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none"></div>
       
@@ -564,7 +566,7 @@ export default function Home() {
         {/* 05. GITHUB */}
         <motion.section 
           id="github" 
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-32 pb-28 md:pb-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -739,7 +741,7 @@ export default function Home() {
         {/* 10. CONTACT */}
         <motion.section 
           id="contact" 
-          className="pt-16 md:pt-32 text-center pb-12 md:pb-20"
+          className="pt-16 md:pt-32 text-center pb-28 md:pb-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -1968,8 +1970,8 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
   const laserOpacity= useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
 
   // section height: desktop ~280vh gives plenty of scroll room through 2 card rows
-  // mobile ~380vh gives room for the taller 1-column stacked grid
-  const sectionHeight = isMobile ? '420vh' : '290vh';
+  // mobile ~280vh prevents scroll fatigue while giving room for stacked cards
+  const sectionHeight = isMobile ? '280vh' : '290vh';
 
   return (
     <section
@@ -2321,9 +2323,9 @@ function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
 
   useEffect(() => {
     if (!inView) return;
-    const controls = animate(clipPct, 0, { duration: 1.1, ease: [0.22, 1, 0.36, 1] });
-    const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
-    const ctaYCtrl = animate(ctaY, 0, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
+    const controls = animate(clipPct, 0, { duration: 0.8, ease: [0.22, 1, 0.36, 1] });
+    const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.4, delay: 0, ease: 'easeOut' });
+    const ctaYCtrl = animate(ctaY, 0, { duration: 0.4, delay: 0, ease: 'easeOut' });
     return () => { controls.stop(); ctaCtrl.stop(); ctaYCtrl.stop(); };
   }, [inView, clipPct, ctaOpacity, ctaY]);
 
@@ -2692,7 +2694,7 @@ function MobileWhyPrimuez() {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
 
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 80}vh` }} className="relative -mx-4 sm:-mx-6">
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 50}vh` }} className="relative -mx-4 sm:-mx-6">
       <div
         className="sticky top-0 h-screen overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
@@ -2880,7 +2882,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
   function runDecrypt() {
     const len = a.length;
     const t0 = performance.now();
-    const DURATION = 1200;
+    const DURATION = isMobile.current ? 600 : 1200;
     function frame() {
       const elapsed = performance.now() - t0;
       const progress = Math.min(elapsed / DURATION, 1);
