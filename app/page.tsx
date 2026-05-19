@@ -23,6 +23,8 @@ import { ContainerScroll } from '@/components/ui/container-scroll';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
+import { TrustBar } from '@/components/TrustBar';
+import GithubShowcase from '@/components/GithubShowcase';
 
 const phrases = [
   "AI Developer.",
@@ -269,6 +271,9 @@ export default function Home() {
         </section>
 
         {/* 01. ABOUT */}
+        <div className="-mx-4 sm:-mx-6">
+          <TrustBar />
+        </div>
         <motion.section 
           id="whoami" 
           className="pt-16 md:pt-32"
@@ -561,7 +566,12 @@ export default function Home() {
         {/* 04. PRICING */}
         <ReceiptPricingSection />
 
-        {/* 05. GITHUB */}
+        {/* 05. GITHUB SHOWCASE */}
+        <div className="-mx-4 sm:-mx-6">
+          <GithubShowcase />
+        </div>
+
+        {/* 05. GITHUB ACTIVITY */}
         <motion.section 
           id="github" 
           className="pt-16 md:pt-32"
@@ -1704,7 +1714,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
       )}
       
       {bannerUrl && (
-        <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-white/[0.06] relative">
+        <div className="w-full h-32 md:h-48 mb-6 rounded-lg overflow-hidden border border-white/[0.06] relative">
           <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent z-10"></div>
           <img src={bannerUrl} alt={`${name} schematic`} loading="lazy" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" referrerPolicy="no-referrer" />
         </div>
@@ -1967,9 +1977,9 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
   });
   const laserOpacity= useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
 
-  // section height: desktop ~280vh gives plenty of scroll room through 2 card rows
-  // mobile ~380vh gives room for the taller 1-column stacked grid
-  const sectionHeight = isMobile ? '420vh' : '290vh';
+  // section height: desktop ~290vh gives plenty of scroll room through 2 card rows
+  // mobile ~280vh (reduced from 420vh for snappier mobile UX)
+  const sectionHeight = isMobile ? '280vh' : '290vh';
 
   return (
     <section
@@ -2692,7 +2702,7 @@ function MobileWhyPrimuez() {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
 
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 80}vh` }} className="relative -mx-4 sm:-mx-6">
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 50}vh` }} className="relative -mx-4 sm:-mx-6">
       <div
         className="sticky top-0 h-screen overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
@@ -2880,7 +2890,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
   function runDecrypt() {
     const len = a.length;
     const t0 = performance.now();
-    const DURATION = 1200;
+    const DURATION = isMobile.current ? 600 : 1200;
     function frame() {
       const elapsed = performance.now() - t0;
       const progress = Math.min(elapsed / DURATION, 1);
