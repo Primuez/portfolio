@@ -24,12 +24,13 @@ import { ContainerScroll } from '@/components/ui/container-scroll';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileStickyCtA } from '@/components/MobileStickyCtA';
 
 const phrases = [
-  "AI Developer.",
-  "Automation Engineer.",
-  "Systems Builder.",
-  "SaaS Founder."
+  "Workflow Automation.",
+  "Zero Manual Entry.",
+  "Systems That Scale.",
+  "Built for Indian SMEs."
 ];
 
 interface GithubRepo {
@@ -115,8 +116,12 @@ export default function Home() {
     <main className="relative min-h-screen">
       {/* Custom cursor & touch response */}
       <CustomCursor />
-      {/* Interactive WebGL shader background — renders on ALL devices with DPR optimization */}
-      <ShaderBackground className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
+      {/* Interactive WebGL shader background — renders on desktop only; mobile gets a premium gradient */}
+      {isMobile ? (
+        <div className="fixed inset-0 z-0 w-full h-full bg-gradient-to-br from-[#0a0a0f] via-[#0d1117] to-[#0a0e1a]" />
+      ) : (
+        <ShaderBackground className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
+      )}
       {/* Interactive liquid glass refraction overlay — responds to cursor/touch */}
       {!isMobile && <GlassRefractionOverlay />}
       {/* Blueprint animated grid overlay */}
@@ -126,11 +131,17 @@ export default function Home() {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
-            <ShaderLogoGlow>
+            {isMobile ? (
               <LiquidGlassLogo>
                 <ShaderLogo>PRIMUEZ</ShaderLogo>
               </LiquidGlassLogo>
-            </ShaderLogoGlow>
+            ) : (
+              <ShaderLogoGlow>
+                <LiquidGlassLogo>
+                  <ShaderLogo>PRIMUEZ</ShaderLogo>
+                </LiquidGlassLogo>
+              </ShaderLogoGlow>
+            )}
           </div>
           {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
@@ -166,21 +177,21 @@ export default function Home() {
                 {['About:#whoami','Projects:#projects','Services:#services','Pricing:#pricing'].map(item => {
                   const [label, href] = item.split(':');
                   return (
-                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-1">{label}</a>
+                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
                   );
                 })}
                 <div className="text-[10px] text-text-muted/50 tracking-[0.3em] mt-3">Info</div>
                 {['Why Us:#why-primuez','Stack:#stack','Credentials:#credentials','FAQ:#faq'].map(item => {
                   const [label, href] = item.split(':');
                   return (
-                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-1">{label}</a>
+                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
                   );
                 })}
                 <div className="text-[10px] text-text-muted/50 tracking-[0.3em] mt-3">Connect</div>
                 {['GitHub:#github','Videos:#youtube','Contact:#contact'].map(item => {
                   const [label, href] = item.split(':');
                   return (
-                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-1">{label}</a>
+                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
                   );
                 })}
                 <GlassButton 
@@ -202,20 +213,22 @@ export default function Home() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
         {/* HERO SECTION */}
         <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
-          {/* Interactive Hex Path shader — glows on cursor hover */}
-          <div className="absolute inset-0 -mx-4 sm:-mx-6">
-            <HexShaderBackground />
-          </div>
+          {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}
+          {!isMobile && (
+            <div className="absolute inset-0 -mx-4 sm:-mx-6">
+              <HexShaderBackground />
+            </div>
+          )}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl relative z-10"
           >
-            <div className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2">
+            <a href="#projects" className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="opacity-80">Available for Projects</span>
-            </div>
+              <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
+            </a>
             
             <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden">
               <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
@@ -234,13 +247,13 @@ export default function Home() {
 
             <h1 className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight">
               <LiquidGlassTitle>
-                I Build Systems <br/>
-                <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderIridescentText>
+                I Automate the Work <br/>
+                <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Your Team Does Manually.</ShaderIridescentText>
               </LiquidGlassTitle>
             </h1>
 
             <p className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance">
-              Autonomous agents, intelligent workflows, and real shipped products — from Indore, India.
+              IndiaMART leads into Odoo automatically. GST reconciliation without the weekend. WhatsApp updates without anyone typing them. Your business runs while you sleep.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14">
@@ -262,10 +275,10 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-3 font-mono text-xs">
               <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
-                <Code2 size={14} className="text-amber" /> 10+ Projects Shipped
+                <Code2 size={14} className="text-amber" /> 10+ Businesses Automated
               </span>
               <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
-                <Terminal size={14} className="text-cyan/70" /> 10+ Systems Shipped
+                <Terminal size={14} className="text-cyan/70" /> 10+ Systems Running 24/7
               </span>
             </div>
           </motion.div>
@@ -287,7 +300,7 @@ export default function Home() {
                   <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Architecting Autonomy</ShaderIridescentText>
                 </h2>
                 <p className="text-text-muted text-base md:text-lg max-w-2xl">
-                  Systems thinker. Self-taught engineer. Building from central India.
+                  Turning repetitive business operations into systems that run themselves.
                 </p>
               </div>
             }
@@ -296,10 +309,10 @@ export default function Home() {
             <div className="flex flex-col h-full justify-between gap-6 text-left">
               <div className="space-y-4 max-w-3xl">
                 <p className="text-zinc-300 text-sm md:text-base leading-relaxed">
-                  I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — a self-taught AI developer and automation engineer. I don&apos;t just use AI tools. I design systems that use tools, adapt, and execute workflows autonomously.
+                  I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — I design systems that use tools, adapt, and execute workflows autonomously. Your leads, invoices, follow-ups, and reports flow without anyone touching a keyboard.
                 </p>
                 <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                  My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, hackathon submissions, and client-facing AI systems — without a CS degree, without a team, from central India.
+                  My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, and client-facing AI systems that run 24/7 without manual intervention.
                 </p>
                 <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
                   I think in systems before I write a single line of logic. I build for modularity, fallback reliability, and zero manual intervention.
@@ -322,6 +335,12 @@ export default function Home() {
                   <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Languages</span>
                   <span className="text-zinc-200 text-xs font-medium">Hindi · English C2 · Sindhi C2</span>
                 </div>
+              </div>
+              {/* Personal backstory — relocated from hero/above-fold */}
+              <div className="pt-4 border-t border-zinc-700/40">
+                <p className="text-zinc-500 text-xs md:text-sm leading-relaxed italic">
+                  Self-taught. No CS degree. No team. Everything here was built by doing — from central India, one system at a time.
+                </p>
               </div>
             </div>
           </ContainerScroll>
@@ -686,7 +705,7 @@ export default function Home() {
                 <div className="flex flex-wrap gap-2">
                   <button 
                     onClick={() => openCert({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2', pdfUrl: '/documents/cert-n8n-1.pdf'})}
-                    className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                    className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
                   >View Master Certificate</button>
                 </div>
               </CVAccordion>
@@ -695,7 +714,7 @@ export default function Home() {
                 <p className="text-sm text-text-muted mb-4">Certificate #8723146 - Completed Aug 2, 2025.</p>
                 <button 
                   onClick={() => openCert({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146', pdfUrl: '/documents/cert-n8n-2.pdf'})}
-                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
 
@@ -703,7 +722,7 @@ export default function Home() {
                 <p className="text-sm text-text-muted mb-4">Successfully completed Generative AI Mastermind hosted by Vaibhav Sisinty.</p>
                 <button 
                   onClick={() => openCert({title: 'Generative AI Mastermind', issuer: 'Outskill by Vaibhav Sisinty', date: 'Verified', id: 'OUT-GENAI-M'})}
-                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
 
@@ -711,7 +730,7 @@ export default function Home() {
                 <p className="text-sm text-text-muted mb-4">5-Day AI Agents Intensive Course with Google. Earned Official Badge.</p>
                 <button 
                   onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG', pdfUrl: '/documents/cert-kaggle-google.pdf#page=2'})}
-                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Badge</button>
               </CVAccordion>
             </div>
@@ -728,7 +747,7 @@ export default function Home() {
                 <p className="text-sm text-text-muted mb-4">Jan 10–11, 2026. Built and shipped a live automation workflow. Recognized for technical creativity.</p>
                 <button 
                   onClick={() => openCert({title: 'Rilo Hackathon Participant', issuer: 'Rilo', date: 'Jan 11, 2026', id: 'RILO-26', pdfUrl: '/documents/cert-rilo-hackathon.pdf'})}
-                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
                 >View Certificate</button>
               </CVAccordion>
               
@@ -758,6 +777,9 @@ export default function Home() {
 
       </div>
 
+      {/* Mobile sticky CTA — appears after scrolling past hero */}
+      <MobileStickyCtA />
+
       {/* Scroll to top button */}
       <AnimatePresence>
         {scrolled && (
@@ -767,7 +789,7 @@ export default function Home() {
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-6 right-6 z-50 w-12 h-12 md:w-11 md:h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
+            className="fixed bottom-20 right-6 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-11 md:h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
             aria-label="Scroll to top"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-y-0.5 transition-transform">
@@ -1202,10 +1224,10 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         <div className="mt-12 flex justify-center">
           <FallingPiece container={containerRef} collapsed={collapsed} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
             <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center">
-              Or direct comm-link: <a href="mailto:rahulkasturiya420@gmail.com" className="text-amber hover:text-white transition-colors">rahulkasturiya420@gmail.com</a>
+              Or direct comm-link: <a href="mailto:rahulkasturiya420@gmail.com" className="text-amber hover:text-white transition-colors py-2 md:py-0">rahulkasturiya420@gmail.com</a>
               <button
                 onClick={copyEmail}
-                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
+                className={`inline-flex items-center gap-1 px-3 py-2 md:px-2 md:py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
                 aria-label="Copy email address"
               >
                 {copied ? '✓ copied' : 'copy'}
@@ -1726,7 +1748,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
           <h4 className="text-lg font-bold group-hover:text-white transition-colors duration-300">{name}</h4>
         </div>
         {url && (
-          <a href={url} target="_blank" rel="noopener noreferrer" className="flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase px-2 py-1 bg-white/5 text-text-muted border border-white/10 rounded hover:bg-cyan/10 hover:text-cyan hover:border-cyan/30 transition-colors relative z-20">
+          <a href={url} target="_blank" rel="noopener noreferrer" className="flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase px-3 py-2 md:px-2 md:py-1 bg-white/5 text-text-muted border border-white/10 rounded hover:bg-cyan/10 hover:text-cyan hover:border-cyan/30 transition-colors relative z-20">
             <IconLink size={12} /> Live
           </a>
         )}
@@ -1973,9 +1995,9 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
   });
   const laserOpacity= useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
 
-  // section height: desktop ~280vh gives plenty of scroll room through 2 card rows
-  // mobile ~280vh prevents scroll fatigue while giving room for stacked cards
-  const sectionHeight = isMobile ? '280vh' : '290vh';
+  // section height: desktop ~290vh gives plenty of scroll room through 2 card rows
+  // mobile: auto height, no scroll-jacking (handled via style conditional below)
+  const sectionHeight = '290vh';
 
   return (
     <section
