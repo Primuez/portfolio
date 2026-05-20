@@ -140,7 +140,7 @@ export function ShaderBackground() {
     if (!gl || !program || !canvas) return;
 
     // Resize if needed
-    const dpr = Math.min(window.devicePixelRatio, 1.5); // Cap for performance
+    const dpr = Math.min(window.devicePixelRatio, 1.5); // Cap at 1.5 to prevent memory pressure on high-DPI screens
     const w = canvas.clientWidth * dpr;
     const h = canvas.clientHeight * dpr;
     if (canvas.width !== w || canvas.height !== h) {
@@ -181,6 +181,13 @@ export function ShaderBackground() {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('mousemove', handleMove);
       window.removeEventListener('touchmove', handleMove);
+      // Explicitly lose the WebGL context to free GPU memory on unmount
+      const gl = glRef.current;
+      if (gl) {
+        const ext = gl.getExtension('WEBGL_lose_context');
+        if (ext) ext.loseContext();
+        glRef.current = null;
+      }
     };
   }, [initGL, render]);
 
