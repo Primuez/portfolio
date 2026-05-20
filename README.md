@@ -4,7 +4,7 @@
 
 # Primuez Portfolio 🚀
 
-**Live Site:** [primuez.com](https://primuez.com)
+**Live Site:** [primuez.in](https://primuez.in)
 
 ## Overview
 This is the public repository for my personal portfolio website. I am an AI Developer and SaaS Entrepreneur specializing in autonomous AI agents, workflow automations (n8n), and robust AI SaaS platforms. 
