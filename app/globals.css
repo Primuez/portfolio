@@ -62,6 +62,19 @@
 /* Impeccable: Smooth scroll behavior for anchor links */
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth GPU-accelerated scrolling on desktop */
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 5rem;
+  }
+  
+  body {
+    will-change: scroll-position;
+  }
 }
 
 /* Impeccable: Better focus states for accessibility */
@@ -517,8 +530,9 @@ html {
 /* ─── UX IMPROVEMENTS — Smooth Micro-interactions ──────────────────────────── */
 
 /* Smooth section transitions */
-section {
+section, [id] {
   transition: opacity 0.3s ease;
+  will-change: opacity, transform, filter;
 }
 
 /* Better button press feedback */
