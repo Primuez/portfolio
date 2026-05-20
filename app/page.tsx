@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocity, useMotionValue, useInView, animate, MotionValue } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocity, useMotionValue, useMotionTemplate, useInView, animate, MotionValue } from 'motion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, Code2, Link as IconLink, 
@@ -1662,15 +1662,16 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
 
 function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, children?: React.ReactNode }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  // Zero-rerender hover tracking via motion values (bypasses React reconciliation)
+  const mouseX = useMotionValue(50);
+  const mouseY = useMotionValue(50);
+  const glowBackground = useMotionTemplate`radial-gradient(300px circle at ${mouseX}% ${mouseY}%, rgba(0,240,255,0.06), transparent 60%)`;
   
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    });
+    mouseX.set(((e.clientX - rect.left) / rect.width) * 100);
+    mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
   };
 
   return (
@@ -1684,12 +1685,10 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
       onMouseMove={handleMouseMove}
       className="bg-panel/60 backdrop-blur-md border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)] liquid-glass-card"
     >
-      {/* Liquid glass refraction overlay — follows mouse */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl z-0"
-        style={{
-          background: `radial-gradient(300px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(0,240,255,0.06), transparent 60%)`,
-        }}
+      {/* Liquid glass refraction overlay — follows mouse (zero re-renders) */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl z-0 will-change-transform"
+        style={{ background: glowBackground }}
       />
       {/* Glass top edge highlight */}
       <div className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"></div>
