@@ -129,7 +129,7 @@ export default function Home() {
       
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
+        <div className="w-full px-4 sm:px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
             {isMobile ? (
               <LiquidGlassLogo>
@@ -210,7 +210,7 @@ export default function Home() {
 
       <ScrollProgressBar />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-16 md:pb-32">
         {/* HERO SECTION */}
         <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
           {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}
@@ -219,18 +219,24 @@ export default function Home() {
               <HexShaderBackground />
             </div>
           )}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl relative z-10"
-          >
-            <a href="#projects" className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0">
+          <div className="max-w-3xl relative z-10">
+            <motion.a
+              href="#projects"
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+              className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
+            >
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
-            </a>
+            </motion.a>
             
-            <div className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
+            >
               <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
               <AnimatePresence mode="wait">
                 <motion.span
@@ -238,25 +244,40 @@ export default function Home() {
                   initial={{ opacity: 0, y: 12, filter: 'blur(6px)' }}
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -12, filter: 'blur(6px)' }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {phrases[phraseIndex]}
                 </motion.span>
               </AnimatePresence>
-            </div>
+            </motion.div>
 
-            <h1 className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight">
+            <motion.h1
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight"
+            >
               <LiquidGlassTitle>
                 I Automate the Work <br/>
                 <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Your Team Does Manually.</ShaderIridescentText>
               </LiquidGlassTitle>
-            </h1>
+            </motion.h1>
 
-            <p className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance">
+            <motion.p
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance"
+            >
               IndiaMART leads into Odoo automatically. GST reconciliation without the weekend. WhatsApp updates without anyone typing them. Your business runs while you sleep.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14">
+            <motion.div
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14"
+            >
               <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <ChevronRight size={16} /> View My Work
               </a>
@@ -271,25 +292,31 @@ export default function Home() {
               <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
                 <Download size={16} /> Resume
               </a>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-wrap gap-3 font-mono text-xs">
+            <motion.div
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap gap-3 font-mono text-xs"
+            >
               <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
                 <Code2 size={14} className="text-amber" /> 10+ Businesses Automated
               </span>
               <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
                 <Terminal size={14} className="text-cyan/70" /> 10+ Systems Running 24/7
               </span>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </section>
 
         {/* 01. ABOUT */}
         <motion.section 
           id="whoami" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="01" command="> whoami" title="About" />
@@ -350,8 +377,9 @@ export default function Home() {
         <motion.section 
           id="projects" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
@@ -457,7 +485,7 @@ export default function Home() {
                 <motion.h3
                   initial={{ filter: 'blur(10px)', opacity: 0 }}
                   whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true, margin: "-50px" }}
                   className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4"
                 >
@@ -466,7 +494,7 @@ export default function Home() {
                 <motion.p
                   initial={{ filter: 'blur(10px)', opacity: 0 }}
                   whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true, margin: "-50px" }}
                   className="text-text-muted mb-6 leading-relaxed"
                 >
@@ -476,7 +504,7 @@ export default function Home() {
                   <motion.li
                     initial={{ filter: 'blur(10px)', opacity: 0 }}
                     whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.7, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                     className="flex items-center gap-2"
                   >
@@ -485,7 +513,7 @@ export default function Home() {
                   <motion.li
                     initial={{ filter: 'blur(10px)', opacity: 0 }}
                     whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                     className="flex items-center gap-2"
                   >
@@ -494,7 +522,7 @@ export default function Home() {
                   <motion.li
                     initial={{ filter: 'blur(10px)', opacity: 0 }}
                     whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                     className="flex items-center gap-2"
                   >
@@ -587,8 +615,9 @@ export default function Home() {
         <motion.section 
           id="github" 
           className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* PR #16: Section-level shader background for GitHub area */}
@@ -622,8 +651,9 @@ export default function Home() {
         <motion.section 
           id="youtube" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
@@ -631,7 +661,7 @@ export default function Home() {
             <PhysicsChipsLayer />
             <div className="grid lg:grid-cols-2 gap-8 relative z-0">
 
-              <DropCard delay={0.05} initialRotate={-3}>
+              <DropCard delay={0.08} initialRotate={-3}>
                 <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
                   <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none"></div>
                   <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
@@ -647,7 +677,7 @@ export default function Home() {
                 </div>
               </DropCard>
 
-              <DropCard delay={0.22} initialRotate={2.5}>
+              <DropCard delay={0.24} initialRotate={2.5}>
                 <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
                   <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none"></div>
                   <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
@@ -671,8 +701,9 @@ export default function Home() {
         <motion.section 
           id="stack" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
@@ -689,8 +720,9 @@ export default function Home() {
         <motion.section 
           id="credentials" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="06" command="> ./credentials --verified" title="Credentials & Hackathons" />
@@ -766,8 +798,9 @@ export default function Home() {
         <motion.section 
           id="contact" 
           className="pt-16 md:pt-32 text-center pb-28 md:pb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
@@ -787,7 +820,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="fixed bottom-20 right-6 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-11 md:h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
             aria-label="Scroll to top"
@@ -800,7 +833,7 @@ export default function Home() {
       </AnimatePresence>
 
       <footer className="border-t border-white/[0.06] bg-bg relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <div className="w-full px-4 sm:px-6 md:px-12 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
               <span className="font-mono text-cyan text-lg tracking-widest font-bold"><ShaderLogoGlow><LiquidGlassLogo><ShaderLogo>PRIMUEZ</ShaderLogo></LiquidGlassLogo></ShaderLogoGlow></span>
@@ -1538,8 +1571,8 @@ function LiquidRepoCard({
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
     >
       {/* Glass highlight */}
@@ -1580,14 +1613,14 @@ function SectionHeader({ number, command, title, center = false }: { number: str
     <motion.div 
       initial={{ opacity: 0, x: -40 }}
       whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: "-80px" }}
       className={`mb-10 ${center ? 'text-center' : ''}`}
     >
       <motion.div
         initial={{ opacity: 0, y: -6 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+        transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
         viewport={{ once: true, margin: "-80px" }}
         className="font-mono text-[11px] tracking-[0.25em] text-text-muted/60 mb-3"
       >
@@ -1596,7 +1629,7 @@ function SectionHeader({ number, command, title, center = false }: { number: str
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
         viewport={{ once: true, margin: "-80px" }}
         className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight"
       >
@@ -1706,7 +1739,7 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
       ref={cardRef}
       initial={{ opacity: 0, y: 60, scale: 0.96 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: "-60px" }}
       whileHover={{ y: -4, transition: { duration: 0.3 } }}
       onMouseMove={handleMouseMove}
@@ -1778,7 +1811,7 @@ function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: { name: string
     <motion.div 
       initial={{ opacity: 0, y: 100, scale: 0.88, rotateX: 18, filter: "blur(12px)" }}
       whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: "blur(0px)" }}
-      transition={{ duration: 1.05, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 1.05, delay: delay / 1000, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: "-60px" }}
       whileTap={{ scale: 0.97 }}
       className="group w-full block h-full md:[perspective:1000px]"
@@ -1836,7 +1869,7 @@ function StackGroup({ title, items, border }: { title: string, items: string[], 
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: "-50px" }}
       className="bg-panel/60 border border-white/[0.06] p-6 rounded-xl hover:border-white/[0.12] transition-colors duration-300"
     >
@@ -1856,7 +1889,7 @@ function StackGroup({ title, items, border }: { title: string, items: string[], 
             key={i}
             variants={{
               hidden: { opacity: 0, x: -12 },
-              visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+              visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
             }}
             className="text-sm text-text-muted flex items-center gap-2 border-b border-white/[0.04] pb-2 last:border-0 last:pb-0"
           >
@@ -2012,10 +2045,10 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
       >
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionHeader number="03" command="> ./services --what-i-build-for-you" title="What I Build For You" />
           <p className="text-text-muted mt-4 mb-3 max-w-2xl text-base leading-relaxed">
@@ -2081,7 +2114,7 @@ function BlueprintServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }
 }
 
 function MobileServiceCard({ card }: { card: (typeof SERVICES_DATA)[0] }) {
-  const scanEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+  const scanEase: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
   return (
     <motion.div
@@ -2156,7 +2189,7 @@ function ServiceCard({ icon, title, outcome, desc, tags, color }: {
     <motion.div
       initial={{ opacity: 0, y: 60, scale: 0.95, filter: 'blur(8px)' }}
       whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: '-60px' }}
       className={`group bg-panel border ${borderColor} rounded-xl p-6 flex flex-col transition-all duration-300 relative overflow-hidden`}
     >
@@ -2349,7 +2382,7 @@ function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
 
   useEffect(() => {
     if (!inView) return;
-    const controls = animate(clipPct, 0, { duration: 0.8, ease: [0.22, 1, 0.36, 1] });
+    const controls = animate(clipPct, 0, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
     const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.4, delay: 0, ease: 'easeOut' });
     const ctaYCtrl = animate(ctaY, 0, { duration: 0.4, delay: 0, ease: 'easeOut' });
     return () => { controls.stop(); ctaCtrl.stop(); ctaYCtrl.stop(); };
@@ -2462,7 +2495,7 @@ function MobileVipCard() {
 
   useEffect(() => {
     if (!inView) return;
-    const c1 = animate(clipPct, 0, { duration: 1.1, ease: [0.22, 1, 0.36, 1] });
+    const c1 = animate(clipPct, 0, { duration: 1.1, ease: [0.16, 1, 0.3, 1] });
     const c2 = animate(ctaOpacity, 1, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
     const c3 = animate(ctaY, 0, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
     return () => { c1.stop(); c2.stop(); c3.stop(); };
@@ -2504,10 +2537,10 @@ function ReceiptPricingSection() {
         className={isMobile ? '' : 'pt-16 md:pt-20 pb-16'}
       >
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionHeader number="04" command="> ./pricing --transparent" title="Pricing" />
           <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
@@ -2964,7 +2997,7 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
             <div className="px-5 md:px-6 pb-5 pt-3 text-sm md:text-[15px] text-[#00f0ff]/80 leading-relaxed border-t border-white/5 font-sans whitespace-pre-wrap break-words">
