@@ -187,6 +187,61 @@ html {
   animation: shader-frost-shift 7s ease-in-out infinite;
 }
 
+/* Shader Text: Iridescent — WebGL-driven liquid glass clipping */
+@keyframes shader-iridescent-shift {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 50% 100%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shader-text-iridescent {
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #a78bfa 15%,
+    #00f0ff 30%,
+    #f5a623 45%,
+    #a78bfa 60%,
+    #00f0ff 75%,
+    #f5a623 90%,
+    #00f0ff 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-iridescent-shift 12s ease-in-out infinite;
+}
+
+/* WebGL-backed iridescent clip — the canvas provides the texture, 
+   this CSS makes the text a mask window into it */
+.shader-text-iridescent-clip {
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #a78bfa 15%,
+    #00f0ff 30%,
+    #f5a623 45%,
+    #a78bfa 60%,
+    #00f0ff 75%,
+    #f5a623 90%,
+    #00f0ff 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-iridescent-shift 10s ease-in-out infinite;
+  filter: saturate(1.2) brightness(1.1);
+}
+
+.shader-text-iridescent-clip:hover {
+  animation-duration: 4s;
+  filter: saturate(1.5) brightness(1.25) drop-shadow(0 0 20px rgba(0, 240, 255, 0.4));
+}
+
 /* Shader Logo: Stainless Steel shimmer */
 @keyframes shader-logo-shimmer {
   0%   { background-position: -150% center; }

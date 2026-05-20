@@ -12,8 +12,9 @@ import { StockChart } from '@/components/StockChart';
 import { YouTubeThumb } from '@/components/YouTubeThumb';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { ShaderBackground } from '@/components/ShaderBackground';
-import { ShaderText, ShaderLogo, ShaderGlowLine } from '@/components/ShaderText';
+import { ShaderBackground, ShaderBackgroundSection } from '@/components/ShaderBackground';
+import { ShaderText, ShaderLogo, ShaderGlowLine, ShaderIridescentText } from '@/components/ShaderText';
+import { ShaderLogoGlow } from '@/components/ShaderLogoGlow';
 import { CustomCursor } from '@/components/CustomCursor';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
@@ -114,10 +115,8 @@ export default function Home() {
     <main className="relative min-h-screen">
       {/* Custom cursor & touch response */}
       <CustomCursor />
-      {/* Interactive WebGL shader background — ONLY mount on desktop to prevent mobile memory crash */}
-      {!isMobile && <ShaderBackground />}
-      {/* Mobile fallback gradient background */}
-      {isMobile && <div className="fixed inset-0 z-0 bg-gradient-to-b from-[#0a0a0a] via-[#0d1117] to-[#111]" />}
+      {/* Interactive WebGL shader background — renders on ALL devices with DPR optimization */}
+      <ShaderBackground className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
       {/* Interactive liquid glass refraction overlay — responds to cursor/touch */}
       {!isMobile && <GlassRefractionOverlay />}
       {/* Blueprint animated grid overlay */}
@@ -127,9 +126,11 @@ export default function Home() {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
-            <LiquidGlassLogo>
-              <ShaderLogo>PRIMUEZ</ShaderLogo>
-            </LiquidGlassLogo>
+            <ShaderLogoGlow>
+              <LiquidGlassLogo>
+                <ShaderLogo>PRIMUEZ</ShaderLogo>
+              </LiquidGlassLogo>
+            </ShaderLogoGlow>
           </div>
           {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
@@ -234,7 +235,7 @@ export default function Home() {
             <h1 className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight">
               <LiquidGlassTitle>
                 I Build Systems <br/>
-                <ShaderText preset="chrome" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderText>
+                <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">That Work For You.</ShaderIridescentText>
               </LiquidGlassTitle>
             </h1>
 
@@ -283,7 +284,7 @@ export default function Home() {
             titleComponent={
               <div className="flex flex-col items-center">
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4">
-                  <ShaderText preset="chrome">Architecting Autonomy</ShaderText>
+                  <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Architecting Autonomy</ShaderIridescentText>
                 </h2>
                 <p className="text-text-muted text-base md:text-lg max-w-2xl">
                   Systems thinker. Self-taught engineer. Building from central India.
@@ -566,11 +567,14 @@ export default function Home() {
         {/* 05. GITHUB */}
         <motion.section 
           id="github" 
-          className="pt-16 md:pt-32 pb-28 md:pb-20"
+          className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
+          {/* PR #16: Section-level shader background for GitHub area */}
+          <ShaderBackgroundSection opacity={0.6} />
+          <div className="relative z-10">
           <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
           <div className="mt-12">
             {loadingRepos ? (
@@ -591,6 +595,7 @@ export default function Home() {
                 </div>
               </div>
             )}
+          </div>
           </div>
         </motion.section>
 
@@ -776,7 +781,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
-              <span className="font-mono text-cyan text-lg tracking-widest font-bold"><LiquidGlassLogo><ShaderLogo>PRIMUEZ</ShaderLogo></LiquidGlassLogo></span>
+              <span className="font-mono text-cyan text-lg tracking-widest font-bold"><ShaderLogoGlow><LiquidGlassLogo><ShaderLogo>PRIMUEZ</ShaderLogo></LiquidGlassLogo></ShaderLogoGlow></span>
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
             </div>
             <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
