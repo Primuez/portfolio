@@ -129,7 +129,7 @@ export default function Home() {
       
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
             {isMobile ? (
               <LiquidGlassLogo>
@@ -210,20 +210,20 @@ export default function Home() {
 
       <ScrollProgressBar />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-16 md:pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-16 md:pb-32">
         {/* HERO SECTION */}
         <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
           {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}
           {!isMobile && (
-            <div className="absolute inset-0 -mx-4 sm:-mx-6">
+            <div className="absolute inset-0 -mx-4 sm:-mx-6 md:-mx-10 lg:-mx-16 xl:-mx-20">
               <HexShaderBackground />
             </div>
           )}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl relative z-10"
+            initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-3xl lg:max-w-4xl relative z-10"
           >
             <a href="#projects" className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -288,8 +288,9 @@ export default function Home() {
         <motion.section 
           id="whoami" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="01" command="> whoami" title="About" />
@@ -350,8 +351,9 @@ export default function Home() {
         <motion.section 
           id="projects" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
@@ -572,13 +574,20 @@ export default function Home() {
         <BlueprintServicesSection onWorkWithMe={() => setModalType('form')} />
 
         {/* WHY PRIMUEZ */}
-        <section id="why-primuez" className="pt-16 md:pt-32">
+        <motion.section 
+          id="why-primuez" 
+          className="pt-16 md:pt-32"
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
           <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
           <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
             Four sharp arguments for working with us — not a pitch deck, just the truth.
           </p>
           <WhyPrimuez />
-        </section>
+        </motion.section>
 
         {/* 04. PRICING */}
         <ReceiptPricingSection />
@@ -587,8 +596,9 @@ export default function Home() {
         <motion.section 
           id="github" 
           className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* PR #16: Section-level shader background for GitHub area */}
@@ -622,8 +632,9 @@ export default function Home() {
         <motion.section 
           id="youtube" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
@@ -671,8 +682,9 @@ export default function Home() {
         <motion.section 
           id="stack" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
@@ -689,8 +701,9 @@ export default function Home() {
         <motion.section 
           id="credentials" 
           className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="06" command="> ./credentials --verified" title="Credentials & Hackathons" />
@@ -766,8 +779,9 @@ export default function Home() {
         <motion.section 
           id="contact" 
           className="pt-16 md:pt-32 text-center pb-28 md:pb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(6px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
@@ -800,7 +814,7 @@ export default function Home() {
       </AnimatePresence>
 
       <footer className="border-t border-white/[0.06] bg-bg relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
               <span className="font-mono text-cyan text-lg tracking-widest font-bold"><ShaderLogoGlow><LiquidGlassLogo><ShaderLogo>PRIMUEZ</ShaderLogo></LiquidGlassLogo></ShaderLogoGlow></span>
