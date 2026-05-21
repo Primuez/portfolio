@@ -123,7 +123,7 @@ export const Card = ({
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="max-w-5xl -mt-12 mx-auto h-[30rem] md:h-[40rem] w-full border-4 border-[#6C6C6C] p-2 md:p-6 bg-[#222222] rounded-[30px] shadow-2xl relative overflow-hidden group"
+      className="max-w-5xl -mt-12 mx-auto h-auto md:h-[40rem] w-full border-4 border-[#6C6C6C] p-4 md:p-6 bg-[#222222] rounded-[30px] shadow-2xl relative overflow-visible md:overflow-hidden group"
     >
       {/* Interactive shader glow overlay — follows cursor on desktop, ambient on mobile */}
       <div
@@ -132,7 +132,7 @@ export const Card = ({
           background: `radial-gradient(600px circle at ${glowPos.x}% ${glowPos.y}%, rgba(0, 240, 255, 0.07), transparent 50%), radial-gradient(400px circle at ${100 - glowPos.x}% ${glowPos.y}%, rgba(167, 139, 250, 0.04), transparent 45%)`,
         }}
       />
-      <div className="h-full w-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-900 md:rounded-2xl p-4 md:p-8 flex flex-col justify-center relative z-[1]">
+      <div className="h-auto md:h-full w-full overflow-visible md:overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-900 md:rounded-2xl p-4 md:p-8 flex flex-col justify-center relative z-[1]">
         {children}
       </div>
     </motion.div>
