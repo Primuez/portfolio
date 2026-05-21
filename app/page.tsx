@@ -330,10 +330,10 @@ export default function Home() {
           <ContainerScroll
             titleComponent={
               <div className="flex flex-col items-center">
-                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4">
-                  <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Architecting Autonomy</ShaderIridescentText>
+                <h2 className="text-[2.5rem] leading-[1.1] md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4 drop-shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                  <ShaderIridescentText as="span" className="text-[2.5rem] leading-[1.1] md:text-6xl lg:text-7xl font-bold">Architecting Autonomy</ShaderIridescentText>
                 </h2>
-                <p className="text-text-muted text-base md:text-lg max-w-2xl">
+                <p className="text-text-muted text-sm md:text-lg max-w-2xl leading-relaxed">
                   Turning repetitive business operations into systems that run themselves.
                 </p>
               </div>
@@ -675,7 +675,7 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* PR #16: Section-level shader background for GitHub area */}
-          <ShaderBackgroundSection opacity={0.6} />
+          {!isMobile && <ShaderBackgroundSection opacity={0.6} />}
           <div className="relative z-10">
           <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
           <div className="mt-12">

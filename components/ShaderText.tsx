@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
  * Animated chromatic gradient text effect inspired by shaders.com Chroma Chrome preset.
@@ -65,6 +66,7 @@ export function ShaderIridescentText({
   className?: string;
   as?: 'span' | 'h1' | 'h2' | 'h3' | 'div';
 }) {
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
@@ -212,6 +214,7 @@ export function ShaderIridescentText({
   }, []);
 
   useEffect(() => {
+    if (isMobile) return; // Skip WebGL on mobile — use CSS fallback only
     const success = initGL();
     if (!success) return; // Falls back to CSS gradient
     rafRef.current = requestAnimationFrame(render);
@@ -244,17 +247,19 @@ export function ShaderIridescentText({
         glRef.current = null;
       }
     };
-  }, [initGL, render]);
+  }, [initGL, render, isMobile]);
 
   return (
     <div ref={containerRef} className="relative inline-block">
-      {/* Hidden WebGL canvas that renders the iridescent texture */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-0"
-        style={{ zIndex: -1 }}
-        aria-hidden="true"
-      />
+      {/* Hidden WebGL canvas — skipped on mobile to prevent GPU crash */}
+      {!isMobile && (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full pointer-events-none opacity-0"
+          style={{ zIndex: -1 }}
+          aria-hidden="true"
+        />
+      )}
       {/* The text element with CSS background-clip using the shader canvas as texture source.
           Falls back to shader-text-iridescent CSS class if WebGL unavailable */}
       <Tag className={`shader-text-iridescent-clip ${className}`}>
