@@ -24,22 +24,49 @@ export const ContainerScroll = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const scaleRange = isMobile ? [0.92, 1] : [1.05, 1];
+  const scaleRange = isMobile ? [1, 1] : [1.05, 1];
   const rotate = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [20, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], scaleRange);
-  const translate = useTransform(scrollYProgress, [0, 1], isMobile ? [60, -30] : [0, -100]);
+  const translate = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, -100]);
+
+  if (isMobile) {
+    return (
+      <div className="relative p-2">
+        {/* Mobile: whileInView animations for visible scroll effect */}
+        <motion.div
+          initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-60px" }}
+          className="py-8 w-full relative"
+        >
+          <div className="max-w-5xl mx-auto text-center mb-8">
+            {titleComponent}
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 60, scale: 0.92 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-40px" }}
+          >
+            <MobileCard>{children}</MobileCard>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div
-      className={isMobile ? "relative p-2 md:p-4" : "h-[60rem] md:h-[80rem] flex items-center justify-center relative p-2 md:p-20"}
+      className="h-[60rem] md:h-[80rem] flex items-center justify-center relative p-2 md:p-20"
       ref={containerRef}
     >
       <div
         className="py-10 md:py-40 w-full relative"
-        style={isMobile ? undefined : { perspective: "1000px" }}
+        style={{ perspective: "1000px" }}
       >
-        <Header titleComponent={titleComponent} translate={translate} isMobile={isMobile} />
-        <Card rotate={rotate} scale={scale} isMobile={isMobile}>
+        <Header titleComponent={titleComponent} translate={translate} />
+        <Card rotate={rotate} scale={scale}>
           {children}
         </Card>
       </div>
@@ -50,7 +77,6 @@ export const ContainerScroll = ({
 export const Header = ({
   translate,
   titleComponent,
-  isMobile = false,
 }: {
   translate: MotionValue<number>;
   titleComponent: React.ReactNode;
@@ -66,36 +92,11 @@ export const Header = ({
   );
 };
 
-export const Card = ({
-  rotate,
-  scale,
-  children,
-  isMobile = false,
-}: {
-  rotate: MotionValue<number>;
-  scale: MotionValue<number>;
-  children: React.ReactNode;
-  isMobile?: boolean;
-}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+/** Mobile card — auto height so content isn't cut, with ambient glow */
+function MobileCard({ children }: { children: React.ReactNode }) {
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
 
-  // Interactive cursor glow on the card (desktop only)
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (isMobile || !cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      setGlowPos({
-        x: ((e.clientX - rect.left) / rect.width) * 100,
-        y: ((e.clientY - rect.top) / rect.height) * 100,
-      });
-    },
-    [isMobile]
-  );
-
-  // Mobile: ambient glow animation
   useEffect(() => {
-    if (!isMobile) return;
     let t = 0;
     let raf: number;
     function animate() {
@@ -108,17 +109,60 @@ export const Card = ({
     }
     raf = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(raf);
-  }, [isMobile]);
+  }, []);
+
+  return (
+    <div
+      className="max-w-5xl mx-auto w-full border-4 border-[#6C6C6C] p-2 bg-[#222222] rounded-[30px] shadow-2xl relative overflow-hidden"
+      style={{
+        boxShadow:
+          "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
+      }}
+    >
+      {/* Ambient glow overlay */}
+      <div
+        className="absolute inset-0 rounded-[30px] pointer-events-none z-10 opacity-60"
+        style={{
+          background: `radial-gradient(600px circle at ${glowPos.x}% ${glowPos.y}%, rgba(0, 240, 255, 0.07), transparent 50%), radial-gradient(400px circle at ${100 - glowPos.x}% ${glowPos.y}%, rgba(167, 139, 250, 0.04), transparent 45%)`,
+        }}
+      />
+      <div className="w-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-900 p-4 flex flex-col justify-center relative z-[1]">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export const Card = ({
+  rotate,
+  scale,
+  children,
+}: {
+  rotate: MotionValue<number>;
+  scale: MotionValue<number>;
+  children: React.ReactNode;
+  isMobile?: boolean;
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      setGlowPos({
+        x: ((e.clientX - rect.left) / rect.width) * 100,
+        y: ((e.clientY - rect.top) / rect.height) * 100,
+      });
+    },
+    []
+  );
 
   return (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      style={isMobile ? {
-        scale,
-        boxShadow:
-          "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
-      } : {
+      style={{
         rotateX: rotate,
         scale,
         boxShadow:
@@ -126,7 +170,7 @@ export const Card = ({
       }}
       className="max-w-5xl -mt-12 mx-auto h-[30rem] md:h-[40rem] w-full border-4 border-[#6C6C6C] p-2 md:p-6 bg-[#222222] rounded-[30px] shadow-2xl relative overflow-hidden group"
     >
-      {/* Interactive shader glow overlay — follows cursor on desktop, ambient on mobile */}
+      {/* Interactive shader glow overlay */}
       <div
         className="absolute inset-0 rounded-[30px] pointer-events-none z-10 opacity-60 transition-opacity duration-300 group-hover:opacity-100"
         style={{
