@@ -3,10 +3,12 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const TOTAL_TEXTURES = 5;
 
 export function ModelViewer() {
+  const isMobile = useIsMobile();
   const mountRef = useRef<HTMLDivElement>(null);
   const [loadedCount, setLoadedCount] = useState(0);
   const loadedRef = useRef(0);
@@ -18,6 +20,7 @@ export function ModelViewer() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
     if (!mountRef.current) return;
     const mount = mountRef.current;
 
@@ -248,9 +251,12 @@ export function ModelViewer() {
       mounted = false;
       cleanupFn?.();
     };
-  }, [onTextureLoaded, router]);
+  }, [onTextureLoaded, router, isMobile]);
 
   const isLoading = loadedCount < TOTAL_TEXTURES;
+
+  // Gate: return null on mobile — prevents any DOM/canvas rendering
+  if (isMobile) return null;
 
   return (
     <>
