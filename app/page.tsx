@@ -675,7 +675,7 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* PR #16: Section-level shader background for GitHub area */}
-          <ShaderBackgroundSection opacity={0.6} />
+          {!isMobile && <ShaderBackgroundSection opacity={0.6} />}
           <div className="relative z-10">
           <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
           <div className="mt-12">
