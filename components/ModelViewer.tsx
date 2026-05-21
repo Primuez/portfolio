@@ -1,13 +1,8 @@
 'use client';
 import { useRef, useEffect, useState, useCallback } from 'react';
-import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
-
-const MapOverlay = dynamic(
-  () => import('./MapOverlay').then((m) => m.MapOverlay),
-  { ssr: false }
-);
 
 const TOTAL_TEXTURES = 5;
 
@@ -15,7 +10,7 @@ export function ModelViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const [loadedCount, setLoadedCount] = useState(0);
   const loadedRef = useRef(0);
-  const [showMap, setShowMap] = useState(false);
+  const router = useRouter();
 
   const onTextureLoaded = useCallback(() => {
     loadedRef.current += 1;
@@ -57,7 +52,7 @@ export function ModelViewer() {
       controls.maxPolarAngle = (3 * Math.PI) / 4;
 
       // Double-click (desktop) opens satellite map
-      const handleDblClick = () => setShowMap(true);
+      const handleDblClick = () => router.push('/map');
       renderer.domElement.addEventListener('dblclick', handleDblClick);
 
       // Double-tap (mobile) — detect two taps within 350ms
@@ -66,7 +61,7 @@ export function ModelViewer() {
         if (e.touches.length > 0) return; // still touching
         const now = Date.now();
         if (now - lastTapTime < 350) {
-          setShowMap(true);
+          router.push('/map');
           lastTapTime = 0;
         } else {
           lastTapTime = now;
@@ -219,7 +214,7 @@ export function ModelViewer() {
             animate();
           }
         },
-        { threshold: 0 }
+        { threshold: 0.01 }
       );
       observer.observe(mount);
 
@@ -253,14 +248,12 @@ export function ModelViewer() {
       mounted = false;
       cleanupFn?.();
     };
-  }, [onTextureLoaded]);
+  }, [onTextureLoaded, router]);
 
   const isLoading = loadedCount < TOTAL_TEXTURES;
 
   return (
     <>
-      {showMap && <MapOverlay onClose={() => setShowMap(false)} />}
-
       <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg">
         {/* Loading overlay — fades out once all textures are ready */}
         <div

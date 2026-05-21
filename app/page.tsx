@@ -21,6 +21,7 @@ import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
 import { LiquidGlassLogo, LiquidGlassTitle, GlassRefractionOverlay } from '@/components/ui/liquid-glass-logo';
 import { ContainerScroll } from '@/components/ui/container-scroll';
+import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -609,12 +610,14 @@ export default function Home() {
         {/* HOW WE WORK */}
         <motion.section
           id="process"
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-32 relative overflow-hidden"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
+          <HowWeWorkBackground />
+          <div className="relative z-10">
           <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
           <div className="mt-12 grid gap-6 max-w-3xl">
             {[
@@ -634,6 +637,7 @@ export default function Home() {
             ))}
           </div>
           <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
+          </div>
         </motion.section>
 
         {/* WHY PRIMUEZ */}
