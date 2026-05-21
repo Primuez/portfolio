@@ -24,14 +24,14 @@ export const ContainerScroll = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const scaleRange = isMobile ? [1, 1] : [1.05, 1];
+  const scaleRange = isMobile ? [0.97, 1] : [1.05, 1];
   const rotate = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [20, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], scaleRange);
-  const translate = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, -100]);
+  const translate = useTransform(scrollYProgress, [0, 1], isMobile ? [40, -20] : [0, -100]);
 
   return (
     <div
-      className={isMobile ? "flex items-center justify-center relative p-2" : "h-[60rem] md:h-[80rem] flex items-center justify-center relative p-2 md:p-20"}
+      className={isMobile ? "flex items-center justify-center relative p-2 min-h-[70vh]" : "h-[60rem] md:h-[80rem] flex items-center justify-center relative p-2 md:p-20"}
       ref={containerRef}
     >
       <div
@@ -58,7 +58,7 @@ export const Header = ({
 }) => {
   return (
     <motion.div
-      style={isMobile ? undefined : { translateY: translate }}
+      style={{ translateY: translate }}
       className="max-w-5xl mx-auto text-center"
     >
       {titleComponent}
@@ -115,6 +115,7 @@ export const Card = ({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       style={isMobile ? {
+        scale,
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       } : {
