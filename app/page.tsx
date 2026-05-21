@@ -21,6 +21,7 @@ import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
 import { LiquidGlassLogo, LiquidGlassTitle, GlassRefractionOverlay } from '@/components/ui/liquid-glass-logo';
 import { ContainerScroll } from '@/components/ui/container-scroll';
+import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import dynamic from 'next/dynamic';
 const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -607,34 +608,7 @@ export default function Home() {
         <BlueprintServicesSection onWorkWithMe={() => setModalType('form')} />
 
         {/* HOW WE WORK */}
-        <motion.section
-          id="process"
-          className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
-          <div className="mt-12 grid gap-6 max-w-3xl">
-            {[
-              { step: '01', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.' },
-              { step: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)' },
-              { step: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.' },
-              { step: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.' },
-              { step: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.' },
-            ].map(({ step, title, desc }) => (
-              <div key={step} className="flex items-start gap-4 p-4 border border-cyan/15 rounded-lg bg-panel/30">
-                <span className="font-mono text-cyan text-sm font-bold shrink-0 w-8">{step}</span>
-                <div>
-                  <h4 className="font-bold text-white text-sm mb-1">{title}</h4>
-                  <p className="text-text-muted text-sm leading-relaxed">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
-        </motion.section>
+        <ProcessTimelineSection />
 
         {/* WHY PRIMUEZ */}
         <section id="why-primuez" className="pt-16 md:pt-32">
@@ -1152,6 +1126,111 @@ export default function Home() {
         )}
       </AnimatePresence>
     </main>
+  );
+}
+
+// ─── Process Timeline Section ─────────────────────────────────────────────────
+
+const PROCESS_STEPS = [
+  { step: '01', icon: '◎', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.' },
+  { step: '02', icon: '▤', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)' },
+  { step: '03', icon: '⟳', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.' },
+  { step: '04', icon: '↗', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.' },
+  { step: '05', icon: '◈', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.' },
+];
+
+function ProcessTimelineDot({ inView }: { inView: boolean }) {
+  return (
+    <div className="relative flex items-center justify-center shrink-0">
+      <div className={`w-3 h-3 rounded-full transition-colors duration-500 ${inView ? 'bg-cyan' : 'bg-zinc-700'}`} />
+      {inView && (
+        <div className="absolute w-3 h-3 rounded-full bg-cyan animate-ping opacity-30" />
+      )}
+    </div>
+  );
+}
+
+function ProcessStepCard({ step, icon, title, desc, index }: { step: string; icon: string; title: string; desc: string; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: false, margin: '-20% 0px -20% 0px' });
+  const isMobile = useIsMobile();
+
+  return (
+    <div ref={ref} className="flex items-start gap-4 md:gap-6">
+      {/* Spine dot — hidden on mobile */}
+      {!isMobile && (
+        <div className="flex flex-col items-center shrink-0 pt-1">
+          <ProcessTimelineDot inView={isInView} />
+        </div>
+      )}
+      {/* Card */}
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, margin: '-50px' }}
+        className="flex-1 bg-[#0a0f1a]/80 border border-cyan/20 rounded-lg px-6 py-4"
+      >
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-cyan" style={{ fontSize: '1.1rem', marginRight: '8px' }}>{icon}</span>
+          <span className="font-mono text-cyan text-xs font-bold">{step}</span>
+          <h4 className="font-bold text-white text-sm ml-2">{title}</h4>
+        </div>
+        <p className="text-text-muted text-sm leading-relaxed mt-1">{desc}</p>
+      </motion.div>
+    </div>
+  );
+}
+
+function ProcessTimelineSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const spineScaleY = useTransform(scrollYProgress, [0.1, 0.85], [0, 1]);
+  const smoothScale = useSpring(spineScaleY, { stiffness: 120, damping: 30, restDelta: 0.001 });
+
+  return (
+    <motion.section
+      ref={sectionRef}
+      id="process"
+      className="pt-16 md:pt-32 relative overflow-hidden"
+      initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      <HowWeWorkBackground />
+      <div className="relative z-10">
+        <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
+
+        <div className="mt-12 max-w-3xl relative">
+          {/* Spine line — desktop only */}
+          {!isMobile && (
+            <div className="absolute left-[5px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan/10 to-cyan/5">
+              {/* Filled portion driven by scroll */}
+              <motion.div
+                className="absolute top-0 left-0 w-full bg-gradient-to-b from-cyan/60 to-cyan/30 origin-top"
+                style={{ scaleY: smoothScale, height: '100%' }}
+              />
+            </div>
+          )}
+
+          {/* Step cards */}
+          <div className="flex flex-col gap-6">
+            {PROCESS_STEPS.map((s, i) => (
+              <ProcessStepCard key={s.step} {...s} index={i} />
+            ))}
+          </div>
+        </div>
+
+        <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
+      </div>
+    </motion.section>
   );
 }
 
