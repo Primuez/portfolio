@@ -185,19 +185,7 @@ export function ModelViewer() {
       scene.add(new T.Mesh(atmGeo, atmMat));
       disposables.push(atmGeo, atmMat);
 
-      const amberGeo = new T.TorusGeometry(2.5, 0.018, 16, 120);
-      const amberMat = new T.MeshStandardMaterial({ color: 0xf5a623, emissive: new T.Color(0xf5a623), emissiveIntensity: 2.5 });
-      const amberRing = new T.Mesh(amberGeo, amberMat);
-      amberRing.rotation.x = Math.PI / 2;
-      scene.add(amberRing);
-      disposables.push(amberGeo, amberMat);
 
-      const cyanGeo = new T.TorusGeometry(2.9, 0.018, 16, 120);
-      const cyanMat = new T.MeshStandardMaterial({ color: 0x00f0ff, emissive: new T.Color(0x00f0ff), emissiveIntensity: 1.5 });
-      const cyanRing = new T.Mesh(cyanGeo, cyanMat);
-      cyanRing.rotation.set(0.4, Math.PI / 4, 0.2);
-      scene.add(cyanRing);
-      disposables.push(cyanGeo, cyanMat);
 
       const clock = new T.Clock();
       let elapsed = 0;

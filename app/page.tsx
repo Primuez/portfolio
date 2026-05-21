@@ -441,27 +441,7 @@ export default function Home() {
           </ProjectGroup>
           </LiquidGlassParallaxSection>
 
-          <LiquidGlassParallaxSection parallaxDistance={45}>
-          <ProjectGroup title="Automation Systems" color="cyan">
-            <ProjectCard 
-              name="AI WhatsApp Agent" 
-              desc="Semi-autonomous conversational AI agent with full token lifecycle management. Handles 60-day token expiry and auto-refresh entirely through n8n."
-              tags={["n8n", "WhatsApp", "Evolution API", "Token Automation"]}
-              videoUrl="https://youtu.be/r31--1h7FV0?si=P7Rm8En5NSSU4MgL"
-            />
-            <ProjectCard 
-              name="CA Automation Suite" 
-              desc="Full workflow automation for Chartered Accountants: GST filing automation, AI Legal Advisor, Tax Advisor, and Invoice Generator."
-              tags={["n8n", "RAG", "AI Agents", "GST Automation", "Finance"]}
-            />
-            <ProjectCard 
-              name="Multi-Model AI System" 
-              desc="Local LLM orchestration with intelligent fallback logic. Primary model failure → auto-switches to fallback model. Supports DeepSeek-R1, LLaMA3, Mistral, Qwen3 via Ollama."
-              tags={["Ollama", "Multi-Model", "Fallback Logic", "LLM Orchestration"]}
-            />
-          </ProjectGroup>
-          </LiquidGlassParallaxSection>
-          
+
           <LiquidGlassParallaxSection parallaxDistance={45}>
           <ProjectGroup title="Enterprise Architecture" color="cyan">
             <div className="md:col-span-2">
@@ -1123,8 +1103,10 @@ function PersonalFavouritesCollapsible() {
   return (
     <div className="mt-16">
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="font-mono text-xs uppercase tracking-[0.2em] text-cyan pb-2 border-b border-cyan/30 inline-flex items-center gap-2 hover:text-white transition-colors duration-200 cursor-pointer"
+        onClick={() => setIsOpen(prev => !prev)}
+        className="w-full flex items-center justify-between py-3 px-4 text-left font-mono text-sm uppercase tracking-[0.2em] text-cyan border-b border-cyan/30 hover:text-white transition-colors duration-200 cursor-pointer"
+        style={{ minHeight: '48px' }}
+        aria-expanded={isOpen}
       >
         <span>&#9656; My Personal Favourites</span>
         <ChevronDown
@@ -1132,69 +1114,61 @@ function PersonalFavouritesCollapsible() {
           className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px] pt-6">
-              <WorkflowCard 
-                name="Daily AI News Agent" 
-                desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
-                image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={0}
-                videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
-              />
-              <WorkflowCard 
-                name="Personal Jarvis (Updated)" 
-                desc="For extra daily needs, my updated personal jarvis orchestrates everything I need in a unified environment."
-                image="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={100}
-              />
-              <WorkflowCard 
-                name="n8n Updates Tester" 
-                desc="Used for testing new n8n updates. It is the most easy and quick to use workflow."
-                image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={200}
-              />
-              <WorkflowCard 
-                name="Drive & Docs Agent" 
-                desc="Additional workflow to manage my drives, docs, and emails. Can be sent to WhatsApp and controlled via SAM."
-                image="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={300}
-              />
-              <WorkflowCard 
-                name="AI Outreach & Follow-up" 
-                desc="One of my most complex and useful workflows—from AI cold outreach to strategic follow-ups, automated replies, and all extras."
-                image="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={400}
-              />
-              <WorkflowCard 
-                name="Search MCP & Image Gen" 
-                desc="My additional searching MCP combined with image generation. Fully automated and can be sent to WhatsApp controlled via SAM."
-                image="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={500}
-              />
-              <WorkflowCard 
-                name="AI Presentation Generator" 
-                desc="Free Gemma-alternative AI presentation generator capable of creating unlimited presentations. Can be sent to WhatsApp controlled via SAM."
-                image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={600}
-              />
-              <WorkflowCard 
-                name="Voice AI Agent" 
-                desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
-                image="/voice-ai-agent.png"
-                delay={700}
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isOpen && (
+        <div className="pt-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px]">
+            <WorkflowCard 
+              name="Daily AI News Agent" 
+              desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
+              image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={0}
+              videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
+            />
+            <WorkflowCard 
+              name="Personal Jarvis (Updated)" 
+              desc="For extra daily needs, my updated personal jarvis orchestrates everything I need in a unified environment."
+              image="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={100}
+            />
+            <WorkflowCard 
+              name="n8n Updates Tester" 
+              desc="Used for testing new n8n updates. It is the most easy and quick to use workflow."
+              image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={200}
+            />
+            <WorkflowCard 
+              name="Drive & Docs Agent" 
+              desc="Additional workflow to manage my drives, docs, and emails. Can be sent to WhatsApp and controlled via SAM."
+              image="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={300}
+            />
+            <WorkflowCard 
+              name="AI Outreach & Follow-up" 
+              desc="One of my most complex and useful workflows—from AI cold outreach to strategic follow-ups, automated replies, and all extras."
+              image="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={400}
+            />
+            <WorkflowCard 
+              name="Search MCP & Image Gen" 
+              desc="My additional searching MCP combined with image generation. Fully automated and can be sent to WhatsApp controlled via SAM."
+              image="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={500}
+            />
+            <WorkflowCard 
+              name="AI Presentation Generator" 
+              desc="Free Gemma-alternative AI presentation generator capable of creating unlimited presentations. Can be sent to WhatsApp controlled via SAM."
+              image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
+              delay={600}
+            />
+            <WorkflowCard 
+              name="Voice AI Agent" 
+              desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
+              image="/voice-ai-agent.png"
+              delay={700}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1216,8 +1190,10 @@ function TechnicalDeepDiveCollapsible() {
         &#9656; Technical Deep Dive &mdash; For Developers
       </h3>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="font-mono text-xs uppercase tracking-[0.2em] text-cyan border border-cyan/30 px-4 py-2 inline-flex items-center gap-2 hover:bg-cyan/10 hover:border-cyan/50 transition-all duration-200 cursor-pointer"
+        onClick={() => setIsOpen(prev => !prev)}
+        className="w-full flex items-center justify-between py-3 px-4 text-left font-mono text-xs uppercase tracking-[0.2em] text-cyan border border-cyan/30 hover:bg-cyan/10 hover:border-cyan/50 transition-all duration-200 cursor-pointer"
+        style={{ minHeight: '48px' }}
+        aria-expanded={isOpen}
       >
         <span>View Technical Details</span>
         <ChevronDown
@@ -1225,23 +1201,15 @@ function TechnicalDeepDiveCollapsible() {
           className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
-              {SERVICES_DATA.map((s, i) => (
-                <ServiceCard key={i} icon={s.icon} title={s.title} outcome={s.outcome} desc={s.desc} tags={s.tags} color={i % 2 === 0 ? 'cyan' : 'amber'} />
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isOpen && (
+        <div className="pt-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {SERVICES_DATA.map((s, i) => (
+              <ServiceCard key={i} icon={s.icon} title={s.title} outcome={s.outcome} desc={s.desc} tags={s.tags} color={i % 2 === 0 ? 'cyan' : 'amber'} />
+            ))}
+          </div>
+        </div>
+      )}
     </motion.section>
   );
 }
