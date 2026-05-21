@@ -258,8 +258,8 @@ export default function Home() {
               className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight"
             >
               <LiquidGlassTitle>
-                I Automate the Work <br/>
-                <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Your Team Does Manually.</ShaderIridescentText>
+                I Build Intelligent Systems That Keep Working —{' '}<br/>
+                <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Even When You&apos;re Not.</ShaderIridescentText>
               </LiquidGlassTitle>
             </motion.h1>
 
@@ -269,7 +269,16 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance"
             >
-              IndiaMART leads into Odoo automatically. GST reconciliation without the weekend. WhatsApp updates without anyone typing them. Your business runs while you sleep.
+              I believe technology should remove friction, not create it.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-text-muted text-base md:text-lg max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance"
+            >
+              From custom automations and AI agents to complete SaaS products — I design, ship, and own the systems end-to-end.
             </motion.p>
 
             <motion.div
@@ -313,7 +322,7 @@ export default function Home() {
         {/* 01. ABOUT */}
         <motion.section 
           id="whoami" 
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-48"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -376,7 +385,7 @@ export default function Home() {
         {/* 02. PROJECTS */}
         <motion.section 
           id="projects" 
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-48"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -394,6 +403,7 @@ export default function Home() {
               desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
               tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
               logoUrl="/logo-inktwin.png"
+              benefit="For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font, seamlessly integrate images, or discover unique styles to effortlessly generate assignments and documents instead of writing by hand."
             />
             <ProjectCard 
               name="PrimuezSure Advisor" 
@@ -401,6 +411,7 @@ export default function Home() {
               desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
               tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
               logoUrl="/logo-primuezsure.png"
+              benefit="For insurance advisors who need instant, reliable answers — searches official government sources, delivers personalized responses to any insurance query, supports multiple languages, and works for any country or insurance type so you can serve clients faster and with confidence."
             />
           </ProjectGroup>
           </LiquidGlassParallaxSection>
@@ -537,70 +548,57 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-16">
-              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyan mb-6 pb-2 border-b border-cyan/30 inline-block">
-                ▸ My Personal Favourites
-              </h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px]">
-                <WorkflowCard 
-                  name="Daily AI News Agent" 
-                  desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
-                  image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={0}
-                  videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
-                />
-                <WorkflowCard 
-                  name="Personal Jarvis (Updated)" 
-                  desc="For extra daily needs, my updated personal jarvis orchestrates everything I need in a unified environment."
-                  image="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={100}
-                />
-                <WorkflowCard 
-                  name="n8n Updates Tester" 
-                  desc="Used for testing new n8n updates. It is the most easy and quick to use workflow."
-                  image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={200}
-                />
-                <WorkflowCard 
-                  name="Drive & Docs Agent" 
-                  desc="Additional workflow to manage my drives, docs, and emails. Can be sent to WhatsApp and controlled via SAM."
-                  image="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={300}
-                />
-                <WorkflowCard 
-                  name="AI Outreach & Follow-up" 
-                  desc="One of my most complex and useful workflows—from AI cold outreach to strategic follow-ups, automated replies, and all extras."
-                  image="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={400}
-                />
-                <WorkflowCard 
-                  name="Search MCP & Image Gen" 
-                  desc="My additional searching MCP combined with image generation. Fully automated and can be sent to WhatsApp controlled via SAM."
-                  image="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={500}
-                />
-                <WorkflowCard 
-                  name="AI Presentation Generator" 
-                  desc="Free Gemma-alternative AI presentation generator capable of creating unlimited presentations. Can be sent to WhatsApp controlled via SAM."
-                  image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
-                  delay={600}
-                />
-                <WorkflowCard 
-                  name="Voice AI Agent" 
-                  desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
-                  image="/voice-ai-agent.png"
-                  delay={700}
-                />
-              </div>
-            </div>
+            <PersonalFavouritesCollapsible />
           </div>
         </motion.section>
 
         {/* 03. SERVICES */}
         <BlueprintServicesSection onWorkWithMe={() => setModalType('form')} />
 
+        {/* TECHNICAL DEEP DIVE — Collapsible second services view */}
+        <TechnicalDeepDiveCollapsible />
+
+        {/* HOW WE USUALLY WORK TOGETHER */}
+        <motion.section
+          id="process"
+          className="pt-16 md:pt-48"
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <SectionHeader number="03.2" command="> ./process --steps" title="How We Usually Work Together" />
+          <div className="mt-10 max-w-3xl space-y-0">
+            {[
+              { num: '01', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.' },
+              { num: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)' },
+              { num: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.' },
+              { num: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.' },
+              { num: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.' },
+            ].map((step, i) => (
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: "-50px" }}
+                className="flex items-start gap-4 py-5 border-b border-white/[0.06] last:border-0"
+              >
+                <span className="font-mono text-cyan/60 text-sm tracking-widest shrink-0 mt-0.5">{step.num}</span>
+                <div>
+                  <span className="font-mono text-sm text-white font-bold">{step.title}</span>
+                  <span className="text-text-muted text-sm ml-2">&mdash; {step.desc}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <p className="mt-8 font-mono text-xs text-text-muted tracking-widest">
+            Most projects go live in 1&ndash;4 weeks.
+          </p>
+        </motion.section>
+
         {/* WHY PRIMUEZ */}
-        <section id="why-primuez" className="pt-16 md:pt-32">
+        <section id="why-primuez" className="pt-16 md:pt-48">
           <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
           <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
             Four sharp arguments for working with us — not a pitch deck, just the truth.
@@ -614,7 +612,7 @@ export default function Home() {
         {/* 05. GITHUB */}
         <motion.section 
           id="github" 
-          className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
+          className="pt-16 md:pt-48 pb-28 md:pb-20 relative overflow-hidden"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -650,7 +648,7 @@ export default function Home() {
         {/* 04. YOUTUBE CONTENT */}
         <motion.section 
           id="youtube" 
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-48"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -700,7 +698,7 @@ export default function Home() {
         {/* 05. TECH STACK */}
         <motion.section 
           id="stack" 
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-48"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -719,7 +717,7 @@ export default function Home() {
         {/* 06. CREDENTIALS */}
         <motion.section 
           id="credentials" 
-          className="pt-16 md:pt-32"
+          className="pt-16 md:pt-48"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -797,7 +795,7 @@ export default function Home() {
         {/* 10. CONTACT */}
         <motion.section 
           id="contact" 
-          className="pt-16 md:pt-32 text-center pb-28 md:pb-20"
+          className="pt-16 md:pt-48 text-center pb-28 md:pb-20"
           initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -1119,6 +1117,134 @@ export default function Home() {
 }
 
 // Subcomponents
+
+function PersonalFavouritesCollapsible() {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="mt-16">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="font-mono text-xs uppercase tracking-[0.2em] text-cyan pb-2 border-b border-cyan/30 inline-flex items-center gap-2 hover:text-white transition-colors duration-200 cursor-pointer"
+      >
+        <span>&#9656; My Personal Favourites</span>
+        <ChevronDown
+          size={14}
+          className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px] pt-6">
+              <WorkflowCard 
+                name="Daily AI News Agent" 
+                desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
+                image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={0}
+                videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
+              />
+              <WorkflowCard 
+                name="Personal Jarvis (Updated)" 
+                desc="For extra daily needs, my updated personal jarvis orchestrates everything I need in a unified environment."
+                image="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={100}
+              />
+              <WorkflowCard 
+                name="n8n Updates Tester" 
+                desc="Used for testing new n8n updates. It is the most easy and quick to use workflow."
+                image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={200}
+              />
+              <WorkflowCard 
+                name="Drive & Docs Agent" 
+                desc="Additional workflow to manage my drives, docs, and emails. Can be sent to WhatsApp and controlled via SAM."
+                image="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={300}
+              />
+              <WorkflowCard 
+                name="AI Outreach & Follow-up" 
+                desc="One of my most complex and useful workflows—from AI cold outreach to strategic follow-ups, automated replies, and all extras."
+                image="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={400}
+              />
+              <WorkflowCard 
+                name="Search MCP & Image Gen" 
+                desc="My additional searching MCP combined with image generation. Fully automated and can be sent to WhatsApp controlled via SAM."
+                image="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={500}
+              />
+              <WorkflowCard 
+                name="AI Presentation Generator" 
+                desc="Free Gemma-alternative AI presentation generator capable of creating unlimited presentations. Can be sent to WhatsApp controlled via SAM."
+                image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={600}
+              />
+              <WorkflowCard 
+                name="Voice AI Agent" 
+                desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
+                image="/voice-ai-agent.png"
+                delay={700}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function TechnicalDeepDiveCollapsible() {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <motion.section
+      className="pt-16 md:pt-48"
+      initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-text-muted/60 mb-4">
+        <span className="text-cyan/50">03.1</span> &nbsp; <span className="text-text-muted/40">&gt; ./services --technical</span>
+      </p>
+      <h3 className="text-lg md:text-xl font-bold text-white tracking-tight mb-6">
+        &#9656; Technical Deep Dive &mdash; For Developers
+      </h3>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="font-mono text-xs uppercase tracking-[0.2em] text-cyan border border-cyan/30 px-4 py-2 inline-flex items-center gap-2 hover:bg-cyan/10 hover:border-cyan/50 transition-all duration-200 cursor-pointer"
+      >
+        <span>View Technical Details</span>
+        <ChevronDown
+          size={14}
+          className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+              {SERVICES_DATA.map((s, i) => (
+                <ServiceCard key={i} icon={s.icon} title={s.title} outcome={s.outcome} desc={s.desc} tags={s.tags} color={i % 2 === 0 ? 'cyan' : 'amber'} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.section>
+  );
+}
 
 function CVAccordion({ title, children }: { title: string, children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -1631,7 +1757,7 @@ function SectionHeader({ number, command, title, center = false }: { number: str
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
         viewport={{ once: true, margin: "-80px" }}
-        className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight"
+        className="text-2xl md:text-5xl font-bold text-white tracking-tight leading-tight"
       >
         <ShaderText preset="aurora">{title}</ShaderText>
       </motion.h2>
@@ -1720,7 +1846,7 @@ function ProjectGroup({ title, children, color }: { title: string, children: Rea
   );
 }
 
-function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, children?: React.ReactNode }) {
+function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, benefit, children }: { name: string, url?: string, desc: string, tags: string[], logoUrl?: string, bannerUrl?: string, videoUrl?: string, benefit?: string, children?: React.ReactNode }) {
   const cardRef = useRef<HTMLDivElement>(null);
   // Zero-rerender hover tracking via motion values (bypasses React reconciliation)
   const mouseX = useMotionValue(50);
@@ -1787,6 +1913,9 @@ function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, chil
         )}
       </div>
       
+      {benefit && (
+        <p className="text-text-muted/70 text-xs leading-relaxed mb-3 relative z-[1] italic">{benefit}</p>
+      )}
       <p className="text-text-muted text-sm leading-relaxed mb-6 relative z-[1]">{desc}</p>
       
       {children && (
@@ -3071,7 +3200,7 @@ function FAQDecryptionSection() {
   return (
     <motion.section
       id="faq"
-      className="pt-16 md:pt-32"
+      className="pt-16 md:pt-48"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
