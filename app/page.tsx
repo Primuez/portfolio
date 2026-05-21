@@ -55,6 +55,11 @@ export default function Home() {
   const [certData, setCertData] = useState<{title: string, issuer: string, date: string, id: string, pdfUrl?: string} | null>(null);
   const isMobile = useIsMobile();
 
+  // Process section scroll-fill
+  const processRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: processScrollY } = useScroll({ target: processRef, offset: ['start 0.8', 'end 0.2'] });
+  const lineScale = useTransform(processScrollY, [0, 1], [0, 1]);
+
   const openCert = (data: {title: string, issuer: string, date: string, id: string, pdfUrl?: string}) => {
     setCertData(data);
     setModalType('cert');
@@ -617,24 +622,32 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <HowWeWorkBackground />
-          <div className="relative z-10">
+          <div ref={processRef} className="relative z-10">
           <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
-          <div className="mt-12 grid gap-6 max-w-3xl">
-            {[
-              { step: '01', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.' },
-              { step: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)' },
-              { step: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.' },
-              { step: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.' },
-              { step: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.' },
-            ].map(({ step, title, desc }) => (
-              <div key={step} className="flex items-start gap-4 p-4 border border-cyan/15 rounded-lg bg-panel/30">
-                <span className="font-mono text-cyan text-sm font-bold shrink-0 w-8">{step}</span>
-                <div>
-                  <h4 className="font-bold text-white text-sm mb-1">{title}</h4>
-                  <p className="text-text-muted text-sm leading-relaxed">{desc}</p>
-                </div>
-              </div>
-            ))}
+          <div className="mt-12 relative max-w-3xl">
+            {/* Spine - desktop only */}
+            <div className="hidden md:block">
+              {/* Grey track */}
+              <div className="absolute left-7 top-10 bottom-10 w-px bg-white/10" />
+              {/* Cyan fill */}
+              <motion.div
+                className="absolute left-7 top-10 bottom-10 w-px bg-gradient-to-b from-cyan to-cyan/20"
+                style={{ scaleY: lineScale, transformOrigin: 'top' }}
+              />
+            </div>
+
+            {/* Steps */}
+            <div className="space-y-8 md:space-y-10">
+              {[
+                { step: '01', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.', icon: '\u25CE' },
+                { step: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)', icon: '\u25A4' },
+                { step: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.', icon: '\u27F3' },
+                { step: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.', icon: '\u2197' },
+                { step: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.', icon: '\u25C8' },
+              ].map(({ step, title, desc, icon }) => (
+                <ProcessStep key={step} step={step} title={title} desc={desc} icon={icon} />
+              ))}
+            </div>
           </div>
           <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
           </div>
@@ -1160,6 +1173,40 @@ export default function Home() {
 }
 
 // Subcomponents
+
+function ProcessStep({ step, title, desc, icon }: { step: string; title: string; desc: string; icon: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: '-30% 0px -30% 0px', once: false });
+
+  return (
+    <div ref={ref} className="relative flex items-start">
+      {/* Dot on spine - desktop only */}
+      <div
+        className={`hidden md:block absolute left-5 top-5 w-4 h-4 rounded-full border-2 transition-all duration-500 ${
+          inView
+            ? 'border-cyan bg-cyan/20 shadow-[0_0_12px_rgba(0,255,255,0.6)]'
+            : 'border-zinc-600 bg-zinc-900'
+        }`}
+      />
+      {/* Card */}
+      <motion.div
+        className="ml-0 md:ml-20 w-full p-5 border border-cyan/15 rounded-lg bg-[#0a0f1a]/70"
+        initial={{ opacity: 0, x: 16 }}
+        animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : 16 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="flex items-start gap-3">
+          <span className="text-lg leading-none mt-0.5">{icon}</span>
+          <div>
+            <span className="font-mono text-cyan text-xs font-bold">{step}</span>
+            <h4 className="font-bold text-white text-sm mt-1 mb-1">{title}</h4>
+            <p className="text-text-muted text-sm leading-relaxed">{desc}</p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 function CVAccordion({ title, children }: { title: string, children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);

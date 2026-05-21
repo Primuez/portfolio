@@ -25,7 +25,7 @@ vec3 c_down = vec3(0.710, 0.710, 0.710);
 vec3 c_left = vec3(0.310, 0.310, 0.310);
 vec3 c_right = vec3(0.922, 0.922, 0.922);
 
-float cursor_radius = 3.0;
+float cursor_radius = 1.2;
 float flutes_angle = 120.0 * 3.14159265 / 180.0;
 float flutes_frequency = 8.0;
 float flutes_refraction = 4.0;
@@ -78,7 +78,7 @@ void main() {
   vec3 chromeHighlight = (dynamicLight * ca) + (coreSpecular * 0.8);
 
   float noise = random(uv + u_time * 0.05) * grain_strength;
-  vec3 finalColor = bg_color + (chromeHighlight * glow * 1.2) * 1.5 + noise;
+  vec3 finalColor = bg_color + (chromeHighlight * glow * 0.5) * 0.7 + noise;
   gl_FragColor = vec4(finalColor, 1.0);
 }
 `;
@@ -169,7 +169,7 @@ export function HowWeWorkBackground() {
         const dx = currentMouse.x - prevMouse.x;
         const dy = currentMouse.y - prevMouse.y;
         const velocity = Math.sqrt(dx * dx + dy * dy);
-        uniforms.u_intensity.value += (velocity * 25 - uniforms.u_intensity.value) * 0.1;
+        uniforms.u_intensity.value += (velocity * 8 - uniforms.u_intensity.value) * 0.1;
         prevMouse.x = currentMouse.x;
         prevMouse.y = currentMouse.y;
 
