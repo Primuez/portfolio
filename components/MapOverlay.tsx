@@ -29,17 +29,11 @@ export function MapOverlay({ onClose }: MapOverlayProps) {
       });
 
       L.default.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
-          attribution:
-            'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+          attribution: '&copy; OpenStreetMap contributors',
           maxZoom: 18,
         }
-      ).addTo(mapInstance);
-
-      L.default.tileLayer(
-        'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-        { maxZoom: 18, opacity: 0.7 }
       ).addTo(mapInstance);
     });
 
@@ -61,7 +55,7 @@ export function MapOverlay({ onClose }: MapOverlayProps) {
   }, [handleKeyDown]);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-black animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] flex flex-col w-screen h-dvh bg-black animate-in fade-in duration-200" style={{ top: 0, left: 0, right: 0, bottom: 0 }}>
       <div className="flex items-center justify-between px-4 py-3 bg-[#070b12]/90 border-b border-cyan/20 backdrop-blur-sm flex-shrink-0">
         <div className="flex items-center gap-2">
           <Globe size={14} className="text-cyan" />

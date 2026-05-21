@@ -12,6 +12,7 @@ import { StockChart } from '@/components/StockChart';
 import { YouTubeThumb } from '@/components/YouTubeThumb';
 import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import { ShaderBackground, ShaderBackgroundSection } from '@/components/ShaderBackground';
 import { ShaderText, ShaderLogo, ShaderGlowLine, ShaderIridescentText } from '@/components/ShaderText';
 import { ShaderLogoGlow } from '@/components/ShaderLogoGlow';
@@ -320,6 +321,13 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <SectionHeader number="01" command="> whoami" title="About" />
+          <motion.div
+            className="md:contents"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true }}
+          >
           <ContainerScroll
             titleComponent={
               <div className="flex flex-col items-center">
@@ -371,6 +379,7 @@ export default function Home() {
               </div>
             </div>
           </ContainerScroll>
+          </motion.div>
         </motion.section>
 
         {/* 02. PROJECTS */}
@@ -598,6 +607,39 @@ export default function Home() {
 
         {/* 03. SERVICES */}
         <BlueprintServicesSection onWorkWithMe={() => setModalType('form')} />
+
+        {/* HOW WE WORK */}
+        <motion.section
+          id="process"
+          className="pt-16 md:pt-32 relative overflow-hidden"
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <HowWeWorkBackground />
+          <div className="relative z-10">
+            <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
+            <div className="mt-12 grid gap-6 max-w-3xl">
+              {[
+                { step: '01', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.' },
+                { step: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)' },
+                { step: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.' },
+                { step: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.' },
+                { step: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.' },
+              ].map(({ step, title, desc }) => (
+                <div key={step} className="flex items-start gap-4 p-4 border border-cyan/15 rounded-lg bg-panel/30">
+                  <span className="font-mono text-cyan text-sm font-bold shrink-0 w-8">{step}</span>
+                  <div>
+                    <h4 className="font-bold text-white text-sm mb-1">{title}</h4>
+                    <p className="text-text-muted text-sm leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1&ndash;4 weeks. ]</p>
+          </div>
+        </motion.section>
 
         {/* WHY PRIMUEZ */}
         <section id="why-primuez" className="pt-16 md:pt-32">
