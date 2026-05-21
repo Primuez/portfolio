@@ -47,6 +47,7 @@ export default function Home() {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [favOpen, setFavOpen] = useState(false);
   
   // Modals state
   const [modalType, setModalType] = useState<'form' | 'cert' | 'workflow' | null>(null);
@@ -538,10 +539,15 @@ export default function Home() {
             </div>
 
             <div className="mt-16">
-              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyan mb-6 pb-2 border-b border-cyan/30 inline-block">
-                ▸ My Personal Favourites
-              </h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px]">
+              <button
+                onClick={() => setFavOpen(o => !o)}
+                className="w-full flex items-center justify-between py-3 px-4 min-h-[48px] font-mono text-xs uppercase tracking-[0.2em] text-cyan border border-cyan/20 rounded-lg bg-panel/40 hover:bg-cyan/5 transition-colors cursor-pointer"
+              >
+                <span>▸ MY PERSONAL FAVOURITES</span>
+                <span>{favOpen ? '▲' : '▼'}</span>
+              </button>
+              {favOpen && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px] mt-6">
                 <WorkflowCard 
                   name="Daily AI News Agent" 
                   desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
@@ -592,12 +598,43 @@ export default function Home() {
                   delay={700}
                 />
               </div>
+              )}
             </div>
           </div>
         </motion.section>
 
         {/* 03. SERVICES */}
         <BlueprintServicesSection onWorkWithMe={() => setModalType('form')} />
+
+        {/* HOW WE WORK */}
+        <motion.section
+          id="process"
+          className="pt-16 md:pt-32"
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
+          <div className="mt-12 grid gap-6 max-w-3xl">
+            {[
+              { step: '01', title: 'Discovery', desc: 'You describe your goal or the process that\u2019s slowing you down.' },
+              { step: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1\u20132 days)' },
+              { step: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.' },
+              { step: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.' },
+              { step: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.' },
+            ].map(({ step, title, desc }) => (
+              <div key={step} className="flex items-start gap-4 p-4 border border-cyan/15 rounded-lg bg-panel/30">
+                <span className="font-mono text-cyan text-sm font-bold shrink-0 w-8">{step}</span>
+                <div>
+                  <h4 className="font-bold text-white text-sm mb-1">{title}</h4>
+                  <p className="text-text-muted text-sm leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
+        </motion.section>
 
         {/* WHY PRIMUEZ */}
         <section id="why-primuez" className="pt-16 md:pt-32">
@@ -1985,17 +2022,17 @@ function WireframeCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DA
 
 function RenderedCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DATA)[0]) {
   return (
-    <div className="flex flex-col p-6 rounded-xl border border-cyan/20 bg-[#12161E]/80 backdrop-blur-md min-h-[260px]
-      shadow-[0_4px_24px_rgba(0,0,0,0.4)] relative overflow-hidden liquid-glass-card group">
+    <div className="flex flex-col p-6 rounded-xl border border-cyan/40 bg-[#12161E]/80 backdrop-blur-md min-h-[260px]
+      shadow-[0_4px_24px_rgba(0,0,0,0.4),0_0_20px_rgba(0,240,255,0.06)] relative overflow-hidden liquid-glass-card group">
       {/* Glass edge highlight */}
-      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none z-10"></div>
+      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent pointer-events-none z-10"></div>
       <div className="text-3xl mb-4">{icon}</div>
       <h4 className="text-base font-bold mb-1 text-white">{title}</h4>
-      <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#00FFCC]">→ {outcome}</p>
+      <p className="font-mono text-xs uppercase tracking-widest mb-4 text-cyan">→ {outcome}</p>
       <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{desc}</p>
       <div className="flex flex-wrap gap-2 mt-auto">
         {tags.map((tag, i) => (
-          <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/25 text-cyan bg-cyan/5">{tag}</span>
+          <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/40 text-cyan bg-cyan/10">{tag}</span>
         ))}
       </div>
     </div>
