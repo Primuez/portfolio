@@ -7,6 +7,7 @@ import { HexShaderBackground } from '@/components/HexShaderBackground';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { ShaderIridescentText } from '@/components/ShaderText';
+import { useUI } from '@/lib/contexts/UIContext';
 
 const phrases = [
   "Workflow Automation.",
@@ -15,13 +16,18 @@ const phrases = [
   "Built for Indian SMEs."
 ];
 
-interface HeroSectionProps {
-  isMobile: boolean;
-  phraseIndex: number;
-  setModalType: (type: 'form' | 'cert' | 'workflow' | null) => void;
-}
+export const HeroSection: React.FC = () => {
+  const { isMobile, setModalType } = useUI();
+  const [phraseIndex, setPhraseIndex] = React.useState(0);
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ isMobile, phraseIndex, setModalType }) => {
+  // Phrase cycling (fade-morph) - moved local to Hero to keep state encapsulated
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((p) => (p + 1) % phrases.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
       {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}

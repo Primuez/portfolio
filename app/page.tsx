@@ -27,14 +27,8 @@ const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileStickyCtA } from '@/components/MobileStickyCtA';
 
+import { UIProvider, useUI } from '@/lib/contexts/UIContext';
 import { HeroSection } from '@/components/sections/HeroSection';
-
-const phrases = [
-  "Workflow Automation.",
-  "Zero Manual Entry.",
-  "Systems That Scale.",
-  "Built for Indian SMEs."
-];
 
 interface GithubRepo {
   id: number;
@@ -47,16 +41,18 @@ interface GithubRepo {
 }
 
 export default function Home() {
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
+  return (
+    <UIProvider>
+      <HomeContent />
+    </UIProvider>
+  );
+}
+
+function HomeContent() {
+  const { isMobile, modalType, setModalType, scrolled, setCertData } = useUI();
   const [menuOpen, setMenuOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
   
-  // Modals state
-  const [modalType, setModalType] = useState<'form' | 'cert' | 'workflow' | null>(null);
-  const [certData, setCertData] = useState<{title: string, issuer: string, date: string, id: string, pdfUrl?: string} | null>(null);
-  const isMobile = useIsMobile();
-
   // Process section scroll-fill
   const processRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: processScrollY } = useScroll({ target: processRef, offset: ['start 0.8', 'end 0.2'] });
@@ -80,20 +76,6 @@ export default function Home() {
       history.replaceState(null, '', window.location.pathname + window.location.search);
     }
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Phrase cycling (fade-morph)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPhraseIndex((p) => (p + 1) % phrases.length);
-    }, 3000);
-    return () => clearInterval(interval);
   }, []);
 
   // Fetch Github
@@ -220,11 +202,7 @@ export default function Home() {
       <ScrollProgressBar />
 
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-16 md:pb-32">
-        <HeroSection 
-          isMobile={isMobile} 
-          phraseIndex={phraseIndex} 
-          setModalType={setModalType} 
-        />
+        <HeroSection />
 
         {/* 01. ABOUT */}
         <motion.section 
