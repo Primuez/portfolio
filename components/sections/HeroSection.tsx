@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Download, Code2, Terminal } from 'lucide-react';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
-import { LiquidGlassTitle, ShaderIridescentText } from '@/components/ui/liquid-glass-logo';
+import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
+import { ShaderIridescentText } from '@/components/ShaderText';
 
 const phrases = [
   "Workflow Automation.",
