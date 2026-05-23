@@ -49,7 +49,7 @@ export default function Home() {
 }
 
 function HomeContent() {
-  const { isMobile, modalType, setModalType, scrolled, setCertData } = useUI();
+  const { isMobile, modalType, setModalType, scrolled, certData, setCertData } = useUI();
   const [menuOpen, setMenuOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
   
