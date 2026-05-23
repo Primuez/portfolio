@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useScroll, useSpring, useTransform, useVelocit
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, Code2, Link as IconLink, 
-  MapPin, CheckCircle2, ChevronRight, ChevronDown,
+  CheckCircle2, ChevronRight, ChevronDown,
   MonitorPlay, Youtube, Github, Twitter, Instagram, Linkedin, Send,
   Star, GitFork, Activity, Download
 } from 'lucide-react';
@@ -29,6 +29,8 @@ import { MobileStickyCtA } from '@/components/MobileStickyCtA';
 
 import { UIProvider, useUI } from '@/lib/contexts/UIContext';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { AboutSection } from '@/components/sections/AboutSection';
+import { SectionHeader } from '@/components/SectionHeader';
 
 interface GithubRepo {
   id: number;
@@ -204,68 +206,7 @@ function HomeContent() {
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-16 md:pb-32">
         <HeroSection />
 
-        {/* 01. ABOUT */}
-        <motion.section 
-          id="whoami" 
-          className="pt-16 md:pt-32"
-          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <SectionHeader number="01" command="> whoami" title="About" />
-          <ContainerScroll
-            titleComponent={
-              <div className="flex flex-col items-center">
-                <h2 className="text-[2.5rem] leading-[1.1] md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4 drop-shadow-[0_0_20px_rgba(0,240,255,0.3)]">
-                  <ShaderIridescentText as="span" className="text-[2.5rem] leading-[1.1] md:text-6xl lg:text-7xl font-bold">Architecting Autonomy</ShaderIridescentText>
-                </h2>
-                <p className="text-text-muted text-sm md:text-lg max-w-2xl leading-relaxed">
-                  Turning repetitive business operations into systems that run themselves.
-                </p>
-              </div>
-            }
-          >
-            {/* Card content: Bio + Info Grid */}
-            <div className="flex flex-col h-full justify-between gap-6 text-left">
-              <div className="space-y-4 max-w-3xl">
-                <p className="text-zinc-300 text-sm md:text-base leading-relaxed">
-                  I&apos;m <strong className="text-cyan font-mono">Rahul Kasturiya (Primuez)</strong> — I design systems that use tools, adapt, and execute workflows autonomously. Your leads, invoices, follow-ups, and reports flow without anyone touching a keyboard.
-                </p>
-                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                  My work sits at the intersection of <strong className="text-white">n8n orchestration</strong>, <strong className="text-white">LLM agent design</strong>, and <strong className="text-white">Cloudflare-based deployment</strong>. I&apos;ve built SaaS products, enterprise automation architectures, and client-facing AI systems that run 24/7 without manual intervention.
-                </p>
-                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                  I think in systems before I write a single line of logic. I build for modularity, fallback reliability, and zero manual intervention.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 pt-4 border-t border-zinc-700/60">
-                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Education</span>
-                  <span className="text-zinc-200 text-xs font-medium">KPS, Dunda · SSIPS (BCA)</span>
-                </div>
-                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Experience</span>
-                  <span className="text-zinc-200 text-xs font-medium">AI Automation · Since July 2025</span>
-                </div>
-                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Location</span>
-                  <span className="text-zinc-200 text-xs font-medium flex items-center gap-1"><MapPin size={10} /> Indore, MP, India</span>
-                </div>
-                <div className="p-3 bg-zinc-800/60 rounded-lg border border-zinc-700/40">
-                  <span className="text-zinc-500 text-[10px] uppercase tracking-widest block mb-1">Languages</span>
-                  <span className="text-zinc-200 text-xs font-medium">Hindi · English C2 · Sindhi C2</span>
-                </div>
-              </div>
-              {/* Personal backstory — relocated from hero/above-fold */}
-              <div className="pt-4 border-t border-zinc-700/40">
-                <p className="text-zinc-500 text-xs md:text-sm leading-relaxed italic">
-                  Self-taught. No CS degree. No team. Everything here was built by doing — from central India, one system at a time.
-                </p>
-              </div>
-            </div>
-          </ContainerScroll>
-        </motion.section>
+        <AboutSection />
 
         {/* 02. PROJECTS */}
         <motion.section 
@@ -1585,38 +1526,6 @@ function ScrollProgressBar() {
       style={{ scaleX, transformOrigin: '0% 50%' }}
       className="fixed top-0 left-0 right-0 h-[1px] z-[60] bg-gradient-to-r from-cyan via-cyan/60 to-amber/40 pointer-events-none"
     />
-  );
-}
-
-function SectionHeader({ number, command, title, center = false }: { number: string, command: string, title: string, center?: boolean }) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, x: -40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-80px" }}
-      className={`mb-10 ${center ? 'text-center' : ''}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true, margin: "-80px" }}
-        className="font-mono text-[11px] tracking-[0.25em] text-text-muted/60 mb-3"
-      >
-        <span className="text-cyan/50">{number}</span> &nbsp; <span className="text-text-muted/40">{command}</span>
-      </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true, margin: "-80px" }}
-        className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight"
-      >
-        <ShaderText preset="aurora">{title}</ShaderText>
-      </motion.h2>
-      <ShaderGlowLine className="mt-3 max-w-[200px]" />
-    </motion.div>
   );
 }
 
