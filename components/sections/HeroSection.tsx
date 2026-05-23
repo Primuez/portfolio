@@ -1,0 +1,124 @@
+'use client';
+
+import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ChevronRight, Download, Code2, Terminal } from 'lucide-react';
+import { HexShaderBackground } from '@/components/HexShaderBackground';
+import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
+import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
+import { ShaderIridescentText } from '@/components/ShaderText';
+
+const phrases = [
+  "Workflow Automation.",
+  "Zero Manual Entry.",
+  "Systems That Scale.",
+  "Built for Indian SMEs."
+];
+
+interface HeroSectionProps {
+  isMobile: boolean;
+  phraseIndex: number;
+  setModalType: (type: 'form' | 'cert' | 'workflow' | null) => void;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ isMobile, phraseIndex, setModalType }) => {
+  return (
+    <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
+      {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}
+      {!isMobile && (
+        <div className="absolute inset-0 -mx-4 sm:-mx-6">
+          <HexShaderBackground />
+        </div>
+      )}
+      <div className="max-w-3xl relative z-10">
+        <motion.a
+          href="#projects"
+          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+          className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
+        >
+          <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
+        </motion.a>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
+        >
+          <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={phraseIndex}
+              initial={{ opacity: 0, y: 12, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -12, filter: 'blur(6px)' }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {phrases[phraseIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight"
+        >
+          <LiquidGlassTitle>
+            I Automate the Work <br/>
+            <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Your Team Does Manually.</ShaderIridescentText>
+          </LiquidGlassTitle>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance"
+        >
+          IndiaMART leads into Odoo automatically. GST reconciliation without the weekend. WhatsApp updates without anyone typing them. Your business runs while you sleep.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14"
+        >
+          <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
+            <ChevronRight size={16} /> View My Work
+          </a>
+          <GlassButton 
+            size="lg" 
+            onClick={() => setModalType('form')} 
+            glowColor="rgba(0, 240, 255, 0.25)"
+            className="glass-btn-glow text-cyan hover:text-white"
+          >
+            Work With Me
+          </GlassButton>
+          <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
+            <Download size={16} /> Resume
+          </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap gap-3 font-mono text-xs"
+        >
+          <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
+            <Code2 size={14} className="text-amber" /> 10+ Businesses Automated
+          </span>
+          <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
+            <Terminal size={14} className="text-cyan/70" /> 10+ Systems Running 24/7
+          </span>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
