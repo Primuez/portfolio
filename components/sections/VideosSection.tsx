@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
+import { Link as IconLink, MonitorPlay } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
-import { YouTubeThumb } from '@/components/YouTubeThumb';
 
 function DropCard({ children, delay, initialRotate }: { children: React.ReactNode; delay: number; initialRotate: number }) {
   return (
@@ -91,40 +91,34 @@ export default function VideosSection() {
         <div className="grid lg:grid-cols-2 gap-8 relative z-0">
 
           <DropCard delay={0.08} initialRotate={-3}>
-            <div className="bg-panel/60 border border-white/[0.06] p-6 rounded-2xl backdrop-blur-lg flex flex-col font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
+            <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
               <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none"></div>
-              
-              <YouTubeThumb
-                videoId="RzB_7PqR8G0"
-                url="https://youtu.be/RzB_7PqR8G0"
-                label="Watch n8n Demo"
-              />
-              
-              <h3 className="text-lg font-bold mt-5 mb-2 font-sans text-white text-left">
-                n8n Odoo Manufacturing Automation
-              </h3>
-              <p className="text-text-muted text-xs leading-relaxed text-left font-sans">
-                Full demonstration of mapping IndiaMART webhooks to Odoo ERP via custom n8n pipelines, complete with automatic GST checks and WhatsApp invoice routing.
+              <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
+                <IconLink className="text-cyan" size={32} />
+              </div>
+              <h3 className="text-xl font-bold mb-4 font-sans text-white">Automating Your Business & Playlists</h3>
+              <p className="text-text-muted mb-8 max-w-sm text-sm">
+                Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
               </p>
+              <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/5 text-cyan px-8 py-4 rounded-xl hover:bg-cyan/15 hover:border-cyan/80 transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.2)] backdrop-blur-sm">
+                View Playlists
+              </a>
             </div>
           </DropCard>
 
           <DropCard delay={0.24} initialRotate={2.5}>
-            <div className="bg-panel/60 border border-white/[0.06] p-6 rounded-2xl backdrop-blur-lg flex flex-col font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
+            <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
               <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none"></div>
-              
-              <YouTubeThumb
-                videoId="hOaV_C8h1Zg"
-                url="https://youtu.be/hOaV_C8h1Zg"
-                label="Watch Voice Agent Demo"
-              />
-              
-              <h3 className="text-lg font-bold mt-5 mb-2 font-sans text-white text-left">
-                InkTwin: Custom AI Voice Agents
-              </h3>
-              <p className="text-text-muted text-xs leading-relaxed text-left font-sans">
-                A walkthrough of building human-sounding, low-latency voice agents that can book calls, query inventory, and trigger background automations while speaking.
+              <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+                <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" />
+              </div>
+              <h3 className="text-xl font-bold mb-4 font-sans text-white">Subscribe to Primuez</h3>
+              <p className="text-text-muted mb-8 max-w-sm text-sm">
+                Subscribe for detailed walkthroughs of n8n automation deployments, multi-agent AI setups, and live build sessions from scratch.
               </p>
+              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-red-500/50 hover:border-red-500 text-red-500 px-8 py-4 hover:bg-red-500/10 transition-colors">
+                <MonitorPlay size={16} /> Watch Channel
+              </a>
             </div>
           </DropCard>
 

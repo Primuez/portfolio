@@ -54,7 +54,7 @@ export default function StackSection() {
       viewport={{ once: true, margin: "-100px" }}
     >
       <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 font-mono max-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 font-mono">
         <StackGroup title="AI & Orchestration" items={['n8n', 'OpenRouter', 'DeepSeek', 'Mistral', 'LLaMA3', 'Ollama', 'RAG Systems', 'AI Agents']} border="cyan" />
         <StackGroup title="Infra & Deploy" items={['Cloudflare Workers', 'Hostinger VPS', 'Vercel', 'Docker', 'Self-Hosted']} border="amber" />
         <StackGroup title="ERP & Business" items={['Odoo ERP', 'Odoo CRM', 'GST Portal', 'IndiaMART Webhooks', 'Kickbox (Email Vfy)']} border="cyan" />
