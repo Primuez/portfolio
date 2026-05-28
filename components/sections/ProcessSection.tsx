@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'motion/react';
+import { motion, useScroll, useTransform, useInView, useSpring } from 'motion/react';
 import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import { SectionHeader } from '@/components/SectionHeader';
 
@@ -21,13 +21,18 @@ function ProcessStep({ step, title, desc, icon }: { step: string; title: string;
       />
       {/* Card */}
       <motion.div
-        className="ml-0 md:ml-20 w-full p-5 border border-cyan/15 rounded-lg bg-[#0a0f1a]/70"
+        className="ml-0 md:ml-20 w-full p-5 border border-cyan/15 rounded-lg bg-[#0a0f1a]/70 backdrop-blur-sm cursor-default"
         initial={{ opacity: 0, x: 16 }}
         animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : 16 }}
+        whileHover={{ 
+          scale: 1.015, 
+          borderColor: 'rgba(0, 240, 255, 0.35)', 
+          boxShadow: '0 8px 30px rgba(0, 240, 255, 0.08)' 
+        }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-start gap-3">
-          <span className="text-lg leading-none mt-0.5">{icon}</span>
+          <span className="text-lg leading-none mt-0.5 select-none">{icon}</span>
           <div>
             <span className="font-mono text-cyan text-xs font-bold">{step}</span>
             <h4 className="font-bold text-white text-sm mt-1 mb-1">{title}</h4>
@@ -42,7 +47,8 @@ function ProcessStep({ step, title, desc, icon }: { step: string; title: string;
 export default function ProcessSection() {
   const processRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: processScrollY } = useScroll({ target: processRef, offset: ['start 0.8', 'end 0.2'] });
-  const lineScale = useTransform(processScrollY, [0, 1], [0, 1]);
+  const smoothScrollY = useSpring(processScrollY, { stiffness: 80, damping: 25, restDelta: 0.001 });
+  const lineScale = useTransform(smoothScrollY, [0, 1], [0, 1]);
 
   return (
     <motion.section

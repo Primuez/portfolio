@@ -59,7 +59,7 @@ function WhyPrimuezSlide({
   const isFirst = index === 0;
   const opacityInput  = isFirst ? [outStart, end]         : [start, inEnd, outStart, end];
   const opacityOutput = isFirst ? [1, 0]                  : [0, 1, 1, 0];
-  const opacity    = useTransform(scrollYProgress, opacityInput, opacityOutput);
+  const opacity    = useTransform(scrollYProgress, opacityInput,  opacityOutput);
   const leftY      = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [-50, 0]);
   const rightY     = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [50, 0]);
   const leftClip   = useTransform(scrollYProgress, [start, inEnd], isFirst ? ['inset(0 0 0% 0)', 'inset(0 0 0% 0)'] : ['inset(0 0 110% 0)', 'inset(0 0 0% 0)']);
@@ -75,7 +75,7 @@ function WhyPrimuezSlide({
             {item.num} / 04
           </span>
           <h3
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight font-sans"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight"
             style={{ whiteSpace: 'pre-line' }}
           >
             {item.title}
@@ -102,12 +102,19 @@ function WhyPrimuezSlide({
 }
 
 function WhyPrimuez() {
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 180, damping: 45, restDelta: 0.001 });
+
+  if (isMobile) {
+    return (
+      <MobileWhyPrimuez />
+    );
+  }
 
   return (
     <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 100}vh` }} className="relative -mx-4 sm:-mx-6">
@@ -145,73 +152,7 @@ function WhyPrimuez() {
   );
 }
 
-function MobileWhyDot({
-  index, total, scrollYProgress,
-}: { index: number; total: number; scrollYProgress: MotionValue<number> }) {
-  const start = index / total;
-  const end = (index + 1) / total;
-  const opacity = useTransform(scrollYProgress, (v) => (v >= start && v < end) ? 1 : 0.25);
-  const scale = useTransform(scrollYProgress, [start, Math.min(start + 0.05, end), Math.max(end - 0.05, start), end], [1, 1.8, 1.8, 1]);
-  return (
-    <motion.div
-      className="w-1.5 h-1.5 rounded-full bg-indigo-400"
-      style={{ opacity, scale }}
-    />
-  );
-}
-
-function MobileWhySlide({
-  item, index, total, scrollYProgress,
-}: {
-  item: typeof WHY_ITEMS[0];
-  index: number;
-  total: number;
-  scrollYProgress: MotionValue<number>;
-}) {
-  const start = index / total;
-  const end = (index + 1) / total;
-  const inEnd = start + (end - start) * 0.40;
-  const outStart = start + (end - start) * 0.60;
-
-  const isFirst = index === 0;
-  const opacityInput  = isFirst ? [outStart, end]         : [start, inEnd, outStart, end];
-  const opacityOutput = isFirst ? [1, 0]                  : [0, 1, 1, 0];
-  const opacity    = useTransform(scrollYProgress, opacityInput, opacityOutput);
-  const titleY     = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [-30, 0]);
-  const detailY    = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [30, 0]);
-  const lineScaleY = useTransform(scrollYProgress, isFirst ? [start, outStart, end] : [start, inEnd, outStart, end], isFirst ? [1, 1, 0] : [0, 1, 1, 0]);
-
-  return (
-    <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-6" style={{ opacity }}>
-      {/* Title */}
-      <motion.div style={{ y: titleY }} className="text-center mb-6">
-        <span className="font-mono text-indigo-400 text-xs uppercase tracking-[0.25em] block mb-3">
-          {item.num} / 04
-        </span>
-        <h3
-          className="text-2xl sm:text-3xl font-bold text-white leading-tight font-sans"
-          style={{ whiteSpace: 'pre-line' }}
-        >
-          {item.title}
-        </h3>
-      </motion.div>
-
-      {/* Center lock line */}
-      <motion.div
-        className="w-px bg-indigo-500 mb-6"
-        style={{ scaleY: lineScaleY, height: '50px', originY: '50%' }}
-      />
-
-      {/* Detail */}
-      <motion.div style={{ y: detailY }} className="max-w-xs text-center">
-        <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-sans">
-          {item.detail}
-        </p>
-      </motion.div>
-    </motion.div>
-  );
-}
-
+/** Mobile-optimized WhyPrimuez — now mirrors desktop scroll-driven split animation */
 function MobileWhyPrimuez() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -256,16 +197,82 @@ function MobileWhyPrimuez() {
   );
 }
 
-export default function WhySection() {
-  const isMobile = useIsMobile();
+/** Mobile slide — mirrors desktop WhyPrimuezSlide with vertically stacked layout */
+function MobileWhySlide({
+  item, index, total, scrollYProgress,
+}: {
+  item: typeof WHY_ITEMS[0];
+  index: number;
+  total: number;
+  scrollYProgress: MotionValue<number>;
+}) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const inEnd = start + (end - start) * 0.40;
+  const outStart = start + (end - start) * 0.60;
 
+  const isFirst = index === 0;
+  const opacityInput  = isFirst ? [outStart, end]         : [start, inEnd, outStart, end];
+  const opacityOutput = isFirst ? [1, 0]                  : [0, 1, 1, 0];
+  const opacity    = useTransform(scrollYProgress, opacityInput, opacityOutput);
+  const titleY     = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [-30, 0]);
+  const detailY    = useTransform(scrollYProgress, [start, inEnd], isFirst ? [0, 0] : [30, 0]);
+  const lineScaleY = useTransform(scrollYProgress, isFirst ? [start, outStart, end] : [start, inEnd, outStart, end], isFirst ? [1, 1, 0] : [0, 1, 1, 0]);
+
+  return (
+    <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-6" style={{ opacity }}>
+      {/* Title */}
+      <motion.div style={{ y: titleY }} className="text-center mb-6">
+        <span className="font-mono text-indigo-400 text-xs uppercase tracking-[0.25em] block mb-3">
+          {item.num} / 04
+        </span>
+        <h3
+          className="text-2xl sm:text-3xl font-bold text-white leading-tight"
+          style={{ whiteSpace: 'pre-line' }}
+        >
+          {item.title}
+        </h3>
+      </motion.div>
+
+      {/* Center lock line */}
+      <motion.div
+        className="w-px bg-indigo-500 mb-6"
+        style={{ scaleY: lineScaleY, height: '50px', originY: '50%' }}
+      />
+
+      {/* Detail */}
+      <motion.div style={{ y: detailY }} className="max-w-xs text-center">
+        <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-sans">
+          {item.detail}
+        </p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function MobileWhyDot({
+  index, total, scrollYProgress,
+}: { index: number; total: number; scrollYProgress: MotionValue<number> }) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const opacity = useTransform(scrollYProgress, (v) => (v >= start && v < end) ? 1 : 0.25);
+  const scale = useTransform(scrollYProgress, [start, Math.min(start + 0.05, end), Math.max(end - 0.05, start), end], [1, 1.8, 1.8, 1]);
+  return (
+    <motion.div
+      className="w-1.5 h-1.5 rounded-full bg-indigo-400"
+      style={{ opacity, scale }}
+    />
+  );
+}
+
+export default function WhySection() {
   return (
     <section id="why-primuez" className="pt-16 md:pt-32">
       <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
-      <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+      <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
         Four sharp arguments for working with us — not a pitch deck, just the truth.
       </p>
-      {isMobile ? <MobileWhyPrimuez /> : <WhyPrimuez />}
+      <WhyPrimuez />
     </section>
   );
 }
