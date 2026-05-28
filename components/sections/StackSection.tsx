@@ -54,11 +54,11 @@ export default function StackSection() {
       viewport={{ once: true, margin: "-100px" }}
     >
       <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-        <StackGroup title="Core Automation & Orchestration" items={['n8n Workflow Automation', 'Evolution API (WA Gateway)', 'Custom Webhooks & REST APIs', 'Zapier & Make (Interops)']} border="cyan" />
-        <StackGroup title="AI & Agentic Systems" items={['Mistral / OpenAI / Gemini APIs', 'Ollama (Local Models)', 'LangChain & Agent Frameworks', 'Voice Agents (InkTwin Engine)']} border="amber" />
-        <StackGroup title="SaaS & Backend Architecture" items={['Next.js 15 & React 19', 'Cloudflare Workers (D1 & Drizzle)', 'Node.js & FastAPI (Python)', 'PostgreSQL, Supabase & Redis']} border="cyan" />
-        <StackGroup title="DevOps, Systems & ERP" items={['Docker & Container Deployment', 'Linux Server Administration', 'Odoo ERP Suite Customization', 'GitHub Action Pipelines']} border="amber" />
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 font-mono">
+        <StackGroup title="AI & Orchestration" items={['n8n', 'OpenRouter', 'DeepSeek', 'Mistral', 'LLaMA3', 'Ollama', 'RAG Systems', 'AI Agents']} border="cyan" />
+        <StackGroup title="Infra & Deploy" items={['Cloudflare Workers', 'Hostinger VPS', 'Vercel', 'Docker', 'Self-Hosted']} border="amber" />
+        <StackGroup title="ERP & Business" items={['Odoo ERP', 'Odoo CRM', 'GST Portal', 'IndiaMART Webhooks', 'Kickbox (Email Vfy)']} border="cyan" />
+        <StackGroup title="Dev Languages" items={['JavaScript / Node.js', 'Python', 'Bash / Shell', 'YAML', 'HTTP Proxies']} border="amber" />
       </div>
     </motion.section>
   );

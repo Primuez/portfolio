@@ -1,27 +1,13 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useInView } from 'motion/react';
 import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import { SectionHeader } from '@/components/SectionHeader';
 
 function ProcessStep({ step, title, desc, icon }: { step: string; title: string; desc: string; icon: string }) {
-  // We can use native Framer Motion features or standard intersection observer logic
-  // to toggle the inView state.
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      setInView(entry.isIntersecting);
-    }, {
-      rootMargin: '-30% 0px -30% 0px'
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const inView = useInView(ref, { margin: '-30% 0px -30% 0px', once: false });
 
   return (
     <div ref={ref} className="relative flex items-start">
