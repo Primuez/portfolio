@@ -27,7 +27,8 @@ export default function StackSection() {
   const [selectedTool, setSelectedTool] = useState<string>('n8n');
   const [terminalLines, setTerminalLines] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<any>(null);
 
   // SVG Icons for the tools - custom crafted for premium aesthetic
   const icons = {
@@ -385,6 +386,11 @@ export default function StackSection() {
 
   // Run the bash simulation typing effect
   const runSimulatedCommand = (tool: Tool) => {
+    // Clear any active typing simulation to prevent race conditions & leaks
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     setIsTyping(true);
     setTerminalLines([]);
 
@@ -403,7 +409,7 @@ export default function StackSection() {
         
         // Speed up output logs, slow down first typed line
         const delay = currentLineIndex === 1 ? 400 : 150;
-        setTimeout(printNextLine, delay);
+        timeoutRef.current = setTimeout(printNextLine, delay);
       } else {
         setIsTyping(false);
       }
@@ -434,11 +440,18 @@ export default function StackSection() {
   useEffect(() => {
     const defaultTool = STACK_CATEGORIES[0].tools[0];
     runSimulatedCommand(defaultTool);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
-  // Scroll terminal logs automatically to the bottom
+  // Scroll terminal logs automatically to the bottom locally (keeping window scroll undisturbed)
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (terminalContainerRef.current) {
+      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
+    }
   }, [terminalLines]);
 
   return (
@@ -597,7 +610,10 @@ export default function StackSection() {
             </div>
 
             {/* BOTTOM PANEL: LIVE BASH CONSOLE */}
-            <div className="border-t border-white/[0.08] bg-black/90 p-4 font-mono text-[10px] md:text-xs h-[180px] lg:h-[200px] overflow-y-auto relative flex flex-col justify-between">
+            <div 
+              ref={terminalContainerRef}
+              className="border-t border-white/[0.08] bg-black/90 p-4 font-mono text-[10px] md:text-xs h-[180px] lg:h-[200px] overflow-y-auto relative flex flex-col justify-between"
+            >
               
               {/* Overlay terminal background grid */}
               <div className="absolute inset-0 bg-blueprint opacity-[0.03] pointer-events-none z-0" />
@@ -633,7 +649,6 @@ export default function StackSection() {
                   </div>
                 )}
               </div>
-              <div ref={terminalEndRef} />
 
               <div className="mt-4 pt-2 border-t border-white/[0.05] text-[9px] text-text-muted/30 flex items-center justify-between z-10 relative select-none">
                 <span>Console connection: ESTABLISHED</span>
