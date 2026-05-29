@@ -38,14 +38,14 @@ export const ProjectsSection: React.FC = () => {
         <ProjectGroup title="SaaS Products" color="cyan">
           <ProjectCard 
             name="InkTwin" 
-            url="https://ink-twin.primueztech.workers.dev"
+            url="https://ink-twin.primuez.in"
             desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
             tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
             logoUrl="/logo-inktwin.png"
           />
           <ProjectCard 
             name="PrimuezSure Advisor" 
-            url="https://primuezsure-advisor.primueztech.workers.dev"
+            url="https://primuezsure.primuez.in"
             desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
             tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
             logoUrl="/logo-primuezsure.png"
