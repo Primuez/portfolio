@@ -30,9 +30,9 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden -mx-4 sm:-mx-6 md:-mx-12 px-4 sm:px-6 md:px-12">
-      {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}
+      {/* Interactive Hex Path shader — glows on cursor hover (desktop only) — full-bleed center aligned */}
       {!isMobile && (
-        <div className="absolute inset-0 scale-[1.02] origin-center overflow-hidden pointer-events-none z-0">
+        <div className="absolute inset-y-0 w-screen left-1/2 -translate-x-1/2 scale-[1.02] origin-center overflow-hidden pointer-events-none z-0">
           <HexShaderBackground />
         </div>
       )}

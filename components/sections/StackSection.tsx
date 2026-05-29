@@ -1,35 +1,148 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
 import { SectionHeader } from '@/components/SectionHeader';
 
-// Interface for interactive tools
 interface Tool {
   name: string;
   desc: string;
   icon: React.ReactNode;
-  border: 'cyan' | 'amber';
-  cmd: string;
-  output: string[];
 }
 
-// Categories of technical stack
-interface Category {
-  id: string;
-  folder: string;
+interface StackGroupProps {
   title: string;
-  tools: Tool[];
+  items: Tool[];
+  border: 'cyan' | 'amber';
+}
+
+function StackGroup({ title, items, border }: StackGroupProps) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 180, damping: 22 });
+  const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [6, -6]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-6, 6]);
+
+  const spotlightX = useMotionValue(0);
+  const spotlightY = useMotionValue(0);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+
+    spotlightX.set(e.clientX - rect.left);
+    spotlightY.set(e.clientY - rect.top);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${spotlightX}px ${spotlightY}px, ${
+    border === 'cyan' ? 'rgba(0, 240, 255, 0.15)' : 'rgba(245, 166, 35, 0.15)'
+  }, transparent 80%)`;
+
+  const textColor = border === 'cyan' ? 'text-cyan' : 'text-amber';
+  const innerBezelColor = border === 'cyan' ? 'border-cyan/10 group-hover:border-cyan/25' : 'border-amber/10 group-hover:border-amber/25';
+  const rivetColor = border === 'cyan' ? 'group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)]' : 'group-hover:bg-amber group-hover:shadow-[0_0_8px_rgba(245,166,35,0.8)]';
+  const textHoverColor = border === 'cyan' ? 'group-hover/item:text-cyan' : 'group-hover/item:text-amber';
+
+  return (
+    <div 
+      className="perspective-1000 w-full h-full"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        whileHover={{ scale: 1.015 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+        className="flex flex-col p-6 rounded-2xl border border-white/[0.08] bg-[#07090e]/95 backdrop-blur-md h-full
+          shadow-[0_12px_40px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.05)] relative overflow-hidden liquid-glass-card group"
+      >
+        {/* Double Bezel Design Element */}
+        <div className={`absolute inset-[4px] rounded-[14px] border ${innerBezelColor} transition-colors duration-300 pointer-events-none z-10`} />
+
+        {/* 4 Corner Screws / Rivets for Physical Tactility */}
+        <div className={`absolute top-3 left-3 w-1.5 h-1.5 rounded-full bg-white/10 ${rivetColor} transition-all duration-300 pointer-events-none z-20 flex items-center justify-center`}>
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className={`absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-white/10 ${rivetColor} transition-all duration-300 pointer-events-none z-20 flex items-center justify-center`}>
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className={`absolute bottom-3 left-3 w-1.5 h-1.5 rounded-full bg-white/10 ${rivetColor} transition-all duration-300 pointer-events-none z-20 flex items-center justify-center`}>
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className={`absolute bottom-3 right-3 w-1.5 h-1.5 rounded-full bg-white/10 ${rivetColor} transition-all duration-300 pointer-events-none z-20 flex items-center justify-center`}>
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+
+        {/* Dynamic Cursor Spotlight Glow */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+          style={{ background: spotlightBg }}
+        />
+
+        {/* Title */}
+        <div className={`text-xs font-mono uppercase tracking-[0.2em] mb-6 flex items-center justify-between ${textColor} font-bold z-20 relative`}>
+          <span>[ {title} ]</span>
+          <span className="opacity-40 text-[10px]">0x{items.length.toString(16).toUpperCase()}</span>
+        </div>
+
+        {/* List of tools with staggered fade-in */}
+        <motion.ul
+          className="space-y-4 block z-20 relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            visible: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } },
+            hidden: {},
+          }}
+        >
+          {items.map((item, i) => (
+            <motion.li
+              key={i}
+              variants={{
+                hidden: { opacity: 0, x: -10 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+              }}
+              className="group/item flex items-center gap-3.5 border-b border-white/[0.02] pb-3.5 last:border-0 last:pb-0 transition-all duration-300 cursor-default"
+            >
+              {/* Logo container */}
+              <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.02] border border-white/[0.04] text-text-muted group-hover/item:text-white group-hover/item:bg-white/[0.05] group-hover/item:border-white/[0.1] group-hover/item:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-300 shrink-0 animate-grid">
+                <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300 group-hover/item:scale-110">
+                  {item.icon}
+                </div>
+              </div>
+              {/* Tool info */}
+              <div className="flex-1 min-w-0">
+                <div className={`text-white text-xs font-bold leading-none transition-colors duration-300 ${textHoverColor} font-sans truncate`}>
+                  {item.name}
+                </div>
+                <div className="text-[10px] text-text-muted/60 mt-1 font-sans truncate">
+                  {item.desc}
+                </div>
+              </div>
+            </motion.li>
+          ))}
+        </motion.ul>
+      </motion.div>
+    </div>
+  );
 }
 
 export default function StackSection() {
-  const [activeCategory, setActiveCategory] = useState<string>('ai');
-  const [selectedTool, setSelectedTool] = useState<string>('n8n');
-  const [terminalLines, setTerminalLines] = useState<string[]>([]);
-  const [isTyping, setIsTyping] = useState<boolean>(false);
-  const terminalContainerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<any>(null);
-
   // SVG Icons for the tools - custom crafted for premium aesthetic
   const icons = {
     n8n: (
@@ -146,313 +259,44 @@ export default function StackSection() {
         <polyline points="4 17 10 11 4 5" />
         <line x1="12" y1="19" x2="20" y2="19" />
       </svg>
+    ),
+    agents: (
+      <svg className="w-5 h-5 text-pink-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+        <path d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z" />
+        <circle cx="12" cy="12" r="2" fill="currentColor" />
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+      </svg>
     )
   };
 
-  const STACK_CATEGORIES: Category[] = [
-    {
-      id: 'ai',
-      folder: 'ai_orchestration',
-      title: 'AI & Orchestration',
-      tools: [
-        {
-          name: 'n8n',
-          desc: 'Primary workflow orchestrator connecting LLMs, databases, and webhooks.',
-          icon: icons.n8n,
-          border: 'cyan',
-          cmd: 'cat /etc/n8n/workflows.json | grep -A 3 "status"',
-          output: [
-            '[SYSTEM] Accessing database... ok',
-            '[INFO] Fetching active pipelines:',
-            '  - IndiaMART Webhook -> Odoo CRM sync: ACTIVE (Uptime 99.9%)',
-            '  - WhatsApp Auto-Followup Agent: ACTIVE (1,240 runs today)',
-            '  - GST Reconciliation Cron: IDLE (Triggers daily 20:00 IST)',
-            '[SUCCESS] All 14 custom automation services operating normally.'
-          ]
-        },
-        {
-          name: 'OpenRouter',
-          desc: 'Unified router for optimal LLM access to DeepSeek, GPT-4, and Claude.',
-          icon: icons.openrouter,
-          border: 'cyan',
-          cmd: 'curl -s https://openrouter.ai/api/v1/models/active',
-          output: [
-            '[HTTP] GET /api/v1/models/active 200 OK',
-            '[SUCCESS] Connected to router engine.',
-            '  * deepseek/deepseek-chat : Primary (Fallback: mistralai/mistral-large)',
-            '  * openai/gpt-4o-mini : Active (Fallback: claude-3-haiku)',
-            '  * Average Routing Latency: 168ms',
-            '  * Cost optimization rules applied: -42% token overhead saved.'
-          ]
-        },
-        {
-          name: 'DeepSeek',
-          desc: 'Elite cost-effective reasoning engine for core automation logic.',
-          icon: icons.deepseek,
-          border: 'cyan',
-          cmd: 'python3 -m deepseek --prompt="Reconcile invoices"',
-          output: [
-            '[AGENT] Starting DeepSeek-R1 deep reasoning chain...',
-            '[THOUGHT] Step 1: Query un-reconciled invoices from Odoo...',
-            '[THOUGHT] Step 2: Correlate transaction IDs against PDF bank statement...',
-            '[THOUGHT] Step 3: Flag exceptions (3 items missing matching metadata)...',
-            '[AGENT] Audit completed. Output: 147 reconciled, 3 flagged. Accuracy 100%.'
-          ]
-        },
-        {
-          name: 'Mistral & LLaMA',
-          desc: 'Advanced open-weight models for self-hosted parsing tasks.',
-          icon: icons.mistral,
-          border: 'cyan',
-          cmd: 'ollama run llama3:8b "Check spam pattern"',
-          output: [
-            '[LOCAL] Initializing LLaMA3 neural weights on self-hosted GPU...',
-            '[SYSTEM] Model loaded successfully in 45ms. VRAM utilized: 4.8GB.',
-            '[PROCESS] Scanning input email content for phishing pattern...',
-            '  * Confidence Score: 0.94 (Spam detected)',
-            '  * Classification: Auto-archive webhook triggered.',
-            '[SUCCESS] Process completed.'
-          ]
-        }
-      ]
-    },
-    {
-      id: 'infra',
-      folder: 'infra_deploy',
-      title: 'Infra & Deploy',
-      tools: [
-        {
-          name: 'Cloudflare Workers',
-          desc: 'Global serverless hosting at the edge with zero cold starts.',
-          icon: icons.cloudflare,
-          border: 'amber',
-          cmd: 'wrangler deploy --env production',
-          output: [
-            '[WRANGLER] Bundling serverless code with esbuild...',
-            '[SUCCESS] Uploaded core script to edge servers globally!',
-            '  - Global latency: 12ms average (34 edge centers mapped)',
-            '  - Deployment URL: https://api.primuez.com',
-            '  - Rate limiter: ACTIVE (Max 100 req/min/IP)',
-            '  - Serverless bill: $0.00 (operating well below free limit!)'
-          ]
-        },
-        {
-          name: 'Hostinger VPS',
-          desc: 'Dedicated VPS running long-lived background automation queues.',
-          icon: icons.vps,
-          border: 'amber',
-          cmd: 'ssh vps.primuez.com "uptime && free -m"',
-          output: [
-            'rahul@vps.primuez.com\'s password: **********',
-            '06:17:42 up 14 days,  2:12,  1 user,  load average: 0.12, 0.08, 0.05',
-            '              total        used        free      shared  buff/cache   available',
-            'Mem:           7980        1840        4210         110        1930        5820',
-            'Swap:          2048         124        1924',
-            '[SUCCESS] Server running smoothly. CPU usage minimal.'
-          ]
-        },
-        {
-          name: 'Docker',
-          desc: 'Safe sandboxed container environment for self-hosted utilities.',
-          icon: icons.docker,
-          border: 'amber',
-          cmd: 'docker ps --format "table {{.Names}}\\t{{.Status}}\\t{{.Ports}}"',
-          output: [
-            'NAMES                      STATUS                  PORTS',
-            'primuez-n8n-main           Up 14 days (healthy)    0.0.0.0:5678->5678/tcp',
-            'postgres-odoo-db           Up 14 days (healthy)    5432/tcp',
-            'redis-cache-layer          Up 14 days (healthy)    6379/tcp',
-            'local-deepseek-inference   Up 4 days (healthy)     8000/tcp'
-          ]
-        },
-        {
-          name: 'Vercel',
-          desc: 'High-performance hosting for interactive frontend interfaces.',
-          icon: icons.vercel,
-          border: 'amber',
-          cmd: 'vercel --prod',
-          output: [
-            'Vercel CLI 34.0.0',
-            '[SYSTEM] Retrieving project settings...',
-            '[PROCESS] Building site bundle (Next.js SSR)...',
-            '[SUCCESS] Production deployment verified: https://primuez.com',
-            '  - Performance Score: 100/100 (Google Lighthouse Mobile/Desktop)',
-            '  - Edge Network: Global Anycast CDN'
-          ]
-        }
-      ]
-    },
-    {
-      id: 'business',
-      folder: 'erp_business',
-      title: 'ERP & Business',
-      tools: [
-        {
-          name: 'Odoo ERP/CRM',
-          desc: 'Enterprise business suite configured for automated ledger entries.',
-          icon: icons.odoo,
-          border: 'cyan',
-          cmd: 'odoo-client --action sync_partners',
-          output: [
-            '[ODOO-API] Initializing XML-RPC client session... ok',
-            '[INFO] Fetching newly created leads from pipeline...',
-            '  * Found: 12 new leads in inbox.',
-            '  * Match: 12 partners successfully injected into Odoo database.',
-            '  * Ledgers: Auto-generated draft invoices for outstanding orders.',
-            '[SUCCESS] Sync finished. CRM database up-to-date.'
-          ]
-        },
-        {
-          name: 'GST Portal',
-          desc: 'Auto-reconciliation code for tax filing calculations.',
-          icon: icons.gst,
-          border: 'cyan',
-          cmd: 'node gst-reconciler.js --period="Q1-2026"',
-          output: [
-            '[SYSTEM] Reading Excel purchase register files...',
-            '[PROCESS] Cross-matching against GST portal JSON tables...',
-            '  - Matches found: 412 transactions (Input Tax Credit validated)',
-            '  - Discrepancies: 2 flagged (Auto-notified suppliers via email)',
-            '  - Saved tax leakages: INR 42,500 calculated.',
-            '[SUCCESS] Reconciled data locked and exported to docs/gst/Q1_2026.xlsx'
-          ]
-        },
-        {
-          name: 'IndiaMART API',
-          desc: 'Instant webhooks capturing client queries under 1.5 seconds.',
-          icon: icons.indiamart,
-          border: 'cyan',
-          cmd: 'tail -n 5 /var/log/indiamart-webhook.log',
-          output: [
-            '2026-05-29 06:15:10 [WEBHOOK] Lead Received: "Anish Steel Pvt Ltd"',
-            '2026-05-29 06:15:11 [PARSER] Identified Intent: "Stainless steel sheets Qty 500"',
-            '2026-05-29 06:15:11 [ODOO] Created CRM Lead #8493',
-            '2026-05-29 06:15:12 [WHATSAPP] Sent catalog link to client +91-98765-XXXXX',
-            '2026-05-29 06:15:12 [STATUS] Pipeline execution completed. Duration: 1.42s'
-          ]
-        }
-      ]
-    },
-    {
-      id: 'languages',
-      folder: 'dev_languages',
-      title: 'Dev Languages',
-      tools: [
-        {
-          name: 'JavaScript / Node',
-          desc: 'Primary runtime for serverless systems and custom API logic.',
-          icon: icons.js,
-          border: 'amber',
-          cmd: 'node --version && npm run test',
-          output: [
-            'v20.11.0',
-            '[VITEST] Running integration suites...',
-            '  ✓ tests/integration/n8n-odoo.test.ts (242ms)',
-            '  ✓ tests/integration/whatsapp-api.test.ts (118ms)',
-            '  ✓ tests/unit/gst-parser.test.ts (45ms)',
-            '[SUCCESS] 12 unit tests passed. Uptime verified.'
-          ]
-        },
-        {
-          name: 'Python',
-          desc: 'Core standard for agent programming, LLM scripts, and math models.',
-          icon: icons.python,
-          border: 'amber',
-          cmd: 'python3 -c "import sys; print(sys.version)"',
-          output: [
-            '3.11.2 (main, Apr  5 2024, 12:43:10) [GCC 11.2.0]',
-            '[SYSTEM] Virtual environment: active (venv)',
-            '[SYSTEM] Loaded packages: openai, langchain, pydantic, pandas, numpy',
-            '[SUCCESS] Runtime fully optimized for agent execution.'
-          ]
-        },
-        {
-          name: 'Bash & Shell',
-          desc: 'Defensive automation scripts, cron jobs, and backup pipelines.',
-          icon: icons.bash,
-          border: 'amber',
-          cmd: 'bash backup-ledger.sh --force',
-          output: [
-            '[BACKUP] Initiating database backup routine...',
-            '[INFO] Compressing PostgreSQL table structures (pg_dump)...',
-            '[INFO] Size: 18.2 MB compressed (gzip).',
-            '[S3] Uploading block to Cloudflare R2 bucket... ok',
-            '[SUCCESS] Secure offsite backup verification completed successfully.'
-          ]
-        }
-      ]
-    }
+  const aiTools: Tool[] = [
+    { name: 'n8n Workflow Automation', desc: 'Primary workflows, APIs & auto-triggers', icon: icons.n8n },
+    { name: 'OpenRouter Aggregator', desc: 'Unified LLM access & token cost optimizations', icon: icons.openrouter },
+    { name: 'DeepSeek Reasoning', desc: 'Deep-reasoning chain for core decision logic', icon: icons.deepseek },
+    { name: 'Mistral Weights', desc: 'Sleek open-weight engines for specific parsing', icon: icons.mistral },
+    { name: 'LLaMA3 Inference', desc: 'Self-hosted LLMs for offline pattern analysis', icon: icons.llama },
+    { name: 'AI Agents & RAG', desc: 'Vector search & autonomous prompt pipelines', icon: icons.agents }
   ];
 
-  // Run the bash simulation typing effect
-  const runSimulatedCommand = (tool: Tool) => {
-    // Clear any active typing simulation to prevent race conditions & leaks
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+  const infraTools: Tool[] = [
+    { name: 'Cloudflare Workers', desc: 'Serverless deployment globally at the edge', icon: icons.cloudflare },
+    { name: 'Hostinger VPS', desc: 'Long-lived cron queues & task schedulers', icon: icons.vps },
+    { name: 'Docker Containers', desc: 'Secure system containment & virtualization', icon: icons.docker },
+    { name: 'Vercel Deployment', desc: 'Edge CDN frontend hosting with instant builds', icon: icons.vercel }
+  ];
 
-    setIsTyping(true);
-    setTerminalLines([]);
+  const erpTools: Tool[] = [
+    { name: 'Odoo ERP / CRM', desc: 'Enterprise data hub & automated ledger entries', icon: icons.odoo },
+    { name: 'GST Auto-Reconciliation', desc: 'Government tax filing verification engines', icon: icons.gst },
+    { name: 'IndiaMART Webhooks', desc: 'Sub-second real-time lead capturing API', icon: icons.indiamart }
+  ];
 
-    // Line 1: Typing command
-    const lines = [
-      `rahul@primuez-vps:~/${STACK_CATEGORIES.find(c => c.id === activeCategory)?.folder || 'stack'}$ ${tool.cmd}`,
-      ...tool.output
-    ];
-
-    let currentLineIndex = 0;
-    
-    const printNextLine = () => {
-      if (currentLineIndex < lines.length) {
-        setTerminalLines(prev => [...prev, lines[currentLineIndex]]);
-        currentLineIndex++;
-        
-        // Speed up output logs, slow down first typed line
-        const delay = currentLineIndex === 1 ? 400 : 150;
-        timeoutRef.current = setTimeout(printNextLine, delay);
-      } else {
-        setIsTyping(false);
-      }
-    };
-
-    printNextLine();
-  };
-
-  // Run command on tool click
-  const selectToolHandler = (tool: Tool) => {
-    if (isTyping) return;
-    setSelectedTool(tool.name);
-    runSimulatedCommand(tool);
-  };
-
-  // Run command on active folder tab change
-  const selectCategoryHandler = (catId: string) => {
-    if (isTyping) return;
-    setActiveCategory(catId);
-    const firstTool = STACK_CATEGORIES.find(c => c.id === catId)?.tools[0];
-    if (firstTool) {
-      setSelectedTool(firstTool.name);
-      runSimulatedCommand(firstTool);
-    }
-  };
-
-  // Initialize terminal console with n8n logs on mount
-  useEffect(() => {
-    const defaultTool = STACK_CATEGORIES[0].tools[0];
-    runSimulatedCommand(defaultTool);
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Scroll terminal logs automatically to the bottom locally (keeping window scroll undisturbed)
-  useEffect(() => {
-    if (terminalContainerRef.current) {
-      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
-    }
-  }, [terminalLines]);
+  const langTools: Tool[] = [
+    { name: 'JavaScript / Node.js', desc: 'Custom serverless APIs & script logic', icon: icons.js },
+    { name: 'Python Systems', desc: 'AI orchestration, math models & script agents', icon: icons.python },
+    { name: 'Bash & Shell scripting', desc: 'VPS administration, backups & file checks', icon: icons.bash }
+  ];
 
   return (
     <motion.section 
@@ -465,201 +309,15 @@ export default function StackSection() {
     >
       <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
       <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
-        I don&apos;t just read tutorials. Below is the exact operational console of my active system stack. Click the directories and tools to query their active status on my VPS.
+        I don&apos;t just read tutorials. Below are the actual tools and technologies running live on my systems, fully customized for enterprise automation.
       </p>
 
-      {/* ── INTERACTIVE LIVE HARDWARE TERMINAL PLATE ── */}
-      <div className="relative border border-white/[0.08] bg-[#07090e]/95 rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden group">
-        
-        {/* Double Bezel Design Element */}
-        <div className="absolute inset-[4px] rounded-[14px] border border-white/[0.03] pointer-events-none z-10" />
-
-        {/* 4 Corner Screws / Rivets for Physical Tactility */}
-        <div className="absolute top-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-white/15 group-hover:bg-cyan/60 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.6)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
-          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
-        </div>
-        <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-white/15 group-hover:bg-cyan/60 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.6)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
-          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
-        </div>
-        <div className="absolute bottom-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-white/15 group-hover:bg-cyan/60 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.6)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
-          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
-        </div>
-        <div className="absolute bottom-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-white/15 group-hover:bg-cyan/60 group-hover:shadow-[0_0_8px_rgba(0,240,255,0.6)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
-          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
-        </div>
-
-        {/* TERMINAL TOP HEADER BAR */}
-        <div className="border-b border-white/[0.08] px-5 py-3 md:py-4 flex items-center justify-between bg-[#0a0d15] relative select-none">
-          <div className="flex items-center gap-2">
-            {/* mock terminal dots */}
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.4)]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 shadow-[0_0_6px_rgba(245,158,11,0.4)]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 shadow-[0_0_6px_rgba(16,185,129,0.4)]" />
-          </div>
-          
-          <div className="font-mono text-[10px] md:text-xs text-text-muted/80 flex items-center gap-1.5 font-bold">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span>
-            <span>rahul@primuez-vps: ~/{STACK_CATEGORIES.find(c => c.id === activeCategory)?.folder || 'stack'}</span>
-          </div>
-
-          <div className="hidden md:flex font-mono text-[9px] text-text-muted/50 items-center gap-3">
-            <span>PING: <span className="text-emerald-400">12ms</span></span>
-            <span>CPU: <span className="text-cyan">8%</span></span>
-            <span>LOAD: <span className="text-amber">0.12</span></span>
-          </div>
-        </div>
-
-        {/* SPLIT WINDOW LAYOUT */}
-        <div className="flex flex-col lg:flex-row h-auto lg:h-[480px]">
-          
-          {/* LEFT SIDEBAR: DIRECTORY TREE */}
-          <div className="w-full lg:w-1/4 border-b lg:border-b-0 lg:border-r border-white/[0.08] bg-[#05070a]/60 p-4 font-mono text-xs">
-            <div className="text-text-muted/40 uppercase tracking-widest text-[9px] mb-4 font-bold select-none">[ VPS DIRECTORIES ]</div>
-            
-            <div className="space-y-1">
-              <div className="text-text-muted/60 pl-1 select-none flex items-center gap-2 mb-2">
-                <span>📁</span>
-                <span>/root/portfolio/stack</span>
-              </div>
-              
-              {STACK_CATEGORIES.map((cat) => {
-                const isActive = activeCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => selectCategoryHandler(cat.id)}
-                    className={`w-full text-left pl-4 py-2 rounded-md transition-all duration-300 flex items-center justify-between group/dir border ${
-                      isActive 
-                        ? 'bg-cyan/5 border-cyan/25 text-cyan hover:bg-cyan/10 font-bold shadow-[0_0_12px_rgba(0,240,255,0.06)]' 
-                        : 'border-transparent text-text-muted hover:text-white hover:bg-white/[0.02]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className={`transition-transform duration-300 ${isActive ? 'rotate-90 text-cyan scale-110' : 'text-text-muted/40 group-hover/dir:text-white'}`}>
-                        {isActive ? '▾' : '▸'}
-                      </span>
-                      <span className="truncate">📂 {cat.folder}/</span>
-                    </div>
-                    <span className="text-[9px] opacity-40 font-normal">0x{cat.tools.length}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-8 pt-4 border-t border-white/[0.05] hidden lg:block select-none">
-              <div className="text-text-muted/40 uppercase tracking-widest text-[9px] mb-2 font-bold">[ SYSTEM LOGS ]</div>
-              <div className="text-[10px] text-text-muted/50 leading-relaxed font-mono">
-                <div>IP: 147.93.XX.XX</div>
-                <div>OS: Ubuntu 22.04 LTS</div>
-                <div>PORT: 5678 (n8n SSL)</div>
-                <div>SSL: Cloudflare Keyless</div>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT PANELS (TOOLS LIST + SIMULATED CONSOLE) */}
-          <div className="w-full lg:w-3/4 flex flex-col h-full bg-[#030406]/30">
-            
-            {/* TOP PANEL: TACTILE MICRO-PLATES CARD GRID */}
-            <div className="p-4 md:p-6 flex-1 overflow-y-auto">
-              <div className="text-text-muted/40 uppercase tracking-widest text-[9px] mb-4 font-bold select-none">[ SELECT A TOOL TO EXECUTE STATUS LOG ]</div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {STACK_CATEGORIES.find((c) => c.id === activeCategory)?.tools.map((tool) => {
-                  const isSelected = selectedTool === tool.name;
-                  
-                  return (
-                    <button
-                      key={tool.name}
-                      onClick={() => selectToolHandler(tool)}
-                      disabled={isTyping}
-                      className={`relative flex flex-col p-4 rounded-xl border bg-[#090c13] transition-all duration-300 text-left cursor-pointer select-none group/tool ${
-                        isSelected 
-                          ? 'border-cyan shadow-[0_0_20px_rgba(0,240,255,0.15)] ring-1 ring-cyan/50 scale-[1.01]' 
-                          : 'border-white/[0.05] hover:bg-white/[0.02]'
-                      } ${isTyping ? 'opacity-60 cursor-not-allowed' : ''}`}
-                    >
-                      {/* Inner Bezels */}
-                      <div className={`absolute inset-[3px] rounded-lg border pointer-events-none transition-colors duration-300 z-10 ${
-                        isSelected ? 'border-cyan/20' : 'border-white/[0.02] group-hover/tool:border-white/[0.06]'
-                      }`} />
-
-                      <div className="flex items-center gap-3 mb-2 z-10 relative">
-                        <div className={`p-1.5 rounded-lg bg-panel transition-all duration-300 ${isSelected ? 'shadow-[0_0_10px_rgba(0,240,255,0.2)] scale-105' : ''}`}>
-                          {tool.icon}
-                        </div>
-                        <h4 className="text-sm font-bold text-white leading-none font-sans">{tool.name}</h4>
-                      </div>
-                      
-                      <p className="text-[11px] text-text-muted leading-relaxed font-sans z-10 relative flex-1">{tool.desc}</p>
-                      
-                      {/* Tiny interactive execution indicator */}
-                      <div className="mt-3 flex items-center justify-between text-[9px] font-mono text-text-muted/40 z-10 relative">
-                        <span>[ click to query ]</span>
-                        {isSelected && (
-                          <span className="text-cyan animate-pulse flex items-center gap-1 font-bold">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan"></span>
-                            ACTIVE_EXECUTION
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* BOTTOM PANEL: LIVE BASH CONSOLE */}
-            <div 
-              ref={terminalContainerRef}
-              className="border-t border-white/[0.08] bg-black/90 p-4 font-mono text-[10px] md:text-xs h-[180px] lg:h-[200px] overflow-y-auto relative flex flex-col justify-between"
-            >
-              
-              {/* Overlay terminal background grid */}
-              <div className="absolute inset-0 bg-blueprint opacity-[0.03] pointer-events-none z-0" />
-              
-              <div className="space-y-1 z-10 relative">
-                {terminalLines.map((line, idx) => {
-                  const isCmdLine = line.includes('$ ');
-                  return (
-                    <div 
-                      key={idx} 
-                      className={`${
-                        isCmdLine 
-                          ? 'text-cyan font-bold' 
-                          : line.startsWith('[SUCCESS]') 
-                            ? 'text-emerald-400 font-semibold'
-                            : line.startsWith('[AGENT]')
-                              ? 'text-indigo-400 font-medium'
-                              : line.startsWith('[THOUGHT]')
-                                ? 'text-text-muted/60 pl-2 italic'
-                                : line.startsWith('[ERROR]')
-                                  ? 'text-red-400 font-bold'
-                                  : 'text-text-muted'
-                      }`}
-                    >
-                      {line}
-                    </div>
-                  );
-                })}
-                {isTyping && (
-                  <div className="text-cyan font-bold inline-flex items-center gap-1">
-                    <span>█</span>
-                    <span className="text-[9px] text-text-muted/40 animate-pulse">[Executing VPS Task...]</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-4 pt-2 border-t border-white/[0.05] text-[9px] text-text-muted/30 flex items-center justify-between z-10 relative select-none">
-                <span>Console connection: ESTABLISHED</span>
-                <span>Type: Secure Tunnel SSHv2</span>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
+      {/* Grid of Double-Bezel Hardware Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-12">
+        <StackGroup title="AI & Orchestration" items={aiTools} border="cyan" />
+        <StackGroup title="Infra & Deploy" items={infraTools} border="amber" />
+        <StackGroup title="ERP & Business" items={erpTools} border="cyan" />
+        <StackGroup title="Dev Languages" items={langTools} border="amber" />
       </div>
     </motion.section>
   );
