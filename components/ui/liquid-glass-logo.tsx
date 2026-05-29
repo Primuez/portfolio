@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -29,6 +29,8 @@ export function LiquidGlassLogo({
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), springConfig);
   const glareX = useSpring(useTransform(mouseX, [-0.5, 0.5], [20, 80]), springConfig);
   const glareY = useSpring(useTransform(mouseY, [-0.5, 0.5], [20, 80]), springConfig);
+
+  const glareBg = useMotionTemplate`radial-gradient(120px circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.12), transparent 60%)`;
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isMobile || !containerRef.current) return;
@@ -58,11 +60,7 @@ export function LiquidGlassLogo({
         <motion.div
           className="absolute inset-0 rounded-xl pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
-            background: useTransform(
-              [glareX, glareY] as any,
-              ([x, y]: number[]) =>
-                `radial-gradient(120px circle at ${x}% ${y}%, rgba(255,255,255,0.12), transparent 60%)`
-            ),
+            background: glareBg,
           }}
         />
       )}

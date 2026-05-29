@@ -1,21 +1,87 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
 import { Link as IconLink, MonitorPlay } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 
-function DropCard({ children, delay, initialRotate }: { children: React.ReactNode; delay: number; initialRotate: number }) {
+interface DropCardProps {
+  children: React.ReactNode;
+  delay: number;
+  initialRotate: number;
+  color: 'cyan' | 'red';
+}
+
+function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const mouseXSpring = useSpring(x, { stiffness: 180, damping: 22 });
+  const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
+  
+  // Custom tilt transformations
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-10, 10]);
+
+  // Spotlight coordinates
+  const spotlightX = useMotionValue(0);
+  const spotlightY = useMotionValue(0);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    // 3D tilt coordinates
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+
+    // Spotlight coordinates
+    spotlightX.set(e.clientX - rect.left);
+    spotlightY.set(e.clientY - rect.top);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  const rgbColor = color === 'cyan' ? '0, 240, 255' : '239, 68, 68';
+  const spotlightBg = useMotionTemplate`radial-gradient(350px circle at ${spotlightX}px ${spotlightY}px, rgba(${rgbColor}, 0.12), transparent 80%)`;
+
+  const glowBorder = color === 'cyan' ? 'group-hover:border-cyan/30' : 'group-hover:border-red-500/30';
+
   return (
-    <motion.div
-      initial={{ y: -420, rotate: initialRotate * 4, opacity: 0 }}
-      whileInView={{ y: 0, rotate: 0, opacity: 1 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ type: 'spring', stiffness: 80, damping: 8, mass: 1.2, delay }}
-      whileHover={{ scale: 1.015, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+    <div 
+      className="perspective-1000 w-full"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
-      {children}
-    </motion.div>
+      <motion.div
+        initial={{ y: -420, rotate: initialRotate * 4, opacity: 0 }}
+        whileInView={{ y: 0, rotate: 0, opacity: 1 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ type: 'spring', stiffness: 70, damping: 9, mass: 1.1, delay }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        className="w-full relative group transition-all duration-300"
+      >
+        {/* Cursor Spotlight Background */}
+        <motion.div 
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
+          style={{ background: spotlightBg }}
+        />
+
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+          className={`bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden transition-all duration-500 liquid-glass-card ${glowBorder}`}
+        >
+          {children}
+        </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
@@ -90,36 +156,32 @@ export default function VideosSection() {
         <PhysicsChipsLayer />
         <div className="grid lg:grid-cols-2 gap-8 relative z-0">
 
-          <DropCard delay={0.08} initialRotate={-3}>
-            <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
-              <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none"></div>
-              <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
-                <IconLink className="text-cyan" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-sans text-white">Automating Your Business & Playlists</h3>
-              <p className="text-text-muted mb-8 max-w-sm text-sm">
-                Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
-              </p>
-              <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/5 text-cyan px-8 py-4 rounded-xl hover:bg-cyan/15 hover:border-cyan/80 transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.2)] backdrop-blur-sm">
-                View Playlists
-              </a>
+          <DropCard delay={0.08} initialRotate={-3} color="cyan">
+            <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none"></div>
+            <div className="w-16 h-16 bg-cyan/10 rounded-full flex items-center justify-center mb-6 border border-cyan/20">
+              <IconLink className="text-cyan animate-pulse" size={32} />
             </div>
+            <h3 className="text-xl font-bold mb-4 font-sans text-white">Automating Your Business & Playlists</h3>
+            <p className="text-text-muted mb-8 max-w-sm text-sm">
+              Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
+            </p>
+            <a href="https://www.youtube.com/@Primuez/playlists" target="_blank" rel="noopener noreferrer" className="z-20 flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-cyan bg-cyan/5 text-cyan px-8 py-4 rounded-xl hover:bg-cyan/15 hover:border-cyan/80 transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.2)] backdrop-blur-sm active:scale-95">
+              View Playlists
+            </a>
           </DropCard>
 
-          <DropCard delay={0.24} initialRotate={2.5}>
-            <div className="bg-panel/60 border border-white/[0.06] p-8 rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center text-center font-mono relative overflow-hidden group hover:border-cyan/30 transition-all duration-500 liquid-glass-card">
-              <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none"></div>
-              <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
-                <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" />
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-sans text-white">Subscribe to Primuez</h3>
-              <p className="text-text-muted mb-8 max-w-sm text-sm">
-                Subscribe for detailed walkthroughs of n8n automation deployments, multi-agent AI setups, and live build sessions from scratch.
-              </p>
-              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-red-500/50 hover:border-red-500 text-red-500 px-8 py-4 hover:bg-red-500/10 transition-colors">
-                <MonitorPlay size={16} /> Watch Channel
-              </a>
+          <DropCard delay={0.24} initialRotate={2.5} color="red">
+            <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none"></div>
+            <div className="w-16 h-16 bg-cyan/5 rounded-full flex items-center justify-center mb-6 border border-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+              <img src="/primuez-icon.svg" alt="Primuez" width={40} height={40} className="rounded-full" />
             </div>
+            <h3 className="text-xl font-bold mb-4 font-sans text-white">Subscribe to Primuez</h3>
+            <p className="text-text-muted mb-8 max-w-sm text-sm">
+              Subscribe for detailed walkthroughs of n8n automation deployments, multi-agent AI setups, and live build sessions from scratch.
+            </p>
+            <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="z-20 flex items-center gap-2 font-mono text-sm tracking-widest uppercase border border-red-500/50 hover:border-red-500 text-red-500 px-8 py-4 rounded-xl hover:bg-red-500/10 transition-colors active:scale-95">
+              <MonitorPlay size={16} /> Watch Channel
+            </a>
           </DropCard>
 
         </div>

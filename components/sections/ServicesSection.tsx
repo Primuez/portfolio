@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useScroll, useSpring, useTransform, useMotionValue, useMotionTemplate } from 'motion/react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SectionHeader } from '@/components/SectionHeader';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
@@ -68,20 +68,94 @@ function WireframeCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DA
 }
 
 function RenderedCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DATA)[0]) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const mouseXSpring = useSpring(x, { stiffness: 180, damping: 22 });
+  const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
+  
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [8, -8]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-8, 8]);
+
+  const spotlightX = useMotionValue(0);
+  const spotlightY = useMotionValue(0);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+
+    spotlightX.set(e.clientX - rect.left);
+    spotlightY.set(e.clientY - rect.top);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${spotlightX}px ${spotlightY}px, rgba(0, 240, 255, 0.15), transparent 80%)`;
+
   return (
-    <div className="flex flex-col p-6 rounded-xl border border-cyan/40 bg-[#12161E]/80 backdrop-blur-md min-h-[260px]
-      shadow-[0_4px_24px_rgba(0,0,0,0.4),0_0_20px_rgba(0,240,255,0.06)] relative overflow-hidden liquid-glass-card group">
-      {/* Glass edge highlight */}
-      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent pointer-events-none z-10"></div>
-      <div className="text-3xl mb-4">{icon}</div>
-      <h4 className="text-base font-bold mb-1 text-white">{title}</h4>
-      <p className="font-mono text-xs uppercase tracking-widest mb-4 text-cyan">→ {outcome}</p>
-      <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{desc}</p>
-      <div className="flex flex-wrap gap-2 mt-auto">
-        {tags.map((tag, i) => (
-          <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/40 text-cyan bg-cyan/10">{tag}</span>
-        ))}
-      </div>
+    <div 
+      className="perspective-1000 w-full h-full"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        whileHover={{ scale: 1.015 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+        className="flex flex-col p-7 rounded-xl border border-white/[0.08] bg-[#07090e]/95 backdrop-blur-md min-h-[260px] h-full
+          shadow-[0_12px_40px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.05)] relative overflow-hidden liquid-glass-card group"
+      >
+        {/* Inner Bezel (Double Bezel Design) */}
+        <div className="absolute inset-[4px] rounded-lg border border-cyan/10 group-hover:border-cyan/25 transition-colors duration-300 pointer-events-none z-10" />
+
+        {/* Hardware Corner Screws / Rivets */}
+        <div className="absolute top-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className="absolute bottom-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className="absolute bottom-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+
+        {/* Dynamic Cursor Spotlight Glow */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+          style={{ background: spotlightBg }}
+        />
+        
+        {/* Subtle top reflection */}
+        <div className="absolute top-[4px] left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none z-10"></div>
+        
+        <div className="text-3xl mb-4 z-20 mt-1">{icon}</div>
+        <h4 className="text-base font-bold mb-1 text-white z-20">{title}</h4>
+        <p className="font-mono text-xs uppercase tracking-widest mb-4 text-cyan z-20">→ {outcome}</p>
+        <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1 z-20">{desc}</p>
+        <div className="flex flex-wrap gap-2 mt-auto z-20">
+          {tags.map((tag, i) => (
+            <motion.span 
+              key={i} 
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(0, 240, 255, 0.18)' }}
+              className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/40 text-cyan bg-cyan/10 cursor-default transition-all duration-200"
+            >
+              {tag}
+            </motion.span>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }
@@ -122,9 +196,9 @@ function MobileServiceCard({ card }: { card: (typeof SERVICES_DATA)[0] }) {
         <h4 className="text-base font-bold mb-1 text-white">{card.title}</h4>
         <p className="font-mono text-xs uppercase tracking-widest mb-4 text-[#00FFCC]">→ {card.outcome}</p>
         <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{card.desc}</p>
-        <div className="flex flex-wrap gap-2 mt-auto">
+        <div className="flex flex-wrap gap-2 mt-auto font-mono text-[10px] text-cyan">
           {card.tags.map((tag, i) => (
-            <span key={i} className="font-mono text-[10px] uppercase px-2 py-1 rounded border border-cyan/25 text-cyan bg-cyan/5">{tag}</span>
+            <span key={i} className="uppercase px-2 py-1 rounded border border-cyan/25 bg-cyan/5">{tag}</span>
           ))}
         </div>
       </motion.div>
