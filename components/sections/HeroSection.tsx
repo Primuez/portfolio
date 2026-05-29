@@ -32,7 +32,7 @@ export const HeroSection: React.FC = () => {
     <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden">
       {/* Interactive Hex Path shader — glows on cursor hover (desktop only) */}
       {!isMobile && (
-        <div className="absolute inset-0 -mx-4 sm:-mx-6">
+        <div className="absolute inset-0 -mx-4 sm:-mx-6 md:-mx-12">
           <HexShaderBackground />
         </div>
       )}
