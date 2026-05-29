@@ -119,7 +119,7 @@ function WhyPrimuez() {
   return (
     <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 100}vh` }} className="relative -mx-4 sm:-mx-6">
       <div
-        className="sticky top-0 h-screen overflow-hidden flex items-center"
+        className="sticky top-0 h-[100dvh] overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
       >
         <div className="relative w-full h-full">
@@ -164,7 +164,7 @@ function MobileWhyPrimuez() {
   return (
     <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 50}vh` }} className="relative -mx-4 sm:-mx-6">
       <div
-        className="sticky top-0 h-screen overflow-hidden flex items-center"
+        className="sticky top-0 h-[100dvh] overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
       >
         <div className="relative w-full h-full">

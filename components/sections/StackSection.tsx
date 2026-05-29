@@ -33,9 +33,11 @@ function StackGroup({ title, items, border }: { title: string, items: string[], 
               hidden: { opacity: 0, x: -12 },
               visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
             }}
-            className="text-sm text-text-muted flex items-center gap-2 border-b border-white/[0.04] pb-2 last:border-0 last:pb-0"
+            whileHover={{ x: 6, color: border === 'cyan' ? '#00f0ff' : '#fbbf24' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="text-sm text-text-muted flex items-center gap-2 border-b border-white/[0.04] pb-2 last:border-0 last:pb-0 cursor-default select-none transition-colors duration-150"
           >
-            <span className="w-1 h-1 rounded-full bg-cyan/50"></span> {item}
+            <span className={`w-1.5 h-1.5 rounded-full ${border === 'cyan' ? 'bg-cyan/50' : 'bg-amber/50'} transition-colors duration-150`}></span> {item}
           </motion.li>
         ))}
       </motion.ul>

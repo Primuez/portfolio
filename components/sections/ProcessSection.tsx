@@ -7,7 +7,7 @@ import { SectionHeader } from '@/components/SectionHeader';
 
 function ProcessStep({ step, title, desc, icon }: { step: string; title: string; desc: string; icon: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: '-30% 0px -30% 0px', once: false });
+  const inView = useInView(ref, { margin: '-20% 0px -20% 0px', once: true });
 
   return (
     <div ref={ref} className="relative flex items-start">
