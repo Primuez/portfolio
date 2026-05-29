@@ -48,9 +48,8 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
     y.set(0);
   }
 
-  const spotlightBg = color === 'cyan' 
-    ? useMotionTemplate`radial-gradient(350px circle at ${spotlightX}px ${spotlightY}px, rgba(0, 240, 255, 0.12), transparent 80%)`
-    : useMotionTemplate`radial-gradient(350px circle at ${spotlightX}px ${spotlightY}px, rgba(239, 68, 68, 0.12), transparent 80%)`;
+  const spotlightColor = color === 'cyan' ? '0, 240, 255' : '239, 68, 68';
+  const spotlightBg = useMotionTemplate`radial-gradient(350px circle at ${spotlightX}px ${spotlightY}px, rgba(${spotlightColor}, 0.12), transparent 80%)`;
 
   const glowBorder = color === 'cyan' ? 'group-hover:border-cyan/30' : 'group-hover:border-red-500/30';
 
