@@ -30,6 +30,12 @@ export function LiquidGlassLogo({
   const glareX = useSpring(useTransform(mouseX, [-0.5, 0.5], [20, 80]), springConfig);
   const glareY = useSpring(useTransform(mouseY, [-0.5, 0.5], [20, 80]), springConfig);
 
+  const glareBg = useTransform(
+    [glareX, glareY] as any,
+    ([x, y]: number[]) =>
+      `radial-gradient(120px circle at ${x}% ${y}%, rgba(255,255,255,0.12), transparent 60%)`
+  );
+
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -58,11 +64,7 @@ export function LiquidGlassLogo({
         <motion.div
           className="absolute inset-0 rounded-xl pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
-            background: useTransform(
-              [glareX, glareY] as any,
-              ([x, y]: number[]) =>
-                `radial-gradient(120px circle at ${x}% ${y}%, rgba(255,255,255,0.12), transparent 60%)`
-            ),
+            background: glareBg,
           }}
         />
       )}
