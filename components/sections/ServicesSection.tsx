@@ -111,18 +111,36 @@ function RenderedCard({ icon, title, outcome, desc, tags }: (typeof SERVICES_DAT
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         whileHover={{ scale: 1.015 }}
         transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-        className="flex flex-col p-6 rounded-xl border border-cyan/40 bg-[#12161E]/80 backdrop-blur-md min-h-[260px] h-full
-          shadow-[0_4px_24px_rgba(0,0,0,0.4),0_0_20px_rgba(0,240,255,0.06)] relative overflow-hidden liquid-glass-card group"
+        className="flex flex-col p-7 rounded-xl border border-white/[0.08] bg-[#07090e]/95 backdrop-blur-md min-h-[260px] h-full
+          shadow-[0_12px_40px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.05)] relative overflow-hidden liquid-glass-card group"
       >
-        {/* Dynamic Cursor Spotlight Border */}
+        {/* Inner Bezel (Double Bezel Design) */}
+        <div className="absolute inset-[4px] rounded-lg border border-cyan/10 group-hover:border-cyan/25 transition-colors duration-300 pointer-events-none z-10" />
+
+        {/* Hardware Corner Screws / Rivets */}
+        <div className="absolute top-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className="absolute bottom-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+        <div className="absolute bottom-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-cyan group-hover:shadow-[0_0_8px_rgba(0,240,255,0.8)] transition-all duration-300 pointer-events-none z-20 flex items-center justify-center">
+          <div className="w-[3px] h-[3px] rounded-full bg-black/40"></div>
+        </div>
+
+        {/* Dynamic Cursor Spotlight Glow */}
         <motion.div
           className="pointer-events-none absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
           style={{ background: spotlightBg }}
         />
         
-        {/* Glass edge highlight */}
-        <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent pointer-events-none z-10"></div>
-        <div className="text-3xl mb-4 z-20">{icon}</div>
+        {/* Subtle top reflection */}
+        <div className="absolute top-[4px] left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-cyan/20 to-transparent pointer-events-none z-10"></div>
+        
+        <div className="text-3xl mb-4 z-20 mt-1">{icon}</div>
         <h4 className="text-base font-bold mb-1 text-white z-20">{title}</h4>
         <p className="font-mono text-xs uppercase tracking-widest mb-4 text-cyan z-20">→ {outcome}</p>
         <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1 z-20">{desc}</p>
