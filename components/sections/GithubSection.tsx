@@ -30,10 +30,10 @@ type LiquidRepo = {
 function LiquidRepoGrid({ repos }: { repos: LiquidRepo[] }) {
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
-  const smoothV = useSpring(velocity, { stiffness: 100, damping: 35, mass: 0.8 });
+  const smoothV = useSpring(velocity, { stiffness: 70, damping: 32, mass: 1 });
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: '1400px' }}>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: '1200px' }}>
       {repos.map((repo, i) => (
         <LiquidRepoCard key={repo.id} repo={repo} velocity={smoothV} index={i} />
       ))}
@@ -74,16 +74,19 @@ function LiquidRepoCard({
     return `${Math.max(-1.5, Math.min(1.5, raw))}deg`;
   });
 
+  // Alternate 3D tilt directions for a gorgeous layout cascade
+  const tiltAngle = index % 3 === 0 ? -12 : index % 3 === 2 ? 12 : 0;
+
   return (
     <motion.a
       href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
+      initial={{ opacity: 0, y: 50, scale: 0.92, rotateX: -15, rotateY: tiltAngle }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, rotateY: 0 }}
+      viewport={{ once: true, margin: isMobile ? '-15px' : '-40px' }}
+      transition={{ duration: 0.85, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
     >
@@ -141,10 +144,10 @@ export default function GithubSection() {
     <motion.section 
       id="github" 
       className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
-      initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: isMobile ? "-30px" : "-100px" }}
     >
       {!isMobile && <ShaderBackgroundSection opacity={0.6} />}
       <div className="relative z-10">

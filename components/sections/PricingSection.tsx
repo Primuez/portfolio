@@ -174,20 +174,26 @@ function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
   const ctaOpacity = useMotionValue(0);
   const ctaY       = useMotionValue(14);
   const ref        = useRef<HTMLDivElement>(null);
-  const inView     = useInView(ref, { once: true, margin: '-80px 0px -80px 0px' });
+  const inView     = useInView(ref, { once: true, margin: '-40px 0px -40px 0px' });
 
   useEffect(() => {
     if (!inView) return;
-    const controls = animate(clipPct, 0, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
-    const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.4, delay: 0, ease: 'easeOut' });
-    const ctaYCtrl = animate(ctaY, 0, { duration: 0.4, delay: 0, ease: 'easeOut' });
+    const controls = animate(clipPct, 0, { duration: 2.0, ease: [0.16, 1, 0.3, 1] });
+    const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.8, delay: 1.6, ease: 'easeOut' });
+    const ctaYCtrl = animate(ctaY, 0, { duration: 0.8, delay: 1.6, ease: 'easeOut' });
     return () => { controls.stop(); ctaCtrl.stop(); ctaYCtrl.stop(); };
   }, [inView, clipPct, ctaOpacity, ctaY]);
 
   return (
-    <div ref={ref}>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
       <ReceiptCardInner card={card} clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
-    </div>
+    </motion.div>
   );
 }
 
@@ -281,20 +287,26 @@ function MobileVipCard() {
   const ctaOpacity = useMotionValue(0);
   const ctaY       = useMotionValue(14);
   const ref        = useRef<HTMLDivElement>(null);
-  const inView     = useInView(ref, { once: true, margin: '-80px 0px -80px 0px' });
+  const inView     = useInView(ref, { once: true, margin: '-40px 0px -40px 0px' });
 
   useEffect(() => {
     if (!inView) return;
-    const c1 = animate(clipPct, 0, { duration: 1.1, ease: [0.16, 1, 0.3, 1] });
-    const c2 = animate(ctaOpacity, 1, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
-    const c3 = animate(ctaY, 0, { duration: 0.5, delay: 0.9, ease: 'easeOut' });
+    const c1 = animate(clipPct, 0, { duration: 2.4, ease: [0.16, 1, 0.3, 1] });
+    const c2 = animate(ctaOpacity, 1, { duration: 0.8, delay: 2.0, ease: 'easeOut' });
+    const c3 = animate(ctaY, 0, { duration: 0.8, delay: 2.0, ease: 'easeOut' });
     return () => { c1.stop(); c2.stop(); c3.stop(); };
   }, [inView, clipPct, ctaOpacity, ctaY]);
 
   return (
-    <div ref={ref}>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
       <VipReceiptCard clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
-    </div>
+    </motion.div>
   );
 }
 
@@ -327,8 +339,8 @@ export default function PricingSection() {
         className={isMobile ? '' : 'pt-16 md:pt-20 pb-16'}
       >
         <motion.div
-          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
