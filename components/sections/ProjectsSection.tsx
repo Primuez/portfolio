@@ -25,8 +25,8 @@ export const ProjectsSection: React.FC = () => {
     <motion.section 
       id="projects" 
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: "-100px" }}
     >
@@ -132,8 +132,8 @@ export const ProjectsSection: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
               <div>
                 <motion.h3
-                  initial={{ filter: 'blur(10px)', opacity: 0 }}
-                  whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true, margin: "-50px" }}
                   className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4"
@@ -141,8 +141,8 @@ export const ProjectsSection: React.FC = () => {
                   Interactive 3D Orchestration Core
                 </motion.h3>
                 <motion.p
-                  initial={{ filter: 'blur(10px)', opacity: 0 }}
-                  whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true, margin: "-50px" }}
                   className="text-text-muted mb-6 leading-relaxed"
@@ -151,8 +151,8 @@ export const ProjectsSection: React.FC = () => {
                 </motion.p>
                 <ul className="space-y-2 font-mono text-xs text-text-muted">
                   <motion.li
-                    initial={{ filter: 'blur(10px)', opacity: 0 }}
-                    whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                     className="flex items-center gap-2"
@@ -160,8 +160,8 @@ export const ProjectsSection: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span> @react-three/fiber processing
                   </motion.li>
                   <motion.li
-                    initial={{ filter: 'blur(10px)', opacity: 0 }}
-                    whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                     className="flex items-center gap-2"
@@ -169,8 +169,8 @@ export const ProjectsSection: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse delay-75"></span> MeshDistortMaterial applied
                   </motion.li>
                   <motion.li
-                    initial={{ filter: 'blur(10px)', opacity: 0 }}
-                    whileInView={{ filter: 'blur(0px)', opacity: 1 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                     className="flex items-center gap-2"
