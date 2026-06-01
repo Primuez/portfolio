@@ -30,7 +30,7 @@ type LiquidRepo = {
 function LiquidRepoGrid({ repos }: { repos: LiquidRepo[] }) {
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
-  const smoothV = useSpring(velocity, { stiffness: 100, damping: 35, mass: 0.8 });
+  const smoothV = useSpring(velocity, { stiffness: 70, damping: 32, mass: 1 });
 
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: '1200px' }}>

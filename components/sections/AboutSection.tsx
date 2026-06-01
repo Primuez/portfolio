@@ -44,14 +44,14 @@ export const AboutSection: React.FC = () => {
     offset: ['start end', 'end start'],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 20, restDelta: 0.001 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 24, restDelta: 0.001 });
 
   // Dramatic parallax range on desktop
   const yColA = useTransform(smoothProgress, [0, 1], [-160, 160]);
   const yColB = useTransform(smoothProgress, [0, 1], [160, -160]);
 
-  const springA = useSpring(yColA, { stiffness: 70, damping: 20 });
-  const springB = useSpring(yColB, { stiffness: 70, damping: 20 });
+  const springA = useSpring(yColA, { stiffness: 50, damping: 24 });
+  const springB = useSpring(yColB, { stiffness: 50, damping: 24 });
 
   const yA = isMobile ? 0 : springA;
   const yB = isMobile ? 0 : springB;
@@ -100,9 +100,9 @@ export const AboutSection: React.FC = () => {
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
-              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
                 <span>[ 01 ]</span>
-                <span className="text-zinc-300 font-semibold uppercase tracking-wider">autonomic_brain</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
                 <Brain size={14} strokeWidth={1.2} className="text-cyan animate-pulse ml-auto" />
               </div>
 
@@ -111,16 +111,16 @@ export const AboutSection: React.FC = () => {
                 <ShaderIridescentText className="font-bold">
                   Rahul Kasturiya
                 </ShaderIridescentText>
-                <span className="text-zinc-400 block mt-2 text-lg md:text-2xl font-medium">
+                <span className="text-zinc-300 block mt-2 text-lg md:text-2xl font-medium">
                   Known as Primuez.
                 </span>
               </h3>
 
-              <div className="space-y-3 text-zinc-300 text-sm md:text-base leading-relaxed font-sans">
+              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
                 <p>
                   I orchestrate high-availability pipelines that seamlessly tie external tools to central enterprise databases. Inbound streams from IndiaMART flow cleanly into Odoo, sales orders compile automatically, and follow-up systems run with absolute zero maintenance.
                 </p>
-                <p className="text-zinc-400 text-xs md:text-sm">
+                <p className="text-zinc-300/90 text-xs md:text-sm">
                   By nesting <strong className="text-white font-medium">n8n workflow networks</strong>,{' '}
                   <strong className="text-white font-medium">autonomous AI sandboxes</strong>, and{' '}
                   <strong className="text-white font-medium">Cloudflare Edge workers</strong>, I solve workflow bottlenecks at the architectural level.
@@ -140,9 +140,9 @@ export const AboutSection: React.FC = () => {
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-amber/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
-              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
                 <span>[ 02 ]</span>
-                <span className="text-zinc-300 font-semibold uppercase tracking-wider">system_specs</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">system_specs</span>
                 <Activity size={14} strokeWidth={1.2} className="text-amber animate-pulse ml-auto" />
               </div>
 
@@ -155,12 +155,12 @@ export const AboutSection: React.FC = () => {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="p-3 md:p-4 bg-white/[0.01] border border-white/[0.03] rounded-xl md:rounded-2xl hover:bg-white/[0.03] transition-all duration-500"
+                    className="p-3 md:p-4 bg-white/[0.02] border border-white/[0.05] rounded-xl md:rounded-2xl hover:bg-white/[0.04] transition-all duration-500 hover:border-cyan/20"
                   >
                     <div className="mb-2">{item.icon}</div>
-                    <span className="text-zinc-500 font-mono text-[9px] md:text-[10px] uppercase tracking-widest block mb-0.5">{item.label}</span>
+                    <span className="text-cyan/70 font-mono text-[9px] md:text-[10px] uppercase tracking-widest block mb-0.5">{item.label}</span>
                     <span className="text-white text-xs md:text-sm font-bold block leading-tight">{item.value}</span>
-                    <span className="text-zinc-600 text-[9px] md:text-[10px] block mt-1">{item.sub}</span>
+                    <span className="text-zinc-400 text-[9px] md:text-[10px] block mt-1">{item.sub}</span>
                   </div>
                 ))}
               </div>
@@ -182,18 +182,18 @@ export const AboutSection: React.FC = () => {
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
-              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
                 <span>[ 03 ]</span>
-                <span className="text-zinc-300 font-semibold uppercase tracking-wider">live_telemetry</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">live_telemetry</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-auto" />
               </div>
 
-              <div className="text-zinc-400 text-sm md:text-base leading-relaxed font-sans mb-4 md:mb-5">
+              <div className="text-zinc-200 text-sm md:text-base leading-relaxed font-sans mb-4 md:mb-5">
                 I build self-governing networks of automation, replacing expensive human latency loops with highly robust agent architectures. My systems think, execute, and self-correct 24/7.
               </div>
 
               {/* Telemetry Status Lines */}
-              <div className="flex flex-col gap-2 p-3 md:p-4 bg-black/40 border border-white/[0.04] rounded-xl font-mono text-[10px] md:text-[11px] text-zinc-500">
+              <div className="flex flex-col gap-2 p-3 md:p-4 bg-black/40 border border-white/[0.04] rounded-xl font-mono text-[10px] md:text-[11px] text-zinc-300">
                 <div className="flex justify-between items-center">
                   <span>STATUS:</span>
                   <span className="text-cyan font-bold flex items-center gap-1.5">
@@ -204,6 +204,10 @@ export const AboutSection: React.FC = () => {
                 <div className="flex justify-between items-center">
                   <span>COORDINATES:</span>
                   <span className="text-white">RAIPUR CORE // INDIA</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>INFRASTRUCTURE:</span>
+                  <span className="text-white font-bold text-cyan/90">VPS // DOCKER // TRAEFIK</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>ACTIVE PIPELINES:</span>
@@ -220,14 +224,14 @@ export const AboutSection: React.FC = () => {
                   <Brain size={16} className="text-cyan mt-0.5 shrink-0" />
                   <div>
                     <h4 className="text-[11px] font-bold text-white uppercase tracking-wider font-mono">Autonomous Agents</h4>
-                    <p className="text-[10px] text-zinc-400 mt-0.5 font-sans leading-normal">Multi-agent systems executing sandbox verification, file checks, and drift-alert actions 24/7.</p>
+                    <p className="text-[10px] text-zinc-300 mt-0.5 font-sans leading-normal">Multi-agent systems executing sandbox verification, file checks, and drift-alert actions 24/7.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Terminal size={16} className="text-amber mt-0.5 shrink-0" />
                   <div>
                     <h4 className="text-[11px] font-bold text-white uppercase tracking-wider font-mono">Cron Pipelines</h4>
-                    <p className="text-[10px] text-zinc-400 mt-0.5 font-sans leading-normal">Distributed long-lived queues managing continuous database synchronizations and state audits.</p>
+                    <p className="text-[10px] text-zinc-300 mt-0.5 font-sans leading-normal">Distributed long-lived queues managing continuous database synchronizations and state audits.</p>
                   </div>
                 </div>
               </div>
@@ -245,28 +249,28 @@ export const AboutSection: React.FC = () => {
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
-              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
                 <span>[ 04 ]</span>
-                <span className="text-zinc-300 font-semibold uppercase tracking-wider">operator_creed</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">operator_creed</span>
                 <Terminal size={14} strokeWidth={1.2} className="text-purple-400 animate-pulse ml-auto" />
               </div>
 
-              <blockquote className="text-zinc-300 italic text-sm md:text-base border-l-2 border-cyan/40 pl-4 py-1 leading-relaxed font-sans mb-4">
+              <blockquote className="text-white italic text-sm md:text-base border-l-2 border-cyan/40 pl-4 py-1 leading-relaxed font-sans mb-4">
                 &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
               </blockquote>
-              <p className="text-zinc-500 text-xs md:text-sm leading-relaxed font-sans">
+              <p className="text-zinc-200 text-xs md:text-sm leading-relaxed font-sans">
                 I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic.
               </p>
 
               {/* ASCII terminal creed */}
-              <div className="mt-4 md:mt-5 bg-black/50 p-3 md:p-4 rounded-xl border border-white/[0.03] font-mono text-[10px] text-zinc-400 space-y-1.5">
+              <div className="mt-4 md:mt-5 bg-black/50 p-3 md:p-4 rounded-xl border border-white/[0.03] font-mono text-[10px] text-zinc-300 space-y-1.5">
                 <div className="text-emerald-400 font-semibold">$&gt; primuez --execute-creed</div>
                 <div>[SUCCESS] PRACTICALITY_OVER_HYPOTHESIS = TRUE</div>
                 <div>[SUCCESS] BARE_METAL_AUTONOMY = ACTIVE</div>
-                <div className="text-zinc-600">// Raipur Core Integration // रायपुर, छ.ग.</div>
+                <div className="text-zinc-400">// Raipur Core Integration // रायपुर, छ.ग.</div>
               </div>
 
-              <div className="mt-4 md:mt-5 border-t border-white/[0.04] pt-3 font-mono text-[9px] text-zinc-600 text-right">
+              <div className="mt-4 md:mt-5 border-t border-white/[0.04] pt-3 font-mono text-[9px] text-zinc-500 text-right">
                 EXECUTION OVER THEORY // 2026
               </div>
             </div>

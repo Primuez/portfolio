@@ -97,8 +97,8 @@ export function LiquidGlassParallaxSection({
 
   // Spring-smoothed progress for buttery 60fps feel
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 70,
+    damping: 26,
     restDelta: 0.001,
   });
 
@@ -113,13 +113,13 @@ export function LiquidGlassParallaxSection({
     [0, 0.2, 0.8, 1],
     [scaleRange[0], scaleRange[1], scaleRange[1], scaleRange[0]]
   );
-  // On mobile: rely more on opacity/blur, less on movement
+  // On mobile: rely on opacity, disable expensive blur filters to prevent black blinks
   const blur = useTransform(
     smoothProgress,
     [0, 0.12, 0.88, 1],
-    isMobile ? [4, 0, 0, 4] : [2, 0, 0, 2]
+    isMobile ? [0, 0, 0, 0] : [2, 0, 0, 2]
   );
-  const filterStr = useTransform(blur, (v) => `blur(${v}px)`);
+  const filterStr = useTransform(blur, (v) => isMobile ? 'none' : `blur(${v}px)`);
 
   return (
     <motion.div
