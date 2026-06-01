@@ -30,6 +30,30 @@ export const metadata: Metadata = {
     'no code automation India',
     'enterprise n8n integrations'
   ],
+  alternates: {
+    canonical: 'https://primuez.com',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'google-site-verification-placeholder-token',
+  },
+  classification: 'AI Workflow Automation & Systems Engineering Agency',
+  category: 'technology',
+  creator: 'Rahul Kasturiya',
+  publisher: 'Rahul Kasturiya',
+  authors: [{ name: 'Rahul Kasturiya', url: 'https://primuez.com' }],
   other: {
     'msapplication-TileColor': '#0a0a0f',
   },
@@ -113,7 +137,75 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           "longitude": "75.8577"
         },
         "priceRange": "$$",
-        "telephone": "+91-7838363463"
+        "telephone": "+91-7838363463",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "AI Automation Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "n8n Workflow Automation",
+                "description": "Connect Odoo, CRM, WhatsApp webhooks, and custom endpoints to eliminate manual entry."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Autonomous LLM Agents",
+                "description": "Build personal agents like OpenClaw and Hermes to securely audit and monitor business infrastructure."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Odoo ERP Integrations",
+                "description": "Seamless real-time ledger entries, GST auto-reconciliation, and IndiaMART webhook setups."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://primuez.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How long does a project typically take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Micro-Builds are delivered in 2–4 days. Professional Automation projects take 5–10 days. Premium AI Integration or SaaS MVPs take 2–4 weeks depending on scope. Timeline is agreed before work begins — no vague 'it depends.'"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to manage you or check in constantly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. You describe the outcome you need, I ask any clarifying questions upfront, then disappear and build. You get async updates and a final handover call. You don't need to know how any of it works technically."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "You're self-taught — how do I know the work will be solid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Look at what shipped: InkTwin (live SaaS), PrimuezSure (live SaaS), the Odoo Enterprise architecture presented at a business show in Raipur, the CA Automation Suite used by actual firms. Self-taught means I learned by building real systems, not passing exams."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can you integrate with tools I already use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Almost certainly yes. If it has an API, webhook, or can export data — I can connect it. Current integrations include Odoo, Zoho, WhatsApp (via Evolution API), GST portal, IndiaMART, Kickbox, Cloudflare, Vercel, Google Workspace, and any standard REST/HTTP endpoint."
+            }
+          }
+        ]
       }
     ]
   };
