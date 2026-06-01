@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, useScroll } from 'motion/react';
 import { SectionHeader } from '@/components/SectionHeader';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Tool {
   name: string;
@@ -14,30 +15,34 @@ interface StackGroupProps {
   title: string;
   items: Tool[];
   border: 'cyan' | 'amber';
+  isMobile?: boolean;
+  y?: any;
 }
 
-function StackGroup({ title, items, border }: StackGroupProps) {
+function StackGroup({ title, items, border, isMobile = false, y = 0 }: StackGroupProps) {
   const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const yMotion = useMotionValue(0);
 
   const mouseXSpring = useSpring(x, { stiffness: 180, damping: 22 });
-  const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
+  const mouseYSpring = useSpring(yMotion, { stiffness: 180, damping: 22 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [6, -6]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-6, 6]);
+  // Disable 3D tilt on mobile
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], isMobile ? [0, 0] : [6, -6]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], isMobile ? [0, 0] : [-6, 6]);
 
   const spotlightX = useMotionValue(0);
   const spotlightY = useMotionValue(0);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
 
-    const mouseX = e.clientX - rect.left - width / 2;
-    const mouseY = e.clientY - rect.top - height / 2;
-    x.set(mouseX / width);
-    y.set(mouseY / height);
+    const mouseXVal = e.clientX - rect.left - width / 2;
+    const mouseYVal = e.clientY - rect.top - height / 2;
+    x.set(mouseXVal / width);
+    yMotion.set(mouseYVal / height);
 
     spotlightX.set(e.clientX - rect.left);
     spotlightY.set(e.clientY - rect.top);
@@ -45,7 +50,7 @@ function StackGroup({ title, items, border }: StackGroupProps) {
 
   function handleMouseLeave() {
     x.set(0);
-    y.set(0);
+    yMotion.set(0);
   }
 
   const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${spotlightX}px ${spotlightY}px, ${
@@ -58,14 +63,15 @@ function StackGroup({ title, items, border }: StackGroupProps) {
   const textHoverColor = border === 'cyan' ? 'group-hover/item:text-cyan' : 'group-hover/item:text-amber';
 
   return (
-    <div 
+    <motion.div 
+      style={{ y }}
       className="perspective-1000 w-full h-full"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-        whileHover={{ scale: 1.015 }}
+        whileHover={isMobile ? {} : { scale: 1.015 }}
         transition={{ type: 'spring', stiffness: 260, damping: 18 }}
         className="flex flex-col p-6 rounded-2xl border border-white/[0.08] bg-[#07090e]/95 backdrop-blur-md h-full
           shadow-[0_12px_40px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.05)] relative overflow-hidden liquid-glass-card group"
@@ -88,10 +94,12 @@ function StackGroup({ title, items, border }: StackGroupProps) {
         </div>
 
         {/* Dynamic Cursor Spotlight Glow */}
-        <motion.div
-          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-          style={{ background: spotlightBg }}
-        />
+        {!isMobile && (
+          <motion.div
+            className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+            style={{ background: spotlightBg }}
+          />
+        )}
 
         {/* Title */}
         <div className={`text-xs font-mono uppercase tracking-[0.2em] mb-6 flex items-center justify-between ${textColor} font-bold z-20 relative`}>
@@ -127,10 +135,10 @@ function StackGroup({ title, items, border }: StackGroupProps) {
               </div>
               {/* Tool info */}
               <div className="flex-1 min-w-0">
-                <div className={`text-white text-xs font-bold leading-none transition-colors duration-300 ${textHoverColor} font-sans truncate`}>
+                <div className={`text-white text-xs font-bold leading-normal transition-colors duration-300 ${textHoverColor} font-sans`}>
                   {item.name}
                 </div>
-                <div className="text-[10px] text-text-muted/60 mt-1 font-sans truncate">
+                <div className="text-[10px] text-text-muted/85 mt-1 font-sans leading-normal">
                   {item.desc}
                 </div>
               </div>
@@ -138,7 +146,7 @@ function StackGroup({ title, items, border }: StackGroupProps) {
           ))}
         </motion.ul>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -267,6 +275,53 @@ export default function StackSection() {
         <circle cx="12" cy="12" r="2" fill="currentColor" />
         <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
       </svg>
+    ),
+    openclaw: (
+      <svg className="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="M8 11h8M8 15h8M9 7l3 3 3-3" />
+      </svg>
+    ),
+    hermes: (
+      <svg className="w-5 h-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
+    ),
+    picoclaw: (
+      <svg className="w-5 h-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <path d="M9 9h6v6H9z" />
+        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
+      </svg>
+    ),
+    soulguardian: (
+      <svg className="w-5 h-5 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+    ),
+    claudecode: (
+      <svg className="w-5 h-5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="4 17 10 11 4 5" />
+        <line x1="12" y1="19" x2="20" y2="19" />
+      </svg>
+    ),
+    geminicli: (
+      <svg className="w-5 h-5 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3v18M3 12h18M12 3l3 4.5-3 4.5-3-4.5zM12 21l3-4.5-3-4.5-3 4.5z" />
+      </svg>
+    ),
+    gws: (
+      <svg className="w-5 h-5 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16v16H4z" />
+        <path d="M16 8H8v8h8z" />
+      </svg>
+    ),
+    onepassword: (
+      <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        <circle cx="12" cy="16" r="1" />
+      </svg>
     )
   };
 
@@ -277,6 +332,20 @@ export default function StackSection() {
     { name: 'Mistral Weights', desc: 'Sleek open-weight engines for specific parsing', icon: icons.mistral },
     { name: 'LLaMA3 Inference', desc: 'Self-hosted LLMs for offline pattern analysis', icon: icons.llama },
     { name: 'AI Agents & RAG', desc: 'Vector search & autonomous prompt pipelines', icon: icons.agents }
+  ];
+
+  const agentTools: Tool[] = [
+    { name: 'OpenClaw Security', desc: 'Cryptographic verification & sandbox security audits', icon: icons.openclaw },
+    { name: 'Hermes Agent', desc: 'Runtime traffic analysis & telemetry logs', icon: icons.hermes },
+    { name: 'Picoclaw Agent', desc: 'Lightweight proxy gateway & drift posture checking', icon: icons.picoclaw },
+    { name: 'Soul Guardian', desc: 'Baseline file integrity and proactive drift alerts', icon: icons.soulguardian }
+  ];
+
+  const cliTools: Tool[] = [
+    { name: 'Claude Code CLI', desc: 'Interactive terminal pair-programming & git automation', icon: icons.claudecode },
+    { name: 'Gemini CLI', desc: 'Command-line code review, semantic search & reasoning', icon: icons.geminicli },
+    { name: 'Google Workspace CLI', desc: 'Automated Workspace integrations & GCP OAuth', icon: icons.gws },
+    { name: '1Password CLI (op)', desc: 'Secure environment secrets management & OP vaults', icon: icons.onepassword }
   ];
 
   const infraTools: Tool[] = [
@@ -298,6 +367,23 @@ export default function StackSection() {
     { name: 'Bash & Shell scripting', desc: 'VPS administration, backups & file checks', icon: icons.bash }
   ];
 
+  const isMobile = useIsMobile();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yLeft = useTransform(scrollYProgress, [0, 1], [-35, 35]);
+  const yRight = useTransform(scrollYProgress, [0, 1], [35, -35]);
+
+  const yLeftSpring = useSpring(yLeft, { stiffness: 90, damping: 25, restDelta: 0.001 });
+  const yRightSpring = useSpring(yRight, { stiffness: 90, damping: 25, restDelta: 0.001 });
+
+  const yL = isMobile ? 0 : yLeftSpring;
+  const yR = isMobile ? 0 : yRightSpring;
+
   return (
     <motion.section 
       id="stack" 
@@ -313,11 +399,13 @@ export default function StackSection() {
       </p>
 
       {/* Grid of Double-Bezel Hardware Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-12">
-        <StackGroup title="AI & Orchestration" items={aiTools} border="cyan" />
-        <StackGroup title="Infra & Deploy" items={infraTools} border="amber" />
-        <StackGroup title="ERP & Business" items={erpTools} border="cyan" />
-        <StackGroup title="Dev Languages" items={langTools} border="amber" />
+      <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-12 md:pb-12">
+        <StackGroup title="AI & Orchestration" items={aiTools} border="cyan" isMobile={isMobile} y={yL} />
+        <StackGroup title="Personal AI Agents" items={agentTools} border="cyan" isMobile={isMobile} y={0} />
+        <StackGroup title="CLI & Developer Tooling" items={cliTools} border="amber" isMobile={isMobile} y={yR} />
+        <StackGroup title="Infra & Deploy" items={infraTools} border="amber" isMobile={isMobile} y={yL} />
+        <StackGroup title="ERP & Business" items={erpTools} border="cyan" isMobile={isMobile} y={0} />
+        <StackGroup title="Dev Languages" items={langTools} border="amber" isMobile={isMobile} y={yR} />
       </div>
     </motion.section>
   );
