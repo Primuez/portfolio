@@ -128,7 +128,7 @@ function StackGroup({ title, items, border, isMobile = false, y = 0 }: StackGrou
               className="group/item flex items-center gap-3.5 border-b border-white/[0.02] pb-3.5 last:border-0 last:pb-0 transition-all duration-300 cursor-default"
             >
               {/* Logo container */}
-              <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.02] border border-white/[0.04] text-text-muted group-hover/item:text-white group-hover/item:bg-white/[0.05] group-hover/item:border-white/[0.1] group-hover/item:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-300 shrink-0 animate-grid">
+              <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.02] border border-white/[0.04] text-text-muted group-hover/item:text-white group-hover/item:bg-white/[0.05] group-hover/item:border-white/[0.1] group-hover/item:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-300 shrink-0">
                 <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300 group-hover/item:scale-110">
                   {item.icon}
                 </div>
