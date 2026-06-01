@@ -15,16 +15,29 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://primuez.com'),
-  title: 'Primuez | AI Systems Builder & Automation Engineer',
-  description: 'Portfolio of Rahul Kasturiya (Primuez). Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, India. I build autonomous workflows and live products.',
+  title: 'Primuez | AI Systems Builder & Automation Engineer Indore',
+  description: 'Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, Raipur, India. I build custom n8n workflows, autonomous LLM agents, and Odoo ERP integrations for Indian SMEs.',
+  keywords: [
+    'AI Automation Indore',
+    'AI Automation Raipur',
+    'n8n developer India',
+    'Workflow Automation consultant',
+    'Odoo ERP integrator India',
+    'WhatsApp automation services',
+    'Primuez AI',
+    'Rahul Kasturiya',
+    'autonomous business systems builder',
+    'no code automation India',
+    'enterprise n8n integrations'
+  ],
   other: {
     'msapplication-TileColor': '#0a0a0f',
   },
   openGraph: {
     url: 'https://primuez.com',
     siteName: 'Primuez',
-    title: 'Primuez | AI Systems Builder & Automation Engineer',
-    description: 'Portfolio of Rahul Kasturiya (Primuez). Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, India. I build autonomous workflows and live products.',
+    title: 'Primuez | AI Automation Agency & n8n Specialist',
+    description: 'Practical, production-grade AI systems and autonomous workflows. Eliminate manual DM admin, automate Odoo ERP ledger entries, and recon GST instantly.',
     images: [
       {
         url: '/opengraph-image',
@@ -38,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Primuez | AI Systems Builder & Automation Engineer',
-    description: 'Portfolio of Rahul Kasturiya (Primuez). Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, India. I build autonomous workflows and live products.',
+    description: 'Custom n8n workflows, autonomous agents & serverless edge systems running 24/7.',
     images: ['/opengraph-image'],
   },
   icons: {
@@ -58,11 +71,63 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://primuez.com/#person",
+        "name": "Rahul Kasturiya",
+        "alternateName": "Primuez",
+        "url": "https://primuez.com",
+        "image": "https://primuez.com/opengraph-image",
+        "sameAs": [
+          "https://github.com/primuez",
+          "https://youtube.com/@Primuez",
+          "https://www.linkedin.com/in/rahul-kasturiya-796910363"
+        ],
+        "jobTitle": "AI Systems Builder & Automation Engineer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Primuez"
+        },
+        "description": "Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, Raipur, India."
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://primuez.com/#service",
+        "name": "Primuez AI Systems",
+        "url": "https://primuez.com",
+        "logo": "https://primuez.com/primuez-logo.svg",
+        "image": "https://primuez.com/opengraph-image",
+        "description": "Custom workflow automations, n8n integration, LLM autonomous agent design, Odoo ERP connection, and serverless edge deployment for small and mid-sized businesses.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Indore",
+          "addressRegion": "Madhya Pradesh",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "22.7196",
+          "longitude": "75.8577"
+        },
+        "priceRange": "$$",
+        "telephone": "+91-7838363463"
+      }
+    ]
+  };
+
   return (
     <html lang="en" className={`${spaceMono.variable} ${syne.variable}`}>
       <head>
         <meta name="theme-color" content="#00f0ff" />
         <meta name="msapplication-TileColor" content="#0a0a0f" />
+        <link rel="canonical" href="https://primuez.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
         {children}
