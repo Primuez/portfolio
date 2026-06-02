@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, Download, Code2, Terminal } from 'lucide-react';
+import { ChevronRight, Download, Code2, Terminal, Activity } from 'lucide-react';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
@@ -38,7 +38,7 @@ export const HeroSection: React.FC = () => {
       )}
       <div className="max-w-3xl relative z-10">
         <motion.a
-          href="#projects"
+          href="#process"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}

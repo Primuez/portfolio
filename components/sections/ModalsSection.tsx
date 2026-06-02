@@ -11,6 +11,105 @@ const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m 
 export default function ModalsSection() {
   const { modalType, setModalType, certData, isMobile } = useUI();
 
+  // LIVE SIMULATION STATES
+  const [simStep, setSimStep] = React.useState<'idle' | 'webhook' | 'n8n' | 'parallel' | 'done'>('idle');
+  const [logs, setLogs] = React.useState<string[]>([]);
+  const [isSimulating, setIsSimulating] = React.useState(false);
+  const logContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const addLog = (msg: string) => {
+    const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+    setLogs((prev) => [...prev, `[${timeStr}] ${msg}`]);
+  };
+
+  React.useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [logs]);
+
+  const startSimulation = () => {
+    if (isSimulating) return;
+    setIsSimulating(true);
+    setSimStep('webhook');
+    setLogs([]);
+    addLog('SYSTEM: Webhook listener mounted at /v1/indiamart/lead');
+    addLog('WEBHOOK: Simulating inbound lead inquiry from IndiaMART API...');
+
+    setTimeout(() => {
+      setSimStep('n8n');
+      addLog('WEBHOOK: Inbound validation passed. Payload pushed to n8n Central System.');
+      addLog('N8N: Received payload. Initiating entity parsing & JSON schema checks...');
+      addLog('N8N: Normalizing coordinates & phone metadata: Rahul K. | Indore, MP');
+    }, 1500);
+
+    setTimeout(() => {
+      setSimStep('parallel');
+      addLog('N8N: Logic router complete. Executing 3 parallel actions...');
+      addLog('API: Dispatched request to Kickbox Auth for real-time mailbox check...');
+      addLog('ODOO: Creating partner opportunity record in CRM ERP database...');
+      addLog('WA_AGENT: Triggering WhatsApp Evolution API webhook callback...');
+    }, 3200);
+
+    setTimeout(() => {
+      setSimStep('done');
+      addLog('API: Kickbox verified - rahul@primuez.in is an active, deliverable mailbox.');
+      addLog('ODOO: Partner record created successfully. Opportunity ID: #4892');
+      addLog('WA_AGENT: Custom greeting message + company brochure dispatched.');
+      addLog('SYSTEM: Core pipeline verification complete. Status: 100% active. Zero human friction!');
+      setIsSimulating(false);
+    }, 5000);
+  };
+
+  // Auto-run simulation on modal open to give an instant spectacular impression
+  React.useEffect(() => {
+    if (modalType === 'workflow') {
+      const timer = setTimeout(() => {
+        // Reset states first to ensure a clean slate, then trigger simulation
+        setSimStep('webhook');
+        setLogs([]);
+        setIsSimulating(true);
+        addLog('SYSTEM: Webhook listener mounted at /v1/indiamart/lead');
+        addLog('WEBHOOK: Simulating inbound lead inquiry from IndiaMART API...');
+
+        const t1 = setTimeout(() => {
+          setSimStep('n8n');
+          addLog('WEBHOOK: Inbound validation passed. Payload pushed to n8n Central System.');
+          addLog('N8N: Received payload. Initiating entity parsing & JSON schema checks...');
+          addLog('N8N: Normalizing coordinates & phone metadata: Rahul K. | Indore, MP');
+        }, 1500);
+
+        const t2 = setTimeout(() => {
+          setSimStep('parallel');
+          addLog('N8N: Logic router complete. Executing 3 parallel actions...');
+          addLog('API: Dispatched request to Kickbox Auth for real-time mailbox check...');
+          addLog('ODOO: Creating partner opportunity record in CRM ERP database...');
+          addLog('WA_AGENT: Triggering WhatsApp Evolution API webhook callback...');
+        }, 3200);
+
+        const t3 = setTimeout(() => {
+          setSimStep('done');
+          addLog('API: Kickbox verified - rahul@primuez.in is an active, deliverable mailbox.');
+          addLog('ODOO: Partner record created successfully. Opportunity ID: #4892');
+          addLog('WA_AGENT: Custom greeting message + company brochure dispatched.');
+          addLog('SYSTEM: Core pipeline verification complete. Status: 100% active. Zero human friction!');
+          setIsSimulating(false);
+        }, 5000);
+
+        return () => {
+          clearTimeout(t1);
+          clearTimeout(t2);
+          clearTimeout(t3);
+        };
+      }, 600); // 600ms delay to let the modal slide open fully
+      return () => clearTimeout(timer);
+    } else {
+      setSimStep('idle');
+      setLogs([]);
+      setIsSimulating(false);
+    }
+  }, [modalType]);
+
   return (
     <AnimatePresence>
       {modalType && (
@@ -182,89 +281,289 @@ export default function ModalsSection() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.90, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-bg border border-cyan/30 rounded-xl w-full max-w-6xl shadow-[0_0_80px_rgba(0,240,255,0.15)] relative h-[85vh] overflow-y-auto flex flex-col"
+              className="bg-bg border border-cyan/30 rounded-xl w-full max-w-6xl shadow-[0_0_80px_rgba(0,240,255,0.15)] relative h-[85vh] overflow-y-auto flex flex-col font-sans"
             >
               <div className="sticky top-0 bg-bg/95 border-b border-cyan/20 px-6 py-4 flex justify-between items-center font-mono text-sm z-50 backdrop-blur">
                 <span className="text-cyan flex items-center gap-2"><Activity size={14}/> SYSTEM ARCHITECTURE VIEWER</span>
-                <button onClick={() => setModalType(null)} className="text-text-muted hover:text-white transition-colors border border-white/10 px-3 py-1 rounded">CLOSE</button>
+                <button 
+                  onClick={() => { setModalType(null); setSimStep('idle'); setLogs([]); }} 
+                  className="text-text-muted hover:text-white transition-colors border border-white/10 px-3 py-1 rounded"
+                >
+                  CLOSE
+                </button>
               </div>
               
-              <div className="p-8 md:p-12 relative">
+              <div className="p-6 md:p-10 relative flex-1 flex flex-col">
                 {/* Subtle grid background on diagram modal */}
                 <div className="absolute inset-0 z-0 bg-blueprint opacity-10" style={{ backgroundSize: '30px 30px' }}></div>
                 
-                <div className="relative z-10">
-                  <h2 className="text-2xl md:text-4xl font-bold mb-4">The Autonomous Enterprise</h2>
-                  <p className="text-text-muted mb-12 max-w-3xl leading-relaxed">This interactive sequence illustrates the automated data pipeline between lead entry, processing, and downstream fulfillment. Replacing human routers with digital operators saves hundreds of hours for manufacturing businesses in the Raipur Corridor.</p>
-                  
-                  {/* Interactive Flow Diagram */}
-                  <div className="flex flex-col items-center gap-0 font-mono text-xs w-full pb-12">
-                    
-                    {/* Node 1 */}
-                    <div className="w-full max-w-lg border border-amber/40 bg-amber/5 rounded-lg p-6 relative group mb-0 shadow-[0_0_15px_rgba(245,166,35,0.05)]">
-                      <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-amber rounded-sm flex items-center justify-center text-bg font-bold font-sans">01</div>
-                      <h4 className="text-amber text-lg font-bold mb-2">Lead Entry (IndiaMART)</h4>
-                      <p className="text-text-muted">A potential customer submits an inquiry on IndiaMART. A webhook immediately pushes the raw payload to the orchestrator.</p>
+                <div className="relative z-10 flex-1 flex flex-col">
+                  {/* Console Header - Mobile (standard layout) */}
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 md:hidden">
+                    <div>
+                      <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">The Autonomous Enterprise</h2>
+                      <p className="text-zinc-400 text-xs md:text-sm max-w-2xl leading-relaxed">
+                        This interactive sequence illustrates the automated data pipeline between lead entry, processing, and downstream fulfillment. Replacing human routers with digital operators saves hundreds of hours for manufacturing businesses in the Raipur Corridor.
+                      </p>
                     </div>
-                    
-                    {/* Connector Add Animation */}
-                    <div className="h-12 w-[2px] bg-gradient-to-b from-amber/40 to-cyan/40 relative">
-                       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber rounded-full animate-[ping_2s_ease-in-out_infinite]"></div>
-                    </div>
-                    
-                    {/* Node 2 */}
-                    <div className="w-full max-w-2xl border-2 border-cyan bg-cyan/5 rounded-xl p-8 relative shadow-[0_0_30px_rgba(0,240,255,0.1)] my-0">
-                      <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cyan rounded-sm flex items-center justify-center text-bg font-bold font-sans text-sm outline outline-4 outline-bg">02</div>
-                      <h4 className="text-cyan text-xl font-bold mb-2 flex items-center gap-2"><Terminal size={20}/> n8n Central System</h4>
-                      <p className="text-text-muted mb-6 text-sm">The payload is parsed, normalized, and logic branches evaluate lead quality. The main data object routes to three parallel subsystems instantly.</p>
-                      
-                      <div className="flex justify-between items-center px-4 bg-bg/50 py-3 rounded-lg border border-cyan/20">
-                        <span className="text-[10px] tracking-widest uppercase text-cyan/70">Raw JSON</span>
-                        <div className="h-[1px] flex-1 bg-cyan/20 mx-4 relative overflow-hidden">
-                           <div className="absolute top-0 left-0 h-full w-1/4 bg-cyan shadow-[0_0_10px_rgba(0,240,255,0.8)] animate-[slide_1.5s_linear_infinite]"></div>
-                        </div>
-                        <span className="text-[10px] tracking-widest uppercase text-cyan/70">Parsed Entity</span>
-                        <div className="h-[1px] flex-1 bg-cyan/20 mx-4 relative overflow-hidden">
-                           <div className="absolute top-0 left-0 h-full w-1/4 bg-cyan shadow-[0_0_10px_rgba(0,240,255,0.8)] animate-[slide_1.5s_linear_infinite_0.5s]"></div>
-                        </div>
-                        <span className="text-[10px] tracking-widest uppercase text-cyan font-bold block">Execute API</span>
-                      </div>
-                    </div>
-                    
-                    <div className="h-10 w-[2px] bg-cyan/40"></div>
-                    
-                    {/* Parallel Nodes Container */}
-                    <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 relative">
-                      {/* Splitting lines above (Desktop) */}
-                      <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[calc(66.666%)] h-[2px] bg-cyan/40"></div>
-                      <div className="hidden md:block absolute top-0 left-1/6 w-[2px] h-4 bg-cyan/40"></div>
-                      <div className="hidden md:block absolute top-0 right-1/6 w-[2px] h-4 bg-cyan/40"></div>
-                      <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-4 bg-cyan/40"></div>
+                    <button
+                      onClick={startSimulation}
+                      disabled={isSimulating}
+                      className={`font-mono text-xs uppercase tracking-widest px-5 py-3.5 border rounded-lg transition-all duration-300 flex items-center gap-2 select-none active:scale-95 shrink-0 ${
+                        isSimulating 
+                          ? 'border-cyan/40 bg-cyan/5 text-cyan cursor-not-allowed'
+                          : 'border-amber bg-amber/5 text-amber hover:bg-amber hover:text-bg hover:shadow-[0_0_20px_rgba(245,166,35,0.3)] cursor-pointer'
+                      }`}
+                    >
+                      <Activity size={14} className={isSimulating ? 'animate-spin' : ''} />
+                      {isSimulating ? 'Simulating Webhook...' : 'Trigger Live Simulation'}
+                    </button>
+                  </div>
 
-                      {/* Node 3A */}
-                      <div className="border border-green-500/40 bg-green-500/5 rounded-lg p-6 relative">
-                        <div className="absolute -top-3 -right-3 bg-bg border border-green-500/40 px-2 py-1 text-[10px] text-green-500 rounded">API</div>
-                        <h4 className="text-green-500 font-bold mb-3 text-sm">3A. Kickbox Auth</h4>
-                        <p className="text-text-muted text-xs leading-relaxed">Verifies the accuracy and deliverability of the email address preventing CRM pollution.</p>
-                      </div>
+                  {/* Console Header - Desktop (Centered Massive Launch Button) */}
+                  <div className="hidden md:flex flex-col items-center text-center max-w-4xl mx-auto mb-10">
+                    <h2 className="text-3xl font-bold tracking-tight text-white mb-3">The Autonomous Enterprise Core</h2>
+                    <p className="text-zinc-400 text-sm max-w-3xl leading-relaxed mb-6">
+                      This interactive sequence illustrates the automated data pipeline between lead entry, processing, and downstream fulfillment. Replacing human routers with digital operators saves hundreds of hours for manufacturing businesses in the Raipur Corridor.
+                    </p>
+                    
+                    {/* Centered Massive Glow Button */}
+                    <button
+                      onClick={startSimulation}
+                      disabled={isSimulating}
+                      className={`font-mono text-xs uppercase tracking-[0.2em] px-10 py-4.5 border-2 rounded-xl transition-all duration-500 flex items-center justify-center gap-3 select-none active:scale-95 shadow-lg ${
+                        isSimulating 
+                          ? 'border-cyan bg-cyan/5 text-cyan/60 shadow-[0_0_25px_rgba(0,240,255,0.1)] cursor-not-allowed'
+                          : 'border-amber bg-amber/5 text-amber hover:bg-amber hover:text-bg hover:shadow-[0_0_35px_rgba(245,166,35,0.55)] cursor-pointer scale-105 transform hover:scale-110 font-bold'
+                      }`}
+                    >
+                      <Activity size={16} className={isSimulating ? 'animate-spin' : 'animate-pulse'} />
+                      {isSimulating ? 'EXECUTION IN PROGRESS...' : 'TRIGGER LIVE EVENT PIPELINE'}
+                    </button>
+                  </div>
+
+                  {/* Dual Column Console */}
+                  <div className="flex flex-col lg:flex-row gap-8 items-stretch flex-1">
+                    
+                    {/* Left Column: Flow Diagram */}
+                    <div className="flex-1 flex flex-col items-center gap-0 pb-6">
                       
-                      {/* Node 3B */}
-                      <div className="border border-purple-500/40 bg-purple-500/5 rounded-lg p-6 relative">
-                         <div className="absolute -top-3 -right-3 bg-bg border border-purple-500/40 px-2 py-1 text-[10px] text-purple-500 rounded">Odoo</div>
-                        <h4 className="text-purple-500 font-bold mb-3 text-sm">3B. CRM Injection</h4>
-                        <p className="text-text-muted text-xs leading-relaxed">Lead is injected into the ERP pipeline. Tags, priority state, and contact info are mapped instantly.</p>
+                      {/* Node 1: Lead Entry */}
+                      <div className={`w-full max-w-lg border rounded-lg p-5 relative transition-all duration-500 ${
+                        simStep === 'webhook' 
+                          ? 'border-amber bg-amber/10 shadow-[0_0_20px_rgba(245,166,35,0.2)] animate-pulse'
+                          : ['n8n', 'parallel', 'done'].includes(simStep)
+                            ? 'border-emerald-500/50 bg-emerald-500/5 shadow-[0_0_10px_rgba(16,185,129,0.1)]'
+                            : 'border-white/10 bg-white/[0.02] opacity-50'
+                      }`}>
+                        <div className={`absolute -left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-sm flex items-center justify-center font-bold text-sm transition-colors duration-500 ${
+                          ['n8n', 'parallel', 'done'].includes(simStep) ? 'bg-emerald-500 text-bg' : 'bg-amber text-bg'
+                        }`}>
+                          01
+                        </div>
+                        <h4 className={`text-sm font-bold font-mono mb-1 transition-colors duration-500 ${
+                          ['n8n', 'parallel', 'done'].includes(simStep) ? 'text-emerald-400' : 'text-amber'
+                        }`}>
+                          Lead Entry (IndiaMART)
+                        </h4>
+                        <p className="text-zinc-400 text-xs leading-relaxed">
+                          A potential customer submits an inquiry on IndiaMART. A webhook immediately pushes the raw payload to the orchestrator.
+                        </p>
                       </div>
-                      
-                      {/* Node 3C */}
-                      <div className="border border-indigo-500/40 bg-indigo-500/5 rounded-lg p-6 relative">
-                         <div className="absolute -top-3 -right-3 bg-bg border border-indigo-500/40 px-2 py-1 text-[10px] text-indigo-500 rounded">Evo / WA</div>
-                        <h4 className="text-indigo-500 font-bold mb-3 text-sm">3C. WA Greeting</h4>
-                        <p className="text-text-muted text-xs leading-relaxed">Dispatches a personalized, automated greeting message and company profile PDF to the prospect.</p>
+
+                      {/* Cable 1 */}
+                      <div className="h-10 w-[2px] bg-white/5 relative overflow-hidden my-1">
+                        {(simStep === 'webhook' || (simStep === 'idle' && isSimulating)) && (
+                          <motion.div
+                            initial={{ y: '-100%' }}
+                            animate={{ y: '250%' }}
+                            transition={{ duration: 1.0, repeat: Infinity, ease: 'linear' }}
+                            className="absolute inset-x-0 h-4 bg-gradient-to-b from-transparent via-amber to-transparent shadow-[0_0_8px_rgba(245,166,35,1)]"
+                          />
+                        )}
+                        {['n8n', 'parallel', 'done'].includes(simStep) && (
+                          <div className="absolute inset-0 bg-emerald-500/40" />
+                        )}
                       </div>
+
+                      {/* Node 2: n8n Central System */}
+                      <div className={`w-full max-w-xl border rounded-lg p-5 relative transition-all duration-500 ${
+                        simStep === 'n8n' 
+                          ? 'border-cyan bg-cyan/10 shadow-[0_0_35px_rgba(0,240,255,0.25)]'
+                          : ['parallel', 'done'].includes(simStep)
+                            ? 'border-emerald-500/50 bg-emerald-500/5 shadow-[0_0_10px_rgba(16,185,129,0.1)]'
+                            : 'border-white/10 bg-white/[0.02] opacity-50'
+                      }`}>
+                        <div className={`absolute -left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-sm flex items-center justify-center font-bold text-sm transition-colors duration-500 ${
+                          ['parallel', 'done'].includes(simStep) ? 'bg-emerald-500 text-bg' : 'bg-cyan text-bg'
+                        }`}>
+                          02
+                        </div>
+                        <h4 className={`text-sm font-bold font-mono mb-1 transition-colors duration-500 ${
+                          ['parallel', 'done'].includes(simStep) ? 'text-emerald-400' : 'text-cyan'
+                        }`}>
+                          n8n Central System
+                        </h4>
+                        <p className="text-zinc-400 text-xs leading-relaxed mb-4">
+                          The payload is parsed, normalized, and logic branches evaluate lead quality. The main data object routes to three parallel subsystems instantly.
+                        </p>
+                        
+                        {/* Dynamic Progress Bar */}
+                        <div className="w-full bg-black/40 h-1.5 rounded-full overflow-hidden border border-white/5 relative">
+                          {simStep === 'n8n' && (
+                            <motion.div 
+                              initial={{ width: '0%' }}
+                              animate={{ width: '100%' }}
+                              transition={{ duration: 1.5, ease: 'easeInOut' }}
+                              className="h-full bg-cyan shadow-[0_0_8px_rgba(0,240,255,1)]"
+                            />
+                          )}
+                          {['parallel', 'done'].includes(simStep) && (
+                            <div className="h-full bg-emerald-500 w-full" />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Cable 2 */}
+                      <div className="h-10 w-[2px] bg-white/5 relative overflow-hidden my-1">
+                        {simStep === 'n8n' && (
+                          <motion.div
+                            initial={{ y: '-100%' }}
+                            animate={{ y: '250%' }}
+                            transition={{ duration: 1.0, repeat: Infinity, ease: 'linear' }}
+                            className="absolute inset-x-0 h-4 bg-gradient-to-b from-transparent via-cyan to-transparent shadow-[0_0_8px_rgba(0,240,255,1)]"
+                          />
+                        )}
+                        {['parallel', 'done'].includes(simStep) && (
+                          <div className="absolute inset-0 bg-emerald-500/40" />
+                        )}
+                      </div>
+
+                      {/* Splitting Parallel Nodes Container */}
+                      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 relative">
+                        {/* Splitting lines above (Desktop) */}
+                        <div className="hidden md:block absolute top-0 left-1/6 right-1/6 h-[2px] bg-white/5">
+                          {simStep === 'parallel' && (
+                            <motion.div 
+                              initial={{ width: '0%', left: '50%' }}
+                              animate={{ width: '100%', left: '0%' }}
+                              transition={{ duration: 1.0, ease: 'easeOut' }}
+                              className="absolute h-full bg-cyan shadow-[0_0_6px_rgba(0,240,255,1)]"
+                            />
+                          )}
+                          {simStep === 'done' && <div className="absolute inset-0 bg-emerald-500/40" />}
+                        </div>
+
+                        {/* Node 3A: Kickbox API */}
+                        <div className={`border rounded-lg p-4 relative transition-all duration-500 ${
+                          simStep === 'parallel'
+                            ? 'border-green-500 bg-green-500/10 shadow-[0_0_20px_rgba(34,197,94,0.25)] animate-pulse'
+                            : simStep === 'done'
+                              ? 'border-emerald-500/50 bg-emerald-500/5 shadow-[0_0_10px_rgba(16,185,129,0.1)]'
+                              : 'border-white/10 bg-white/[0.02] opacity-50'
+                        }`}>
+                          <div className="absolute -top-3 -right-3 bg-bg border border-green-500/30 px-2 py-0.5 text-[8px] text-green-400 font-mono rounded">
+                            API
+                          </div>
+                          <h4 className="text-green-400 font-bold mb-1.5 font-mono text-xs">3A. Kickbox Auth</h4>
+                          <p className="text-zinc-400 text-[10px] leading-normal font-sans">
+                            Verifies the accuracy and deliverability of the email address preventing CRM pollution.
+                          </p>
+                        </div>
+
+                        {/* Node 3B: Odoo CRM */}
+                        <div className={`border rounded-lg p-4 relative transition-all duration-500 ${
+                          simStep === 'parallel'
+                            ? 'border-purple-500 bg-purple-500/10 shadow-[0_0_20px_rgba(168,85,247,0.25)] animate-pulse'
+                            : simStep === 'done'
+                              ? 'border-emerald-500/50 bg-emerald-500/5 shadow-[0_0_10px_rgba(16,185,129,0.1)]'
+                              : 'border-white/10 bg-white/[0.02] opacity-50'
+                        }`}>
+                          <div className="absolute -top-3 -right-3 bg-bg border border-purple-500/30 px-2 py-0.5 text-[8px] text-purple-400 font-mono rounded">
+                            ERP
+                          </div>
+                          <h4 className="text-purple-400 font-bold mb-1.5 font-mono text-xs">3B. CRM Injection</h4>
+                          <p className="text-zinc-400 text-[10px] leading-normal font-sans">
+                            Lead is injected into the ERP pipeline. Tags, priority state, and contact info are mapped instantly.
+                          </p>
+                        </div>
+
+                        {/* Node 3C: Evolution API */}
+                        <div className={`border rounded-lg p-4 relative transition-all duration-500 ${
+                          simStep === 'parallel'
+                            ? 'border-indigo-500 bg-indigo-500/10 shadow-[0_0_20px_rgba(99,102,241,0.25)] animate-pulse'
+                            : simStep === 'done'
+                              ? 'border-emerald-500/50 bg-emerald-500/5 shadow-[0_0_10px_rgba(16,185,129,0.1)]'
+                              : 'border-white/10 bg-white/[0.02] opacity-50'
+                        }`}>
+                          <div className="absolute -top-3 -right-3 bg-bg border border-indigo-500/30 px-2 py-0.5 text-[8px] text-indigo-400 font-mono rounded">
+                            EVO WA
+                          </div>
+                          <h4 className="text-indigo-400 font-bold mb-1.5 font-mono text-xs">3C. WA Greeting</h4>
+                          <p className="text-zinc-400 text-[10px] leading-normal font-sans">
+                            Dispatches a personalized, automated greeting message and company profile PDF to the prospect.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Cable Footer */}
+                      <div className="h-8 w-[2px] bg-white/5 relative overflow-hidden mt-4">
+                        {simStep === 'parallel' && (
+                          <motion.div
+                            initial={{ y: '-100%' }}
+                            animate={{ y: '200%' }}
+                            transition={{ duration: 1.0, repeat: Infinity, ease: 'linear' }}
+                            className="absolute inset-x-0 h-4 bg-gradient-to-b from-transparent via-cyan to-transparent shadow-[0_0_8px_rgba(0,240,255,1)]"
+                          />
+                        )}
+                        {simStep === 'done' && (
+                          <div className="absolute inset-0 bg-emerald-500/40" />
+                        )}
+                      </div>
+
+                      {/* Footer Badge */}
+                      <span className={`font-mono text-[9px] uppercase tracking-widest border px-4 py-1.5 rounded-full transition-colors duration-500 ${
+                        simStep === 'done' 
+                          ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/5 shadow-[0_0_12px_rgba(16,185,129,0.2)] font-bold'
+                          : 'border-cyan/20 text-cyan/40 bg-black/40'
+                      }`}>
+                        {simStep === 'done' ? '🏆 CORE PIPELINE ACTIVE • 100% OPERATIONAL' : 'End of Automated Core Sequence'}
+                      </span>
                     </div>
 
-                    <div className="h-16 w-[2px] bg-gradient-to-b from-cyan/40 to-transparent mt-8"></div>
-                    <span className="text-cyan/40 font-mono text-[10px] uppercase tracking-widest border border-cyan/20 px-3 py-1 rounded-full">End of Automated Core Sequence</span>
+                    {/* Right Column: Live Terminal Console Logs */}
+                    <div className="w-full lg:w-[360px] shrink-0 flex flex-col h-[280px] lg:h-auto min-h-[280px] border border-cyan/20 bg-black/70 rounded-xl p-4 font-mono text-[10px] md:text-[11px]">
+                      <div className="flex items-center gap-2 border-b border-cyan/15 pb-2 mb-3 text-cyan/80 text-[9px] uppercase tracking-widest font-bold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span>
+                        <span>Terminal Log Viewer</span>
+                      </div>
+                      
+                      <div 
+                        ref={logContainerRef} 
+                        className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-1 scroll-smooth text-zinc-300"
+                      >
+                        {logs.length === 0 ? (
+                          <div className="text-zinc-600 italic mt-6 text-center select-none leading-relaxed">
+                            // Standby Mode.<br/>
+                            // Click "Trigger Live Simulation" to initialize the live event bus.
+                          </div>
+                        ) : (
+                          logs.map((log, i) => (
+                            <div key={i} className="leading-relaxed border-l border-cyan/20 pl-2">
+                              {log.includes('SUCCESS') ? (
+                                <span className="text-emerald-400 font-bold">{log}</span>
+                              ) : log.includes('SYSTEM:') ? (
+                                <span className="text-zinc-400">{log}</span>
+                              ) : log.includes('WEBHOOK:') ? (
+                                <span className="text-amber/90">{log}</span>
+                              ) : (
+                                <span>{log}</span>
+                              )}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
 
                   </div>
                 </div>

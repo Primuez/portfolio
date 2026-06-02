@@ -103,8 +103,8 @@ export const ProjectsSection: React.FC = () => {
         <ProjectGroup title="Enterprise Architecture" color="cyan">
           <div className="md:col-span-2">
             <ProjectCard 
-              name="The Autonomous Enterprise — Odoo + n8n" 
-              desc="Full automation architecture for manufacturing businesses in the Raipur Industrial Corridor. Pipeline: IndiaMART lead capture → Kickbox email verification → Odoo CRM injection → WhatsApp greeting → manufacturing order creation → daily automated GST reconciliation → e-way bill generation. Eliminated the 'Human Router Model' entirely."
+              name="The Autonomous Enterprise Blueprint — Odoo + n8n" 
+              desc="Production-ready automation architecture engineered for manufacturing businesses in the Raipur Industrial Corridor. Integrates IndiaMART lead capture → Kickbox email verification → Odoo CRM injection → WhatsApp greeting → manufacturing order creation → daily automated GST reconciliation. Designed to eliminate the 'Human Router Model' entirely."
               tags={["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise"]}
               bannerUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80"
             />

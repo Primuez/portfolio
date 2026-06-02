@@ -38,6 +38,7 @@ function CVAccordion({ title, children }: { title: string; children: React.React
 
 function RubiksCredentials({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { isMobile } = useUI();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'start 25%'],
@@ -56,11 +57,13 @@ function RubiksCredentials({ children }: { children: React.ReactNode }) {
   return (
     <div ref={ref} className="relative w-full max-w-5xl mx-auto mt-12">
       {children}
-      <div className="absolute inset-0 pointer-events-none flex z-20 overflow-hidden rounded-md">
-        {cols.map((c, i) => (
-          <RubiksColumn key={i} progress={scrollYProgress} {...c} />
-        ))}
-      </div>
+      {!isMobile && (
+        <div className="absolute inset-0 pointer-events-none flex z-20 overflow-hidden rounded-md">
+          {cols.map((c, i) => (
+            <RubiksColumn key={i} progress={scrollYProgress} {...c} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
