@@ -131,7 +131,15 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
     <motion.div
       ref={containerRef}
       className="relative min-h-[70vh] md:min-h-[85vh] overflow-hidden"
-      onViewportEnter={() => { if (!permanent) setCollapsed(true); }}
+      onViewportEnter={() => { 
+        if (isMobile) {
+          // Keep it permanently assembled on mobile to avoid GPU lag & layout blink repaints
+          setCollapsed(false);
+          setPermanent(true);
+        } else if (!permanent) {
+          setCollapsed(true);
+        }
+      }}
       viewport={{ amount: 0.4, once: true }}
     >
       <div className="text-center pt-12 pointer-events-none">
