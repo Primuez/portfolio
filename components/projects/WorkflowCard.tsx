@@ -32,7 +32,7 @@ export function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: Workflo
         
         <div className="w-full h-40 sm:h-48 relative overflow-hidden border-b border-cyan/20 bg-black/50 p-2">
            <div className="w-full h-full relative rounded-lg overflow-hidden border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-bg/50">
-             <img src={image} alt={name} loading="lazy" className="w-full h-full object-cover transform-gpu group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+             <img src={image} alt={name} width={1200} height={192} loading="lazy" decoding="async" className="w-full h-full object-cover transform-gpu group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
            </div>
         </div>
         

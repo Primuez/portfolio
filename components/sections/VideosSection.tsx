@@ -145,6 +145,7 @@ export default function VideosSection() {
   return (
     <motion.section
       id="videos"
+      aria-labelledby="videos-heading"
       className="pt-16 md:pt-32"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -152,6 +153,7 @@ export default function VideosSection() {
       viewport={{ once: true, margin: "-100px" }}
     >
       <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
+      <h2 id="videos-heading" className="sr-only">What YouTube videos and playlists has Primuez published on AI automation?</h2>
       <div className="relative mt-12">
         <PhysicsChipsLayer />
         <div className="grid lg:grid-cols-2 gap-8 relative z-0">

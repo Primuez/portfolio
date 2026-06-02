@@ -85,7 +85,7 @@ function HomeContent() {
   }, []);
 
   return (
-    <main className="relative min-h-screen">
+    <div className="relative min-h-screen">
       {/* Custom cursor & touch response */}
       <CustomCursor />
       
@@ -103,7 +103,8 @@ function HomeContent() {
       <div className="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none"></div>
       
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
+      <header role="banner">
+      <nav aria-label="Main navigation" className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="w-full px-4 sm:px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
             {isMobile ? (
@@ -182,9 +183,11 @@ function HomeContent() {
           )}
         </AnimatePresence>
       </nav>
+      </header>
 
       <ScrollProgressBar />
 
+      <main id="main-content" aria-label="Portfolio content">
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-16 md:pb-32">
         <HeroSection />
 
@@ -222,6 +225,7 @@ function HomeContent() {
         {/* 10. CONTACT */}
         <ContactSection />
       </div>
+      </main>
 
       {/* Mobile sticky CTA */}
       <MobileStickyCtA />
@@ -229,7 +233,7 @@ function HomeContent() {
       {/* Scroll to top button */}
       <ScrollToTopButton scrolled={scrolled} />
 
-      <footer className="border-t border-white/[0.06] bg-bg relative z-10">
+      <footer aria-label="Site footer" className="border-t border-white/[0.06] bg-bg relative z-10">
         <div className="w-full px-4 sm:px-6 md:px-12 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
@@ -256,6 +260,6 @@ function HomeContent() {
 
       {/* ALL MODALS */}
       <ModalsSection />
-    </main>
+    </div>
   );
 }

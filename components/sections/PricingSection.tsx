@@ -330,6 +330,7 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
+      aria-labelledby="pricing-heading"
       ref={containerRef}
       style={isMobile ? undefined : { height: '240vh', position: 'relative' }}
       className={isMobile ? 'pt-16' : ''}
@@ -345,6 +346,7 @@ export default function PricingSection() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionHeader number="04" command="> ./pricing --transparent" title="Pricing" />
+          <h2 id="pricing-heading" className="sr-only">What does Primuez charge for AI automation, n8n workflows, and SaaS development projects?</h2>
           <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
             No hidden rates. No surprise scope creep. Pick the tier that fits — or tell me what you need and I&apos;ll tell you which applies.
           </p>
