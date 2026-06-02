@@ -53,7 +53,16 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
       {bannerUrl && (
         <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-white/[0.06] relative">
           <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent z-10"></div>
-          <img src={bannerUrl} alt={`${name} schematic`} loading="lazy" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" referrerPolicy="no-referrer" />
+          <img
+            src={bannerUrl}
+            alt={`${name} schematic`}
+            width={1200}
+            height={192}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700"
+            referrerPolicy="no-referrer"
+          />
         </div>
       )}
 
@@ -61,7 +70,16 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
         <div className="flex items-center gap-4">
           {logoUrl && (
             <div className="w-11 h-11 rounded-lg border border-white/[0.08] overflow-hidden shrink-0 group-hover:border-cyan/30 transition-all duration-300">
-              <img src={logoUrl} alt={`${name} logo`} loading="lazy" className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity" referrerPolicy="no-referrer" />
+              <img
+                src={logoUrl}
+                alt={`${name} logo`}
+                width={44}
+                height={44}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity"
+                referrerPolicy="no-referrer"
+              />
             </div>
           )}
           <h4 className="text-lg font-bold group-hover:text-white transition-colors duration-300">{name}</h4>
