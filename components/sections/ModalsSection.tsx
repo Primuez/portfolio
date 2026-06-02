@@ -61,6 +61,55 @@ export default function ModalsSection() {
     }, 5000);
   };
 
+  // Auto-run simulation on modal open to give an instant spectacular impression
+  React.useEffect(() => {
+    if (modalType === 'workflow') {
+      const timer = setTimeout(() => {
+        // Reset states first to ensure a clean slate, then trigger simulation
+        setSimStep('webhook');
+        setLogs([]);
+        setIsSimulating(true);
+        addLog('SYSTEM: Webhook listener mounted at /v1/indiamart/lead');
+        addLog('WEBHOOK: Simulating inbound lead inquiry from IndiaMART API...');
+
+        const t1 = setTimeout(() => {
+          setSimStep('n8n');
+          addLog('WEBHOOK: Inbound validation passed. Payload pushed to n8n Central System.');
+          addLog('N8N: Received payload. Initiating entity parsing & JSON schema checks...');
+          addLog('N8N: Normalizing coordinates & phone metadata: Rahul K. | Indore, MP');
+        }, 1500);
+
+        const t2 = setTimeout(() => {
+          setSimStep('parallel');
+          addLog('N8N: Logic router complete. Executing 3 parallel actions...');
+          addLog('API: Dispatched request to Kickbox Auth for real-time mailbox check...');
+          addLog('ODOO: Creating partner opportunity record in CRM ERP database...');
+          addLog('WA_AGENT: Triggering WhatsApp Evolution API webhook callback...');
+        }, 3200);
+
+        const t3 = setTimeout(() => {
+          setSimStep('done');
+          addLog('API: Kickbox verified - rahul@primuez.in is a active, deliverable mailbox.');
+          addLog('ODOO: Partner record created successfully. Opportunity ID: #4892');
+          addLog('WA_AGENT: Custom greeting message + company brochure dispatched.');
+          addLog('SYSTEM: Autonomous workflow pipeline executed cleanly in 4.9 seconds.');
+          setIsSimulating(false);
+        }, 5000);
+
+        return () => {
+          clearTimeout(t1);
+          clearTimeout(t2);
+          clearTimeout(t3);
+        };
+      }, 600); // 600ms delay to let the modal slide open fully
+      return () => clearTimeout(timer);
+    } else {
+      setSimStep('idle');
+      setLogs([]);
+      setIsSimulating(false);
+    }
+  }, [modalType]);
+
   return (
     <AnimatePresence>
       {modalType && (
@@ -249,8 +298,8 @@ export default function ModalsSection() {
                 <div className="absolute inset-0 z-0 bg-blueprint opacity-10" style={{ backgroundSize: '30px 30px' }}></div>
                 
                 <div className="relative z-10 flex-1 flex flex-col">
-                  {/* Console Header */}
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                  {/* Console Header - Mobile (standard layout) */}
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 md:hidden">
                     <div>
                       <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">The Autonomous Enterprise</h2>
                       <p className="text-zinc-400 text-xs md:text-sm max-w-2xl leading-relaxed">
@@ -268,6 +317,28 @@ export default function ModalsSection() {
                     >
                       <Activity size={14} className={isSimulating ? 'animate-spin' : ''} />
                       {isSimulating ? 'Simulating Webhook...' : 'Trigger Live Simulation'}
+                    </button>
+                  </div>
+
+                  {/* Console Header - Desktop (Centered Massive Launch Button) */}
+                  <div className="hidden md:flex flex-col items-center text-center max-w-4xl mx-auto mb-10">
+                    <h2 className="text-3xl font-bold tracking-tight text-white mb-3">The Autonomous Enterprise Core</h2>
+                    <p className="text-zinc-400 text-sm max-w-3xl leading-relaxed mb-6">
+                      This interactive sequence illustrates the automated data pipeline between lead entry, processing, and downstream fulfillment. Replacing human routers with digital operators saves hundreds of hours for manufacturing businesses in the Raipur Corridor.
+                    </p>
+                    
+                    {/* Centered Massive Glow Button */}
+                    <button
+                      onClick={startSimulation}
+                      disabled={isSimulating}
+                      className={`font-mono text-xs uppercase tracking-[0.2em] px-10 py-4.5 border-2 rounded-xl transition-all duration-500 flex items-center justify-center gap-3 select-none active:scale-95 shadow-lg ${
+                        isSimulating 
+                          ? 'border-cyan bg-cyan/5 text-cyan/60 shadow-[0_0_25px_rgba(0,240,255,0.1)] cursor-not-allowed'
+                          : 'border-amber bg-amber/5 text-amber hover:bg-amber hover:text-bg hover:shadow-[0_0_35px_rgba(245,166,35,0.55)] cursor-pointer scale-105 transform hover:scale-110 font-bold'
+                      }`}
+                    >
+                      <Activity size={16} className={isSimulating ? 'animate-spin' : 'animate-pulse'} />
+                      {isSimulating ? 'EXECUTION IN PROGRESS...' : 'TRIGGER LIVE EVENT PIPELINE'}
                     </button>
                   </div>
 
