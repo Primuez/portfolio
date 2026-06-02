@@ -53,6 +53,7 @@ export default function ProcessSection() {
   return (
     <motion.section
       id="process"
+      aria-labelledby="process-heading"
       className="pt-16 md:pt-32 relative overflow-hidden"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -62,6 +63,7 @@ export default function ProcessSection() {
       <HowWeWorkBackground />
       <div ref={processRef} className="relative z-10">
         <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
+        <h2 id="process-heading" className="sr-only">How does the Primuez project engagement process work from discovery to handover?</h2>
         <div className="mt-12 relative max-w-3xl">
           {/* Spine - desktop only */}
           <div className="hidden md:block">

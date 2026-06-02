@@ -387,6 +387,7 @@ export default function StackSection() {
   return (
     <motion.section 
       id="stack" 
+      aria-labelledby="stack-heading"
       className="pt-16 md:pt-32"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -394,6 +395,7 @@ export default function StackSection() {
       viewport={{ once: true, margin: "-100px" }}
     >
       <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
+      <h2 id="stack-heading" className="sr-only">What tools and technologies does Primuez use for AI automation and SaaS development?</h2>
       <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
         I don&apos;t just read tutorials. Below are the actual tools and technologies running live on my systems, fully customized for enterprise automation.
       </p>

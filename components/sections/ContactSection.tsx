@@ -246,6 +246,7 @@ export default function ContactSection() {
   return (
     <motion.section 
       id="contact" 
+      aria-labelledby="contact-heading"
       className="pt-16 md:pt-32 text-center pb-28 md:pb-20"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -253,6 +254,7 @@ export default function ContactSection() {
       viewport={{ once: true, margin: "-100px" }}
     >
       <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
+      <h2 id="contact-heading" className="sr-only">How can you get in touch with Primuez to start an AI automation project?</h2>
       
       <GravityCollapse onContact={() => setModalType('form')} />
     </motion.section>

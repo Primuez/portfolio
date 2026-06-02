@@ -267,8 +267,9 @@ function MobileWhyDot({
 
 export default function WhySection() {
   return (
-    <section id="why-primuez" className="pt-16 md:pt-32">
+    <section id="why-primuez" aria-labelledby="why-heading" className="pt-16 md:pt-32">
       <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
+      <h2 id="why-heading" className="sr-only">Why should you choose Primuez over other AI developers and automation engineers?</h2>
       <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
         Four sharp arguments for working with us — not a pitch deck, just the truth.
       </p>

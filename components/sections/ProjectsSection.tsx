@@ -35,98 +35,139 @@ export const ProjectsSection: React.FC = () => {
       </LiquidGlassTitle>
       
       <LiquidGlassParallaxSection parallaxDistance={40}>
-        <ProjectGroup title="SaaS Products" color="cyan">
-          <ProjectCard 
-            name="InkTwin" 
-            url="https://ink-twin.primuez.in"
-            desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
-            tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
-            logoUrl="/logo-inktwin.png"
-          />
-          <ProjectCard 
-            name="PrimuezSure Advisor" 
-            url="https://primuezsure.primuez.in"
-            desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
-            tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
-            logoUrl="/logo-primuezsure.png"
-          />
-        </ProjectGroup>
+        <article aria-labelledby="saas-heading">
+          <h2 id="saas-heading" className="sr-only">How do these SaaS products work?</h2>
+          <p className="sr-only">InkTwin converts handwriting photos into personal fonts via Cloudflare Workers and AI pipelines, while PrimuezSure delivers AI-powered insurance guidance through an autonomous LLM agent — both deployed on Supabase-backed edge infrastructure.</p>
+          <ul className="sr-only">
+            <li>Cloudflare Workers</li>
+            <li>Supabase</li>
+            <li>AI / LLM Agents</li>
+            <li>JavaScript</li>
+          </ul>
+          <ProjectGroup title="SaaS Products" color="cyan">
+            <ProjectCard 
+              name="InkTwin" 
+              url="https://ink-twin.primuez.in"
+              desc="Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
+              tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
+              logoUrl="/logo-inktwin.png"
+            />
+            <ProjectCard 
+              name="PrimuezSure Advisor" 
+              url="https://primuezsure.primuez.in"
+              desc="AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
+              tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
+              logoUrl="/logo-primuezsure.png"
+            />
+          </ProjectGroup>
+        </article>
       </LiquidGlassParallaxSection>
 
       <LiquidGlassParallaxSection parallaxDistance={50}>
-        <ProjectGroup title="Autonomous Advisors" color="amber">
-          <ProjectCard 
-            name="AI Powered Stock Market Advisor" 
-            desc="Intelligent trading and portfolio analysis agent. Monitors real-time market trends, evaluates risks, and provides autonomous stock insights using customized financial LLMs."
-            tags={["Finance AI", "Algorithmic Analysis", "LLM Agents", "Real-Time Data"]}
-            logoUrl="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
-          >
-            <StockChart />
-          </ProjectCard>
-          <ProjectCard 
-            name="AI Powered Tax Advisor" 
-            desc="Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms."
-            tags={["Taxation", "RAG", "Automation", "Compliance"]}
-            logoUrl="https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
-          >
-            <YouTubeThumb
-              videoId="a41yEmFC7jw"
-              url="https://www.youtube.com/watch?v=a41yEmFC7jw"
-              label="Watch demo"
-            />
-          </ProjectCard>
-        </ProjectGroup>
+        <article aria-labelledby="advisors-heading">
+          <h2 id="advisors-heading" className="sr-only">How do these autonomous AI advisors work?</h2>
+          <p className="sr-only">Each advisor ingests real-time data streams through customised financial LLMs, autonomously analyses risk or tax liability, and delivers structured insights — all without human intervention, running on n8n orchestration pipelines.</p>
+          <ul className="sr-only">
+            <li>Finance AI / LLM Agents</li>
+            <li>RAG (Retrieval-Augmented Generation)</li>
+            <li>n8n Orchestration</li>
+            <li>Real-Time Data APIs</li>
+          </ul>
+          <ProjectGroup title="Autonomous Advisors" color="amber">
+            <ProjectCard 
+              name="AI Powered Stock Market Advisor" 
+              desc="Intelligent trading and portfolio analysis agent. Monitors real-time market trends, evaluates risks, and provides autonomous stock insights using customized financial LLMs."
+              tags={["Finance AI", "Algorithmic Analysis", "LLM Agents", "Real-Time Data"]}
+              logoUrl="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
+            >
+              <StockChart />
+            </ProjectCard>
+            <ProjectCard 
+              name="AI Powered Tax Advisor" 
+              desc="Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms."
+              tags={["Taxation", "RAG", "Automation", "Compliance"]}
+              logoUrl="https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
+            >
+              <YouTubeThumb
+                videoId="a41yEmFC7jw"
+                url="https://www.youtube.com/watch?v=a41yEmFC7jw"
+                label="Watch demo"
+              />
+            </ProjectCard>
+          </ProjectGroup>
+        </article>
       </LiquidGlassParallaxSection>
 
       <LiquidGlassParallaxSection parallaxDistance={45}>
-        <ProjectGroup title="Automation Systems" color="cyan">
-          <ProjectCard 
-            name="AI WhatsApp Agent" 
-            desc="Semi-autonomous conversational AI agent with full token lifecycle management. Handles 60-day token expiry and auto-refresh entirely through n8n."
-            tags={["n8n", "WhatsApp", "Evolution API", "Token Automation"]}
-            videoUrl="https://youtu.be/r31--1h7FV0?si=P7Rm8En5NSSU4MgL"
-          />
-          <ProjectCard 
-            name="CA Automation Suite" 
-            desc="Full workflow automation for Chartered Accountants: GST filing automation, AI Legal Advisor, Tax Advisor, and Invoice Generator."
-            tags={["n8n", "RAG", "AI Agents", "GST Automation", "Finance"]}
-          />
-          <ProjectCard 
-            name="Multi-Model AI System" 
-            desc="Local LLM orchestration with intelligent fallback logic. Primary model failure → auto-switches to fallback model. Supports DeepSeek-R1, LLaMA3, Mistral, Qwen3 via Ollama."
-            tags={["Ollama", "Multi-Model", "Fallback Logic", "LLM Orchestration"]}
-          />
-        </ProjectGroup>
+        <article aria-labelledby="automation-heading">
+          <h2 id="automation-heading" className="sr-only">How do these automation systems function?</h2>
+          <p className="sr-only">These systems utilize event-driven architectures to automate repetitive tasks, featuring token lifecycle management, intelligent multi-model LLM routing, and workflow orchestration for complex business requirements, ensuring reliability through robust local and cloud-based automated pipeline execution logic.</p>
+          <ul className="sr-only">
+            <li>n8n</li>
+            <li>WhatsApp API</li>
+            <li>Multi-Model LLM</li>
+            <li>Workflow Automation</li>
+          </ul>
+          <ProjectGroup title="Automation Systems" color="cyan">
+            <ProjectCard 
+              name="AI WhatsApp Agent" 
+              desc="Semi-autonomous conversational AI agent with full token lifecycle management. Handles 60-day token expiry and auto-refresh entirely through n8n."
+              tags={["n8n", "WhatsApp", "Evolution API", "Token Automation"]}
+              videoUrl="https://youtu.be/r31--1h7FV0?si=P7Rm8En5NSSU4MgL"
+            />
+            <ProjectCard 
+              name="CA Automation Suite" 
+              desc="Full workflow automation for Chartered Accountants: GST filing automation, AI Legal Advisor, Tax Advisor, and Invoice Generator."
+              tags={["n8n", "RAG", "AI Agents", "GST Automation", "Finance"]}
+            />
+            <ProjectCard 
+              name="Multi-Model AI System" 
+              desc="Local LLM orchestration with intelligent fallback logic. Primary model failure → auto-switches to fallback model. Supports DeepSeek-R1, LLaMA3, Mistral, Qwen3 via Ollama."
+              tags={["Ollama", "Multi-Model", "Fallback Logic", "LLM Orchestration"]}
+            />
+          </ProjectGroup>
+        </article>
       </LiquidGlassParallaxSection>
       
       <LiquidGlassParallaxSection parallaxDistance={45}>
-        <ProjectGroup title="Enterprise Architecture" color="cyan">
-          <div className="md:col-span-2">
-            <ProjectCard 
-              name="The Autonomous Enterprise Blueprint — Odoo + n8n" 
-              desc="Production-ready automation architecture engineered for manufacturing businesses in the Raipur Industrial Corridor. Integrates IndiaMART lead capture → Kickbox email verification → Odoo CRM injection → WhatsApp greeting → manufacturing order creation → daily automated GST reconciliation. Designed to eliminate the 'Human Router Model' entirely."
-              tags={["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise"]}
-              bannerUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80"
-            />
-          </div>
-          
-          <div className="md:col-span-2 mt-4 flex justify-center">
-            <GlassButton 
-              size="lg"
-              onClick={() => setModalType('workflow')}
-              glowColor="rgba(0, 240, 255, 0.2)"
-              className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white"
-            >
-              <Activity size={18} /> View Interactive Architecture Diagram
-            </GlassButton>
-          </div>
-        </ProjectGroup>
+        <article aria-labelledby="enterprise-heading">
+          <h2 id="enterprise-heading" className="sr-only">How does the enterprise architecture function?</h2>
+          <p className="sr-only">Our enterprise architecture streamlines manufacturing operations by integrating ERP systems with AI lead-capture, automated email verification, and continuous synchronization, effectively replacing manual routing with intelligent, error-free automated workflows that manage complex industrial business requirements and daily reconciliation.</p>
+          <ul className="sr-only">
+            <li>Odoo ERP</li>
+            <li>n8n</li>
+            <li>Enterprise Automation</li>
+            <li>Lead Management</li>
+          </ul>
+          <ProjectGroup title="Enterprise Architecture" color="cyan">
+            <div className="md:col-span-2">
+              <ProjectCard 
+                name="The Autonomous Enterprise Blueprint — Odoo + n8n" 
+                desc="Production-ready automation architecture engineered for manufacturing businesses in the Raipur Industrial Corridor. Integrates IndiaMART lead capture → Kickbox email verification → Odoo CRM injection → WhatsApp greeting → manufacturing order creation → daily automated GST reconciliation. Designed to eliminate the 'Human Router Model' entirely."
+                tags={["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise"]}
+                bannerUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80"
+              />
+            </div>
+            
+            <div className="md:col-span-2 mt-4 flex justify-center">
+              <GlassButton 
+                size="lg"
+                onClick={() => setModalType('workflow')}
+                glowColor="rgba(0, 240, 255, 0.2)"
+                className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white"
+              >
+                <Activity size={18} /> View Interactive Architecture Diagram
+              </GlassButton>
+            </div>
+          </ProjectGroup>
+        </article>
       </LiquidGlassParallaxSection>
 
       <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
         {!isMobile && (
-          <>
+          <section aria-labelledby="interactive-heading">
             <div className="shader-section-divider absolute top-0 left-0 right-0" />
+            <h2 id="interactive-heading" className="sr-only">Interactive 3D Elements & Personal Favourites</h2>
             <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
             
             <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
@@ -185,7 +226,7 @@ export const ProjectsSection: React.FC = () => {
                 </ErrorBoundary>
               </div>
             </div>
-          </>
+          </section>
         )}
 
         <div className={isMobile ? "" : "mt-16"}>

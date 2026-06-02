@@ -102,20 +102,71 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "@type": "Person",
         "@id": "https://primuez.com/#person",
         "name": "Rahul Kasturiya",
-        "alternateName": "Primuez",
+        "alternateName": ["Primuez", "Rahul Primuez"],
         "url": "https://primuez.com",
-        "image": "https://primuez.com/opengraph-image",
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://primuez.com/opengraph-image",
+          "width": 1200,
+          "height": 630
+        },
         "sameAs": [
           "https://github.com/primuez",
           "https://youtube.com/@Primuez",
           "https://www.linkedin.com/in/rahul-kasturiya-796910363"
         ],
-        "jobTitle": "AI Systems Builder & Automation Engineer",
+        "jobTitle": "AI Developer & SaaS Entrepreneur",
+        "description": "Self-taught AI Developer and SaaS Entrepreneur specialising in n8n automation, Supabase-powered backends, and autonomous AI agent systems. Creator of Primuez Guard — a security-monitoring autonomous agent — and multiple production SaaS products including InkTwin and PrimuezSure.",
+        "knowsAbout": [
+          "n8n Workflow Automation",
+          "Supabase",
+          "Autonomous AI Agents",
+          "Large Language Models",
+          "Cloudflare Workers",
+          "Odoo ERP Integration",
+          "SaaS Development",
+          "Primuez Guard"
+        ],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "AI Developer & SaaS Entrepreneur",
+          "description": "Builds n8n automation pipelines, Supabase-backed SaaS products, and autonomous agent systems for Indian SMEs.",
+          "occupationLocation": {
+            "@type": "City",
+            "name": "Indore, Madhya Pradesh, India"
+          },
+          "skills": "n8n, Supabase, Autonomous Agents, LLM Orchestration, Cloudflare Workers, Odoo ERP"
+        },
         "worksFor": {
           "@type": "Organization",
-          "name": "Primuez"
+          "name": "Primuez",
+          "url": "https://primuez.com"
         },
-        "description": "Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, Raipur, India."
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Indore",
+          "addressRegion": "Madhya Pradesh",
+          "addressCountry": "IN"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://primuez.com/#website",
+        "url": "https://primuez.com",
+        "name": "Primuez — AI Developer & SaaS Entrepreneur",
+        "description": "Portfolio and services site for Rahul Kasturiya (Primuez) — AI Developer specialising in n8n automation, Supabase, and autonomous agents including Primuez Guard.",
+        "publisher": {
+          "@id": "https://primuez.com/#person"
+        },
+        "inLanguage": "en-IN",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://primuez.com/?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
       },
       {
         "@type": "ProfessionalService",
@@ -205,6 +256,58 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               "text": "Almost certainly yes. If it has an API, webhook, or can export data — I can connect it. Current integrations include Odoo, Zoho, WhatsApp (via Evolution API), GST portal, IndiaMART, Kickbox, Cloudflare, Vercel, Google Workspace, and any standard REST/HTTP endpoint."
             }
           }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://ink-twin.primuez.in/#app",
+        "name": "InkTwin",
+        "url": "https://ink-twin.primuez.in",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web",
+        "description": "Upload a handwriting photo and InkTwin generates a personal font from it. Type anything and it renders in your handwriting. Built on Cloudflare Workers with AI font-generation pipelines.",
+        "author": { "@id": "https://primuez.com/#person" },
+        "creator": { "@id": "https://primuez.com/#person" },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": ["Handwriting to Font", "AI Font Generation", "PDF Export", "AI Homework Solver"],
+        "softwareVersion": "1.0",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://primuezsure.primuez.in/#app",
+        "name": "PrimuezSure Advisor",
+        "url": "https://primuezsure.primuez.in",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "description": "AI-powered insurance advisor SaaS that helps users understand and choose the right insurance coverage via intelligent conversational Q&A. Powered by autonomous LLM agents on Cloudflare Workers.",
+        "author": { "@id": "https://primuez.com/#person" },
+        "creator": { "@id": "https://primuez.com/#person" },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": ["AI Insurance Q&A", "Autonomous LLM Agent", "Coverage Comparison"],
+        "softwareVersion": "1.0",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://primuez.com/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "About", "item": "https://primuez.com/#whoami" },
+          { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://primuez.com/#projects" },
+          { "@type": "ListItem", "position": 3, "name": "Services", "item": "https://primuez.com/#services" },
+          { "@type": "ListItem", "position": 4, "name": "Pricing", "item": "https://primuez.com/#pricing" },
+          { "@type": "ListItem", "position": 5, "name": "Stack", "item": "https://primuez.com/#stack" },
+          { "@type": "ListItem", "position": 6, "name": "Contact", "item": "https://primuez.com/#contact" }
         ]
       }
     ]

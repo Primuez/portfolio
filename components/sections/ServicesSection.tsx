@@ -10,6 +10,8 @@ const SERVICES_DATA = [
   {
     icon: '⚙️',
     title: 'n8n Workflow Automation',
+    question: 'What does n8n workflow automation do for your business?',
+    answer: 'Custom n8n workflows eliminate manual lead capture, CRM injection, email sequences, GST reconciliation, and WhatsApp outreach — replacing repetitive human tasks with always-on automated pipelines.',
     outcome: 'Your manual processes run themselves',
     desc: "Custom n8n workflows that automate lead capture, CRM injection, email sequences, GST reconciliation, WhatsApp outreach — whatever you're doing by hand today.",
     tags: ['n8n', 'Webhooks', 'API Chains', 'Scheduling'],
@@ -17,6 +19,8 @@ const SERVICES_DATA = [
   {
     icon: '🎙️',
     title: 'Voice AI Agents',
+    question: 'How do Voice AI agents execute tasks hands-free?',
+    answer: 'Voice-first AI agents listen to spoken commands, reason using LLMs, and autonomously execute multi-step tasks across your stack — deployable to WhatsApp, web, or phone without manual typing.',
     outcome: 'An agent that listens, reasons & acts',
     desc: 'Voice-first AI agents that go beyond talking — they execute multi-step tasks across your stack while your hands stay free. Deployable to WhatsApp, web, or phone.',
     tags: ['Voice AI', 'LLM', 'n8n', 'Real-Time'],
@@ -24,6 +28,8 @@ const SERVICES_DATA = [
   {
     icon: '🔗',
     title: 'Custom API Integration',
+    question: 'How does custom API integration connect your existing tools?',
+    answer: 'Any system with an API or webhook — ERP, CRM, WhatsApp, payment gateways, or government portals — gets wired into a single reliable workflow with full error handling and automatic fallback logic.',
     outcome: 'Any system connected to any other',
     desc: 'ERP ↔ CRM ↔ WhatsApp ↔ payment gateway ↔ government portals. If there\'s an API or webhook, I can wire it into your workflow with full error handling and fallback logic.',
     tags: ['REST APIs', 'Webhooks', 'OAuth', 'Odoo', 'IndiaMART'],
@@ -31,6 +37,8 @@ const SERVICES_DATA = [
   {
     icon: '🎵',
     title: 'AI Music Generation',
+    question: 'How does AI music generation create copyright-free tracks automatically?',
+    answer: 'Automated Suno-powered pipelines generate jingles, background scores, and brand tracks on demand — fully batch-ready and copyright-clean, with zero licensing fees per track produced.',
     outcome: 'Original tracks on demand, zero licensing fees',
     desc: 'Automated music generation pipelines via Suno — jingles, background scores, brand tracks, YouTube intros. Fully automated, batch-ready, and copyright-clean.',
     tags: ['Suno', 'AI Audio', 'Automation', 'Content'],
@@ -38,6 +46,8 @@ const SERVICES_DATA = [
   {
     icon: '🎬',
     title: 'AI Video / Movie Clips',
+    question: 'How does AI video generation produce UGC-style ad creatives at scale?',
+    answer: 'AI generates UGC-style scripts, voiceovers, and visuals for ads, product demos, and social content — all automated and batch-produced without a film crew or studio.',
     outcome: 'UGC-style ad creatives at scale',
     desc: 'AI-generated video clips for ads, product demos, and social content. UGC-style scripts, voiceovers, and visuals — all automated and batch-produced.',
     tags: ['UGC Ads', 'AI Video', 'Content Automation'],
@@ -45,16 +55,20 @@ const SERVICES_DATA = [
   {
     icon: '🚀',
     title: 'SaaS MVP Build',
+    question: 'How does a SaaS MVP get built and deployed on Cloudflare Workers?',
+    answer: 'Full-stack SaaS products built on Cloudflare Workers — fast, globally deployed, no server bills. From validated idea to live URL, with InkTwin and PrimuezSure as real shipped examples.',
     outcome: 'A working product your users can log into',
     desc: 'Full-stack SaaS products built on Cloudflare Workers — fast, globally deployed, no server bills. From idea to live URL. InkTwin and PrimuezSure are examples of what ships.',
     tags: ['Next.js', 'Hono', 'Cloudflare', 'D1', 'Drizzle'],
   },
 ];
 
-function WireframeCard({ icon, title, outcome, desc, tags, index }: (typeof SERVICES_DATA)[0] & { index: number }) {
+function WireframeCard({ icon, title, question, answer, outcome, desc, tags, index }: (typeof SERVICES_DATA)[0] & { index: number }) {
   const sysCodes = ['SYS-N8N', 'VOX-AI', 'API-INT', 'AUD-GEN', 'VID-GEN', 'APP-MVP'];
   return (
-    <div className="flex flex-col p-6 rounded-2xl border border-dashed border-white/10 bg-transparent min-h-[260px] relative select-none">
+    <article aria-labelledby={`service-wf-${index}`} className="flex flex-col p-6 rounded-2xl border border-dashed border-white/10 bg-transparent min-h-[260px] relative select-none">
+      <h3 id={`service-wf-${index}`} className="sr-only">{question}</h3>
+      <p className="sr-only">{answer}</p>
       <div className="absolute top-3 right-3 font-mono text-[8px] text-[#444] tracking-wider">
         {sysCodes[index]}
       </div>
@@ -79,11 +93,11 @@ function WireframeCard({ icon, title, outcome, desc, tags, index }: (typeof SERV
           </span>
         ))}
       </div>
-    </div>
+    </article>
   );
 }
 
-function RenderedCard({ icon, title, outcome, desc, tags, index }: (typeof SERVICES_DATA)[0] & { index: number }) {
+function RenderedCard({ icon, title, question, answer, outcome, desc, tags, index }: (typeof SERVICES_DATA)[0] & { index: number }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -159,6 +173,8 @@ function RenderedCard({ icon, title, outcome, desc, tags, index }: (typeof SERVI
         className="flex flex-col p-6 rounded-2xl border border-white/[0.06] bg-[#07090e]/95 backdrop-blur-md min-h-[260px] h-full
           shadow-[0_12px_40px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.03)] relative overflow-hidden liquid-glass-card group"
       >
+        <h3 id={`service-rd-${index}`} className="sr-only">{question}</h3>
+        <p className="sr-only">{answer}</p>
         {/* Futuristic Subtle Background Grid */}
         <div className="absolute inset-0 bg-blueprint opacity-[0.02] group-hover:opacity-[0.05] transition-opacity duration-300 pointer-events-none" />
 
@@ -412,6 +428,7 @@ export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => 
   return (
     <section
       id="services"
+      aria-labelledby="services-heading"
       ref={containerRef}
       style={isMobile ? undefined : { height: sectionHeight, position: 'relative' }}
       className={isMobile ? 'pt-16' : ''}
@@ -428,6 +445,7 @@ export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => 
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionHeader number="03" command="> ./services --what-i-build-for-you" title="What I Build For You" />
+          <h2 id="services-heading" className="sr-only">What services does Primuez offer for AI automation and SaaS development?</h2>
           <p className="text-text-muted mt-4 mb-3 max-w-2xl text-base leading-relaxed">
             Every service below ships as a working system — not a prototype, not a template. You describe the outcome you need; I design, build, and hand it over ready to run.
           </p>
