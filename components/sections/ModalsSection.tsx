@@ -53,10 +53,10 @@ export default function ModalsSection() {
 
     setTimeout(() => {
       setSimStep('done');
-      addLog('API: Kickbox verified - rahul@primuez.in is a active, deliverable mailbox.');
+      addLog('API: Kickbox verified - rahul@primuez.in is an active, deliverable mailbox.');
       addLog('ODOO: Partner record created successfully. Opportunity ID: #4892');
       addLog('WA_AGENT: Custom greeting message + company brochure dispatched.');
-      addLog('SYSTEM: Autonomous workflow pipeline executed cleanly in 4.9 seconds.');
+      addLog('SYSTEM: Core pipeline verification complete. Status: 100% active. Zero human friction!');
       setIsSimulating(false);
     }, 5000);
   };
@@ -89,10 +89,10 @@ export default function ModalsSection() {
 
         const t3 = setTimeout(() => {
           setSimStep('done');
-          addLog('API: Kickbox verified - rahul@primuez.in is a active, deliverable mailbox.');
+          addLog('API: Kickbox verified - rahul@primuez.in is an active, deliverable mailbox.');
           addLog('ODOO: Partner record created successfully. Opportunity ID: #4892');
           addLog('WA_AGENT: Custom greeting message + company brochure dispatched.');
-          addLog('SYSTEM: Autonomous workflow pipeline executed cleanly in 4.9 seconds.');
+          addLog('SYSTEM: Core pipeline verification complete. Status: 100% active. Zero human friction!');
           setIsSimulating(false);
         }, 5000);
 
@@ -524,10 +524,10 @@ export default function ModalsSection() {
                       {/* Footer Badge */}
                       <span className={`font-mono text-[9px] uppercase tracking-widest border px-4 py-1.5 rounded-full transition-colors duration-500 ${
                         simStep === 'done' 
-                          ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/5 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
+                          ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/5 shadow-[0_0_12px_rgba(16,185,129,0.2)] font-bold'
                           : 'border-cyan/20 text-cyan/40 bg-black/40'
                       }`}>
-                        {simStep === 'done' ? 'Automated Flow Sequence Complete' : 'End of Automated Core Sequence'}
+                        {simStep === 'done' ? '🏆 CORE PIPELINE ACTIVE • 100% OPERATIONAL' : 'End of Automated Core Sequence'}
                       </span>
                     </div>
 

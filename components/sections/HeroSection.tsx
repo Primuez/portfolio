@@ -38,17 +38,11 @@ export const HeroSection: React.FC = () => {
       )}
       <div className="max-w-3xl relative z-10">
         <motion.a
-          href="#projects"
-          onClick={(e) => {
-            if (!isMobile) {
-              e.preventDefault();
-              setModalType('workflow');
-            }
-          }}
+          href="#process"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0 cursor-pointer"
+          className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
         >
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
@@ -99,32 +93,20 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14 items-center"
+          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14"
         >
-          {/* Desktop-only: Live System Architecture Trigger (Front & Center) */}
-          <div className="hidden md:block">
-            <GlassButton 
-              size="lg" 
-              onClick={() => setModalType('workflow')} 
-              glowColor="rgba(245, 166, 35, 0.5)"
-              className="glass-btn-glow text-amber border-amber hover:text-white font-bold scale-105 shadow-[0_0_25px_rgba(245,166,35,0.25)] hover:shadow-[0_0_45px_rgba(245,166,35,0.6)] transition-all duration-350"
-            >
-              <Activity size={18} className="animate-pulse" /> Live System Architecture
-            </GlassButton>
-          </div>
-
-          <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2 w-full sm:w-auto">
+          <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
             <ChevronRight size={16} /> View My Work
           </a>
           <GlassButton 
             size="lg" 
             onClick={() => setModalType('form')} 
             glowColor="rgba(0, 240, 255, 0.25)"
-            className="glass-btn-glow text-cyan hover:text-white w-full sm:w-auto"
+            className="glass-btn-glow text-cyan hover:text-white"
           >
             Work With Me
           </GlassButton>
-          <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2 w-full sm:w-auto">
+          <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
             <Download size={16} /> Resume
           </a>
         </motion.div>
