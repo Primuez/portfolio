@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /_next/
+Disallow: /static/
+Disallow: /api/
+Disallow: /private/
+Disallow: /.env
+Disallow: /.replit
+Disallow: /wrangler.jsonc
+
+Sitemap: https://primuez.com/sitemap.xml
