@@ -110,16 +110,16 @@ export const ProjectsSection: React.FC = () => {
           </ul>
           <ProjectGroup title="Automation Systems" color="cyan">
             <ProjectCard 
+              name="Autonomous Programmatic SEO & GEO Engine (Project GhostRank)" 
+              url="https://github.com/Primuez/primuez-seo-vault"
+              desc="A self-sustaining headless growth engine running on a Linux VPS. It autonomously polls keywords, invokes LLMs with multi-provider fallbacks (Gemini ⇄ DeepSeek), enforces strict GEO compliance templates (hidden questions, 40-word summaries, semantic markup), and deploys pages to a centralized GitHub Vault CDN."
+              tags={["Node.js / Bash", "Gemini & DeepSeek APIs", "Linux Crontab", "Git Automation", "Programmatic SEO", "GEO compliance"]}
+            />
+            <ProjectCard 
               name="AI WhatsApp Agent" 
               desc="Semi-autonomous conversational AI agent with full token lifecycle management. Handles 60-day token expiry and auto-refresh entirely through n8n."
               tags={["n8n", "WhatsApp", "Evolution API", "Token Automation"]}
               videoUrl="https://youtu.be/r31--1h7FV0?si=P7Rm8En5NSSU4MgL"
-            />
-            <ProjectCard 
-              name="Autonomous Programmatic SEO & GEO Engine" 
-              url="https://github.com/Primuez/primuez-seo-vault"
-              desc="A headless, self-healing growth pipeline running on a Linux VPS. Pulls un-generated long-tail keyword variations, generates GEO-compliant landing pages using Gemini/DeepSeek fallback loops, and automatically deploys them to a decoupled Git vault."
-              tags={["VPS Systems", "API Fallback", "Decoupled Git Vault", "Programmatic SEO", "GEO Framework"]}
             />
             <ProjectCard 
               name="CA Automation Suite" 
