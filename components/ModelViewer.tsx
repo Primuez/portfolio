@@ -5,8 +5,6 @@ import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const TOTAL_TEXTURES = 5;
-
 export function ModelViewer() {
   const isMobile = useIsMobile();
   const mountRef = useRef<HTMLDivElement>(null);
@@ -20,7 +18,6 @@ export function ModelViewer() {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
     if (!mountRef.current) return;
     const mount = mountRef.current;
 
@@ -41,8 +38,8 @@ export function ModelViewer() {
       const camera = new T.PerspectiveCamera(45, w / h, 0.1, 1000);
       camera.position.set(0, 0, 5.5);
 
-      const renderer = new T.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const renderer = new T.WebGLRenderer({ antialias: !isMobile, alpha: true });
+      renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
       mount.appendChild(renderer.domElement);
 
@@ -81,7 +78,7 @@ export function ModelViewer() {
       scene.add(nightFill);
 
       const starGeo = new T.BufferGeometry();
-      const starCount = 1500;
+      const starCount = isMobile ? 400 : 1500;
       const starPos = new Float32Array(starCount * 3);
       for (let i = 0; i < starCount * 3; i++) {
         starPos[i] = (Math.random() - 0.5) * 200;
@@ -93,7 +90,8 @@ export function ModelViewer() {
       const loader = new T.TextureLoader();
       const disposables: { dispose(): void }[] = [starGeo, starMat];
 
-      const earthGeo = new T.SphereGeometry(1.5, 64, 64);
+      const segments = isMobile ? 32 : 64;
+      const earthGeo = new T.SphereGeometry(1.5, segments, segments);
       const earthMat = new T.MeshStandardMaterial({ roughness: 0.85, metalness: 0.1, emissive: new T.Color(0xffffff) });
 
       // Uniform holding the sun direction in view space, updated every frame
@@ -140,6 +138,7 @@ export function ModelViewer() {
         disposables.push(colorTex);
         onTextureLoaded();
       }, undefined, () => { onTextureLoaded(); });
+
       loader.load('/textures/earth_normal.jpg', (normalTex) => {
         if (!mounted) { normalTex.dispose(); return; }
         earthMat.normalMap = normalTex;
@@ -163,7 +162,7 @@ export function ModelViewer() {
         onTextureLoaded();
       }, undefined, () => { onTextureLoaded(); });
 
-      const cloudGeo = new T.SphereGeometry(1.525, 64, 64);
+      const cloudGeo = new T.SphereGeometry(1.525, segments, segments);
       const cloudMat = new T.MeshStandardMaterial({ transparent: true, opacity: 0, depthWrite: false });
       const cloudMesh = new T.Mesh(cloudGeo, cloudMat);
       scene.add(cloudMesh);
@@ -178,7 +177,7 @@ export function ModelViewer() {
         onTextureLoaded();
       }, undefined, () => { onTextureLoaded(); });
 
-      const atmGeo = new T.SphereGeometry(1.62, 64, 64);
+      const atmGeo = new T.SphereGeometry(1.62, segments, segments);
       const atmMat = new T.MeshStandardMaterial({ color: 0x3399ff, transparent: true, opacity: 0.06, side: T.BackSide });
       scene.add(new T.Mesh(atmGeo, atmMat));
       disposables.push(atmGeo, atmMat);
@@ -198,6 +197,7 @@ export function ModelViewer() {
         const delta = Math.min(clock.getDelta(), 0.1);
         elapsed += delta;
         cloudMesh.rotation.y += delta * 0.04;
+        earthMesh.rotation.y += delta * 0.02;
         const orbitAngle = (elapsed / 60) * Math.PI * 2;
         const radius = 8;
         sun.position.set(Math.sin(orbitAngle) * radius, 3, Math.cos(orbitAngle) * radius);
@@ -253,10 +253,7 @@ export function ModelViewer() {
     };
   }, [onTextureLoaded, router, isMobile]);
 
-  const isLoading = loadedCount < TOTAL_TEXTURES;
-
-  // Gate: return null on mobile — prevents any DOM/canvas rendering
-  if (isMobile) return null;
+  const isLoading = loadedCount < 5;
 
   return (
     <>

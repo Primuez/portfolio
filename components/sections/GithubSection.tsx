@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useVelocity, useSpring, useTransform, MotionValue } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useVelocity, useSpring, useTransform, MotionValue } from 'motion/react';
 import { Github, Star, GitFork } from 'lucide-react';
 import { ShaderBackgroundSection } from '@/components/ShaderBackground';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -83,10 +83,10 @@ function LiquidRepoCard({
       target="_blank"
       rel="noopener noreferrer"
       style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
-      initial={{ opacity: 0, y: 50, scale: 0.92, rotateX: -15, rotateY: tiltAngle }}
+      initial={{ opacity: 0, y: 80, scale: 0.92, rotateX: -15, rotateY: tiltAngle }}
       whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, rotateY: 0 }}
       viewport={{ once: true, margin: isMobile ? '-15px' : '-40px' }}
-      transition={{ duration: 0.85, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 1.4, delay: index * 0.18, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
     >
@@ -150,30 +150,54 @@ export default function GithubSection() {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ once: true, margin: isMobile ? "-30px" : "-100px" }}
     >
-      {!isMobile && <ShaderBackgroundSection opacity={0.6} />}
+      <ShaderBackgroundSection opacity={0.6} />
       <div className="relative z-10">
         <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
         <h2 id="github-heading" className="sr-only">What open-source projects has Primuez published on GitHub?</h2>
         <p className="sr-only">Rahul Kasturiya (Primuez) publishes automation workflows, AI agent experiments, and SaaS boilerplates across two GitHub profiles: @primuez and @primmius.</p>
         <div className="mt-12">
-          {loadingRepos ? (
-            <div className="flex flex-col items-center justify-center h-32 gap-4">
-              <div className="font-mono text-cyan text-sm tracking-widest animate-pulse">[ FETCHING REPOSITORIES ]</div>
-              <div className="w-1/2 max-w-sm h-1 bg-cyan/20 overflow-hidden">
-                <div className="h-full bg-cyan w-1/3 animate-[slide_1.5s_ease-in-out_infinite]"></div>
-              </div>
-            </div>
-          ) : repos.length > 0 ? (
-            <LiquidRepoGrid repos={repos} />
-          ) : (
-            <div className="text-center font-mono text-text-muted p-12 border border-dashed border-cyan/20 rounded-xl bg-panel">
-              <span>[ Rate Limited by GitHub API. View profiles directly: ]</span>
-              <div className="flex justify-center gap-4 mt-4">
-                <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primuez</a>
-                <a href="https://github.com/primmius" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primmius</a>
-              </div>
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {loadingRepos ? (
+              <motion.div
+                key="fetching"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                className="flex flex-col items-center justify-center h-32 gap-4"
+              >
+                <div className="font-mono text-cyan text-sm tracking-widest animate-pulse">[ FETCHING REPOSITORIES ]</div>
+                <div className="w-1/2 max-w-sm h-1 bg-cyan/20 overflow-hidden">
+                  <div className="h-full bg-cyan w-1/3 animate-[slide_1.5s_ease-in-out_infinite]"></div>
+                </div>
+              </motion.div>
+            ) : repos.length > 0 ? (
+              <motion.div
+                key="repos"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <LiquidRepoGrid repos={repos} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="ratelimit"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                className="text-center font-mono text-text-muted p-12 border border-dashed border-cyan/20 rounded-xl bg-panel"
+              >
+                <span>[ Rate Limited by GitHub API. View profiles directly: ]</span>
+                <div className="flex justify-center gap-4 mt-4">
+                  <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primuez</a>
+                  <a href="https://github.com/primmius" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primmius</a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </motion.section>

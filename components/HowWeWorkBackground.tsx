@@ -89,7 +89,6 @@ export function HowWeWorkBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (isMobile) return;
     if (!containerRef.current) return;
 
     const container = containerRef.current;
@@ -106,7 +105,7 @@ export function HowWeWorkBackground() {
       const camera = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
       const renderer = new T.WebGLRenderer({ antialias: false, alpha: false });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Optimized mobile resolution
       renderer.setSize(w, h);
       container.appendChild(renderer.domElement);
       canvasRef.current = renderer.domElement;
@@ -128,7 +127,7 @@ export function HowWeWorkBackground() {
       const mesh = new T.Mesh(geometry, material);
       scene.add(mesh);
 
-      // Mouse tracking with smooth lerp
+      // Mouse & Touch tracking with window listeners
       let targetMouse = { x: 0.5, y: 0.5 };
       let currentMouse = { x: 0.5, y: 0.5 };
       let prevMouse = { x: 0.5, y: 0.5 };
@@ -138,7 +137,32 @@ export function HowWeWorkBackground() {
         targetMouse.x = (e.clientX - rect.left) / rect.width;
         targetMouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
       };
-      container.addEventListener('mousemove', handleMouseMove);
+
+      const handleTouchMove = (e: TouchEvent) => {
+        if (e.touches.length === 0) return;
+        const touch = e.touches[0];
+        const rect = container.getBoundingClientRect();
+        targetMouse.x = (touch.clientX - rect.left) / rect.width;
+        targetMouse.y = 1.0 - (touch.clientY - rect.top) / rect.height;
+      };
+
+      const handleTouchStart = (e: TouchEvent) => {
+        if (e.touches.length === 0) return;
+        const touch = e.touches[0];
+        const rect = container.getBoundingClientRect();
+        const x = (touch.clientX - rect.left) / rect.width;
+        const y = 1.0 - (touch.clientY - rect.top) / rect.height;
+        targetMouse.x = x;
+        targetMouse.y = y;
+        currentMouse.x = x;
+        currentMouse.y = y;
+        prevMouse.x = x;
+        prevMouse.y = y;
+      };
+
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      window.addEventListener('touchmove', handleTouchMove, { passive: true });
+      window.addEventListener('touchstart', handleTouchStart, { passive: true });
 
       // ResizeObserver for section resize
       const resizeObserver = new ResizeObserver((entries) => {
@@ -158,18 +182,25 @@ export function HowWeWorkBackground() {
         if (!mounted) return;
         animId = requestAnimationFrame(animate);
 
-        uniforms.u_time.value = clock.getElapsedTime();
+        const elapsedTime = clock.getElapsedTime();
+        uniforms.u_time.value = elapsedTime;
 
         // Smooth lerp mouse
         currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
         currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
         uniforms.u_mouse.value.set(currentMouse.x, currentMouse.y);
 
-        // Velocity-driven intensity
+        // Velocity-driven intensity with base idle wave shimmer
         const dx = currentMouse.x - prevMouse.x;
         const dy = currentMouse.y - prevMouse.y;
         const velocity = Math.sqrt(dx * dx + dy * dy);
-        uniforms.u_intensity.value += (velocity * 8 - uniforms.u_intensity.value) * 0.1;
+        
+        // Dynamic shimmer wave for organic movement when static or on mobile
+        const idleShimmer = 0.05 + Math.sin(elapsedTime * 1.5) * 0.02;
+        const targetIntensity = velocity > 0.0001 ? (velocity * 8) : idleShimmer;
+        
+        uniforms.u_intensity.value += (targetIntensity - uniforms.u_intensity.value) * 0.1;
+        
         prevMouse.x = currentMouse.x;
         prevMouse.y = currentMouse.y;
 
@@ -182,7 +213,9 @@ export function HowWeWorkBackground() {
       const cleanup = () => {
         mounted = false;
         cancelAnimationFrame(animId);
-        container.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('touchstart', handleTouchStart);
         resizeObserver.disconnect();
         geometry.dispose();
         material.dispose();
@@ -203,9 +236,7 @@ export function HowWeWorkBackground() {
         delete (container as any).__cleanup;
       }
     };
-  }, [isMobile]);
-
-  if (isMobile) return null;
+  }, []);
 
   return (
     <div

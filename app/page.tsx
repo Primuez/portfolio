@@ -146,7 +146,7 @@ function HomeContent() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-bg/95 backdrop-blur-md border-b border-cyan/20 overflow-hidden"
+              className="md:hidden bg-bg/95 backdrop-blur-md border-b border-cyan/20 overflow-y-auto max-h-[calc(100vh-64px)]"
             >
               <div className="flex flex-col px-6 py-4 gap-4 font-mono text-sm tracking-widest uppercase text-text-muted">
                 <div className="text-[10px] text-text-muted/50 tracking-[0.3em] mt-1">Work</div>
