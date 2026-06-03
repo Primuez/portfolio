@@ -97,37 +97,35 @@ export function ModelViewer() {
       // Uniform holding the sun direction in view space, updated every frame
       const sunDirUniform = { value: new T.Vector3(0, 0, 1) };
 
-      if (!isMobile) {
-        // Patch the standard shader for two effects:
-        // 1. Invert roughnessMap: specular texture is bright=ocean, but roughnessMap
-        //    treats bright=rough. We flip the G channel so oceans are smooth & shiny.
-        // 2. Mask emissive (city lights) to the night hemisphere only.
-        earthMat.onBeforeCompile = (shader) => {
-          shader.uniforms.uSunDir = sunDirUniform;
-          shader.fragmentShader = shader.fragmentShader.replace(
-            '#include <common>',
-            '#include <common>\nuniform vec3 uSunDir;'
-          );
-          shader.fragmentShader = shader.fragmentShader.replace(
-            '#include <roughnessmap_fragment>',
-            [
-              'float roughnessFactor = roughness;',
-              '#ifdef USE_ROUGHNESSMAP',
-              '  vec4 texelRoughness = texture2D( roughnessMap, vRoughnessMapUv );',
-              '  roughnessFactor *= (1.0 - texelRoughness.g);',
-              '#endif',
-            ].join('\n')
-          );
-          shader.fragmentShader = shader.fragmentShader.replace(
-            'outgoingLight += totalEmissiveRadiance;',
-            [
-              'float _nightFactor = max(0.0, -dot(normal, uSunDir));',
-              'float _smoothNight = smoothstep(0.0, 0.25, _nightFactor);',
-              'outgoingLight += totalEmissiveRadiance * _smoothNight;',
-            ].join('\n')
-          );
-        };
-      }
+      // Patch the standard shader for two effects:
+      // 1. Invert roughnessMap: specular texture is bright=ocean, but roughnessMap
+      //    treats bright=rough. We flip the G channel so oceans are smooth & shiny.
+      // 2. Mask emissive (city lights) to the night hemisphere only.
+      earthMat.onBeforeCompile = (shader) => {
+        shader.uniforms.uSunDir = sunDirUniform;
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <common>',
+          '#include <common>\nuniform vec3 uSunDir;'
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <roughnessmap_fragment>',
+          [
+            'float roughnessFactor = roughness;',
+            '#ifdef USE_ROUGHNESSMAP',
+            '  vec4 texelRoughness = texture2D( roughnessMap, vRoughnessMapUv );',
+            '  roughnessFactor *= (1.0 - texelRoughness.g);',
+            '#endif',
+          ].join('\n')
+        );
+        shader.fragmentShader = shader.fragmentShader.replace(
+          'outgoingLight += totalEmissiveRadiance;',
+          [
+            'float _nightFactor = max(0.0, -dot(normal, uSunDir));',
+            'float _smoothNight = smoothstep(0.0, 0.25, _nightFactor);',
+            'outgoingLight += totalEmissiveRadiance * _smoothNight;',
+          ].join('\n')
+        );
+      };
 
       const earthMesh = new T.Mesh(earthGeo, earthMat);
       scene.add(earthMesh);
@@ -141,30 +139,28 @@ export function ModelViewer() {
         onTextureLoaded();
       }, undefined, () => { onTextureLoaded(); });
 
-      if (!isMobile) {
-        loader.load('/textures/earth_normal.jpg', (normalTex) => {
-          if (!mounted) { normalTex.dispose(); return; }
-          earthMat.normalMap = normalTex;
-          earthMat.normalScale = new T.Vector2(0.6, 0.6);
-          earthMat.needsUpdate = true;
-          disposables.push(normalTex);
-          onTextureLoaded();
-        }, undefined, () => { onTextureLoaded(); });
-        loader.load('/textures/earth_lights.jpg', (lightsTex) => {
-          if (!mounted) { lightsTex.dispose(); return; }
-          earthMat.emissiveMap = lightsTex;
-          earthMat.needsUpdate = true;
-          disposables.push(lightsTex);
-          onTextureLoaded();
-        }, undefined, () => { onTextureLoaded(); });
-        loader.load('/textures/earth_specular.jpg', (specTex) => {
-          if (!mounted) { specTex.dispose(); return; }
-          earthMat.roughnessMap = specTex;
-          earthMat.needsUpdate = true;
-          disposables.push(specTex);
-          onTextureLoaded();
-        }, undefined, () => { onTextureLoaded(); });
-      }
+      loader.load('/textures/earth_normal.jpg', (normalTex) => {
+        if (!mounted) { normalTex.dispose(); return; }
+        earthMat.normalMap = normalTex;
+        earthMat.normalScale = new T.Vector2(0.6, 0.6);
+        earthMat.needsUpdate = true;
+        disposables.push(normalTex);
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
+      loader.load('/textures/earth_lights.jpg', (lightsTex) => {
+        if (!mounted) { lightsTex.dispose(); return; }
+        earthMat.emissiveMap = lightsTex;
+        earthMat.needsUpdate = true;
+        disposables.push(lightsTex);
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
+      loader.load('/textures/earth_specular.jpg', (specTex) => {
+        if (!mounted) { specTex.dispose(); return; }
+        earthMat.roughnessMap = specTex;
+        earthMat.needsUpdate = true;
+        disposables.push(specTex);
+        onTextureLoaded();
+      }, undefined, () => { onTextureLoaded(); });
 
       const cloudGeo = new T.SphereGeometry(1.525, segments, segments);
       const cloudMat = new T.MeshStandardMaterial({ transparent: true, opacity: 0, depthWrite: false });
@@ -257,7 +253,7 @@ export function ModelViewer() {
     };
   }, [onTextureLoaded, router, isMobile]);
 
-  const isLoading = loadedCount < (isMobile ? 2 : 5);
+  const isLoading = loadedCount < 5;
 
   return (
     <>
