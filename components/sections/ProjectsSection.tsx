@@ -110,6 +110,12 @@ export const ProjectsSection: React.FC = () => {
           </ul>
           <ProjectGroup title="Automation Systems" color="cyan">
             <ProjectCard 
+              name="Autonomous Programmatic SEO & GEO Engine (Project GhostRank)" 
+              url="https://github.com/Primuez/primuez-seo-vault"
+              desc="A self-sustaining headless growth engine running on a Linux VPS. It autonomously polls keywords, invokes LLMs with multi-provider fallbacks (Gemini ⇄ DeepSeek), enforces strict GEO compliance templates (hidden questions, 40-word summaries, semantic markup), and deploys pages to a centralized GitHub Vault CDN."
+              tags={["Node.js / Bash", "Gemini & DeepSeek APIs", "Linux Crontab", "Git Automation", "Programmatic SEO", "GEO compliance"]}
+            />
+            <ProjectCard 
               name="AI WhatsApp Agent" 
               desc="Semi-autonomous conversational AI agent with full token lifecycle management. Handles 60-day token expiry and auto-refresh entirely through n8n."
               tags={["n8n", "WhatsApp", "Evolution API", "Token Automation"]}
