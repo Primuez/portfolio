@@ -5,8 +5,6 @@ import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const TOTAL_TEXTURES = 5;
-
 export function ModelViewer() {
   const isMobile = useIsMobile();
   const mountRef = useRef<HTMLDivElement>(null);
@@ -40,8 +38,8 @@ export function ModelViewer() {
       const camera = new T.PerspectiveCamera(45, w / h, 0.1, 1000);
       camera.position.set(0, 0, 5.5);
 
-      const renderer = new T.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const renderer = new T.WebGLRenderer({ antialias: !isMobile, alpha: true });
+      renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
       mount.appendChild(renderer.domElement);
 
@@ -80,7 +78,7 @@ export function ModelViewer() {
       scene.add(nightFill);
 
       const starGeo = new T.BufferGeometry();
-      const starCount = 1500;
+      const starCount = isMobile ? 400 : 1500;
       const starPos = new Float32Array(starCount * 3);
       for (let i = 0; i < starCount * 3; i++) {
         starPos[i] = (Math.random() - 0.5) * 200;
@@ -92,41 +90,44 @@ export function ModelViewer() {
       const loader = new T.TextureLoader();
       const disposables: { dispose(): void }[] = [starGeo, starMat];
 
-      const earthGeo = new T.SphereGeometry(1.5, 64, 64);
+      const segments = isMobile ? 32 : 64;
+      const earthGeo = new T.SphereGeometry(1.5, segments, segments);
       const earthMat = new T.MeshStandardMaterial({ roughness: 0.85, metalness: 0.1, emissive: new T.Color(0xffffff) });
 
       // Uniform holding the sun direction in view space, updated every frame
       const sunDirUniform = { value: new T.Vector3(0, 0, 1) };
 
-      // Patch the standard shader for two effects:
-      // 1. Invert roughnessMap: specular texture is bright=ocean, but roughnessMap
-      //    treats bright=rough. We flip the G channel so oceans are smooth & shiny.
-      // 2. Mask emissive (city lights) to the night hemisphere only.
-      earthMat.onBeforeCompile = (shader) => {
-        shader.uniforms.uSunDir = sunDirUniform;
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <common>',
-          '#include <common>\nuniform vec3 uSunDir;'
-        );
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <roughnessmap_fragment>',
-          [
-            'float roughnessFactor = roughness;',
-            '#ifdef USE_ROUGHNESSMAP',
-            '  vec4 texelRoughness = texture2D( roughnessMap, vRoughnessMapUv );',
-            '  roughnessFactor *= (1.0 - texelRoughness.g);',
-            '#endif',
-          ].join('\n')
-        );
-        shader.fragmentShader = shader.fragmentShader.replace(
-          'outgoingLight += totalEmissiveRadiance;',
-          [
-            'float _nightFactor = max(0.0, -dot(normal, uSunDir));',
-            'float _smoothNight = smoothstep(0.0, 0.25, _nightFactor);',
-            'outgoingLight += totalEmissiveRadiance * _smoothNight;',
-          ].join('\n')
-        );
-      };
+      if (!isMobile) {
+        // Patch the standard shader for two effects:
+        // 1. Invert roughnessMap: specular texture is bright=ocean, but roughnessMap
+        //    treats bright=rough. We flip the G channel so oceans are smooth & shiny.
+        // 2. Mask emissive (city lights) to the night hemisphere only.
+        earthMat.onBeforeCompile = (shader) => {
+          shader.uniforms.uSunDir = sunDirUniform;
+          shader.fragmentShader = shader.fragmentShader.replace(
+            '#include <common>',
+            '#include <common>\nuniform vec3 uSunDir;'
+          );
+          shader.fragmentShader = shader.fragmentShader.replace(
+            '#include <roughnessmap_fragment>',
+            [
+              'float roughnessFactor = roughness;',
+              '#ifdef USE_ROUGHNESSMAP',
+              '  vec4 texelRoughness = texture2D( roughnessMap, vRoughnessMapUv );',
+              '  roughnessFactor *= (1.0 - texelRoughness.g);',
+              '#endif',
+            ].join('\n')
+          );
+          shader.fragmentShader = shader.fragmentShader.replace(
+            'outgoingLight += totalEmissiveRadiance;',
+            [
+              'float _nightFactor = max(0.0, -dot(normal, uSunDir));',
+              'float _smoothNight = smoothstep(0.0, 0.25, _nightFactor);',
+              'outgoingLight += totalEmissiveRadiance * _smoothNight;',
+            ].join('\n')
+          );
+        };
+      }
 
       const earthMesh = new T.Mesh(earthGeo, earthMat);
       scene.add(earthMesh);
@@ -139,30 +140,33 @@ export function ModelViewer() {
         disposables.push(colorTex);
         onTextureLoaded();
       }, undefined, () => { onTextureLoaded(); });
-      loader.load('/textures/earth_normal.jpg', (normalTex) => {
-        if (!mounted) { normalTex.dispose(); return; }
-        earthMat.normalMap = normalTex;
-        earthMat.normalScale = new T.Vector2(0.6, 0.6);
-        earthMat.needsUpdate = true;
-        disposables.push(normalTex);
-        onTextureLoaded();
-      }, undefined, () => { onTextureLoaded(); });
-      loader.load('/textures/earth_lights.jpg', (lightsTex) => {
-        if (!mounted) { lightsTex.dispose(); return; }
-        earthMat.emissiveMap = lightsTex;
-        earthMat.needsUpdate = true;
-        disposables.push(lightsTex);
-        onTextureLoaded();
-      }, undefined, () => { onTextureLoaded(); });
-      loader.load('/textures/earth_specular.jpg', (specTex) => {
-        if (!mounted) { specTex.dispose(); return; }
-        earthMat.roughnessMap = specTex;
-        earthMat.needsUpdate = true;
-        disposables.push(specTex);
-        onTextureLoaded();
-      }, undefined, () => { onTextureLoaded(); });
 
-      const cloudGeo = new T.SphereGeometry(1.525, 64, 64);
+      if (!isMobile) {
+        loader.load('/textures/earth_normal.jpg', (normalTex) => {
+          if (!mounted) { normalTex.dispose(); return; }
+          earthMat.normalMap = normalTex;
+          earthMat.normalScale = new T.Vector2(0.6, 0.6);
+          earthMat.needsUpdate = true;
+          disposables.push(normalTex);
+          onTextureLoaded();
+        }, undefined, () => { onTextureLoaded(); });
+        loader.load('/textures/earth_lights.jpg', (lightsTex) => {
+          if (!mounted) { lightsTex.dispose(); return; }
+          earthMat.emissiveMap = lightsTex;
+          earthMat.needsUpdate = true;
+          disposables.push(lightsTex);
+          onTextureLoaded();
+        }, undefined, () => { onTextureLoaded(); });
+        loader.load('/textures/earth_specular.jpg', (specTex) => {
+          if (!mounted) { specTex.dispose(); return; }
+          earthMat.roughnessMap = specTex;
+          earthMat.needsUpdate = true;
+          disposables.push(specTex);
+          onTextureLoaded();
+        }, undefined, () => { onTextureLoaded(); });
+      }
+
+      const cloudGeo = new T.SphereGeometry(1.525, segments, segments);
       const cloudMat = new T.MeshStandardMaterial({ transparent: true, opacity: 0, depthWrite: false });
       const cloudMesh = new T.Mesh(cloudGeo, cloudMat);
       scene.add(cloudMesh);
@@ -177,7 +181,7 @@ export function ModelViewer() {
         onTextureLoaded();
       }, undefined, () => { onTextureLoaded(); });
 
-      const atmGeo = new T.SphereGeometry(1.62, 64, 64);
+      const atmGeo = new T.SphereGeometry(1.62, segments, segments);
       const atmMat = new T.MeshStandardMaterial({ color: 0x3399ff, transparent: true, opacity: 0.06, side: T.BackSide });
       scene.add(new T.Mesh(atmGeo, atmMat));
       disposables.push(atmGeo, atmMat);
@@ -197,6 +201,7 @@ export function ModelViewer() {
         const delta = Math.min(clock.getDelta(), 0.1);
         elapsed += delta;
         cloudMesh.rotation.y += delta * 0.04;
+        earthMesh.rotation.y += delta * 0.02;
         const orbitAngle = (elapsed / 60) * Math.PI * 2;
         const radius = 8;
         sun.position.set(Math.sin(orbitAngle) * radius, 3, Math.cos(orbitAngle) * radius);
@@ -252,7 +257,7 @@ export function ModelViewer() {
     };
   }, [onTextureLoaded, router, isMobile]);
 
-  const isLoading = loadedCount < TOTAL_TEXTURES;
+  const isLoading = loadedCount < (isMobile ? 2 : 5);
 
   return (
     <>
