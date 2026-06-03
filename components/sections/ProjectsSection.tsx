@@ -116,6 +116,12 @@ export const ProjectsSection: React.FC = () => {
               videoUrl="https://youtu.be/r31--1h7FV0?si=P7Rm8En5NSSU4MgL"
             />
             <ProjectCard 
+              name="Autonomous Programmatic SEO & GEO Engine" 
+              url="https://github.com/Primuez/primuez-seo-vault"
+              desc="A headless, self-healing growth pipeline running on a Linux VPS. Pulls un-generated long-tail keyword variations, generates GEO-compliant landing pages using Gemini/DeepSeek fallback loops, and automatically deploys them to a decoupled Git vault."
+              tags={["VPS Systems", "API Fallback", "Decoupled Git Vault", "Programmatic SEO", "GEO Framework"]}
+            />
+            <ProjectCard 
               name="CA Automation Suite" 
               desc="Full workflow automation for Chartered Accountants: GST filing automation, AI Legal Advisor, Tax Advisor, and Invoice Generator."
               tags={["n8n", "RAG", "AI Agents", "GST Automation", "Finance"]}
