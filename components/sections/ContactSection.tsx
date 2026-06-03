@@ -46,6 +46,14 @@ function FallingPiece({
   delay: number;
   className?: string;
 }) {
+  const [dragged, setDragged] = useState(false);
+
+  useEffect(() => {
+    if (!collapsed) {
+      setDragged(false);
+    }
+  }, [collapsed]);
+
   return (
     <motion.div
       className={`inline-block pointer-events-auto cursor-grab active:cursor-grabbing ${className}`}
@@ -54,11 +62,12 @@ function FallingPiece({
       dragElastic={0.55}
       dragMomentum
       whileDrag={{ scale: 1.08, zIndex: 50 }}
-      animate={collapsed ? { x: dx, y: dy, rotate } : { x: 0, y: 0, rotate: 0 }}
+      onDragStart={() => setDragged(true)}
+      animate={dragged ? undefined : (collapsed ? { x: dx, y: dy, rotate } : { x: 0, y: 0, rotate: 0 })}
       transition={
         collapsed
           ? { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay }
-          : { duration: 0 }
+          : { duration: 0.3, ease: 'easeInOut' }
       }
       style={{ touchAction: 'none' }}
     >
@@ -133,11 +142,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       ref={containerRef}
       className="relative min-h-[70vh] md:min-h-[85vh] overflow-hidden"
       onViewportEnter={() => { 
-        if (isMobile) {
-          // Keep it permanently assembled on mobile to avoid GPU lag & layout blink repaints
-          setCollapsed(false);
-          setPermanent(true);
-        } else if (!permanent) {
+        if (!permanent) {
           setCollapsed(true);
         }
       }}

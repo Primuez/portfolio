@@ -20,7 +20,6 @@ export function ModelViewer() {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
     if (!mountRef.current) return;
     const mount = mountRef.current;
 
@@ -254,9 +253,6 @@ export function ModelViewer() {
   }, [onTextureLoaded, router, isMobile]);
 
   const isLoading = loadedCount < TOTAL_TEXTURES;
-
-  // Gate: return null on mobile — prevents any DOM/canvas rendering
-  if (isMobile) return null;
 
   return (
     <>
