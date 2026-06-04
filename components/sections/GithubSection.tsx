@@ -77,13 +77,46 @@ function LiquidRepoCard({
   // Alternate 3D tilt directions for a gorgeous layout cascade
   const tiltAngle = index % 3 === 0 ? -12 : index % 3 === 2 ? 12 : 0;
 
-  const initialAnim = isMobile
-    ? { opacity: 0, x: index % 2 === 0 ? -60 : 60, scale: 0.95, filter: 'blur(4px)' }
-    : { opacity: 0, y: 100, rotateX: -45, rotateY: index % 3 === 0 ? -25 : index % 3 === 2 ? 25 : 0, scale: 0.88, z: -150, filter: 'blur(8px)' };
+  // Assign a distinct 3D rotation axis and direction to each card to simulate a Rubik's Cube rotation assembly
+  const rotations = [
+    { rotateX: 90, rotateY: 0, rotateZ: -10, x: -80, y: 0, scale: 0.8 },      // Left-face twist
+    { rotateX: 0, rotateY: -90, rotateZ: 10, x: 0, y: -80, scale: 0.8 },      // Top-face twist
+    { rotateX: -90, rotateY: 0, rotateZ: -10, x: 80, y: 0, scale: 0.8 },     // Right-face twist
+    { rotateX: 0, rotateY: 90, rotateZ: 10, x: -80, y: 80, scale: 0.8 },     // Bottom-left corner spin
+    { rotateX: 90, rotateY: 90, rotateZ: 0, x: 0, y: 80, scale: 0.8 },        // Center-bottom twist
+    { rotateX: -90, rotateY: -90, rotateZ: 15, x: 80, y: 80, scale: 0.8 }    // Bottom-right corner spin
+  ];
+  
+  const cardRotation = rotations[index % rotations.length];
 
-  const whileInViewAnim = isMobile
-    ? { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }
-    : { opacity: 1, y: 0, rotateX: 0, rotateY: 0, scale: 1, z: 0, filter: 'blur(0px)' };
+  const initialAnim = isMobile
+    ? { 
+        opacity: 0, 
+        scale: 0.92,
+        rotateX: index % 2 === 0 ? 30 : -30,
+        rotateY: index % 2 === 0 ? -30 : 30
+      }
+    : { 
+        opacity: 0, 
+        rotateX: cardRotation.rotateX, 
+        rotateY: cardRotation.rotateY, 
+        rotateZ: cardRotation.rotateZ,
+        x: cardRotation.x, 
+        y: cardRotation.y, 
+        scale: cardRotation.scale,
+        filter: 'blur(8px)'
+      };
+
+  const whileInViewAnim = { 
+    opacity: 1, 
+    rotateX: 0, 
+    rotateY: 0, 
+    rotateZ: 0,
+    x: 0, 
+    y: 0, 
+    scale: 1,
+    filter: 'blur(0px)'
+  };
 
   return (
     <motion.a
@@ -95,9 +128,11 @@ function LiquidRepoCard({
       whileInView={whileInViewAnim}
       viewport={{ once: true, margin: isMobile ? '-15px' : '-40px' }}
       transition={{ 
-        duration: isMobile ? 0.8 : 1.4, 
-        delay: index * (isMobile ? 0.12 : 0.18), 
-        ease: [0.16, 1, 0.3, 1] 
+        type: 'spring',
+        stiffness: isMobile ? 60 : 45,
+        damping: isMobile ? 15 : 12,
+        mass: 1,
+        delay: index * (isMobile ? 0.08 : 0.15)
       }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
