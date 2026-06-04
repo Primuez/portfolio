@@ -186,75 +186,77 @@ export const ProjectsSection: React.FC = () => {
       </LiquidGlassParallaxSection>
 
       <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
-          <section aria-labelledby="interactive-heading">
-            <div className="shader-section-divider absolute top-0 left-0 right-0" />
-            <h2 id="interactive-heading" className="sr-only">Interactive 3D Elements & Personal Favourites</h2>
-            <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
-            
-            <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
-              <div>
-                <motion.h3
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4"
-                >
-                  Interactive 3D Orchestration Core
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className="text-text-muted mb-6 leading-relaxed"
-                >
-                  Hover and grab the core object to rotate. This interactive 3D model powered by Three.js and React Three Fiber serves as an abstraction of my n8n central orchestrator—routing payloads, scaling compute, and connecting multiple AI pipelines.
-                </motion.p>
-                <ul className="space-y-2 font-mono text-xs text-text-muted">
-                  <motion.li
+          {!isMobile && (
+            <section aria-labelledby="interactive-heading">
+              <div className="shader-section-divider absolute top-0 left-0 right-0" />
+              <h2 id="interactive-heading" className="sr-only">Interactive 3D Elements & Personal Favourites</h2>
+              <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
+              
+              <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
+                <div>
+                  <motion.h3
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
-                    className="flex items-center gap-2"
+                    className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span> @react-three/fiber processing
-                  </motion.li>
-                  <motion.li
+                    Interactive 3D Orchestration Core
+                  </motion.h3>
+                  <motion.p
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
-                    className="flex items-center gap-2"
+                    className="text-text-muted mb-6 leading-relaxed"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse delay-75"></span> MeshDistortMaterial applied
-                  </motion.li>
-                  <motion.li
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse delay-150"></span> Interactive rotation axes mapped
-                  </motion.li>
-                </ul>
+                    Hover and grab the core object to rotate. This interactive 3D model powered by Three.js and React Three Fiber serves as an abstraction of my n8n central orchestrator—routing payloads, scaling compute, and connecting multiple AI pipelines.
+                  </motion.p>
+                  <ul className="space-y-2 font-mono text-xs text-text-muted">
+                    <motion.li
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.7, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      className="flex items-center gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span> @react-three/fiber processing
+                    </motion.li>
+                    <motion.li
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      className="flex items-center gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse delay-75"></span> MeshDistortMaterial applied
+                    </motion.li>
+                    <motion.li
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      className="flex items-center gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse delay-150"></span> Interactive rotation axes mapped
+                    </motion.li>
+                  </ul>
+                </div>
+                <div ref={globeContainerRef}>
+                  <ErrorBoundary>
+                    {isGlobeInView ? (
+                      <ModelViewer />
+                    ) : (
+                      <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
+                        <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
+                        <span className="font-mono text-xs text-cyan tracking-widest">LOADING GLOBE…</span>
+                      </div>
+                    )}
+                  </ErrorBoundary>
+                </div>
               </div>
-              <div ref={globeContainerRef}>
-                <ErrorBoundary>
-                  {isGlobeInView ? (
-                    <ModelViewer />
-                  ) : (
-                    <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
-                      <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
-                      <span className="font-mono text-xs text-cyan tracking-widest">LOADING GLOBE…</span>
-                    </div>
-                  )}
-                </ErrorBoundary>
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
 
         <div className={isMobile ? "" : "mt-16"}>
           <button

@@ -14,7 +14,7 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://primuez.com'),
+  metadataBase: new URL('https://primuez.in'),
   title: 'Primuez | AI Systems Builder & Automation Engineer Indore',
   description: 'Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, Raipur, India. I build custom n8n workflows, autonomous LLM agents, and Odoo ERP integrations for Indian SMEs.',
   keywords: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     'enterprise n8n integrations'
   ],
   alternates: {
-    canonical: 'https://primuez.com',
+    canonical: 'https://primuez.in',
   },
   robots: {
     index: true,
@@ -53,18 +53,18 @@ export const metadata: Metadata = {
   category: 'technology',
   creator: 'Rahul Kasturiya',
   publisher: 'Rahul Kasturiya',
-  authors: [{ name: 'Rahul Kasturiya', url: 'https://primuez.com' }],
+  authors: [{ name: 'Rahul Kasturiya', url: 'https://primuez.in' }],
   other: {
     'msapplication-TileColor': '#0a0a0f',
   },
   openGraph: {
-    url: 'https://primuez.com',
+    url: 'https://primuez.in',
     siteName: 'Primuez',
     title: 'Primuez | AI Automation Agency & n8n Specialist',
     description: 'Practical, production-grade AI systems and autonomous workflows. Eliminate manual DM admin, automate Odoo ERP ledger entries, and recon GST instantly.',
     images: [
       {
-        url: '/opengraph-image',
+        url: '/opengraph-image.png',
         width: 1200,
         height: 630,
         alt: 'Primuez – AI Systems Builder & Automation Engineer',
@@ -76,22 +76,22 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Primuez | AI Systems Builder & Automation Engineer',
     description: 'Custom n8n workflows, autonomous agents & serverless edge systems running 24/7.',
-    images: ['/opengraph-image'],
+    images: ['/opengraph-image.png'],
   },
   icons: {
     icon: [
-      { url: 'https://primuez.com/favicon.ico', sizes: 'any' },
-      { url: 'https://primuez.com/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: 'https://primuez.com/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: 'https://primuez.com/favicon.svg', type: 'image/svg+xml' },
-      { url: 'https://primuez.com/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: 'https://primuez.com/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: 'https://primuez.in/favicon.ico', sizes: 'any' },
+      { url: 'https://primuez.in/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: 'https://primuez.in/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: 'https://primuez.in/favicon.svg', type: 'image/svg+xml' },
+      { url: 'https://primuez.in/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: 'https://primuez.in/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: 'https://primuez.com/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: 'https://primuez.in/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  manifest: 'https://primuez.com/site.webmanifest',
+  manifest: 'https://primuez.in/site.webmanifest',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -100,13 +100,13 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://primuez.com/#person",
+        "@id": "https://primuez.in/#person",
         "name": "Rahul Kasturiya",
         "alternateName": ["Primuez", "Rahul Primuez"],
-        "url": "https://primuez.com",
+        "url": "https://primuez.in",
         "image": {
           "@type": "ImageObject",
-          "url": "https://primuez.com/opengraph-image",
+          "url": "https://primuez.in/opengraph-image",
           "width": 1200,
           "height": 630
         },
@@ -140,7 +140,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "worksFor": {
           "@type": "Organization",
           "name": "Primuez",
-          "url": "https://primuez.com"
+          "url": "https://primuez.in"
         },
         "address": {
           "@type": "PostalAddress",
@@ -151,30 +151,30 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       },
       {
         "@type": "WebSite",
-        "@id": "https://primuez.com/#website",
-        "url": "https://primuez.com",
+        "@id": "https://primuez.in/#website",
+        "url": "https://primuez.in",
         "name": "Primuez — AI Developer & SaaS Entrepreneur",
         "description": "Portfolio and services site for Rahul Kasturiya (Primuez) — AI Developer specialising in n8n automation, Supabase, and autonomous agents including Primuez Guard.",
         "publisher": {
-          "@id": "https://primuez.com/#person"
+          "@id": "https://primuez.in/#person"
         },
         "inLanguage": "en-IN",
         "potentialAction": {
           "@type": "SearchAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": "https://primuez.com/?s={search_term_string}"
+            "urlTemplate": "https://primuez.in/?s={search_term_string}"
           },
           "query-input": "required name=search_term_string"
         }
       },
       {
         "@type": "ProfessionalService",
-        "@id": "https://primuez.com/#service",
+        "@id": "https://primuez.in/#service",
         "name": "Primuez AI Systems",
-        "url": "https://primuez.com",
-        "logo": "https://primuez.com/primuez-logo.svg",
-        "image": "https://primuez.com/opengraph-image",
+        "url": "https://primuez.in",
+        "logo": "https://primuez.in/primuez-logo.svg",
+        "image": "https://primuez.in/opengraph-image",
         "description": "Custom workflow automations, n8n integration, LLM autonomous agent design, Odoo ERP connection, and serverless edge deployment for small and mid-sized businesses.",
         "address": {
           "@type": "PostalAddress",
@@ -222,7 +222,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       },
       {
         "@type": "FAQPage",
-        "@id": "https://primuez.com/#faq",
+        "@id": "https://primuez.in/#faq",
         "mainEntity": [
           {
             "@type": "Question",
@@ -266,8 +266,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Web",
         "description": "Upload a handwriting photo and InkTwin generates a personal font from it. Type anything and it renders in your handwriting. Built on Cloudflare Workers with AI font-generation pipelines.",
-        "author": { "@id": "https://primuez.com/#person" },
-        "creator": { "@id": "https://primuez.com/#person" },
+        "author": { "@id": "https://primuez.in/#person" },
+        "creator": { "@id": "https://primuez.in/#person" },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -286,8 +286,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Web",
         "description": "AI-powered insurance advisor SaaS that helps users understand and choose the right insurance coverage via intelligent conversational Q&A. Powered by autonomous LLM agents on Cloudflare Workers.",
-        "author": { "@id": "https://primuez.com/#person" },
-        "creator": { "@id": "https://primuez.com/#person" },
+        "author": { "@id": "https://primuez.in/#person" },
+        "creator": { "@id": "https://primuez.in/#person" },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -300,14 +300,14 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       },
       {
         "@type": "BreadcrumbList",
-        "@id": "https://primuez.com/#breadcrumb",
+        "@id": "https://primuez.in/#breadcrumb",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "About", "item": "https://primuez.com/#whoami" },
-          { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://primuez.com/#projects" },
-          { "@type": "ListItem", "position": 3, "name": "Services", "item": "https://primuez.com/#services" },
-          { "@type": "ListItem", "position": 4, "name": "Pricing", "item": "https://primuez.com/#pricing" },
-          { "@type": "ListItem", "position": 5, "name": "Stack", "item": "https://primuez.com/#stack" },
-          { "@type": "ListItem", "position": 6, "name": "Contact", "item": "https://primuez.com/#contact" }
+          { "@type": "ListItem", "position": 1, "name": "About", "item": "https://primuez.in/#whoami" },
+          { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://primuez.in/#projects" },
+          { "@type": "ListItem", "position": 3, "name": "Services", "item": "https://primuez.in/#services" },
+          { "@type": "ListItem", "position": 4, "name": "Pricing", "item": "https://primuez.in/#pricing" },
+          { "@type": "ListItem", "position": 5, "name": "Stack", "item": "https://primuez.in/#stack" },
+          { "@type": "ListItem", "position": 6, "name": "Contact", "item": "https://primuez.in/#contact" }
         ]
       }
     ]
@@ -318,7 +318,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <head>
         <meta name="theme-color" content="#00f0ff" />
         <meta name="msapplication-TileColor" content="#0a0a0f" />
-        <link rel="canonical" href="https://primuez.com" />
+        <link rel="canonical" href="https://primuez.in" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
