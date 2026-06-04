@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     description: 'Practical, production-grade AI systems and autonomous workflows. Eliminate manual DM admin, automate Odoo ERP ledger entries, and recon GST instantly.',
     images: [
       {
-        url: '/opengraph-image',
+        url: '/opengraph-image.png',
         width: 1200,
         height: 630,
         alt: 'Primuez – AI Systems Builder & Automation Engineer',
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Primuez | AI Systems Builder & Automation Engineer',
     description: 'Custom n8n workflows, autonomous agents & serverless edge systems running 24/7.',
-    images: ['/opengraph-image'],
+    images: ['/opengraph-image.png'],
   },
   icons: {
     icon: [
