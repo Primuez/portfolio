@@ -72,8 +72,10 @@ function ScrollToTopButton({ scrolled }: { scrolled: boolean }) {
 function HomeContent() {
   const { isMobile, setModalType, scrolled } = useUI();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Ensure the page boots at the very top, clearing any hash the browser may have jumped to.
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -84,20 +86,22 @@ function HomeContent() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
+  const showMobileLayout = mounted ? isMobile : false;
+
   return (
     <div className="relative min-h-screen">
       {/* Custom cursor & touch response */}
       <CustomCursor />
       
       {/* Interactive WebGL shader background */}
-      {isMobile ? (
+      {showMobileLayout ? (
         <div className="fixed inset-0 z-0 w-full h-full bg-gradient-to-br from-[#0a0a0f] via-[#0d1117] to-[#0a0e1a]" />
       ) : (
         <ShaderBackground className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
       )}
       
       {/* Interactive liquid glass refraction overlay */}
-      {!isMobile && <GlassRefractionOverlay />}
+      {!showMobileLayout && <GlassRefractionOverlay />}
       
       {/* Blueprint animated grid overlay */}
       <div className="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none"></div>
@@ -107,7 +111,7 @@ function HomeContent() {
       <nav aria-label="Main navigation" className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
         <div className="w-full px-4 sm:px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
           <div className="font-mono text-cyan text-lg md:text-xl tracking-widest font-bold transition-all duration-300">
-            {isMobile ? (
+            {showMobileLayout ? (
               <LiquidGlassLogo>
                 <ShaderLogo>PRIMUEZ</ShaderLogo>
               </LiquidGlassLogo>

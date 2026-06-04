@@ -98,154 +98,158 @@ export function HowWeWorkBackground() {
     import('three').then((T) => {
       if (!mounted || !container) return;
 
-      const w = container.clientWidth;
-      const h = container.clientHeight;
+      try {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
 
-      const scene = new T.Scene();
-      const camera = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const scene = new T.Scene();
+        const camera = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-      const renderer = new T.WebGLRenderer({ antialias: false, alpha: false });
-      const isMobileDevice = window.innerWidth < 768;
-      renderer.setPixelRatio(isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.5)); // Capped at 1.0 for mobile, 1.5 for desktop
-      renderer.setSize(w, h);
-      container.appendChild(renderer.domElement);
-      canvasRef.current = renderer.domElement;
+        const renderer = new T.WebGLRenderer({ antialias: false, alpha: false });
+        const isMobileDevice = window.innerWidth < 768;
+        renderer.setPixelRatio(isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.5)); // Capped at 1.0 for mobile, 1.5 for desktop
+        renderer.setSize(w, h);
+        container.appendChild(renderer.domElement);
+        canvasRef.current = renderer.domElement;
 
-      const uniforms = {
-        u_time: { value: 0 },
-        u_mouse: { value: new T.Vector2(0.5, 0.5) },
-        u_intensity: { value: 0 },
-        u_resolution: { value: new T.Vector2(w, h) },
-      };
+        const uniforms = {
+          u_time: { value: 0 },
+          u_mouse: { value: new T.Vector2(0.5, 0.5) },
+          u_intensity: { value: 0 },
+          u_resolution: { value: new T.Vector2(w, h) },
+        };
 
-      const geometry = new T.PlaneGeometry(2, 2);
-      const material = new T.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms,
-      });
+        const geometry = new T.PlaneGeometry(2, 2);
+        const material = new T.ShaderMaterial({
+          vertexShader,
+          fragmentShader,
+          uniforms,
+        });
 
-      const mesh = new T.Mesh(geometry, material);
-      scene.add(mesh);
+        const mesh = new T.Mesh(geometry, material);
+        scene.add(mesh);
 
-      // Mouse & Touch tracking with window listeners
-      let targetMouse = { x: 0.5, y: 0.5 };
-      let currentMouse = { x: 0.5, y: 0.5 };
-      let prevMouse = { x: 0.5, y: 0.5 };
+        // Mouse & Touch tracking with window listeners
+        let targetMouse = { x: 0.5, y: 0.5 };
+        let currentMouse = { x: 0.5, y: 0.5 };
+        let prevMouse = { x: 0.5, y: 0.5 };
 
-      const handleMouseMove = (e: MouseEvent) => {
-        const rect = container.getBoundingClientRect();
-        targetMouse.x = (e.clientX - rect.left) / rect.width;
-        targetMouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
-      };
+        const handleMouseMove = (e: MouseEvent) => {
+          const rect = container.getBoundingClientRect();
+          targetMouse.x = (e.clientX - rect.left) / rect.width;
+          targetMouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
+        };
 
-      const handleTouchMove = (e: TouchEvent) => {
-        if (e.touches.length === 0) return;
-        const touch = e.touches[0];
-        const rect = container.getBoundingClientRect();
-        targetMouse.x = (touch.clientX - rect.left) / rect.width;
-        targetMouse.y = 1.0 - (touch.clientY - rect.top) / rect.height;
-      };
+        const handleTouchMove = (e: TouchEvent) => {
+          if (e.touches.length === 0) return;
+          const touch = e.touches[0];
+          const rect = container.getBoundingClientRect();
+          targetMouse.x = (touch.clientX - rect.left) / rect.width;
+          targetMouse.y = 1.0 - (touch.clientY - rect.top) / rect.height;
+        };
 
-      const handleTouchStart = (e: TouchEvent) => {
-        if (e.touches.length === 0) return;
-        const touch = e.touches[0];
-        const rect = container.getBoundingClientRect();
-        const x = (touch.clientX - rect.left) / rect.width;
-        const y = 1.0 - (touch.clientY - rect.top) / rect.height;
-        targetMouse.x = x;
-        targetMouse.y = y;
-        currentMouse.x = x;
-        currentMouse.y = y;
-        prevMouse.x = x;
-        prevMouse.y = y;
-      };
+        const handleTouchStart = (e: TouchEvent) => {
+          if (e.touches.length === 0) return;
+          const touch = e.touches[0];
+          const rect = container.getBoundingClientRect();
+          const x = (touch.clientX - rect.left) / rect.width;
+          const y = 1.0 - (touch.clientY - rect.top) / rect.height;
+          targetMouse.x = x;
+          targetMouse.y = y;
+          currentMouse.x = x;
+          currentMouse.y = y;
+          prevMouse.x = x;
+          prevMouse.y = y;
+        };
 
-      window.addEventListener('mousemove', handleMouseMove, { passive: true });
-      window.addEventListener('touchmove', handleTouchMove, { passive: true });
-      window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: true });
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
 
-      // ResizeObserver for section resize
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          const { width, height } = entry.contentRect;
-          if (width > 0 && height > 0) {
-            renderer.setSize(width, height);
-            uniforms.u_resolution.value.set(width, height);
+        // ResizeObserver for section resize
+        const resizeObserver = new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const { width, height } = entry.contentRect;
+            if (width > 0 && height > 0) {
+              renderer.setSize(width, height);
+              uniforms.u_resolution.value.set(width, height);
+            }
           }
-        }
-      });
-      resizeObserver.observe(container);
+        });
+        resizeObserver.observe(container);
 
-      const clock = new T.Clock();
+        const clock = new T.Clock();
 
-      let isVisible = true;
-      let animating = false;
+        let isVisible = true;
+        let animating = false;
 
-      const animate = () => {
-        if (!mounted || !isVisible) {
-          animating = false;
-          return;
-        }
-        animating = true;
-        animId = requestAnimationFrame(animate);
+        const animate = () => {
+          if (!mounted || !isVisible) {
+            animating = false;
+            return;
+          }
+          animating = true;
+          animId = requestAnimationFrame(animate);
 
-        const elapsedTime = clock.getElapsedTime();
-        uniforms.u_time.value = elapsedTime;
+          const elapsedTime = clock.getElapsedTime();
+          uniforms.u_time.value = elapsedTime;
 
-        // Smooth lerp mouse
-        currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
-        currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
-        uniforms.u_mouse.value.set(currentMouse.x, currentMouse.y);
+          // Smooth lerp mouse
+          currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
+          currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
+          uniforms.u_mouse.value.set(currentMouse.x, currentMouse.y);
 
-        // Velocity-driven intensity with base idle wave shimmer
-        const dx = currentMouse.x - prevMouse.x;
-        const dy = currentMouse.y - prevMouse.y;
-        const velocity = Math.sqrt(dx * dx + dy * dy);
-        
-        // Dynamic shimmer wave for organic movement when static or on mobile
-        const idleShimmer = 0.05 + Math.sin(elapsedTime * 1.5) * 0.02;
-        const targetIntensity = velocity > 0.0001 ? (velocity * 8) : idleShimmer;
-        
-        uniforms.u_intensity.value += (targetIntensity - uniforms.u_intensity.value) * 0.1;
-        
-        prevMouse.x = currentMouse.x;
-        prevMouse.y = currentMouse.y;
+          // Velocity-driven intensity with base idle wave shimmer
+          const dx = currentMouse.x - prevMouse.x;
+          const dy = currentMouse.y - prevMouse.y;
+          const velocity = Math.sqrt(dx * dx + dy * dy);
+          
+          // Dynamic shimmer wave for organic movement when static or on mobile
+          const idleShimmer = 0.05 + Math.sin(elapsedTime * 1.5) * 0.02;
+          const targetIntensity = velocity > 0.0001 ? (velocity * 8) : idleShimmer;
+          
+          uniforms.u_intensity.value += (targetIntensity - uniforms.u_intensity.value) * 0.1;
+          
+          prevMouse.x = currentMouse.x;
+          prevMouse.y = currentMouse.y;
 
-        renderer.render(scene, camera);
-      };
+          renderer.render(scene, camera);
+        };
 
-      const intersectionObserver = new IntersectionObserver((entries) => {
-        const visible = entries[0].isIntersecting;
-        isVisible = visible;
-        if (visible && !animating) {
-          clock.getDelta(); // reset clock delta to prevent jump
-          animate();
-        }
-      }, { threshold: 0.01 });
-      intersectionObserver.observe(container);
+        const intersectionObserver = new IntersectionObserver((entries) => {
+          const visible = entries[0].isIntersecting;
+          isVisible = visible;
+          if (visible && !animating) {
+            clock.getDelta(); // reset clock delta to prevent jump
+            animate();
+          }
+        }, { threshold: 0.01 });
+        intersectionObserver.observe(container);
 
-      animate();
+        animate();
 
-      // Cleanup stored for unmount
-      const cleanup = () => {
-        mounted = false;
-        cancelAnimationFrame(animId);
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('touchmove', handleTouchMove);
-        window.removeEventListener('touchstart', handleTouchStart);
-        resizeObserver.disconnect();
-        intersectionObserver.disconnect();
-        geometry.dispose();
-        material.dispose();
-        renderer.dispose();
-        if (renderer.domElement.parentNode === container) {
-          container.removeChild(renderer.domElement);
-        }
-      };
+        // Cleanup stored for unmount
+        const cleanup = () => {
+          mounted = false;
+          cancelAnimationFrame(animId);
+          window.removeEventListener('mousemove', handleMouseMove);
+          window.removeEventListener('touchmove', handleTouchMove);
+          window.removeEventListener('touchstart', handleTouchStart);
+          resizeObserver.disconnect();
+          intersectionObserver.disconnect();
+          geometry.dispose();
+          material.dispose();
+          renderer.dispose();
+          if (renderer.domElement.parentNode === container) {
+            container.removeChild(renderer.domElement);
+          }
+        };
 
-      // Store cleanup on the container as a data attribute workaround
-      (container as any).__cleanup = cleanup;
+        // Store cleanup on the container as a data attribute workaround
+        (container as any).__cleanup = cleanup;
+      } catch (err) {
+        console.error('WebGL initialization failed in HowWeWorkBackground:', err);
+      }
     });
 
     return () => {

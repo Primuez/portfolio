@@ -80,18 +80,18 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: 'https://primuez.com/favicon.ico', sizes: 'any' },
+      { url: 'https://primuez.com/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: 'https://primuez.com/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: 'https://primuez.com/favicon.svg', type: 'image/svg+xml' },
+      { url: 'https://primuez.com/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: 'https://primuez.com/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: 'https://primuez.com/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  manifest: '/site.webmanifest',
+  manifest: 'https://primuez.com/site.webmanifest',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

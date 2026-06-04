@@ -11,6 +11,7 @@ export function ModelViewer() {
   const [loadedCount, setLoadedCount] = useState(0);
   const loadedRef = useRef(0);
   const router = useRouter();
+  const [webglFailed, setWebglFailed] = useState(false);
 
   const onTextureLoaded = useCallback(() => {
     loadedRef.current += 1;
@@ -31,14 +32,15 @@ export function ModelViewer() {
     ]).then(([T, { OrbitControls }]: [typeof THREE, { OrbitControls: typeof OrbitControlsType }]) => {
       if (!mounted || !mount) return;
 
-      const w = mount.clientWidth;
-      const h = mount.clientHeight;
+      try {
+        const w = mount.clientWidth;
+        const h = mount.clientHeight;
 
-      const scene = new T.Scene();
-      const camera = new T.PerspectiveCamera(45, w / h, 0.1, 1000);
-      camera.position.set(0, 0, 5.5);
+        const scene = new T.Scene();
+        const camera = new T.PerspectiveCamera(45, w / h, 0.1, 1000);
+        camera.position.set(0, 0, 5.5);
 
-      const renderer = new T.WebGLRenderer({ antialias: !isMobile, alpha: true });
+        const renderer = new T.WebGLRenderer({ antialias: !isMobile, alpha: true });
       renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
       mount.appendChild(renderer.domElement);
@@ -232,19 +234,23 @@ export function ModelViewer() {
       };
       window.addEventListener('resize', onResize);
 
-      cleanupFn = () => {
-        observer.disconnect();
-        window.removeEventListener('resize', onResize);
-        renderer.domElement.removeEventListener('dblclick', handleDblClick);
-        renderer.domElement.removeEventListener('touchend', handleTouchEnd);
-        cancelAnimationFrame(animId);
-        controls.dispose();
-        for (const d of disposables) d.dispose();
-        renderer.dispose();
-        if (renderer.domElement.parentNode === mount) {
-          mount.removeChild(renderer.domElement);
-        }
-      };
+        cleanupFn = () => {
+          observer.disconnect();
+          window.removeEventListener('resize', onResize);
+          renderer.domElement.removeEventListener('dblclick', handleDblClick);
+          renderer.domElement.removeEventListener('touchend', handleTouchEnd);
+          cancelAnimationFrame(animId);
+          controls.dispose();
+          for (const d of disposables) d.dispose();
+          renderer.dispose();
+          if (renderer.domElement.parentNode === mount) {
+            mount.removeChild(renderer.domElement);
+          }
+        };
+      } catch (err) {
+        console.error('WebGL initialization failed in ModelViewer:', err);
+        setWebglFailed(true);
+      }
     });
 
     return () => {
@@ -252,6 +258,20 @@ export function ModelViewer() {
       cleanupFn?.();
     };
   }, [onTextureLoaded, router, isMobile]);
+
+  if (webglFailed) {
+    return (
+      <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
+        <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan tracking-widest bg-black/60 px-3 py-1 rounded border border-cyan/20 backdrop-blur-md">
+          n8n_CORE_ORCHESTRATOR.obj
+        </div>
+        <div className="w-12 h-12 rounded-full border border-cyan/20 flex items-center justify-center text-cyan bg-cyan/5">
+          🌐
+        </div>
+        <span className="font-mono text-xs text-text-muted tracking-widest">3D GLOBE FALLBACK ACTIVE</span>
+      </div>
+    );
+  }
 
   const isLoading = loadedCount < 5;
 
