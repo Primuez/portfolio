@@ -28,6 +28,8 @@ export function ShaderLogoGlow({
   const programRef = useRef<WebGLProgram | null>(null);
   const startTimeRef = useRef(Date.now());
   const [webglSupported, setWebglSupported] = useState(true);
+  const isVisibleRef = useRef(true);
+  const animatingRef = useRef(false);
 
   const vertexShader = `
     attribute vec2 a_position;
@@ -151,7 +153,14 @@ export function ShaderLogoGlow({
     const canvas = canvasRef.current;
     if (!gl || !program || !canvas) return;
 
-    const dpr = Math.min(window.devicePixelRatio, 1.5);
+    if (!isVisibleRef.current) {
+      animatingRef.current = false;
+      return;
+    }
+    animatingRef.current = true;
+
+    const isMobileDevice = window.innerWidth < 768;
+    const dpr = isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.5);
     const w = Math.floor(canvas.clientWidth * dpr);
     const h = Math.floor(canvas.clientHeight * dpr);
     if (canvas.width !== w || canvas.height !== h) {
@@ -176,10 +185,26 @@ export function ShaderLogoGlow({
   useEffect(() => {
     const success = initGL();
     if (!success) return;
+    animatingRef.current = true;
     rafRef.current = requestAnimationFrame(render);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries[0].isIntersecting;
+        isVisibleRef.current = visible;
+        if (visible && !animatingRef.current) {
+          render();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    if (canvasRef.current) {
+      observer.observe(canvasRef.current);
+    }
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      observer.disconnect();
       const gl = glRef.current;
       if (gl) {
         const ext = gl.getExtension('WEBGL_lose_context');

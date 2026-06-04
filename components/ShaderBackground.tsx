@@ -30,6 +30,8 @@ export function ShaderBackground({
   const glRef = useRef<WebGLRenderingContext | null>(null);
   const programRef = useRef<WebGLProgram | null>(null);
   const startTimeRef = useRef(Date.now());
+  const isVisibleRef = useRef(true);
+  const animatingRef = useRef(false);
 
   const vertexShaderSource = `
     attribute vec2 a_position;
@@ -205,9 +207,16 @@ export function ShaderBackground({
     const canvas = canvasRef.current;
     if (!gl || !program || !canvas) return;
 
-    // DPR capped at 1.5 on ALL devices to maintain 60fps
+    if (!isVisibleRef.current) {
+      animatingRef.current = false;
+      return;
+    }
+    animatingRef.current = true;
+
+    // DPR capped at 1.0 on mobile and 1.5 on desktop to maintain 60fps
     // This is the critical mobile optimization
-    const dpr = Math.min(window.devicePixelRatio, 1.5);
+    const isMobileDevice = window.innerWidth < 768;
+    const dpr = isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.5);
     const w = Math.floor(canvas.clientWidth * dpr);
     const h = Math.floor(canvas.clientHeight * dpr);
     if (canvas.width !== w || canvas.height !== h) {
@@ -237,7 +246,22 @@ export function ShaderBackground({
 
   useEffect(() => {
     initGL();
+    animatingRef.current = true;
     rafRef.current = requestAnimationFrame(render);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries[0].isIntersecting;
+        isVisibleRef.current = visible;
+        if (visible && !animatingRef.current) {
+          render();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    if (canvasRef.current) {
+      observer.observe(canvasRef.current);
+    }
 
     // Mouse & Touch handler — binds both to u_mouse uniform
     const handleMove = (e: MouseEvent | TouchEvent) => {
@@ -272,6 +296,7 @@ export function ShaderBackground({
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      observer.disconnect();
       window.removeEventListener('mousemove', handleMove);
       window.removeEventListener('touchmove', handleMove);
       window.removeEventListener('touchstart', handleTouchStart);
