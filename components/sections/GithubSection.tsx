@@ -77,16 +77,28 @@ function LiquidRepoCard({
   // Alternate 3D tilt directions for a gorgeous layout cascade
   const tiltAngle = index % 3 === 0 ? -12 : index % 3 === 2 ? 12 : 0;
 
+  const initialAnim = isMobile
+    ? { opacity: 0, x: index % 2 === 0 ? -60 : 60, scale: 0.95, filter: 'blur(4px)' }
+    : { opacity: 0, y: 100, rotateX: -45, rotateY: index % 3 === 0 ? -25 : index % 3 === 2 ? 25 : 0, scale: 0.88, z: -150, filter: 'blur(8px)' };
+
+  const whileInViewAnim = isMobile
+    ? { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }
+    : { opacity: 1, y: 0, rotateX: 0, rotateY: 0, scale: 1, z: 0, filter: 'blur(0px)' };
+
   return (
     <motion.a
       href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
       style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
-      initial={{ opacity: 0, y: 80, scale: 0.92, rotateX: -15, rotateY: tiltAngle }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, rotateY: 0 }}
+      initial={initialAnim}
+      whileInView={whileInViewAnim}
       viewport={{ once: true, margin: isMobile ? '-15px' : '-40px' }}
-      transition={{ duration: 1.4, delay: index * 0.18, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ 
+        duration: isMobile ? 0.8 : 1.4, 
+        delay: index * (isMobile ? 0.12 : 0.18), 
+        ease: [0.16, 1, 0.3, 1] 
+      }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
     >

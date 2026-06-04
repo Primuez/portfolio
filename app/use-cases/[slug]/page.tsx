@@ -115,7 +115,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     title: `${data.title} | Primuez`,
     description: data.responseText,
     alternates: {
-      canonical: `https://primuez.com/use-cases/${slug}`
+      canonical: `https://primuez.in/use-cases/${slug}`
     }
   };
 }

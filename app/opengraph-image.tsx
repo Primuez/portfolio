@@ -126,7 +126,7 @@ export default function OGImage() {
             letterSpacing: '2px',
           }}
         >
-          primuez.com
+          primuez.in
         </div>
       </div>
     ),

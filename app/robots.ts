@@ -23,7 +23,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://primuez.com/sitemap.xml',
-    host: 'https://primuez.com',
+    sitemap: 'https://primuez.in/sitemap.xml',
+    host: 'https://primuez.in',
   };
 }
