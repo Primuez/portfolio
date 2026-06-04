@@ -9,8 +9,22 @@ import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
 import { StockChart } from '@/components/StockChart';
 import { YouTubeThumb } from '@/components/YouTubeThumb';
-import { ModelViewer } from '@/components/ModelViewer';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import dynamic from 'next/dynamic';
+import { useInView } from 'motion/react';
+
+const ModelViewer = dynamic(
+  () => import('@/components/ModelViewer').then((mod) => mod.ModelViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
+        <span className="font-mono text-xs text-cyan tracking-widest animate-pulse">LOADING GLOBE…</span>
+      </div>
+    ),
+  }
+);
 import { ShaderBackgroundSection } from '@/components/ShaderBackground';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
@@ -20,6 +34,8 @@ import { useUI } from '@/lib/contexts/UIContext';
 export const ProjectsSection: React.FC = () => {
   const { isMobile, setModalType } = useUI();
   const [favOpen, setFavOpen] = useState(false);
+  const globeContainerRef = React.useRef<HTMLDivElement>(null);
+  const isGlobeInView = useInView(globeContainerRef, { once: true, margin: "200px" });
 
   return (
     <motion.section 
@@ -225,9 +241,16 @@ export const ProjectsSection: React.FC = () => {
                   </motion.li>
                 </ul>
               </div>
-              <div>
+              <div ref={globeContainerRef}>
                 <ErrorBoundary>
-                  <ModelViewer />
+                  {isGlobeInView ? (
+                    <ModelViewer />
+                  ) : (
+                    <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
+                      <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
+                      <span className="font-mono text-xs text-cyan tracking-widest">LOADING GLOBE…</span>
+                    </div>
+                  )}
                 </ErrorBoundary>
               </div>
             </div>

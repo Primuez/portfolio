@@ -105,7 +105,8 @@ export function HowWeWorkBackground() {
       const camera = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
       const renderer = new T.WebGLRenderer({ antialias: false, alpha: false });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Optimized mobile resolution
+      const isMobileDevice = window.innerWidth < 768;
+      renderer.setPixelRatio(isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.5)); // Capped at 1.0 for mobile, 1.5 for desktop
       renderer.setSize(w, h);
       container.appendChild(renderer.domElement);
       canvasRef.current = renderer.domElement;
@@ -178,8 +179,15 @@ export function HowWeWorkBackground() {
 
       const clock = new T.Clock();
 
+      let isVisible = true;
+      let animating = false;
+
       const animate = () => {
-        if (!mounted) return;
+        if (!mounted || !isVisible) {
+          animating = false;
+          return;
+        }
+        animating = true;
         animId = requestAnimationFrame(animate);
 
         const elapsedTime = clock.getElapsedTime();
@@ -207,6 +215,16 @@ export function HowWeWorkBackground() {
         renderer.render(scene, camera);
       };
 
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        const visible = entries[0].isIntersecting;
+        isVisible = visible;
+        if (visible && !animating) {
+          clock.getDelta(); // reset clock delta to prevent jump
+          animate();
+        }
+      }, { threshold: 0.01 });
+      intersectionObserver.observe(container);
+
       animate();
 
       // Cleanup stored for unmount
@@ -217,6 +235,7 @@ export function HowWeWorkBackground() {
         window.removeEventListener('touchmove', handleTouchMove);
         window.removeEventListener('touchstart', handleTouchStart);
         resizeObserver.disconnect();
+        intersectionObserver.disconnect();
         geometry.dispose();
         material.dispose();
         renderer.dispose();
