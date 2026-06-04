@@ -319,6 +319,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <meta name="theme-color" content="#00f0ff" />
         <meta name="msapplication-TileColor" content="#0a0a0f" />
         <link rel="canonical" href="https://primuez.in" />
+        <link rel="image_src" href="https://primuez.in/opengraph-image.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
