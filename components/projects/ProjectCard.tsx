@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useMotionTemplate } from 'motion/react';
-import { Link as IconLink } from 'lucide-react';
+import { Link as IconLink, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ProjectCardProps {
   name: string;
@@ -91,7 +91,7 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
         )}
       </div>
       
-      <p className="text-text-muted text-sm leading-relaxed mb-6 relative z-[1]">{desc}</p>
+      <ExpandableDesc desc={desc} />
       
       {children && <div className="mb-6 relative z-10">{children}</div>}
 
@@ -103,5 +103,28 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
         ))}
       </div>
     </motion.div>
+  );
+}
+
+function ExpandableDesc({ desc }: { desc: string }) {
+  const [expanded, setExpanded] = useState(false);
+  // Descriptions over ~120 chars benefit from truncation on mobile
+  const isLong = desc.length > 120;
+
+  return (
+    <div className="mb-6 relative z-[1]">
+      <p className={`text-text-muted text-sm leading-relaxed ${!expanded && isLong ? 'line-clamp-3' : ''}`}>
+        {desc}
+      </p>
+      {isLong && (
+        <button
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setExpanded(v => !v); }}
+          className="mt-1.5 flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors md:hidden"
+          aria-label={expanded ? 'Show less' : 'Read more'}
+        >
+          {expanded ? <><ChevronUp size={12} /> Show less</> : <><ChevronDown size={12} /> Read more</>}
+        </button>
+      )}
+    </div>
   );
 }
