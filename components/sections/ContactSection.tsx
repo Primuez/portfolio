@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useAnimation } from 'motion/react';
 import { Github, Linkedin, Twitter, Instagram, Send } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -27,10 +27,15 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode, label: strin
   );
 }
 
+/**
+ * FallingPiece — uses the imperative useAnimation API so the drag gesture
+ * never fights a declarative animate-prop animation.
+ */
 function FallingPiece({
   children,
   container,
   collapsed,
+  permanent,
   dx,
   dy,
   rotate,
@@ -40,36 +45,67 @@ function FallingPiece({
   children: React.ReactNode;
   container: React.RefObject<HTMLDivElement | null>;
   collapsed: boolean;
+  permanent: boolean;
   dx: number;
   dy: number;
   rotate: number;
   delay: number;
   className?: string;
 }) {
-  const [dragged, setDragged] = useState(false);
+  const controls = useAnimation();
+  const isDragging = useRef(false);
 
   useEffect(() => {
-    if (!collapsed) {
-      setDragged(false);
+    if (permanent) {
+      controls.start({ x: 0, y: 0, rotate: 0, transition: { duration: 0.4, ease: 'easeInOut' } });
+      return;
     }
-  }, [collapsed]);
+    if (collapsed) {
+      controls.start({
+        x: dx,
+        y: dy,
+        rotate,
+        transition: { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay },
+      });
+    } else {
+      if (!isDragging.current) {
+        controls.start({
+          x: 0, y: 0, rotate: 0,
+          transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+        });
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collapsed, permanent]);
+
+  if (permanent) {
+    return (
+      <motion.div
+        className={`inline-block select-none pointer-events-none ${className}`}
+        animate={controls}
+      >
+        {children}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
-      className={`inline-block pointer-events-auto cursor-grab active:cursor-grabbing select-none ${className}`}
-      drag={true}
+      className={`inline-block pointer-events-auto ${collapsed ? 'cursor-grab active:cursor-grabbing' : ''} select-none ${className}`}
+      animate={controls}
+      drag={collapsed}
       dragConstraints={container}
       dragElastic={0.55}
       dragMomentum
       whileDrag={{ scale: 1.08, zIndex: 50 }}
-      onDragStart={() => setDragged(true)}
-      animate={dragged ? undefined : (collapsed ? { x: dx, y: dy, rotate } : { x: 0, y: 0, rotate: 0 })}
-      transition={
-        collapsed
-          ? { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay }
-          : { duration: 0.3, ease: 'easeInOut' }
-      }
-      style={{ touchAction: 'none' }}
+      onDragStart={() => {
+        isDragging.current = true;
+        controls.stop();
+      }}
+      onDragEnd={() => {
+        isDragging.current = false;
+      }}
+      style={{ touchAction: collapsed ? 'none' : 'auto' }}
     >
       {children}
     </motion.div>
@@ -155,6 +191,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               key={i}
               container={containerRef}
               collapsed={collapsed}
+              permanent={permanent}
               dx={w.x}
               dy={w.y}
               rotate={w.rot}
@@ -166,14 +203,14 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           ))}
         </div>
 
-        <FallingPiece container={containerRef} collapsed={collapsed} dx={-140 * xs} dy={300 * ys} rotate={-6} delay={0.28}>
+        <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={-140 * xs} dy={300 * ys} rotate={-6} delay={0.28}>
           <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
             If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
           </p>
         </FallingPiece>
 
         <div className="mt-10 flex justify-center">
-          <FallingPiece container={containerRef} collapsed={collapsed} dx={120 * xs} dy={240 * ys} rotate={12} delay={0.4}>
+          <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={120 * xs} dy={240 * ys} rotate={12} delay={0.4}>
             <GlassButton
               size="lg"
               onClick={onContact}
@@ -186,7 +223,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <FallingPiece container={containerRef} collapsed={collapsed} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
+          <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
             <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center pointer-events-auto">
               Or direct comm-link: <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors py-2 md:py-0">contact@primuez.in</a>
               <button
@@ -202,7 +239,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
         <div className="mt-12 flex flex-wrap justify-center gap-4">
           {socials.map((s, i) => (
-            <FallingPiece key={i} container={containerRef} collapsed={collapsed} dx={s.x} dy={s.y} rotate={s.rot} delay={s.delay}>
+            <FallingPiece key={i} container={containerRef} collapsed={collapsed} permanent={permanent} dx={s.x} dy={s.y} rotate={s.rot} delay={s.delay}>
               <SocialIcon icon={s.icon} label={s.label} href={s.href} />
             </FallingPiece>
           ))}

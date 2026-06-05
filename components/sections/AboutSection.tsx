@@ -9,27 +9,27 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 /* ── Spectacular 3D vault-door swing entrance variants ── */
 const cardA1Variants = {
-  hidden: { opacity: 0, x: -100, rotateY: 18, scale: 0.9, transformOrigin: 'left center' },
-  visible: { opacity: 1, x: 0, rotateY: 0, scale: 1 },
+  hidden: { opacity: 0, x: -120, rotateY: 24, rotateZ: -4, scale: 0.88, transformOrigin: 'left center' },
+  visible: { opacity: 1, x: 0, rotateY: 0, rotateZ: 0, scale: 1 },
 };
 
 const cardA2Variants = {
-  hidden: { opacity: 0, y: 100, rotateX: 18, scale: 0.9, transformOrigin: 'bottom center' },
-  visible: { opacity: 1, y: 0, rotateX: 0, scale: 1 },
+  hidden: { opacity: 0, y: 120, rotateX: 22, rotateZ: 3, scale: 0.88, transformOrigin: 'bottom center' },
+  visible: { opacity: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1 },
 };
 
 const cardB1Variants = {
-  hidden: { opacity: 0, x: 100, rotateY: -18, scale: 0.9, transformOrigin: 'right center' },
-  visible: { opacity: 1, x: 0, rotateY: 0, scale: 1 },
+  hidden: { opacity: 0, x: 120, rotateY: -24, rotateZ: 4, scale: 0.88, transformOrigin: 'right center' },
+  visible: { opacity: 1, x: 0, rotateY: 0, rotateZ: 0, scale: 1 },
 };
 
 const cardB2Variants = {
-  hidden: { opacity: 0, y: 100, rotateX: 18, scale: 0.9, transformOrigin: 'bottom center' },
-  visible: { opacity: 1, y: 0, rotateX: 0, scale: 1 },
+  hidden: { opacity: 0, y: -80, rotateX: -18, rotateZ: -3, scale: 0.9, transformOrigin: 'top center' },
+  visible: { opacity: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1 },
 };
 
 const cardTransition = (delay: number) => ({
-  duration: 1.1,
+  duration: 1.2,
   delay,
   ease: [0.16, 1, 0.3, 1] as const,
 });
@@ -133,7 +133,7 @@ export const AboutSection: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.15)}
+            transition={cardTransition(0.20)}
             style={{ y: yCardA2 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-amber/35 transition-colors duration-700"
           >
@@ -175,7 +175,7 @@ export const AboutSection: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.08)}
+            transition={cardTransition(0.10)}
             style={{ y: yCardB2 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
@@ -215,7 +215,7 @@ export const AboutSection: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.22)}
+            transition={cardTransition(0.30)}
             style={{ y: yCardB1 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
