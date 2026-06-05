@@ -169,13 +169,53 @@ export const AboutSection: React.FC = () => {
         {/* ╔═══ COLUMN B ═══╗ */}
         <motion.div style={{ y: yB }} className="flex flex-col gap-5 md:gap-8">
 
+          {/* Card B2: Core Identity — slides in from right */}
+          <motion.div
+            variants={cardB2Variants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-40px' }}
+            transition={cardTransition(0.08)}
+            style={{ y: yCardB2 }}
+            className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
+          >
+            <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
+                <span>[ 04 ]</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
+                <Brain size={14} strokeWidth={1.2} className="text-cyan animate-pulse ml-auto" />
+              </div>
+
+              <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white leading-[1.1] font-sans mb-4 md:mb-5">
+                I am{' '}
+                <ShaderIridescentText className="font-bold">
+                  Rahul Kasturiya
+                </ShaderIridescentText>
+                <span className="text-zinc-300 block mt-2 text-lg md:text-2xl font-medium">
+                  Known as Primuez.
+                </span>
+              </h3>
+
+              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
+                <p>
+                  I orchestrate high-availability pipelines that seamlessly tie external tools to central enterprise databases. Inbound streams from IndiaMART flow cleanly into Odoo, sales orders compile automatically, and follow-up systems run with absolute zero maintenance.
+                </p>
+                <p className="text-zinc-300/90 text-xs md:text-sm">
+                  By nesting <strong className="text-white font-medium">n8n workflow networks</strong>,{' '}
+                  <strong className="text-white font-medium">autonomous AI sandboxes</strong>, and{' '}
+                  <strong className="text-white font-medium">Cloudflare Edge workers</strong>, I solve workflow bottlenecks at the architectural level.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Card B1: Live Telemetry — slides in from right */}
           <motion.div
             variants={cardB1Variants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.08)}
+            transition={cardTransition(0.22)}
             style={{ y: yCardB1 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
@@ -232,46 +272,6 @@ export const AboutSection: React.FC = () => {
                     <p className="text-[10px] text-zinc-300 mt-0.5 font-sans leading-normal">Distributed long-lived queues managing continuous database synchronizations and state audits.</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card B2: Core Identity — slides in from right */}
-          <motion.div
-            variants={cardB2Variants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.22)}
-            style={{ y: yCardB2 }}
-            className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
-          >
-            <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
-              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
-                <span>[ 04 ]</span>
-                <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
-                <Brain size={14} strokeWidth={1.2} className="text-cyan animate-pulse ml-auto" />
-              </div>
-
-              <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white leading-[1.1] font-sans mb-4 md:mb-5">
-                I am{' '}
-                <ShaderIridescentText className="font-bold">
-                  Rahul Kasturiya
-                </ShaderIridescentText>
-                <span className="text-zinc-300 block mt-2 text-lg md:text-2xl font-medium">
-                  Known as Primuez.
-                </span>
-              </h3>
-
-              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
-                <p>
-                  I orchestrate high-availability pipelines that seamlessly tie external tools to central enterprise databases. Inbound streams from IndiaMART flow cleanly into Odoo, sales orders compile automatically, and follow-up systems run with absolute zero maintenance.
-                </p>
-                <p className="text-zinc-300/90 text-xs md:text-sm">
-                  By nesting <strong className="text-white font-medium">n8n workflow networks</strong>,{' '}
-                  <strong className="text-white font-medium">autonomous AI sandboxes</strong>, and{' '}
-                  <strong className="text-white font-medium">Cloudflare Edge workers</strong>, I solve workflow bottlenecks at the architectural level.
-                </p>
               </div>
             </div>
           </motion.div>
