@@ -111,19 +111,17 @@ export const AboutSection: React.FC = () => {
                 <ShaderIridescentText className="font-bold">
                   Rahul Kasturiya
                 </ShaderIridescentText>
-                <span className="text-zinc-300 block mt-2 text-lg md:text-2xl font-medium">
-                  Known as Primuez.
+                <span className="text-zinc-300 block mt-2 text-base md:text-lg font-medium italic border-l-2 border-cyan/40 pl-4 py-1 leading-relaxed text-balance">
+                  &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
                 </span>
               </h3>
 
               <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
                 <p>
-                  I orchestrate high-availability pipelines that seamlessly tie external tools to central enterprise databases. Inbound streams from IndiaMART flow cleanly into Odoo, sales orders compile automatically, and follow-up systems run with absolute zero maintenance.
+                  I build custom, production-grade automation systems that eliminate manual overhead for small and medium businesses. Instead of throwing complex developer jargon at you, I focus on the only metrics that matter: saving your team hours of daily manual work, reducing data errors to zero, and letting you run your business with complete freedom.
                 </p>
                 <p className="text-zinc-300/90 text-xs md:text-sm">
-                  By nesting <strong className="text-white font-medium">n8n workflow networks</strong>,{' '}
-                  <strong className="text-white font-medium">autonomous AI sandboxes</strong>, and{' '}
-                  <strong className="text-white font-medium">Cloudflare Edge workers</strong>, I solve workflow bottlenecks at the architectural level.
+                  Whether it is routing leads instantly into your CRM or automating daily reconciliation, I design systems that work silently in the background so you can focus on growth.
                 </p>
               </div>
             </div>
@@ -255,11 +253,9 @@ export const AboutSection: React.FC = () => {
                 <Terminal size={14} strokeWidth={1.2} className="text-purple-400 animate-pulse ml-auto" />
               </div>
 
-              <blockquote className="text-white italic text-sm md:text-base border-l-2 border-cyan/40 pl-4 py-1 leading-relaxed font-sans mb-4">
-                &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
-              </blockquote>
-              <p className="text-zinc-200 text-xs md:text-sm leading-relaxed font-sans">
-                I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic.
+              <h3 className="text-lg font-bold text-white mb-3 font-sans">The Operator Creed</h3>
+              <p className="text-zinc-200 text-xs md:text-sm leading-relaxed font-sans mb-4">
+                I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic. I build the behind-the-scenes engines that run your business 24/7 without requiring active management.
               </p>
 
               {/* ASCII terminal creed */}
