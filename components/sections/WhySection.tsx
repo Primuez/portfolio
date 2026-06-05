@@ -154,7 +154,7 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
           </div>
 
           {/* Toggle — sticky inside scroll zone, always visible */}
-          <div className="absolute bottom-10 right-6 md:right-10 z-30 flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl font-mono text-[9px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          <div className="absolute bottom-10 left-6 md:left-10 z-30 flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl font-mono text-[9px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setDetailMode('brief')}
               className={`px-3 py-2 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
