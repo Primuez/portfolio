@@ -196,8 +196,8 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         </div>
 
         <FallingPiece container={containerRef} collapsed={collapsed} dx={-140 * xs} dy={300 * ys} rotate={-6} delay={0.28}>
-          <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2">
-            Open to freelance projects, automation consulting, SaaS collabs, and enterprise systems. Drop an inquiry or book a synchronous demo.
+          <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
+            If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
           </p>
         </FallingPiece>
 
@@ -209,7 +209,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               glowColor="rgba(0, 240, 255, 0.3)"
               className="glass-btn-glow text-cyan hover:text-white"
             >
-              <Send size={16} /> Work With Me
+              <Send size={16} /> Let&apos;s Connect
             </GlassButton>
           </FallingPiece>
         </div>

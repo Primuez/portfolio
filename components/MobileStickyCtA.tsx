@@ -64,7 +64,7 @@ export function MobileStickyCtA() {
           href="#contact"
           className="flex items-center justify-center w-full min-h-[56px] bg-cyan/90 hover:bg-cyan text-[#0a0a0f] font-mono text-sm font-bold uppercase tracking-widest transition-colors duration-200"
         >
-          Start a Project &rarr;
+          Let&apos;s Talk &rarr;
         </a>
       </div>
     </div>

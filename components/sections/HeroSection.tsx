@@ -104,7 +104,7 @@ export const HeroSection: React.FC = () => {
             glowColor="rgba(0, 240, 255, 0.25)"
             className="glass-btn-glow text-cyan hover:text-white"
           >
-            Work With Me
+            Let&apos;s Talk
           </GlassButton>
           <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
             <Download size={16} /> Resume

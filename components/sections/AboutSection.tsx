@@ -89,7 +89,7 @@ export const AboutSection: React.FC = () => {
         {/* ╔═══ COLUMN A ═══╗ */}
         <motion.div style={{ y: yA }} className="flex flex-col gap-5 md:gap-8">
 
-          {/* Card A1: Core Identity — slides in from left */}
+          {/* Card A1: Operator Creed — slides in from left */}
           <motion.div
             variants={cardA1Variants}
             initial="hidden"
@@ -97,32 +97,32 @@ export const AboutSection: React.FC = () => {
             viewport={{ once: true, margin: '-40px' }}
             transition={cardTransition(0)}
             style={{ y: yCardA1 }}
-            className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
+            className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
               <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
                 <span>[ 01 ]</span>
-                <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
-                <Brain size={14} strokeWidth={1.2} className="text-cyan animate-pulse ml-auto" />
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">operator_creed</span>
+                <Terminal size={14} strokeWidth={1.2} className="text-purple-400 animate-pulse ml-auto" />
               </div>
 
-              <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white leading-[1.1] font-sans mb-4 md:mb-5">
-                I am{' '}
-                <ShaderIridescentText className="font-bold">
-                  Rahul Kasturiya
-                </ShaderIridescentText>
-                <span className="text-zinc-300 block mt-2 text-base md:text-lg font-medium italic border-l-2 border-cyan/40 pl-4 py-1 leading-relaxed text-balance">
-                  &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
-                </span>
-              </h3>
+              <blockquote className="text-white italic text-sm md:text-base border-l-2 border-cyan/40 pl-4 py-1 leading-relaxed font-sans mb-4">
+                &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
+              </blockquote>
+              <p className="text-zinc-200 text-xs md:text-sm leading-relaxed font-sans mb-4">
+                I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic.
+              </p>
 
-              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
-                <p>
-                  I build custom, production-grade automation systems that eliminate manual overhead for small and medium businesses. Instead of throwing complex developer jargon at you, I focus on the only metrics that matter: saving your team hours of daily manual work, reducing data errors to zero, and letting you run your business with complete freedom.
-                </p>
-                <p className="text-zinc-300/90 text-xs md:text-sm">
-                  Whether it is routing leads instantly into your CRM or automating daily reconciliation, I design systems that work silently in the background so you can focus on growth.
-                </p>
+              {/* ASCII terminal creed */}
+              <div className="mt-4 md:mt-5 bg-black/50 p-3 md:p-4 rounded-xl border border-white/[0.03] font-mono text-[10px] text-zinc-300 space-y-1.5">
+                <div className="text-emerald-400 font-semibold">$&gt; primuez --execute-creed</div>
+                <div>[SUCCESS] PRACTICALITY_OVER_HYPOTHESIS = TRUE</div>
+                <div>[SUCCESS] BARE_METAL_AUTONOMY = ACTIVE</div>
+                <div className="text-zinc-400">// Raipur Core Integration // रायपुर, छ.ग.</div>
+              </div>
+
+              <div className="mt-4 md:mt-5 border-t border-white/[0.04] pt-3 font-mono text-[9px] text-zinc-500 text-right">
+                EXECUTION OVER THEORY // 2026
               </div>
             </div>
           </motion.div>
@@ -236,7 +236,7 @@ export const AboutSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Card B2: Operator Creed — slides in from right */}
+          {/* Card B2: Core Identity — slides in from right */}
           <motion.div
             variants={cardB2Variants}
             initial="hidden"
@@ -244,30 +244,34 @@ export const AboutSection: React.FC = () => {
             viewport={{ once: true, margin: '-40px' }}
             transition={cardTransition(0.22)}
             style={{ y: yCardB2 }}
-            className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
+            className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
               <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
                 <span>[ 04 ]</span>
-                <span className="text-zinc-200 font-semibold uppercase tracking-wider">operator_creed</span>
-                <Terminal size={14} strokeWidth={1.2} className="text-purple-400 animate-pulse ml-auto" />
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
+                <Brain size={14} strokeWidth={1.2} className="text-cyan animate-pulse ml-auto" />
               </div>
 
-              <h3 className="text-lg font-bold text-white mb-3 font-sans">The Operator Creed</h3>
-              <p className="text-zinc-200 text-xs md:text-sm leading-relaxed font-sans mb-4">
-                I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic. I build the behind-the-scenes engines that run your business 24/7 without requiring active management.
-              </p>
+              <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white leading-[1.1] font-sans mb-4 md:mb-5">
+                I am{' '}
+                <ShaderIridescentText className="font-bold">
+                  Rahul Kasturiya
+                </ShaderIridescentText>
+                <span className="text-zinc-300 block mt-2 text-lg md:text-2xl font-medium">
+                  Known as Primuez.
+                </span>
+              </h3>
 
-              {/* ASCII terminal creed */}
-              <div className="mt-4 md:mt-5 bg-black/50 p-3 md:p-4 rounded-xl border border-white/[0.03] font-mono text-[10px] text-zinc-300 space-y-1.5">
-                <div className="text-emerald-400 font-semibold">$&gt; primuez --execute-creed</div>
-                <div>[SUCCESS] PRACTICALITY_OVER_HYPOTHESIS = TRUE</div>
-                <div>[SUCCESS] BARE_METAL_AUTONOMY = ACTIVE</div>
-                <div className="text-zinc-400">// Raipur Core Integration // रायपुर, छ.ग.</div>
-              </div>
-
-              <div className="mt-4 md:mt-5 border-t border-white/[0.04] pt-3 font-mono text-[9px] text-zinc-500 text-right">
-                EXECUTION OVER THEORY // 2026
+              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
+                <p>
+                  I orchestrate high-availability pipelines that seamlessly tie external tools to central enterprise databases. Inbound streams from IndiaMART flow cleanly into Odoo, sales orders compile automatically, and follow-up systems run with absolute zero maintenance.
+                </p>
+                <p className="text-zinc-300/90 text-xs md:text-sm">
+                  By nesting <strong className="text-white font-medium">n8n workflow networks</strong>,{' '}
+                  <strong className="text-white font-medium">autonomous AI sandboxes</strong>, and{' '}
+                  <strong className="text-white font-medium">Cloudflare Edge workers</strong>, I solve workflow bottlenecks at the architectural level.
+                </p>
               </div>
             </div>
           </motion.div>

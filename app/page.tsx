@@ -180,7 +180,7 @@ function HomeContent() {
                   glowColor="rgba(0, 240, 255, 0.3)"
                   className="mt-4 w-full glass-btn-glow text-cyan"
                 >
-                  Work With Me
+                  Let&apos;s Talk
                 </GlassButton>
               </div>
             </motion.div>

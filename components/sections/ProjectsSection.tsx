@@ -64,15 +64,15 @@ export const ProjectsSection: React.FC = () => {
             <ProjectCard 
               name="InkTwin" 
               url="https://ink-twin.primuez.in"
-              desc="For students, creators, and professionals who want to automate manual writing. Upload a photo of your handwriting to generate your personal font, render handwritten documents instantly from typed text, and download them as PDFs. Includes an AI homework solver."
-              tags={["AI Font Generation", "Personal Branding", "Document Automation"]}
+              desc="For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font to effortlessly generate documents. Upload a handwriting photo → generates your personal font. Type anything and it looks handwritten, download as PDF. Additional tools include AI homework solver from a photo."
+              tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
               logoUrl="/logo-inktwin.png"
             />
             <ProjectCard 
               name="PrimuezSure Advisor" 
               url="https://primuezsure.primuez.in"
-              desc="For insurance advisors, agents, and buyers who need instant policy decoding. An AI-powered assistant that breaks down complex policy documents, highlights hidden scam clauses, and provides grounded coverage guidance in plain English."
-              tags={["AI Policy Decoding", "Scam Detection", "Grounded Advice"]}
+              desc="For insurance advisors who need instant, multilingual policy decoding and automated fraud prevention, built securely on official data. AI-powered insurance advisor SaaS. Helps users understand and choose the right insurance coverage via intelligent Q&A."
+              tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
               logoUrl="/logo-primuezsure.png"
             />
           </ProjectGroup>
