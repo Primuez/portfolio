@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useAnimation } from 'motion/react';
 import { Github, Linkedin, Twitter, Instagram, Send } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -27,6 +27,10 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode, label: strin
   );
 }
 
+/**
+ * FallingPiece — uses the imperative useAnimation API so the drag gesture
+ * never fights a declarative animate-prop animation.
+ */
 function FallingPiece({
   children,
   container,
@@ -48,21 +52,37 @@ function FallingPiece({
   delay: number;
   className?: string;
 }) {
-  const [dragged, setDragged] = useState(false);
+  const controls = useAnimation();
+  const isDragging = useRef(false);
 
   useEffect(() => {
-    if (!collapsed) {
-      setDragged(false);
+    if (permanent) {
+      controls.start({ x: 0, y: 0, rotate: 0, transition: { duration: 0.4, ease: 'easeInOut' } });
+      return;
     }
-  }, [collapsed]);
+    if (collapsed) {
+      controls.start({
+        x: dx,
+        y: dy,
+        rotate,
+        transition: { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay },
+      });
+    } else {
+      if (!isDragging.current) {
+        controls.start({
+          x: 0, y: 0, rotate: 0,
+          transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+        });
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collapsed, permanent]);
 
-  // When permanent, snap to assembled position, no drag allowed
   if (permanent) {
     return (
       <motion.div
         className={`inline-block select-none pointer-events-none ${className}`}
-        animate={{ x: 0, y: 0, rotate: 0 }}
-        transition={{ duration: 0.4, ease: 'easeInOut' }}
+        animate={controls}
       >
         {children}
       </motion.div>
@@ -71,19 +91,20 @@ function FallingPiece({
 
   return (
     <motion.div
-      className={`inline-block pointer-events-auto cursor-grab active:cursor-grabbing select-none ${className}`}
+      className={`inline-block pointer-events-auto ${collapsed ? 'cursor-grab active:cursor-grabbing' : ''} select-none ${className}`}
+      animate={controls}
       drag={collapsed}
       dragConstraints={container}
       dragElastic={0.55}
       dragMomentum
       whileDrag={{ scale: 1.08, zIndex: 50 }}
-      onDragStart={() => setDragged(true)}
-      animate={dragged ? undefined : (collapsed ? { x: dx, y: dy, rotate } : { x: 0, y: 0, rotate: 0 })}
-      transition={
-        collapsed
-          ? { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay }
-          : { duration: 0.3, ease: 'easeInOut' }
-      }
+      onDragStart={() => {
+        isDragging.current = true;
+        controls.stop();
+      }}
+      onDragEnd={() => {
+        isDragging.current = false;
+      }}
       style={{ touchAction: collapsed ? 'none' : 'auto' }}
     >
       {children}

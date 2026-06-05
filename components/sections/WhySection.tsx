@@ -106,7 +106,7 @@ function WhyPrimuezSlide({
   );
 }
 
-function WhyPrimuez({ detailMode }: { detailMode: 'brief' | 'detailed' }) {
+function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -117,7 +117,7 @@ function WhyPrimuez({ detailMode }: { detailMode: 'brief' | 'detailed' }) {
 
   if (isMobile) {
     return (
-      <MobileWhyPrimuez detailMode={detailMode} />
+      <MobileWhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />
     );
   }
 
@@ -152,6 +152,22 @@ function WhyPrimuez({ detailMode }: { detailMode: 'brief' | 'detailed' }) {
             scroll to explore
             <span className="w-4 h-px bg-gray-700" />
           </div>
+
+          {/* Toggle — sticky inside scroll zone, always visible */}
+          <div className="absolute bottom-10 right-6 md:right-10 z-30 flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl font-mono text-[9px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <button
+              onClick={() => setDetailMode('brief')}
+              className={`px-3 py-2 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
+            >
+              Brief
+            </button>
+            <button
+              onClick={() => setDetailMode('detailed')}
+              className={`px-3 py-2 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'detailed' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
+            >
+              Full
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -159,7 +175,7 @@ function WhyPrimuez({ detailMode }: { detailMode: 'brief' | 'detailed' }) {
 }
 
 /** Mobile-optimized WhyPrimuez — now mirrors desktop scroll-driven split animation */
-function MobileWhyPrimuez({ detailMode }: { detailMode: 'brief' | 'detailed' }) {
+function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -197,6 +213,22 @@ function MobileWhyPrimuez({ detailMode }: { detailMode: 'brief' | 'detailed' }) 
             <span className="w-3 h-px bg-gray-700" />
             scroll
             <span className="w-3 h-px bg-gray-700" />
+          </div>
+
+          {/* Toggle — sticky inside mobile scroll zone, bottom-center */}
+          <div className="absolute bottom-8 right-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <button
+              onClick={() => setDetailMode('brief')}
+              className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
+            >
+              Brief
+            </button>
+            <button
+              onClick={() => setDetailMode('detailed')}
+              className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'detailed' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
+            >
+              Full
+            </button>
           </div>
         </div>
       </div>
@@ -278,32 +310,15 @@ export default function WhySection() {
 
   return (
     <section id="why-primuez" aria-labelledby="why-heading" className="pt-16 md:pt-32">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-        <div>
-          <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
-          <h2 id="why-heading" className="sr-only">Why should you choose Primuez over other AI developers and automation engineers?</h2>
-          <p className="text-text-muted mt-4 max-w-2xl text-base leading-relaxed">
-            Four sharp arguments for working with us — not a pitch deck, just the truth.
-          </p>
-        </div>
-
-        {/* Toggle Mode Control */}
-        <div className="flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl self-start md:self-auto font-mono text-[9px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)] z-20">
-          <button
-            onClick={() => setDetailMode('brief')}
-            className={`px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
-          >
-            Brief Summary
-          </button>
-          <button
-            onClick={() => setDetailMode('detailed')}
-            className={`px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'detailed' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
-          >
-            Full Detail
-          </button>
-        </div>
+      <div className="mb-10">
+        <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
+        <h2 id="why-heading" className="sr-only">Why should you choose Primuez over other AI developers and automation engineers?</h2>
+        <p className="text-text-muted mt-4 max-w-2xl text-base leading-relaxed">
+          Four sharp arguments for working with us — not a pitch deck, just the truth.
+          <span className="ml-3 font-mono text-[10px] text-indigo-400/70 uppercase tracking-widest">[ toggle detail level inside ↓ ]</span>
+        </p>
       </div>
-      <WhyPrimuez detailMode={detailMode} />
+      <WhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />
     </section>
   );
 }
