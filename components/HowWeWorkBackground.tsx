@@ -18,18 +18,20 @@ uniform float u_intensity;
 uniform vec2 u_resolution;
 varying vec2 vUv;
 
-vec3 bg_color = vec3(0.0, 0.0, 0.0);
-vec3 c_base = vec3(0.094, 0.094, 0.102);
-vec3 c_up = vec3(0.961, 1.0, 0.941);
-vec3 c_down = vec3(0.710, 0.710, 0.710);
-vec3 c_left = vec3(0.310, 0.310, 0.310);
-vec3 c_right = vec3(0.922, 0.922, 0.922);
+// Deeper, theme-coordinated color space (Cyan, Purple, Amber, Teal)
+vec3 bg_color = vec3(0.02, 0.02, 0.03); 
+vec3 c_base = vec3(0.04, 0.04, 0.05);
 
-float cursor_radius = 1.2;
+vec3 c_up = vec3(0.0, 0.94, 1.0);      // glowing cyan
+vec3 c_down = vec3(0.96, 0.65, 0.14);  // glowing amber
+vec3 c_left = vec3(0.65, 0.54, 0.98);  // glowing purple
+vec3 c_right = vec3(0.0, 0.8, 0.6);    // glowing teal
+
+float cursor_radius = 1.5;
 float flutes_angle = 120.0 * 3.14159265 / 180.0;
-float flutes_frequency = 8.0;
-float flutes_refraction = 4.0;
-float grain_strength = 0.05;
+float flutes_frequency = 12.0;         // Finer fluted structure
+float flutes_refraction = 6.0;         // Enhanced refraction
+float grain_strength = 0.04;           // Subtler film grain
 
 float random(vec2 st) {
   return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -49,23 +51,29 @@ void main() {
   float dist = length(p - mouse);
   vec2 dir = normalize(p - mouse + 0.0001);
 
-  float localDistortion = exp(-dist * 4.0) * (flutes_refraction * 0.05);
+  // Responsive distortion based on user speed
+  float localDistortion = exp(-dist * 3.5) * (flutes_refraction * 0.06);
   vec2 distortedP = p - (dir * localDistortion * u_intensity);
 
   float scaled_freq = flutes_frequency * 0.35;
   float slant = (distortedP.x * cos(flutes_angle) - distortedP.y * sin(flutes_angle));
-  float raw_bands = slant * scaled_freq + u_time * 0.05;
+  float raw_bands = slant * scaled_freq + u_time * 0.04;
 
-  float glow = smoothstep(cursor_radius, 0.0, dist) * u_intensity;
+  // Elegant ambient glow base that brightens dynamically with mouse interactions
+  float baseGlow = 0.18;
+  float interactiveGlow = smoothstep(cursor_radius, 0.0, dist);
+  float glow = (baseGlow + interactiveGlow * 0.82) * (0.25 + u_intensity * 0.75);
 
   float wUp = smoothstep(0.0, 1.0, dir.y);
   float wDown = smoothstep(0.0, 1.0, -dir.y);
   float wRight = smoothstep(0.0, 1.0, dir.x);
   float wLeft = smoothstep(0.0, 1.0, -dir.x);
 
-  vec3 dynamicLight = c_base + (c_up * wUp + c_down * wDown + c_left * wLeft + c_right * wRight) * 1.5;
+  // Dynamic light combining directional neon sources
+  vec3 dynamicLight = c_base + (c_up * wUp + c_down * wDown + c_left * wLeft + c_right * wRight) * 1.8;
 
-  float shift = 0.015 * flutes_refraction * glow;
+  // Multi-colored refraction (chromatic aberration)
+  float shift = 0.02 * flutes_refraction * glow;
   vec3 ca = vec3(
     metallicSlope(fract(raw_bands + shift)),
     metallicSlope(fract(raw_bands)),
@@ -75,10 +83,10 @@ void main() {
   float gBand = fract(raw_bands);
   float coreSpecular = smoothstep(0.0, 0.02, gBand) * (1.0 - smoothstep(0.02, 0.1, gBand));
 
-  vec3 chromeHighlight = (dynamicLight * ca) + (coreSpecular * 0.8);
+  vec3 chromeHighlight = (dynamicLight * ca) + (coreSpecular * 0.9);
 
   float noise = random(uv + u_time * 0.05) * grain_strength;
-  vec3 finalColor = bg_color + (chromeHighlight * glow * 0.5) * 0.7 + noise;
+  vec3 finalColor = bg_color + (chromeHighlight * glow * 0.6) + noise;
   gl_FragColor = vec4(finalColor, 1.0);
 }
 `;
