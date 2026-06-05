@@ -216,7 +216,7 @@ function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' |
           </div>
 
           {/* Toggle — sticky inside mobile scroll zone, above the sticky CTA */}
-          <div className="absolute bottom-[88px] right-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          <div className="absolute bottom-[88px] left-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setDetailMode('brief')}
               className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
