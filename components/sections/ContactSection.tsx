@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, animate } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Github, Linkedin, Twitter, Instagram, Send } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -46,49 +46,13 @@ function FallingPiece({
   delay: number;
   className?: string;
 }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rot = useMotionValue(0);
+  const [dragged, setDragged] = useState(false);
 
   useEffect(() => {
-    let controlsX: any;
-    let controlsY: any;
-    let controlsRot: any;
-
-    if (collapsed) {
-      controlsX = animate(x, dx, {
-        type: 'spring',
-        stiffness: 70,
-        damping: 7,
-        mass: 1.1,
-        delay,
-      });
-      controlsY = animate(y, dy, {
-        type: 'spring',
-        stiffness: 70,
-        damping: 7,
-        mass: 1.1,
-        delay,
-      });
-      controlsRot = animate(rot, rotate, {
-        type: 'spring',
-        stiffness: 70,
-        damping: 7,
-        mass: 1.1,
-        delay,
-      });
-    } else {
-      controlsX = animate(x, 0, { duration: 0.4, ease: 'easeInOut' });
-      controlsY = animate(y, 0, { duration: 0.4, ease: 'easeInOut' });
-      controlsRot = animate(rot, 0, { duration: 0.4, ease: 'easeInOut' });
+    if (!collapsed) {
+      setDragged(false);
     }
-
-    return () => {
-      controlsX?.stop();
-      controlsY?.stop();
-      controlsRot?.stop();
-    };
-  }, [collapsed, dx, dy, rotate, delay, x, y, rot]);
+  }, [collapsed]);
 
   return (
     <motion.div
@@ -98,7 +62,14 @@ function FallingPiece({
       dragElastic={0.55}
       dragMomentum
       whileDrag={{ scale: 1.08, zIndex: 50 }}
-      style={{ x, y, rotate: rot, touchAction: 'none' }}
+      onDragStart={() => setDragged(true)}
+      animate={dragged ? undefined : (collapsed ? { x: dx, y: dy, rotate } : { x: 0, y: 0, rotate: 0 })}
+      transition={
+        collapsed
+          ? { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay }
+          : { duration: 0.3, ease: 'easeInOut' }
+      }
+      style={{ touchAction: 'none' }}
     >
       {children}
     </motion.div>
