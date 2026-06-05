@@ -37,20 +37,29 @@ function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title:
       <div
         className={`hidden md:block absolute left-5 top-5 w-4 h-4 rounded-full border-2 transition-all duration-500 ${
           inView
-            ? 'border-cyan bg-cyan/20 shadow-[0_0_12px_rgba(0,255,255,0.6)]'
-            : 'border-zinc-600 bg-zinc-900'
+            ? 'border-cyan bg-cyan/20 shadow-[0_0_12px_rgba(0,255,255,0.6)] scale-110'
+            : 'border-zinc-600 bg-zinc-900 scale-100'
         }`}
-      />
+      >
+        {inView && (
+          <span className="absolute inset-0 rounded-full bg-cyan/40 animate-ping opacity-75" />
+        )}
+      </div>
 
       {/* Card */}
       <motion.div
-        className="ml-0 md:ml-20 w-full p-5 border border-cyan/15 rounded-lg bg-[#0a0f1a]/70 backdrop-blur-sm cursor-default"
-        initial={{ opacity: 0, x: 16 }}
-        animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : 16 }}
+        className="ml-0 md:ml-20 w-full p-5 border rounded-lg bg-[#0a0f1a]/70 backdrop-blur-sm cursor-default transition-all duration-500"
+        initial={{ opacity: 0.35, x: 8 }}
+        animate={{
+          opacity: inView ? 1 : 0.35,
+          x: inView ? 0 : 8,
+          borderColor: inView ? 'rgba(0, 240, 255, 0.3)' : 'rgba(255, 255, 255, 0.06)',
+          boxShadow: inView ? '0 0 25px rgba(0, 240, 255, 0.06)' : 'none'
+        }}
         whileHover={{
           scale: 1.015,
-          borderColor: 'rgba(0, 240, 255, 0.35)',
-          boxShadow: '0 8px 30px rgba(0, 240, 255, 0.08)'
+          borderColor: 'rgba(0, 240, 255, 0.5)',
+          boxShadow: '0 8px 30px rgba(0, 240, 255, 0.12)'
         }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
@@ -65,7 +74,7 @@ function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title:
           <div>
             <span className="font-mono text-cyan text-xs font-bold">{step}</span>
             <h4 className="font-bold text-white text-sm mt-1 mb-1">{title}</h4>
-            <p className="text-text-muted text-sm leading-relaxed">{desc}</p>
+            <p className={`text-sm leading-relaxed transition-colors duration-500 ${inView ? 'text-zinc-200' : 'text-zinc-400'}`}>{desc}</p>
           </div>
         </div>
       </motion.div>
