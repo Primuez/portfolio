@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, animate } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Github, Linkedin, Twitter, Instagram, Send } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -46,59 +46,30 @@ function FallingPiece({
   delay: number;
   className?: string;
 }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rot = useMotionValue(0);
+  const [dragged, setDragged] = useState(false);
 
   useEffect(() => {
-    let controlsX: any;
-    let controlsY: any;
-    let controlsRot: any;
-
-    if (collapsed) {
-      controlsX = animate(x, dx, {
-        type: 'spring',
-        stiffness: 70,
-        damping: 7,
-        mass: 1.1,
-        delay,
-      });
-      controlsY = animate(y, dy, {
-        type: 'spring',
-        stiffness: 70,
-        damping: 7,
-        mass: 1.1,
-        delay,
-      });
-      controlsRot = animate(rot, rotate, {
-        type: 'spring',
-        stiffness: 70,
-        damping: 7,
-        mass: 1.1,
-        delay,
-      });
-    } else {
-      controlsX = animate(x, 0, { duration: 0.4, ease: 'easeInOut' });
-      controlsY = animate(y, 0, { duration: 0.4, ease: 'easeInOut' });
-      controlsRot = animate(rot, 0, { duration: 0.4, ease: 'easeInOut' });
+    if (!collapsed) {
+      setDragged(false);
     }
-
-    return () => {
-      controlsX?.stop();
-      controlsY?.stop();
-      controlsRot?.stop();
-    };
-  }, [collapsed, dx, dy, rotate, delay, x, y, rot]);
+  }, [collapsed]);
 
   return (
     <motion.div
-      className={`inline-block pointer-events-auto cursor-grab active:cursor-grabbing ${className}`}
-      drag={collapsed}
+      className={`inline-block pointer-events-auto cursor-grab active:cursor-grabbing select-none ${className}`}
+      drag={true}
       dragConstraints={container}
       dragElastic={0.55}
       dragMomentum
       whileDrag={{ scale: 1.08, zIndex: 50 }}
-      style={{ x, y, rotate: rot, touchAction: 'none' }}
+      onDragStart={() => setDragged(true)}
+      animate={dragged ? undefined : (collapsed ? { x: dx, y: dy, rotate } : { x: 0, y: 0, rotate: 0 })}
+      transition={
+        collapsed
+          ? { type: 'spring', stiffness: 70, damping: 7, mass: 1.1, delay }
+          : { duration: 0.3, ease: 'easeInOut' }
+      }
+      style={{ touchAction: 'none' }}
     >
       {children}
     </motion.div>
@@ -196,8 +167,8 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         </div>
 
         <FallingPiece container={containerRef} collapsed={collapsed} dx={-140 * xs} dy={300 * ys} rotate={-6} delay={0.28}>
-          <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2">
-            Open to freelance projects, automation consulting, SaaS collabs, and enterprise systems. Drop an inquiry or book a synchronous demo.
+          <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
+            If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
           </p>
         </FallingPiece>
 
@@ -209,7 +180,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               glowColor="rgba(0, 240, 255, 0.3)"
               className="glass-btn-glow text-cyan hover:text-white"
             >
-              <Send size={16} /> Work With Me
+              <Send size={16} /> Let&apos;s Connect
             </GlassButton>
           </FallingPiece>
         </div>
@@ -217,7 +188,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         <div className="mt-12 flex justify-center">
           <FallingPiece container={containerRef} collapsed={collapsed} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
             <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center pointer-events-auto">
-              Or direct comm-link: <a href="mailto:contact@primuez.in" className="text-amber hover:text-white transition-colors py-2 md:py-0">contact@primuez.in</a>
+              Or direct comm-link: <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors py-2 md:py-0">contact@primuez.in</a>
               <button
                 onClick={copyEmail}
                 className={`inline-flex items-center gap-1 px-3 py-2 md:px-2 md:py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}

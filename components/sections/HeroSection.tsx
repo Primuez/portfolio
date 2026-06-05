@@ -75,8 +75,8 @@ export const HeroSection: React.FC = () => {
           className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight"
         >
           <LiquidGlassTitle>
-            I Automate the Work <br/>
-            <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Your Team Does Manually.</ShaderIridescentText>
+            I Believe Business Owners <br/>
+            <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Shouldn't Be Slaves to Repetitive Tasks.</ShaderIridescentText>
           </LiquidGlassTitle>
         </motion.h1>
 
@@ -86,7 +86,7 @@ export const HeroSection: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance"
         >
-          IndiaMART leads into Odoo automatically. GST reconciliation without the weekend. WhatsApp updates without anyone typing them. Your business runs while you sleep.
+          That’s why I architect autonomous systems that work while you sleep. From routing IndiaMART leads directly into Odoo to reconciling GST without sacrificing your weekend, I build the engines that give you your freedom back.
         </motion.p>
 
         <motion.div
@@ -104,7 +104,7 @@ export const HeroSection: React.FC = () => {
             glowColor="rgba(0, 240, 255, 0.25)"
             className="glass-btn-glow text-cyan hover:text-white"
           >
-            Work With Me
+            Let&apos;s Talk
           </GlassButton>
           <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
             <Download size={16} /> Resume
