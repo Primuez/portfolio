@@ -184,7 +184,40 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       }}
       viewport={{ amount: 0.4, once: true }}
     >
-      <div className="text-center pt-12 pointer-events-none">
+      {/* Buttons pinned to TOP so they never overlap the falling pieces */}
+      <AnimatePresence>
+        {collapsed && !permanent && (
+          <motion.div
+            key="reassemble-group"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ delay: 1.0, duration: 0.5 }}
+            className="absolute left-1/2 -translate-x-1/2 top-4 md:top-6 z-[60] flex flex-col items-center gap-2"
+          >
+            <button
+              onClick={reassemble}
+              disabled={reassembling}
+              className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-cyan/40 bg-bg/70 backdrop-blur-sm text-cyan hover:bg-cyan hover:text-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center gap-2"
+              aria-label="Reassemble fallen elements"
+            >
+              <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
+              {reassembling ? 'Rebuilding...' : 'Reassemble Section'}
+            </button>
+            <button
+              onClick={reassemblePermanent}
+              className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-white/20 bg-bg/70 backdrop-blur-sm text-white/60 hover:border-white/50 hover:text-white transition-colors shadow-[0_0_20px_rgba(255,255,255,0.05)] flex items-center gap-2"
+              aria-label="Reassemble permanently"
+            >
+              <span className="inline-block w-2 h-2 rounded-full bg-white/40" />
+              &gt; Keep it assembled
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Content — pointer-events restored when permanent so links/buttons stay clickable */}
+      <div className={`text-center pt-12 ${permanent ? 'pointer-events-auto' : 'pointer-events-none'}`}>
         <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight">
           {headingWords.map((w, i) => (
             <FallingPiece
@@ -198,7 +231,8 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               delay={w.delay}
               className={w.cyan ? 'text-cyan' : ''}
             >
-              <span className="inline-block px-1">{w.text}</span>
+              {/* Each piece gets its own z-index so they stack distinctly instead of overlapping */}
+              <span className="inline-block px-1" style={{ position: 'relative', zIndex: i + 1 }}>{w.text}</span>
             </FallingPiece>
           ))}
         </div>
@@ -248,37 +282,6 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
-
-      <AnimatePresence>
-        {collapsed && !permanent && (
-          <motion.div
-            key="reassemble-group"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
-            transition={{ delay: 1.0, duration: 0.5 }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-6 md:bottom-10 z-[60] flex flex-col items-center gap-2"
-          >
-            <button
-              onClick={reassemble}
-              disabled={reassembling}
-              className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-cyan/40 bg-bg/70 backdrop-blur-sm text-cyan hover:bg-cyan hover:text-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center gap-2"
-              aria-label="Reassemble fallen elements"
-            >
-              <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
-              {reassembling ? 'Rebuilding...' : 'Reassemble Section'}
-            </button>
-            <button
-              onClick={reassemblePermanent}
-              className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-white/20 bg-bg/70 backdrop-blur-sm text-white/60 hover:border-white/50 hover:text-white transition-colors shadow-[0_0_20px_rgba(255,255,255,0.05)] flex items-center gap-2"
-              aria-label="Reassemble permanently"
-            >
-              <span className="inline-block w-2 h-2 rounded-full bg-white/40" />
-              &gt; Keep it assembled
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 }
@@ -290,7 +293,7 @@ export default function ContactSection() {
     <motion.section 
       id="contact" 
       aria-labelledby="contact-heading"
-      className="pt-16 md:pt-32 text-center pb-28 md:pb-20"
+      className="pt-16 md:pt-32 text-center pb-0"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
