@@ -326,10 +326,10 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   };
 
   return (
-    // overflow-visible — no clipping during spring overshoot or air-hockey throws
+    // overflow-hidden prevents thrown pieces from expanding the document scroll height
     <div
       ref={containerRef}
-      className={`relative ${permanent ? '' : 'min-h-[72vh] md:min-h-[82vh]'}`}
+      className={`relative overflow-hidden ${permanent ? '' : 'min-h-[72vh] md:min-h-[82vh]'}`}
       onMouseEnter={undefined}
     >
       {/* viewport trigger — separate element so it doesn't conflict with containerRef */}
