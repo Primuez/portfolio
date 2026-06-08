@@ -80,8 +80,10 @@ function FallingPiece({
 
   if (permanent) {
     return (
+      // pointer-events-auto is critical here — without it every link/button
+      // inside is dead even if the ancestor div allows pointer events.
       <motion.div
-        className={`inline-block select-none pointer-events-none ${className}`}
+        className={`inline-block select-none pointer-events-auto ${className}`}
         animate={controls}
       >
         {children}
@@ -156,27 +158,34 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   const xs = isMobile ? 0.45 : 1;
   const ys = isMobile ? 0.7 : 1;
 
+  // Scatter positions redesigned so every piece lands at a unique (x,y) zone.
+  // dy values span 80–390 with ≥80px gap between any two pieces vertically,
+  // and dx values push pieces to opposite sides horizontally.
   const headingWords = [
-    { text: "Let's", x: -180 * xs, y: 360 * ys, rot: -14, delay: 0.00, cyan: false },
-    { text: 'Build', x: -60 * xs, y: 410 * ys, rot: 9, delay: 0.06, cyan: false },
-    { text: 'Something', x: 80 * xs, y: 380 * ys, rot: -7, delay: 0.12, cyan: false },
-    { text: 'Autonomous.', x: 200 * xs, y: 340 * ys, rot: 16, delay: 0.18, cyan: true },
+    { text: "Let's",      x: -220 * xs, y: 110 * ys, rot: -14, delay: 0.00, cyan: false },
+    { text: 'Build',      x:  210 * xs, y: 200 * ys, rot:   9, delay: 0.06, cyan: false },
+    { text: 'Something',  x: -160 * xs, y: 320 * ys, rot:  -7, delay: 0.12, cyan: false },
+    { text: 'Autonomous.', x: 170 * xs, y: 390 * ys, rot:  16, delay: 0.18, cyan: true  },
   ];
 
   const socials = [
-    { icon: <Github size={20} />, label: 'GitHub (primuez)', href: 'https://github.com/primuez', x: -260 * xs, y: 60 * ys, rot: -22, delay: 0.55 },
-    { icon: <Github size={20} />, label: 'GitHub (primmius)', href: 'https://github.com/primmius', x: -180 * xs, y: 80 * ys, rot: 14, delay: 0.58 },
-    { icon: <Linkedin size={20} />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363', x: -90 * xs, y: 50 * ys, rot: -9, delay: 0.61 },
-    { icon: <Twitter size={20} />, label: 'X / Twitter', href: 'https://x.com/RKasturiya6738', x: 0, y: 90 * ys, rot: 28, delay: 0.64 },
-    { icon: <Instagram size={20} />, label: 'Instagram', href: 'https://www.instagram.com/primuez5', x: 100 * xs, y: 60 * ys, rot: -18, delay: 0.67 },
-    { icon: <span className="font-bold text-lg leading-none">k</span>, label: 'Ko-fi', href: 'https://ko-fi.com/primuez', x: 190 * xs, y: 80 * ys, rot: 11, delay: 0.70 },
-    { icon: <span className="font-bold text-lg leading-none">Up</span>, label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f', x: 270 * xs, y: 50 * ys, rot: -25, delay: 0.73 },
+    // Socials naturally sit at the bottom of the layout. Half go UP, half go DOWN
+    // so they scatter into different vertical zones and never bunch together.
+    { icon: <Github size={20} />,   label: 'GitHub (primuez)', href: 'https://github.com/primuez',                                         x: -270 * xs, y: -200 * ys, rot: -22, delay: 0.55 },
+    { icon: <Github size={20} />,   label: 'GitHub (primmius)', href: 'https://github.com/primmius',                                       x:  230 * xs, y: -130 * ys, rot:  14, delay: 0.58 },
+    { icon: <Linkedin size={20} />, label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363',            x: -140 * xs, y:  130 * ys, rot:  -9, delay: 0.61 },
+    { icon: <Twitter size={20} />,  label: 'X / Twitter',       href: 'https://x.com/RKasturiya6738',                                     x:    0 * xs, y: -280 * ys, rot:  28, delay: 0.64 },
+    { icon: <Instagram size={20} />,label: 'Instagram',          href: 'https://www.instagram.com/primuez5',                               x:  170 * xs, y:  150 * ys, rot: -18, delay: 0.67 },
+    { icon: <span className="font-bold text-lg leading-none">k</span>,  label: 'Ko-fi',   href: 'https://ko-fi.com/primuez',                x: -240 * xs, y:  100 * ys, rot:  11, delay: 0.70 },
+    { icon: <span className="font-bold text-lg leading-none">Up</span>, label: 'Upwork',  href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f', x: 250 * xs, y: -60 * ys, rot: -25, delay: 0.73 },
   ];
 
   return (
     <motion.div
       ref={containerRef}
-      className="relative min-h-[70vh] md:min-h-[85vh] overflow-hidden"
+      // Drop the min-height once permanently assembled so no empty gap shows
+      // between the Connect section and the footer.
+      className={`relative overflow-hidden ${permanent ? 'min-h-0' : 'min-h-[70vh] md:min-h-[85vh]'}`}
       onViewportEnter={() => { 
         if (!permanent) {
           setCollapsed(true);
@@ -237,14 +246,14 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           ))}
         </div>
 
-        <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={-140 * xs} dy={300 * ys} rotate={-6} delay={0.28}>
+        <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={50 * xs} dy={260 * ys} rotate={-6} delay={0.28}>
           <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
             If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
           </p>
         </FallingPiece>
 
         <div className="mt-10 flex justify-center">
-          <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={120 * xs} dy={240 * ys} rotate={12} delay={0.4}>
+          <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={-190 * xs} dy={160 * ys} rotate={12} delay={0.4}>
             <GlassButton
               size="lg"
               onClick={onContact}
@@ -257,7 +266,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={-200 * xs} dy={180 * ys} rotate={-11} delay={0.48}>
+          <FallingPiece container={containerRef} collapsed={collapsed} permanent={permanent} dx={160 * xs} dy={60 * ys} rotate={-11} delay={0.48}>
             <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center pointer-events-auto">
               Or direct comm-link: <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors py-2 md:py-0">contact@primuez.in</a>
               <button
