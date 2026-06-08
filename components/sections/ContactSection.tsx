@@ -28,52 +28,53 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode; label: strin
 }
 
 // ---------------------------------------------------------------------------
-// Piece registry — parent stores references to each piece so it can:
-// 1. Check bounding rects after drag ends
-// 2. Push overlapping pieces away with spring animations (air-hockey)
+// Piece registry for air-hockey collision resolution
 // ---------------------------------------------------------------------------
 interface PieceEntry {
   el: HTMLDivElement;
   controls: ReturnType<typeof useAnimation>;
-  baseX: number; // original scatter dx
-  baseY: number; // original scatter dy
-  pushX: number; // accumulated push offset
+  // Base scatter position (re-computed when isMobile changes)
+  baseDx: number;
+  baseDy: number;
+  // Accumulated push offsets from collisions
+  pushX: number;
   pushY: number;
 }
 
 // ---------------------------------------------------------------------------
 // FallingPiece
-// • Spring-animates from natural DOM position → (dx, dy) when collapsed
-// • Spring-animates back to (0, 0) on reassembly — smooth "coming together"
-// • drag only enabled after the spring has settled (prevents fresh-load jank)
-// • Registers itself with parent for air-hockey collision resolution
+//
+// Root-cause fix for "fresh load disappear":
+//   isMobile starts as false (SSR), then flips to true on client.
+//   This changes xs/ys → dx/dy. Adding dx/dy to the useEffect deps means
+//   pieces re-animate to the correct mobile positions automatically, so they
+//   are ALWAYS inside the container when the user first interacts with them.
+//   dragConstraints can then never snap pieces outside visible bounds.
+//
+// Throwing: dragMomentum={true} — pieces glide after release (air hockey feel).
+// Drag props only passed when actually draggable — prevents Framer from
+//   attaching internal gesture handlers that can snap positions on tap.
 // ---------------------------------------------------------------------------
 function FallingPiece({
   children,
   container,
   collapsed,
   permanent,
-  dx,
-  dy,
-  rotate,
-  delay,
+  dx, dy, rotate, delay,
   className = '',
   pieceId,
   onRegister,
   onPieceDragEnd,
-  draggable,
+  draggable: isDraggable,
 }: {
   children: React.ReactNode;
   container: React.RefObject<HTMLDivElement | null>;
   collapsed: boolean;
   permanent: boolean;
-  dx: number;
-  dy: number;
-  rotate: number;
-  delay: number;
+  dx: number; dy: number; rotate: number; delay: number;
   className?: string;
   pieceId: string;
-  onRegister: (id: string, el: HTMLDivElement | null, controls: ReturnType<typeof useAnimation>, bx: number, by: number) => void;
+  onRegister: (id: string, el: HTMLDivElement | null, ctrl: ReturnType<typeof useAnimation>, bx: number, by: number) => void;
   onPieceDragEnd: (id: string) => void;
   draggable: boolean;
 }) {
@@ -87,39 +88,51 @@ function FallingPiece({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pieceId]);
 
-  // Scatter / reassemble animation
+  // KEY FIX: dx/dy in deps — when isMobile corrects after hydration,
+  // pieces immediately re-animate to the right position
   useEffect(() => {
     if (permanent) {
-      controls.start({ x: 0, y: 0, rotate: 0, transition: { type: 'spring', stiffness: 100, damping: 18 } });
+      controls.start({ x: 0, y: 0, rotate: 0, transition: { type: 'spring', stiffness: 120, damping: 22 } });
       return;
     }
     if (collapsed) {
-      // SPRING FALL — the satisfying "break apart" animation
       controls.start({
-        x: dx,
-        y: dy,
-        rotate,
-        transition: { type: 'spring', stiffness: 50, damping: 9, mass: 1.4, delay },
+        x: dx, y: dy, rotate,
+        transition: { type: 'spring', stiffness: 48, damping: 8, mass: 1.5, delay },
       });
     } else {
-      // SPRING REASSEMBLY — snaps back to natural position
       controls.start({
         x: 0, y: 0, rotate: 0,
-        transition: { type: 'spring', stiffness: 120, damping: 18, delay: delay * 0.3 },
+        transition: { type: 'spring', stiffness: 110, damping: 18, delay: delay * 0.25 },
       });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collapsed, permanent]);
+  }, [collapsed, permanent, dx, dy]);
 
-  const isDraggable = collapsed && draggable && !permanent;
+  // Also update registry base positions whenever dx/dy change
+  useEffect(() => {
+    onRegister(pieceId, elRef.current!, controls, dx, dy);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dx, dy]);
+
+  const canDrag = collapsed && isDraggable && !permanent;
+
+  // Drag props only spread when actually draggable — prevents Framer
+  // gesture handlers from running when drag is disabled
+  const dragProps = canDrag ? {
+    drag: true as const,
+    dragConstraints: container,
+    dragMomentum: true,
+    // Lower power = pieces slide further after throw (air hockey)
+    dragTransitionPower: 180,
+    dragElastic: 0.12,
+    whileDrag: { scale: 1.08, zIndex: 50, rotate: 0 },
+    onDragEnd: () => onPieceDragEnd(pieceId),
+  } : {};
 
   if (permanent) {
     return (
-      <motion.div
-        ref={elRef}
-        className={`inline-block select-none pointer-events-auto ${className}`}
-        animate={controls}
-      >
+      <motion.div ref={elRef} className={`inline-block select-none pointer-events-auto ${className}`} animate={controls}>
         {children}
       </motion.div>
     );
@@ -128,15 +141,10 @@ function FallingPiece({
   return (
     <motion.div
       ref={elRef}
-      className={`inline-block select-none pointer-events-auto ${isDraggable ? 'cursor-grab active:cursor-grabbing' : ''} ${className}`}
       animate={controls}
-      drag={isDraggable}
-      dragConstraints={container}
-      dragMomentum={false}
-      dragElastic={0.08}
-      whileDrag={{ scale: 1.07, zIndex: 50 }}
-      onDragEnd={() => onPieceDragEnd(pieceId)}
-      style={{ touchAction: isDraggable ? 'none' : 'auto' }}
+      className={`inline-block select-none pointer-events-auto ${canDrag ? 'cursor-grab active:cursor-grabbing' : ''} ${className}`}
+      style={{ touchAction: canDrag ? 'none' : 'auto' }}
+      {...dragProps}
     >
       {children}
     </motion.div>
@@ -144,7 +152,7 @@ function FallingPiece({
 }
 
 // ---------------------------------------------------------------------------
-// GravityCollapse — orchestrates the scatter/reassemble lifecycle
+// GravityCollapse
 // ---------------------------------------------------------------------------
 function GravityCollapse({ onContact }: { onContact: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -152,19 +160,21 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   const [reassembling, setReassembling] = useState(false);
   const [permanent, setPermanent] = useState(false);
   const [copied, setCopied] = useState(false);
-  // Gate: only enable drag after the scatter spring has settled
+  // Gate: only enable drag after scatter springs have settled
   const [draggable, setDraggable] = useState(false);
-  // Mount guard — prevents SSR/hydration race with onViewportEnter
+  // Mount guard — viewport enter can fire before useEffect
   const [mounted, setMounted] = useState(false);
   const pendingCollapse = useRef(false);
+  const hasTriggered = useRef(false);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copyRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const dragableTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dragTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const isMobile = useIsMobile();
 
-  // Air-hockey registry
-  const pieceRegistry = useRef<Map<string, PieceEntry>>(new Map());
+  // Piece registry for air-hockey
+  const registry = useRef<Map<string, PieceEntry>>(new Map());
 
   const registerPiece = useCallback((
     id: string, el: HTMLDivElement | null,
@@ -172,42 +182,56 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
     bx: number, by: number
   ) => {
     if (el) {
-      pieceRegistry.current.set(id, { el, controls, baseX: bx, baseY: by, pushX: 0, pushY: 0 });
+      const existing = registry.current.get(id);
+      registry.current.set(id, {
+        el, controls, baseDx: bx, baseDy: by,
+        pushX: existing?.pushX ?? 0,
+        pushY: existing?.pushY ?? 0,
+      });
     } else {
-      pieceRegistry.current.delete(id);
+      registry.current.delete(id);
     }
   }, []);
 
-  // Air-hockey collision resolution — fires 80ms after drag settles
+  // Air-hockey: after drag+momentum settles (~900ms), check hitbox overlaps
+  // and launch overlapping pieces away with a punchy spring
   const handlePieceDragEnd = useCallback((draggedId: string) => {
     setTimeout(() => {
-      const dragged = pieceRegistry.current.get(draggedId);
+      const dragged = registry.current.get(draggedId);
       if (!dragged?.el) return;
       const dr = dragged.el.getBoundingClientRect();
 
-      pieceRegistry.current.forEach((entry, id) => {
+      registry.current.forEach((entry, id) => {
         if (id === draggedId || !entry.el) return;
         const er = entry.el.getBoundingClientRect();
-        const overlapX = dr.left < er.right && dr.right > er.left;
-        const overlapY = dr.top < er.bottom && dr.bottom > er.top;
-        if (!overlapX || !overlapY) return;
 
-        // Vector from dragged centre → other piece centre
+        // Expand hitbox slightly for satisfying contact feel
+        const expandedDr = { left: dr.left - 4, right: dr.right + 4, top: dr.top - 4, bottom: dr.bottom + 4 };
+        const hit =
+          expandedDr.left < er.right &&
+          expandedDr.right > er.left &&
+          expandedDr.top < er.bottom &&
+          expandedDr.bottom > er.top;
+
+        if (!hit) return;
+
+        // Push vector: centre of other piece away from dragged piece
         const cx = (er.left + er.right) / 2 - (dr.left + dr.right) / 2;
         const cy = (er.top + er.bottom) / 2 - (dr.top + dr.bottom) / 2;
         const dist = Math.sqrt(cx * cx + cy * cy) || 1;
-        const force = 90;
+        // Larger force for punchy air-hockey feel
+        const force = 120 + Math.random() * 40;
         entry.pushX += (cx / dist) * force;
         entry.pushY += (cy / dist) * force;
 
-        // Spring push to accumulated position
+        // Punchy spring (stiff, low damping = bounces a bit)
         entry.controls.start({
-          x: entry.baseX + entry.pushX,
-          y: entry.baseY + entry.pushY,
-          transition: { type: 'spring', stiffness: 350, damping: 22 },
+          x: entry.baseDx + entry.pushX,
+          y: entry.baseDy + entry.pushY,
+          transition: { type: 'spring', stiffness: 500, damping: 18, mass: 0.8 },
         });
       });
-    }, 80);
+    }, 900);
   }, []);
 
   useEffect(() => {
@@ -216,15 +240,17 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Reset push offsets on any reassembly
   useEffect(() => {
     if (!collapsed) {
       setDraggable(false);
-      pieceRegistry.current.forEach((e) => { e.pushX = 0; e.pushY = 0; });
+      if (dragTimer.current) clearTimeout(dragTimer.current);
+      // Reset push offsets on reassembly
+      registry.current.forEach((e) => { e.pushX = 0; e.pushY = 0; });
     } else {
-      // Enable drag after the slowest spring finishes (~longest delay + spring settle)
-      if (dragableTimer.current) clearTimeout(dragableTimer.current);
-      dragableTimer.current = setTimeout(() => setDraggable(true), 2400);
+      // Enable drag after the scatter spring settles
+      // Slowest piece: delay 0.73 + spring settle ≈ 2.3s total
+      if (dragTimer.current) clearTimeout(dragTimer.current);
+      dragTimer.current = setTimeout(() => setDraggable(true), 2350);
     }
   }, [collapsed]);
 
@@ -257,61 +283,41 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   useEffect(() => () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     if (copyRef.current) clearTimeout(copyRef.current);
-    if (dragableTimer.current) clearTimeout(dragableTimer.current);
+    if (dragTimer.current) clearTimeout(dragTimer.current);
   }, []);
 
-  // ── Scale factors (kept for documentation; values below already account for mobile)
-  // Desktop scatter distances. Mobile values are xs=0.4, ys=0.55 of these.
+  // Scale factors — these recompute when isMobile corrects after hydration.
+  // Since xs/ys change → dx/dy change → FallingPiece effect re-runs → pieces
+  // re-animate to correct positions. No more out-of-bounds pieces on mobile.
   const xs = isMobile ? 0.4 : 1;
   const ys = isMobile ? 0.55 : 1;
 
-  // ── Scatter positions ──────────────────────────────────────────────────────
-  // RULE: heading words must have POSITIVE dy only (they start near y≈48-73px
-  //       in the container; negative dy would push them above the container top
-  //       which gets clipped by overflow-hidden → the "disappearing" bug).
-  // Social icons start at y≈390px so negative dy is safe for them.
-  //
-  // Desktop final positions (approximate, no visual overlap at ≥20px gap):
-  //   "Let's"     → (80, 273)    "Build"       → (713, 223)
-  //   "Something" → (286, 453)   "Autonomous." → (702, 533)
-  //   Subtitle    → (450, 326)   Button        → (750, 378)
-  //   Email       → (230, 528)
-  //   Socials spread across remaining whitespace
-  // ──────────────────────────────────────────────────────────────────────────
-
-  const pieces = [
-    // ── Heading ──
+  // Heading words: ALL POSITIVE dy (start near container top ~48px,
+  // negative dy would clip above overflow boundary)
+  // Socials: start at y≈390, so negative dy (going up) is safe
+  const PIECES = [
     { id: 'w0', dx: -140 * xs, dy: 200 * ys,  rot: -14, delay: 0.00 },
     { id: 'w1', dx:  350 * xs, dy: 150 * ys,  rot:  10, delay: 0.06 },
     { id: 'w2', dx: -200 * xs, dy: 380 * ys,  rot:  -8, delay: 0.12 },
     { id: 'w3', dx:   30 * xs, dy: 460 * ys,  rot:  15, delay: 0.18 },
-    // ── Subtitle ──
-    { id: 'sub', dx:    0 * xs, dy: 200 * ys,  rot:  -5, delay: 0.28 },
-    // ── Button ──
-    { id: 'btn', dx:  300 * xs, dy: 170 * ys,  rot:  10, delay: 0.38 },
-    // ── Email ──
-    { id: 'eml', dx: -220 * xs, dy: 230 * ys,  rot:  -9, delay: 0.46 },
-    // ── Socials — negative dy OK (start at y≈390, going up is safe) ──
-    { id: 's0', dx: -188 * xs, dy: -300 * ys, rot: -22, delay: 0.55 },
-    { id: 's1', dx:  522 * xs, dy: -300 * ys, rot:  14, delay: 0.58 },
+    { id: 'sub', dx:   0 * xs, dy: 200 * ys,  rot:  -5, delay: 0.28 },
+    { id: 'btn', dx:  300 * xs, dy: 170 * ys, rot:  10, delay: 0.38 },
+    { id: 'eml', dx: -220 * xs, dy: 230 * ys, rot:  -9, delay: 0.46 },
+    { id: 's0', dx: -188 * xs, dy: -280 * ys, rot: -22, delay: 0.55 },
+    { id: 's1', dx:  500 * xs, dy: -280 * ys, rot:  14, delay: 0.58 },
     { id: 's2', dx: -148 * xs, dy:   30 * ys, rot:  -9, delay: 0.61 },
     { id: 's3', dx:   12 * xs, dy:  180 * ys, rot:  25, delay: 0.64 },
-    { id: 's4', dx:  322 * xs, dy:   60 * ys, rot: -17, delay: 0.67 },
+    { id: 's4', dx:  300 * xs, dy:   55 * ys, rot: -17, delay: 0.67 },
     { id: 's5', dx:  -58 * xs, dy: -150 * ys, rot:  11, delay: 0.70 },
     { id: 's6', dx:   12 * xs, dy: -200 * ys, rot: -20, delay: 0.73 },
   ];
 
-  // Shared FallingPiece props
   const fp = (id: string) => {
-    const p = pieces.find((x) => x.id === id)!;
+    const p = PIECES.find((x) => x.id === id)!;
     return {
       container: containerRef,
-      collapsed,
-      permanent,
-      dx: p.dx,
-      dy: p.dy,
-      rotate: p.rot,
-      delay: p.delay,
+      collapsed, permanent,
+      dx: p.dx, dy: p.dy, rotate: p.rot, delay: p.delay,
       pieceId: id,
       onRegister: registerPiece,
       onPieceDragEnd: handlePieceDragEnd,
@@ -320,32 +326,39 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   };
 
   return (
-    <motion.div
+    // overflow-visible — no clipping during spring overshoot or air-hockey throws
+    <div
       ref={containerRef}
-      className={`relative overflow-hidden transition-all duration-500 ${permanent ? '' : 'min-h-[72vh] md:min-h-[82vh]'}`}
-      onViewportEnter={() => {
-        if (permanent) return;
-        if (mounted) setCollapsed(true);
-        else pendingCollapse.current = true;
-      }}
-      viewport={{ amount: 0.3, once: true }}
+      className={`relative ${permanent ? '' : 'min-h-[72vh] md:min-h-[82vh]'}`}
+      onMouseEnter={undefined}
     >
-      {/* ── Control buttons — pinned top-centre, appear after scatter settles ── */}
+      {/* viewport trigger — separate element so it doesn't conflict with containerRef */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        onViewportEnter={() => {
+          if (permanent || hasTriggered.current) return;
+          hasTriggered.current = true;
+          if (mounted) setCollapsed(true);
+          else pendingCollapse.current = true;
+        }}
+        viewport={{ amount: 0.28, once: true }}
+      />
+
+      {/* Control buttons — top-centre, appear after scatter finishes */}
       <AnimatePresence>
         {collapsed && !permanent && (
           <motion.div
             key="ctrls"
-            initial={{ opacity: 0, y: -12 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ delay: 1.1, duration: 0.4 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ delay: 1.2, duration: 0.4 }}
             className="absolute left-1/2 -translate-x-1/2 top-3 md:top-4 z-[60] flex flex-col items-center gap-2 pointer-events-auto"
           >
             <button
               onClick={reassemble}
               disabled={reassembling}
               className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-cyan/40 bg-bg/80 backdrop-blur-md text-cyan hover:bg-cyan hover:text-bg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center gap-2"
-              aria-label="Reassemble fallen elements"
             >
               <span className={`inline-block w-2 h-2 rounded-full ${reassembling ? 'bg-amber animate-pulse' : 'bg-cyan'}`} />
               {reassembling ? 'Rebuilding...' : 'Reassemble Section'}
@@ -353,7 +366,6 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
             <button
               onClick={keepAssembled}
               className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-white/20 bg-bg/80 backdrop-blur-md text-white/60 hover:border-white/50 hover:text-white transition-colors shadow-[0_0_20px_rgba(255,255,255,0.05)] flex items-center gap-2"
-              aria-label="Keep assembled permanently"
             >
               <span className="inline-block w-2 h-2 rounded-full bg-white/40" />
               &gt; Keep it assembled
@@ -362,8 +374,10 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         )}
       </AnimatePresence>
 
-      {/* ── Main content — pointer-events-none while scattered, restored when permanent ── */}
-      <div className={`text-center pt-12 ${permanent ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+      {/* Content — pointer-events-none only in the transitional assembled state
+          (collapsed=false, not permanent). When collapsed or permanent,
+          pieces handle their own pointer-events. */}
+      <div className={`text-center pt-12 ${!collapsed && !permanent ? 'pointer-events-none' : ''}`}>
         {/* Heading */}
         <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight">
           <FallingPiece {...fp('w0')}><span className="inline-block px-1">Let&apos;s</span></FallingPiece>
@@ -399,7 +413,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               <button
                 onClick={copyEmail}
                 className={`inline-flex items-center gap-1 px-3 py-2 md:px-2 md:py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
-                aria-label="Copy email address"
+                aria-label="Copy email"
               >
                 {copied ? '✓ copied' : 'copy'}
               </button>
@@ -407,7 +421,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           </FallingPiece>
         </div>
 
-        {/* Social icons */}
+        {/* Socials */}
         <div className="mt-12 pb-10 flex flex-wrap justify-center gap-4">
           {[
             { id: 's0', icon: <Github size={20} />,    label: 'GitHub (primuez)',  href: 'https://github.com/primuez' },
@@ -425,14 +439,14 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         </div>
       </div>
 
-      {/* Decorative bottom gradient — hidden when permanent */}
-      {!permanent && (
+      {/* Bottom gradient — only in non-permanent state */}
+      {!permanent && !collapsed && (
         <>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
         </>
       )}
-    </motion.div>
+    </div>
   );
 }
 
