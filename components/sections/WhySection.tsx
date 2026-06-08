@@ -122,9 +122,9 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
   }
 
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 100}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 70}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
       <div
-        className="sticky top-0 h-screen w-full scale-[1.02] origin-center overflow-hidden flex items-center"
+        className="sticky top-0 h-screen w-full origin-center overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
       >
         <div className="relative w-full h-full">
@@ -153,8 +153,8 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
             <span className="w-4 h-px bg-gray-700" />
           </div>
 
-          {/* Toggle — sticky inside scroll zone, always visible */}
-          <div className="absolute bottom-10 left-6 md:left-10 z-30 flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl font-mono text-[9px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          {/* Toggle — at 30% from top: below the site header, above centred slide content */}
+          <div className="absolute top-[30%] left-6 md:left-10 z-30 flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl font-mono text-[9px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setDetailMode('brief')}
               className={`px-3 py-2 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
@@ -184,9 +184,9 @@ function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' |
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 70}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 50}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
       <div
-        className="sticky top-0 h-screen w-full scale-[1.02] origin-center overflow-hidden flex items-center"
+        className="sticky top-0 h-screen w-full origin-center overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
       >
         <div className="relative w-full h-full">
@@ -215,8 +215,8 @@ function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' |
             <span className="w-3 h-px bg-gray-700" />
           </div>
 
-          {/* Toggle — sticky inside mobile scroll zone, above the sticky CTA */}
-          <div className="absolute bottom-[88px] left-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          {/* Toggle — left side, 15% from top: clears header, above centred content */}
+          <div className="absolute top-[15%] left-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setDetailMode('brief')}
               className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}

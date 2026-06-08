@@ -237,30 +237,7 @@ function HomeContent() {
       {/* Scroll to top button */}
       <ScrollToTopButton scrolled={scrolled} />
 
-      <footer aria-label="Site footer" className="border-t border-white/[0.06] bg-bg relative z-10">
-        <div className="w-full px-4 sm:px-6 md:px-12 py-12 md:py-16">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex flex-col items-center md:items-start gap-2">
-              <span className="font-mono text-cyan text-lg tracking-widest font-bold">
-                <ShaderLogoGlow>
-                  <LiquidGlassLogo>
-                    <ShaderLogo>PRIMUEZ</ShaderLogo>
-                  </LiquidGlassLogo>
-                </ShaderLogoGlow>
-              </span>
-              <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
-            </div>
-            <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
-              <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">GitHub</a>
-              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">YouTube</a>
-              <a href="https://www.linkedin.com/in/rahul-kasturiya-796910363" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">LinkedIn</a>
-            </div>
-            <div className="font-mono text-xs text-text-muted/60">
-              &copy; 2026 Primuez &middot; Built with intent.
-            </div>
-          </div>
-        </div>
-      </footer>
+
 
       {/* ALL MODALS */}
       <ModalsSection />
