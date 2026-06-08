@@ -29,7 +29,7 @@ export const HeroSection: React.FC = () => {
   }, []);
 
   return (
-    <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-0 relative overflow-hidden -mx-4 sm:-mx-6 md:-mx-12 px-4 sm:px-6 md:px-12">
+    <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-12 pb-8 md:pb-0 relative overflow-hidden -mx-4 sm:-mx-6 md:-mx-12 px-4 sm:px-6 md:px-12">
       {/* Interactive Hex Path shader — glows on cursor hover (desktop only) — full-bleed center aligned */}
       {!isMobile && (
         <div className="absolute inset-y-0 w-screen left-1/2 -translate-x-1/2 scale-[1.02] origin-center overflow-hidden pointer-events-none z-0">
@@ -42,7 +42,7 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-amber/80 text-xs md:text-sm mb-4 md:mb-6 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
+          className="font-mono text-amber/80 text-xs md:text-sm mb-4 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
         >
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
@@ -52,7 +52,7 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-8 md:h-10 mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
+          className="h-8 md:h-10 mb-3 md:mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
         >
           <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
           <AnimatePresence mode="wait">
@@ -72,11 +72,11 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[2.25rem] md:text-6xl lg:text-7xl font-bold leading-[1.08] md:leading-[1.1] mb-6 md:mb-8 tracking-tight"
+          className="text-[2.25rem] md:text-5xl lg:text-6xl font-bold leading-[1.08] md:leading-[1.1] mb-5 md:mb-6 tracking-tight"
         >
           <LiquidGlassTitle>
             I Believe Business Owners <br/>
-            <ShaderIridescentText as="span" className="text-4xl md:text-6xl lg:text-7xl font-bold">Shouldn't Be Slaves to Repetitive Tasks.</ShaderIridescentText>
+            <ShaderIridescentText as="span" className="text-4xl md:text-5xl lg:text-6xl font-bold">Shouldn't Be Slaves to Repetitive Tasks.</ShaderIridescentText>
           </LiquidGlassTitle>
         </motion.h1>
 
@@ -84,7 +84,7 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-text-muted text-base md:text-xl max-w-2xl mb-8 md:mb-12 leading-relaxed font-sans text-balance"
+          className="text-text-muted text-base md:text-lg lg:text-xl max-w-2xl mb-6 md:mb-8 leading-relaxed font-sans text-balance"
         >
           That’s why I architect autonomous systems that work while you sleep. From routing IndiaMART leads directly into Odoo to reconciling GST without sacrificing your weekend, I build the engines that give you your freedom back.
         </motion.p>
@@ -93,7 +93,7 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-14"
+          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-8 md:mb-10"
         >
           <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
             <ChevronRight size={16} /> View My Work

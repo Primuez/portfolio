@@ -5,8 +5,11 @@ import { motion, AnimatePresence, useAnimation } from 'motion/react';
 import { Github, Linkedin, Twitter, Instagram, Send } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
+import { LiquidGlassLogo } from '@/components/ui/liquid-glass-logo';
+import { ShaderLogo } from '@/components/ShaderText';
+import { ShaderLogoGlow } from '@/components/ShaderLogoGlow';
 import { SectionHeader } from '@/components/SectionHeader';
+import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 
 function SocialIcon({ icon, label, href }: { icon: React.ReactNode; label: string; href: string }) {
   return (
@@ -442,10 +445,36 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       {/* Bottom gradient — only in non-permanent state */}
       {!permanent && !collapsed && (
         <>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-[200px] h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-[200px] h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
         </>
       )}
+
+      {/* Footer is now the literal boundary for GravityCollapse pieces */}
+      <footer aria-label="Site footer" className={`border-t border-white/[0.06] bg-bg relative z-10 transition-opacity duration-700 ${!collapsed && !permanent ? 'opacity-30 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
+        <div className="w-full px-4 sm:px-6 md:px-12 py-12 md:py-16">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col items-center md:items-start gap-2">
+              <span className="font-mono text-cyan text-lg tracking-widest font-bold">
+                <ShaderLogoGlow>
+                  <LiquidGlassLogo>
+                    <ShaderLogo>PRIMUEZ</ShaderLogo>
+                  </LiquidGlassLogo>
+                </ShaderLogoGlow>
+              </span>
+              <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
+            </div>
+            <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
+              <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">GitHub</a>
+              <a href="https://youtube.com/@Primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">YouTube</a>
+              <a href="https://www.linkedin.com/in/rahul-kasturiya-796910363" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">LinkedIn</a>
+            </div>
+            <div className="font-mono text-xs text-text-muted/60">
+              &copy; 2026 Primuez &middot; Built with intent.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
