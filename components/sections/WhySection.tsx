@@ -122,7 +122,7 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
   }
 
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 100}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 70}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
       <div
         className="sticky top-0 h-screen w-full origin-center overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
@@ -184,7 +184,7 @@ function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' |
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 70}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
+    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 50}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
       <div
         className="sticky top-0 h-screen w-full origin-center overflow-hidden flex items-center"
         style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
@@ -215,8 +215,8 @@ function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' |
             <span className="w-3 h-px bg-gray-700" />
           </div>
 
-          {/* Toggle — at 28% from top on mobile: clears header, above centred content */}
-          <div className="absolute top-[28%] left-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          {/* Toggle — right side on mobile so it never overlaps centred text */}
+          <div className="absolute top-[28%] right-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setDetailMode('brief')}
               className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}

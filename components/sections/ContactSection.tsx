@@ -28,144 +28,205 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode; label: strin
 }
 
 // ---------------------------------------------------------------------------
-// Scatter layout — each piece is placed at an ABSOLUTE position within the
-// container (as % of container width/height) so positions are guaranteed
-// non-overlapping regardless of the element's natural DOM location.
-//
-// Grid (desktop, container ≈ 900×680px):
-//   Col L: 5-20%    Col C: 35-65%    Col R: 75-92%
-//   Row T: 8-22%    Row M: 38-55%    Row B: 68-85%
-//
-// On mobile the same % positions are used — they scale automatically.
+// Piece registry — parent stores references to each piece so it can:
+// 1. Check bounding rects after drag ends
+// 2. Push overlapping pieces away with spring animations (air-hockey)
 // ---------------------------------------------------------------------------
-
-interface ScatterSlot {
-  // absolute position as % of container
-  left: string;
-  top: string;
-  rotate: number;
-  delay: number;
+interface PieceEntry {
+  el: HTMLDivElement;
+  controls: ReturnType<typeof useAnimation>;
+  baseX: number; // original scatter dx
+  baseY: number; // original scatter dy
+  pushX: number; // accumulated push offset
+  pushY: number;
 }
-
-// Heading words
-const WORD_SLOTS: ScatterSlot[] = [
-  { left: '4%',  top: '8%',  rotate: -14, delay: 0.00 }, // "Let's"      — top-left
-  { left: '72%', top: '12%', rotate:  10, delay: 0.06 }, // "Build"      — top-right
-  { left: '6%',  top: '62%', rotate:  -8, delay: 0.12 }, // "Something"  — bot-left
-  { left: '60%', top: '55%', rotate:  15, delay: 0.18 }, // "Autonomous."— bot-right
-];
-
-// Subtitle, button, email — each a unique zone
-const SUBTITLE_SLOT: ScatterSlot = { left: '22%', top: '35%', rotate: -5, delay: 0.28 };
-const BUTTON_SLOT:   ScatterSlot = { left: '5%',  top: '42%', rotate: 10, delay: 0.38 };
-const EMAIL_SLOT:    ScatterSlot = { left: '52%', top: '30%', rotate: -9, delay: 0.46 };
-
-// Social icons — 7 unique slots filling remaining space
-const SOCIAL_SLOTS: ScatterSlot[] = [
-  { left: '3%',  top: '22%', rotate: -22, delay: 0.55 }, // GitHub primuez  — left col, upper-mid
-  { left: '82%', top: '38%', rotate:  14, delay: 0.58 }, // GitHub primmius — right col, mid
-  { left: '40%', top: '18%', rotate:  -9, delay: 0.61 }, // LinkedIn        — centre-top
-  { left: '78%', top: '68%', rotate:  25, delay: 0.64 }, // Twitter         — right-bot
-  { left: '22%', top: '74%', rotate: -17, delay: 0.67 }, // Instagram       — left-bot
-  { left: '55%', top: '74%', rotate:  11, delay: 0.70 }, // Ko-fi           — centre-bot
-  { left: '82%', top: '18%', rotate: -20, delay: 0.73 }, // Upwork          — right-top
-];
 
 // ---------------------------------------------------------------------------
 // FallingPiece
-// Assembled  → inline-block in normal flow (natural reading layout)
-// Scattered  → absolute positioned at a unique pre-defined slot
-// Permanent  → back to inline-block, fully interactive
+// • Spring-animates from natural DOM position → (dx, dy) when collapsed
+// • Spring-animates back to (0, 0) on reassembly — smooth "coming together"
+// • drag only enabled after the spring has settled (prevents fresh-load jank)
+// • Registers itself with parent for air-hockey collision resolution
 // ---------------------------------------------------------------------------
-
 function FallingPiece({
   children,
+  container,
   collapsed,
   permanent,
-  slot,
+  dx,
+  dy,
+  rotate,
+  delay,
   className = '',
+  pieceId,
+  onRegister,
+  onPieceDragEnd,
+  draggable,
 }: {
   children: React.ReactNode;
+  container: React.RefObject<HTMLDivElement | null>;
   collapsed: boolean;
   permanent: boolean;
-  slot: ScatterSlot;
+  dx: number;
+  dy: number;
+  rotate: number;
+  delay: number;
   className?: string;
+  pieceId: string;
+  onRegister: (id: string, el: HTMLDivElement | null, controls: ReturnType<typeof useAnimation>, bx: number, by: number) => void;
+  onPieceDragEnd: (id: string) => void;
+  draggable: boolean;
 }) {
   const controls = useAnimation();
+  const elRef = useRef<HTMLDivElement>(null);
 
+  // Register with parent on mount
+  useEffect(() => {
+    if (elRef.current) onRegister(pieceId, elRef.current, controls, dx, dy);
+    return () => onRegister(pieceId, null, controls, dx, dy);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pieceId]);
+
+  // Scatter / reassemble animation
   useEffect(() => {
     if (permanent) {
-      // Animate x/y/rotate back to zero (natural position)
-      controls.start({ x: 0, y: 0, rotate: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } });
+      controls.start({ x: 0, y: 0, rotate: 0, transition: { type: 'spring', stiffness: 100, damping: 18 } });
       return;
     }
     if (collapsed) {
-      // Opacity fade-in after a short delay so pieces appear to "fall in"
-      controls.start({ opacity: 1, transition: { duration: 0.2, delay: slot.delay } });
+      // SPRING FALL — the satisfying "break apart" animation
+      controls.start({
+        x: dx,
+        y: dy,
+        rotate,
+        transition: { type: 'spring', stiffness: 50, damping: 9, mass: 1.4, delay },
+      });
     } else {
-      controls.start({ opacity: 1, transition: { duration: 0.3 } });
+      // SPRING REASSEMBLY — snaps back to natural position
+      controls.start({
+        x: 0, y: 0, rotate: 0,
+        transition: { type: 'spring', stiffness: 120, damping: 18, delay: delay * 0.3 },
+      });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collapsed, permanent]);
 
-  // ── ASSEMBLED / PERMANENT: normal inline-block flow ──
-  if (!collapsed || permanent) {
+  const isDraggable = collapsed && draggable && !permanent;
+
+  if (permanent) {
     return (
       <motion.div
+        ref={elRef}
         className={`inline-block select-none pointer-events-auto ${className}`}
         animate={controls}
-        initial={false}
-        layout
       >
         {children}
       </motion.div>
     );
   }
 
-  // ── SCATTERED: absolute position, draggable ──
   return (
     <motion.div
-      className={`absolute cursor-grab active:cursor-grabbing select-none pointer-events-auto ${className}`}
-      style={{
-        left: slot.left,
-        top: slot.top,
-        rotate: slot.rotate,
-        zIndex: 10,
-      }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1, transition: { delay: slot.delay, duration: 0.35, ease: [0.16, 1, 0.3, 1] } }}
-      drag
+      ref={elRef}
+      className={`inline-block select-none pointer-events-auto ${isDraggable ? 'cursor-grab active:cursor-grabbing' : ''} ${className}`}
+      animate={controls}
+      drag={isDraggable}
+      dragConstraints={container}
       dragMomentum={false}
-      dragElastic={0.05}
-      whileDrag={{ scale: 1.06, zIndex: 50, rotate: 0 }}
+      dragElastic={0.08}
+      whileDrag={{ scale: 1.07, zIndex: 50 }}
+      onDragEnd={() => onPieceDragEnd(pieceId)}
+      style={{ touchAction: isDraggable ? 'none' : 'auto' }}
     >
       {children}
     </motion.div>
   );
 }
 
+// ---------------------------------------------------------------------------
+// GravityCollapse — orchestrates the scatter/reassemble lifecycle
+// ---------------------------------------------------------------------------
 function GravityCollapse({ onContact }: { onContact: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(false);
   const [reassembling, setReassembling] = useState(false);
   const [permanent, setPermanent] = useState(false);
   const [copied, setCopied] = useState(false);
-  // Gate collapse until component is mounted so isMobile is settled
+  // Gate: only enable drag after the scatter spring has settled
+  const [draggable, setDraggable] = useState(false);
+  // Mount guard — prevents SSR/hydration race with onViewportEnter
   const [mounted, setMounted] = useState(false);
-  // Track if viewport enter fired before mount
   const pendingCollapse = useRef(false);
+
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copyRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dragableTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMobile = useIsMobile();
+
+  // Air-hockey registry
+  const pieceRegistry = useRef<Map<string, PieceEntry>>(new Map());
+
+  const registerPiece = useCallback((
+    id: string, el: HTMLDivElement | null,
+    controls: ReturnType<typeof useAnimation>,
+    bx: number, by: number
+  ) => {
+    if (el) {
+      pieceRegistry.current.set(id, { el, controls, baseX: bx, baseY: by, pushX: 0, pushY: 0 });
+    } else {
+      pieceRegistry.current.delete(id);
+    }
+  }, []);
+
+  // Air-hockey collision resolution — fires 80ms after drag settles
+  const handlePieceDragEnd = useCallback((draggedId: string) => {
+    setTimeout(() => {
+      const dragged = pieceRegistry.current.get(draggedId);
+      if (!dragged?.el) return;
+      const dr = dragged.el.getBoundingClientRect();
+
+      pieceRegistry.current.forEach((entry, id) => {
+        if (id === draggedId || !entry.el) return;
+        const er = entry.el.getBoundingClientRect();
+        const overlapX = dr.left < er.right && dr.right > er.left;
+        const overlapY = dr.top < er.bottom && dr.bottom > er.top;
+        if (!overlapX || !overlapY) return;
+
+        // Vector from dragged centre → other piece centre
+        const cx = (er.left + er.right) / 2 - (dr.left + dr.right) / 2;
+        const cy = (er.top + er.bottom) / 2 - (dr.top + dr.bottom) / 2;
+        const dist = Math.sqrt(cx * cx + cy * cy) || 1;
+        const force = 90;
+        entry.pushX += (cx / dist) * force;
+        entry.pushY += (cy / dist) * force;
+
+        // Spring push to accumulated position
+        entry.controls.start({
+          x: entry.baseX + entry.pushX,
+          y: entry.baseY + entry.pushY,
+          transition: { type: 'spring', stiffness: 350, damping: 22 },
+        });
+      });
+    }, 80);
+  }, []);
 
   useEffect(() => {
     setMounted(true);
-    // If viewport enter already fired before mount, trigger collapse now
-    if (pendingCollapse.current) {
-      setCollapsed(true);
-    }
+    if (pendingCollapse.current) setCollapsed(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Reset push offsets on any reassembly
+  useEffect(() => {
+    if (!collapsed) {
+      setDraggable(false);
+      pieceRegistry.current.forEach((e) => { e.pushX = 0; e.pushY = 0; });
+    } else {
+      // Enable drag after the slowest spring finishes (~longest delay + spring settle)
+      if (dragableTimer.current) clearTimeout(dragableTimer.current);
+      dragableTimer.current = setTimeout(() => setDraggable(true), 2400);
+    }
+  }, [collapsed]);
 
   const copyEmail = useCallback(() => {
     navigator.clipboard.writeText('contact@primuez.in').then(() => {
@@ -186,7 +247,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
     }, 2800);
   }, [reassembling]);
 
-  const reassemblePermanent = useCallback(() => {
+  const keepAssembled = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setReassembling(false);
     setCollapsed(false);
@@ -196,57 +257,89 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
   useEffect(() => () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     if (copyRef.current) clearTimeout(copyRef.current);
+    if (dragableTimer.current) clearTimeout(dragableTimer.current);
   }, []);
 
-  const headingWords = [
-    { text: "Let's",       cyan: false, slot: WORD_SLOTS[0] },
-    { text: 'Build',       cyan: false, slot: WORD_SLOTS[1] },
-    { text: 'Something',   cyan: false, slot: WORD_SLOTS[2] },
-    { text: 'Autonomous.', cyan: true,  slot: WORD_SLOTS[3] },
+  // ── Scale factors (kept for documentation; values below already account for mobile)
+  // Desktop scatter distances. Mobile values are xs=0.4, ys=0.55 of these.
+  const xs = isMobile ? 0.4 : 1;
+  const ys = isMobile ? 0.55 : 1;
+
+  // ── Scatter positions ──────────────────────────────────────────────────────
+  // RULE: heading words must have POSITIVE dy only (they start near y≈48-73px
+  //       in the container; negative dy would push them above the container top
+  //       which gets clipped by overflow-hidden → the "disappearing" bug).
+  // Social icons start at y≈390px so negative dy is safe for them.
+  //
+  // Desktop final positions (approximate, no visual overlap at ≥20px gap):
+  //   "Let's"     → (80, 273)    "Build"       → (713, 223)
+  //   "Something" → (286, 453)   "Autonomous." → (702, 533)
+  //   Subtitle    → (450, 326)   Button        → (750, 378)
+  //   Email       → (230, 528)
+  //   Socials spread across remaining whitespace
+  // ──────────────────────────────────────────────────────────────────────────
+
+  const pieces = [
+    // ── Heading ──
+    { id: 'w0', dx: -140 * xs, dy: 200 * ys,  rot: -14, delay: 0.00 },
+    { id: 'w1', dx:  350 * xs, dy: 150 * ys,  rot:  10, delay: 0.06 },
+    { id: 'w2', dx: -200 * xs, dy: 380 * ys,  rot:  -8, delay: 0.12 },
+    { id: 'w3', dx:   30 * xs, dy: 460 * ys,  rot:  15, delay: 0.18 },
+    // ── Subtitle ──
+    { id: 'sub', dx:    0 * xs, dy: 200 * ys,  rot:  -5, delay: 0.28 },
+    // ── Button ──
+    { id: 'btn', dx:  300 * xs, dy: 170 * ys,  rot:  10, delay: 0.38 },
+    // ── Email ──
+    { id: 'eml', dx: -220 * xs, dy: 230 * ys,  rot:  -9, delay: 0.46 },
+    // ── Socials — negative dy OK (start at y≈390, going up is safe) ──
+    { id: 's0', dx: -188 * xs, dy: -300 * ys, rot: -22, delay: 0.55 },
+    { id: 's1', dx:  522 * xs, dy: -300 * ys, rot:  14, delay: 0.58 },
+    { id: 's2', dx: -148 * xs, dy:   30 * ys, rot:  -9, delay: 0.61 },
+    { id: 's3', dx:   12 * xs, dy:  180 * ys, rot:  25, delay: 0.64 },
+    { id: 's4', dx:  322 * xs, dy:   60 * ys, rot: -17, delay: 0.67 },
+    { id: 's5', dx:  -58 * xs, dy: -150 * ys, rot:  11, delay: 0.70 },
+    { id: 's6', dx:   12 * xs, dy: -200 * ys, rot: -20, delay: 0.73 },
   ];
 
-  const socials = [
-    { icon: <Github size={20} />,    label: 'GitHub (primuez)',  href: 'https://github.com/primuez',                                    slot: SOCIAL_SLOTS[0] },
-    { icon: <Github size={20} />,    label: 'GitHub (primmius)', href: 'https://github.com/primmius',                                  slot: SOCIAL_SLOTS[1] },
-    { icon: <Linkedin size={20} />,  label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363',        slot: SOCIAL_SLOTS[2] },
-    { icon: <Twitter size={20} />,   label: 'X / Twitter',       href: 'https://x.com/RKasturiya6738',                                 slot: SOCIAL_SLOTS[3] },
-    { icon: <Instagram size={20} />, label: 'Instagram',         href: 'https://www.instagram.com/primuez5',                           slot: SOCIAL_SLOTS[4] },
-    { icon: <span className="font-bold text-lg leading-none">k</span>,  label: 'Ko-fi',  href: 'https://ko-fi.com/primuez',            slot: SOCIAL_SLOTS[5] },
-    { icon: <span className="font-bold text-lg leading-none">Up</span>, label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f', slot: SOCIAL_SLOTS[6] },
-  ];
-
-  // Container needs explicit height in scattered state so absolute children are contained
-  const containerClass = permanent
-    ? 'relative'
-    : collapsed
-      ? `relative ${isMobile ? 'h-[68vh]' : 'h-[78vh]'}`
-      : 'relative';
+  // Shared FallingPiece props
+  const fp = (id: string) => {
+    const p = pieces.find((x) => x.id === id)!;
+    return {
+      container: containerRef,
+      collapsed,
+      permanent,
+      dx: p.dx,
+      dy: p.dy,
+      rotate: p.rot,
+      delay: p.delay,
+      pieceId: id,
+      onRegister: registerPiece,
+      onPieceDragEnd: handlePieceDragEnd,
+      draggable,
+    };
+  };
 
   return (
     <motion.div
       ref={containerRef}
-      className={containerClass}
+      className={`relative overflow-hidden transition-all duration-500 ${permanent ? '' : 'min-h-[72vh] md:min-h-[82vh]'}`}
       onViewportEnter={() => {
         if (permanent) return;
-        if (mounted) {
-          setCollapsed(true);
-        } else {
-          // Component not yet mounted — flag for post-mount trigger
-          pendingCollapse.current = true;
-        }
+        if (mounted) setCollapsed(true);
+        else pendingCollapse.current = true;
       }}
       viewport={{ amount: 0.3, once: true }}
     >
-      {/* ── Control buttons — absolute, centred at top ── */}
+      {/* ── Control buttons — pinned top-centre, appear after scatter settles ── */}
       <AnimatePresence>
         {collapsed && !permanent && (
           <motion.div
-            key="reassemble-group"
+            key="ctrls"
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            transition={{ delay: 1.0, duration: 0.4 }}
-            className="absolute left-1/2 -translate-x-1/2 top-3 md:top-4 z-[60] flex flex-col items-center gap-2"
+            transition={{ delay: 1.1, duration: 0.4 }}
+            className="absolute left-1/2 -translate-x-1/2 top-3 md:top-4 z-[60] flex flex-col items-center gap-2 pointer-events-auto"
           >
             <button
               onClick={reassemble}
@@ -258,7 +351,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               {reassembling ? 'Rebuilding...' : 'Reassemble Section'}
             </button>
             <button
-              onClick={reassemblePermanent}
+              onClick={keepAssembled}
               className="font-mono text-xs uppercase tracking-[0.25em] px-5 py-3 border border-white/20 bg-bg/80 backdrop-blur-md text-white/60 hover:border-white/50 hover:text-white transition-colors shadow-[0_0_20px_rgba(255,255,255,0.05)] flex items-center gap-2"
               aria-label="Keep assembled permanently"
             >
@@ -269,104 +362,71 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         )}
       </AnimatePresence>
 
-      {/* ── Assembled / Permanent layout (normal flow) ── */}
-      {(!collapsed || permanent) && (
-        <div className={`text-center pt-12 ${permanent ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-          <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight">
-            {headingWords.map((w, i) => (
-              <FallingPiece key={i} collapsed={false} permanent={permanent} slot={w.slot} className={w.cyan ? 'text-cyan' : ''}>
-                <span className="inline-block px-1">{w.text}</span>
-              </FallingPiece>
-            ))}
-          </div>
-
-          <FallingPiece collapsed={false} permanent={permanent} slot={SUBTITLE_SLOT}>
-            <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
-              If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
-            </p>
-          </FallingPiece>
-
-          <div className="mt-10 flex justify-center">
-            <FallingPiece collapsed={false} permanent={permanent} slot={BUTTON_SLOT}>
-              <GlassButton size="lg" onClick={onContact} glowColor="rgba(0, 240, 255, 0.3)" className="glass-btn-glow text-cyan hover:text-white">
-                <Send size={16} /> Let&apos;s Connect
-              </GlassButton>
-            </FallingPiece>
-          </div>
-
-          <div className="mt-12 flex justify-center">
-            <FallingPiece collapsed={false} permanent={permanent} slot={EMAIL_SLOT}>
-              <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center pointer-events-auto">
-                Or direct comm-link:{' '}
-                <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors py-2 md:py-0">
-                  contact@primuez.in
-                </a>
-                <button
-                  onClick={copyEmail}
-                  className={`inline-flex items-center gap-1 px-3 py-2 md:px-2 md:py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
-                  aria-label="Copy email address"
-                >
-                  {copied ? '✓ copied' : 'copy'}
-                </button>
-              </p>
-            </FallingPiece>
-          </div>
-
-          <div className="mt-12 pb-10 flex flex-wrap justify-center gap-4">
-            {socials.map((s, i) => (
-              <FallingPiece key={i} collapsed={false} permanent={permanent} slot={s.slot}>
-                <SocialIcon icon={s.icon} label={s.label} href={s.href} />
-              </FallingPiece>
-            ))}
-          </div>
+      {/* ── Main content — pointer-events-none while scattered, restored when permanent ── */}
+      <div className={`text-center pt-12 ${permanent ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        {/* Heading */}
+        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight">
+          <FallingPiece {...fp('w0')}><span className="inline-block px-1">Let&apos;s</span></FallingPiece>
+          <FallingPiece {...fp('w1')}><span className="inline-block px-1">Build</span></FallingPiece>
+          <FallingPiece {...fp('w2')}><span className="inline-block px-1">Something</span></FallingPiece>
+          <FallingPiece {...fp('w3')} className="text-cyan"><span className="inline-block px-1">Autonomous.</span></FallingPiece>
         </div>
-      )}
 
-      {/* ── Scattered layout — each piece at its absolute slot ── */}
-      {collapsed && !permanent && (
-        <>
-          {headingWords.map((w, i) => (
-            <FallingPiece key={`sw-${i}`} collapsed permanent={false} slot={w.slot} className={w.cyan ? 'text-cyan' : ''}>
-              <span className="text-3xl md:text-5xl font-bold px-1">{w.text}</span>
-            </FallingPiece>
-          ))}
+        {/* Subtitle */}
+        <FallingPiece {...fp('sub')}>
+          <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
+            If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
+          </p>
+        </FallingPiece>
 
-          <FallingPiece collapsed permanent={false} slot={SUBTITLE_SLOT}>
-            <p className="text-text-muted bg-bg/60 backdrop-blur-sm rounded-md py-2 px-4 font-mono text-xs uppercase tracking-wider whitespace-nowrap">
-              If you believe your team&apos;s time is meant for growth — let&apos;s talk.
-            </p>
-          </FallingPiece>
-
-          <FallingPiece collapsed permanent={false} slot={BUTTON_SLOT}>
-            <GlassButton size="lg" onClick={onContact} glowColor="rgba(0, 240, 255, 0.3)" className="glass-btn-glow text-cyan hover:text-white pointer-events-auto">
+        {/* CTA button */}
+        <div className="mt-10 flex justify-center">
+          <FallingPiece {...fp('btn')}>
+            <GlassButton size="lg" onClick={onContact} glowColor="rgba(0, 240, 255, 0.3)" className="glass-btn-glow text-cyan hover:text-white">
               <Send size={16} /> Let&apos;s Connect
             </GlassButton>
           </FallingPiece>
+        </div>
 
-          <FallingPiece collapsed permanent={false} slot={EMAIL_SLOT}>
-            <p className="font-mono text-sm bg-bg/60 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 pointer-events-auto whitespace-nowrap">
-              <a href="mailto:contact@primuez.in" className="text-amber hover:text-white transition-colors">
+        {/* Email */}
+        <div className="mt-12 flex justify-center">
+          <FallingPiece {...fp('eml')}>
+            <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center pointer-events-auto">
+              Or direct comm-link:{' '}
+              <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors py-2 md:py-0">
                 contact@primuez.in
               </a>
               <button
                 onClick={copyEmail}
-                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
+                className={`inline-flex items-center gap-1 px-3 py-2 md:px-2 md:py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
+                aria-label="Copy email address"
               >
                 {copied ? '✓ copied' : 'copy'}
               </button>
             </p>
           </FallingPiece>
+        </div>
 
-          {socials.map((s, i) => (
-            <FallingPiece key={`ss-${i}`} collapsed permanent={false} slot={s.slot}>
+        {/* Social icons */}
+        <div className="mt-12 pb-10 flex flex-wrap justify-center gap-4">
+          {[
+            { id: 's0', icon: <Github size={20} />,    label: 'GitHub (primuez)',  href: 'https://github.com/primuez' },
+            { id: 's1', icon: <Github size={20} />,    label: 'GitHub (primmius)', href: 'https://github.com/primmius' },
+            { id: 's2', icon: <Linkedin size={20} />,  label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363' },
+            { id: 's3', icon: <Twitter size={20} />,   label: 'X / Twitter',       href: 'https://x.com/RKasturiya6738' },
+            { id: 's4', icon: <Instagram size={20} />, label: 'Instagram',         href: 'https://www.instagram.com/primuez5' },
+            { id: 's5', icon: <span className="font-bold text-lg leading-none">k</span>,  label: 'Ko-fi',  href: 'https://ko-fi.com/primuez' },
+            { id: 's6', icon: <span className="font-bold text-lg leading-none">Up</span>, label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f' },
+          ].map((s) => (
+            <FallingPiece key={s.id} {...fp(s.id)}>
               <SocialIcon icon={s.icon} label={s.label} href={s.href} />
             </FallingPiece>
           ))}
-        </>
-      )}
+        </div>
+      </div>
 
-      {/* Decorative bottom gradient — only when not permanent */}
-      {!permanent && !collapsed && (
+      {/* Decorative bottom gradient — hidden when permanent */}
+      {!permanent && (
         <>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cyan/[0.04] to-transparent" />
