@@ -15,9 +15,10 @@ interface ProjectCardProps {
   status?: string;
   techDetails?: string;
   children?: React.ReactNode;
+  wireframe?: boolean;
 }
 
-export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, status, techDetails, children }: ProjectCardProps) {
+export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, status, techDetails, children, wireframe }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
@@ -30,6 +31,52 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
     mouseX.set(((e.clientX - rect.left) / rect.width) * 100);
     mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
   };
+
+  if (wireframe) {
+    return (
+      <div className="border border-dashed border-white/10 bg-transparent rounded-xl p-6 relative flex flex-col min-h-[260px] select-none pointer-events-none">
+        <div className="absolute top-3 right-3 font-mono text-[8px] text-zinc-700 tracking-wider">
+          PROJ-{name.substring(0, 4).toUpperCase()}
+        </div>
+        {bannerUrl && (
+          <div className="w-full h-48 mb-6 rounded-lg border border-dashed border-white/10 relative bg-transparent flex items-center justify-center">
+            <span className="font-mono text-[9px] text-zinc-700 uppercase tracking-widest">[ WIREFRAME_ASSET ]</span>
+          </div>
+        )}
+        <div className="flex justify-between items-start mb-4 gap-4">
+          <div className="flex items-center gap-4">
+            {logoUrl && (
+              <div className="w-11 h-11 rounded-lg border border-dashed border-white/10 flex items-center justify-center shrink-0">
+                <span className="font-mono text-[8px] text-zinc-700">WF</span>
+              </div>
+            )}
+            <div>
+              <h4 className="text-lg font-bold text-zinc-600 flex items-center gap-2 flex-wrap">
+                {name}
+                {status && (
+                  <span className="text-[9px] font-mono uppercase px-2 py-0.5 rounded-full border border-white/5 text-zinc-700">
+                    {status}
+                  </span>
+                )}
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div className="mb-4">
+          <p className="text-zinc-700 text-sm leading-relaxed">
+            {desc}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {tags.map((tag, i) => (
+            <span key={i} className="font-mono text-[10px] uppercase text-zinc-700 bg-transparent px-2 py-1 rounded border border-dashed border-white/10">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div 

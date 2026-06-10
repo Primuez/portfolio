@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useSpring, useTransform, MotionValue } from 'motion/react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SectionHeader } from '@/components/SectionHeader';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 const WHY_ITEMS = [
   {
@@ -319,6 +320,72 @@ export default function WhySection() {
         </p>
       </div>
       <WhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />
+
+      <div className="mt-20 border-t border-white/5 pt-16">
+        <h3 className="font-mono text-xs uppercase tracking-widest text-[#00f0ff] mb-4">
+          [ 03.5.B // FIT_CHECK ]
+        </h3>
+        <h4 className="text-2xl md:text-3xl font-bold text-white mb-4 font-sans">
+          Is This a Fit?
+        </h4>
+        <p className="text-text-muted mb-10 max-w-2xl text-base leading-relaxed font-sans">
+          I value your time and mine. Here is a transparent look at who I work best with, and when we might not be a good match.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Good Fit */}
+          <div className="bg-[#07090e]/95 border border-emerald-500/20 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.05)] transition-all duration-300 relative overflow-hidden group">
+            <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full blur-[30px] bg-emerald-500/5 group-hover:bg-emerald-500/10 transition-all duration-500 pointer-events-none" />
+            <h5 className="text-emerald-400 font-mono text-sm uppercase tracking-widest mb-6 flex items-center gap-2 font-bold border-b border-emerald-500/10 pb-3">
+              <CheckCircle2 size={16} /> ✅ Good Fit
+            </h5>
+            <ul className="space-y-4 font-sans text-sm text-text-main leading-relaxed">
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
+                <span><strong>Manufacturers & traders</strong> drowning in manual data entry (IndiaMART, Odoo, custom ERPs).</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
+                <span><strong>Chartered Accountants (CAs)</strong> handling GST, reconciliation, or client reporting by hand.</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
+                <span><strong>Founders</strong> who need a working SaaS MVP shipped fast without hiring a full development team.</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
+                <span><strong>Business owners</strong> who want always-on AI agents handling customer/legal queries automatically.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Not a Fit */}
+          <div className="bg-[#07090e]/95 border border-rose-500/20 rounded-2xl p-6 backdrop-blur-md hover:border-rose-500/40 hover:shadow-[0_0_30px_rgba(244,63,94,0.05)] transition-all duration-300 relative overflow-hidden group">
+            <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full blur-[30px] bg-rose-500/5 group-hover:bg-rose-500/10 transition-all duration-500 pointer-events-none" />
+            <h5 className="text-rose-400 font-mono text-sm uppercase tracking-widest mb-6 flex items-center gap-2 font-bold border-b border-rose-500/10 pb-3">
+              <XCircle size={16} /> ❌ Not a Fit
+            </h5>
+            <ul className="space-y-4 font-sans text-sm text-text-main leading-relaxed">
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0" />
+                <span><strong>Cheapest option seekers</strong>. I write custom, robust production code that is priced for long-term reliability.</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0" />
+                <span>Projects requiring a large ongoing team or bureaucratic management layers.</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0" />
+                <span>Anyone who is not clear on what business outcome they want to automate.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-8 text-center font-mono text-[10px] text-text-muted/80 tracking-wide">
+          🛡️ Fixed-price proposals &middot; 30-day free support on every build &middot; Clear delivery timeline agreed upfront
+        </div>
+      </div>
     </section>
   );
 }

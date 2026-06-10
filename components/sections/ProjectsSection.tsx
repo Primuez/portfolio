@@ -1,14 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, useScroll, useSpring, useTransform, useInView } from 'motion/react';
 import { Activity } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import dynamic from 'next/dynamic';
-import { useInView } from 'motion/react';
 
 const ModelViewer = dynamic(
   () => import('@/components/ModelViewer').then((mod) => mod.ModelViewer),
@@ -28,126 +27,210 @@ import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-contain
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { useUI } from '@/lib/contexts/UIContext';
 
+const PROJECTS_DATA = [
+  {
+    name: "InkTwin",
+    url: "https://ink-twin.primuez.in",
+    status: "Live",
+    desc: "For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font to effortlessly generate documents.",
+    techDetails: "Generates custom handwriting fonts from a photo. Performs OCR and stroke vectorization using Hono on Cloudflare Workers, storing user state in D1 and files in R2 CDN. Includes AI solver powered by Gemini API.",
+    tags: ["Cloudflare Workers", "AI", "JavaScript", "Font Generation"],
+    logoUrl: "/logo-inktwin.png"
+  },
+  {
+    name: "PrimuezSure Advisor",
+    url: "https://primuezsure.primuez.in",
+    status: "Live",
+    desc: "For insurance advisors who need instant, multilingual policy decoding and automated fraud prevention, built securely on official data.",
+    techDetails: "Integrates Retrieval-Augmented Generation (RAG) over PDF insurance policy clauses. Built on Cloudflare Workers with serverless vector embeddings for sub-second multilingual response times.",
+    tags: ["AI Agent", "SaaS", "Cloudflare Workers", "LLM"],
+    logoUrl: "/logo-primuezsure.png"
+  },
+  {
+    name: "Tax Advisor Agent",
+    status: "Built",
+    desc: "Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms.",
+    techDetails: "Uses advanced financial prompt-chains to ingest GST/tax sheets and cross-reference them with regional tax rules. Generates structured JSON reports for Odoo or custom ledgers.",
+    tags: ["Taxation", "RAG", "Automation", "Compliance"],
+    logoUrl: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
+  },
+  {
+    name: "Legal Advisor Agent",
+    status: "Built",
+    desc: "Autonomous legal Q&A assistant trained on regulatory guidelines and contracts.",
+    techDetails: "Uses RAG models to parse Indian legal acts, contract drafts, and corporate bylaws. Generates structured risk summaries and contract redlines with citation tracking.",
+    tags: ["Legal AI", "Contract Analysis", "LLM"],
+    logoUrl: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
+  },
+  {
+    name: "Invoice Generator",
+    status: "Built",
+    desc: "Automated system that compiles data and builds professional PDF invoices.",
+    techDetails: "Pulls order/delivery data from ERP webhooks, formats it according to GST template specifications, compiles the PDF via dynamic HTML-to-PDF APIs, and routes it to WhatsApp/email.",
+    tags: ["n8n", "Node.js", "PDF generation"]
+  },
+  {
+    name: "GhostRank SEO Engine",
+    url: "https://github.com/Primuez/primuez-seo-vault",
+    status: "Built",
+    desc: "A self-sustaining headless growth engine running on a Linux VPS. It autonomously polls keywords, invokes LLMs with fallbacks, and deploys pages to a GitHub CDN.",
+    techDetails: "Utilizes crontab jobs to trigger keyword research scripts. Orchestrates API fallback logic between Gemini and DeepSeek models, generates markup pages, commits to git, and pushes updates to a CDN.",
+    tags: ["Node.js / Bash", "Gemini & DeepSeek", "Git Automation", "Programmatic SEO"]
+  },
+  {
+    name: "Voice AI Agent",
+    status: "Built",
+    desc: "A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free.",
+    techDetails: "Ties real-time audio WebSockets to TTS and STT engines. Processes incoming commands through n8n tool-calling agents to execute operations across business apps.",
+    tags: ["Voice AI", "LLM", "n8n", "Real-Time"],
+    logoUrl: "/voice-ai-agent.png"
+  },
+  {
+    name: "Odoo Eye Attendance",
+    status: "Built",
+    desc: "AI-powered camera attendance system that logs check-ins directly into Odoo ERP.",
+    techDetails: "Captures face signatures locally on edge cameras, evaluates them using OpenCV, and calls Odoo JSON-RPC API via n8n to log employee attendance in real-time.",
+    tags: ["Odoo ERP", "Computer Vision", "n8n", "Python"]
+  },
+  {
+    name: "The Autonomous Enterprise Blueprint",
+    status: "Architecture Blueprint — Available to Build",
+    desc: "End-to-end automation architecture designed for manufacturing businesses: IndiaMART lead capture → email verification → Odoo CRM → WhatsApp follow-up → order creation → GST reconciliation.",
+    techDetails: "Integrates IndiaMART webhook API, Kickbox email validation, Odoo CRM API calls, WhatsApp Evolution API message queues, Odoo manufacturing order triggers, and daily automated GST ledger reconciliation workflows. Presented at Odoo Business Show, Raipur.",
+    tags: ["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise", "Architecture Blueprint"],
+    bannerUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80",
+    colSpan: "md:col-span-2 lg:col-span-3",
+    hasCustomBtn: true
+  }
+];
+
 export const ProjectsSection: React.FC = () => {
   const { isMobile, setModalType } = useUI();
   const [favOpen, setFavOpen] = useState(false);
-  const globeContainerRef = React.useRef<HTMLDivElement>(null);
+  const globeContainerRef = useRef<HTMLDivElement>(null);
   const isGlobeInView = useInView(globeContainerRef, { once: true, margin: "200px" });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 55, damping: 18, restDelta: 0.001 });
+
+  // clipBottom: 100 → 0 as user scrolls through section
+  const clipBottom = useTransform(smoothProgress, [0.04, 0.88], [100, 0]);
+  const clipPath = useTransform(clipBottom, v => {
+    const clamped = Math.max(0, Math.min(100, isNaN(v) ? 100 : v));
+    return `inset(0 0 ${clamped.toFixed(2)}% 0)`;
+  });
+
+  // laser sits right at the clip boundary
+  const laserTop = useTransform(clipBottom, v => {
+    const clamped = Math.max(0, Math.min(100, isNaN(v) ? 100 : v));
+    return `${(100 - clamped).toFixed(2)}%`;
+  });
+  const laserOpacity = useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
 
   return (
-    <motion.section 
-      id="projects" 
-      className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
-    >
-      <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
-        <SectionHeader number="02" command="> ./projects --what-i-built" title="What I've Actually Built and Shipped" />
-      </LiquidGlassTitle>
-      
-      <p className="text-text-muted mt-4 mb-8 max-w-2xl text-base leading-relaxed font-sans">
-        No fake case studies. These are real products and agents I built, own, and run. Expand any card to see its full architecture details.
-      </p>
+    <section id="projects" className="pt-16 md:pt-32">
+      {/* Sticky blueprint scanner container */}
+      <div
+        ref={containerRef}
+        style={isMobile ? undefined : { height: '320vh', position: 'relative' }}
+        className="w-full"
+      >
+        <div
+          style={isMobile ? undefined : { position: 'sticky', top: '72px' }}
+          className={isMobile ? '' : 'pt-6 pb-16'}
+        >
+          <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
+            <SectionHeader number="02" command="> ./projects --what-i-built" title="What I've Actually Built and Shipped" />
+          </LiquidGlassTitle>
+          
+          <p className="text-text-muted mt-4 mb-8 max-w-2xl text-base leading-relaxed font-sans">
+            No fake case studies. These are real products and agents I built, own, and run. Expand any card to see its full architecture details.
+          </p>
 
-      <LiquidGlassParallaxSection parallaxDistance={30}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <ProjectCard 
-            name="InkTwin" 
-            url="https://ink-twin.primuez.in"
-            status="Live"
-            desc="For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font to effortlessly generate documents."
-            techDetails="Generates custom handwriting fonts from a photo. Performs OCR and stroke vectorization using Hono on Cloudflare Workers, storing user state in D1 and files in R2 CDN. Includes AI solver powered by Gemini API."
-            tags={["Cloudflare Workers", "AI", "JavaScript", "Font Generation"]}
-            logoUrl="/logo-inktwin.png"
-          />
+          {!isMobile && (
+            <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2">
+              <span className="text-[#00FFCC] animate-pulse">▼</span> scroll to scan built architecture
+            </p>
+          )}
 
-          <ProjectCard 
-            name="PrimuezSure Advisor" 
-            url="https://primuezsure.primuez.in"
-            status="Live"
-            desc="For insurance advisors who need instant, multilingual policy decoding and automated fraud prevention, built securely on official data."
-            techDetails="Integrates Retrieval-Augmented Generation (RAG) over PDF insurance policy clauses. Built on Cloudflare Workers with serverless vector embeddings for sub-second multilingual response times."
-            tags={["AI Agent", "SaaS", "Cloudflare Workers", "LLM"]}
-            logoUrl="/logo-primuezsure.png"
-          />
+          <LiquidGlassParallaxSection parallaxDistance={30}>
+            {/* ── Desktop layout ── */}
+            {!isMobile ? (
+              <div className="relative">
+                {/* Bottom layer — wireframe blueprint */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {PROJECTS_DATA.map((p, i) => (
+                    <div key={i} className={p.colSpan || ''}>
+                      <ProjectCard wireframe={true} {...p} />
+                    </div>
+                  ))}
+                </div>
 
-          <ProjectCard 
-            name="Tax Advisor Agent" 
-            status="Built"
-            desc="Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms."
-            techDetails="Uses advanced financial prompt-chains to ingest GST/tax sheets and cross-reference them with regional tax rules. Generates structured JSON reports for Odoo or custom ledgers."
-            tags={["Taxation", "RAG", "Automation", "Compliance"]}
-            logoUrl="https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
-          />
-
-          <ProjectCard 
-            name="Legal Advisor Agent" 
-            status="Built"
-            desc="Autonomous legal Q&A assistant trained on regulatory guidelines and contracts."
-            techDetails="Uses RAG models to parse Indian legal acts, contract drafts, and corporate bylaws. Generates structured risk summaries and contract redlines with citation tracking."
-            tags={["Legal AI", "Contract Analysis", "LLM"]}
-            logoUrl="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
-          />
-
-          <ProjectCard 
-            name="Invoice Generator" 
-            status="Built"
-            desc="Automated system that compiles data and builds professional PDF invoices."
-            techDetails="Pulls order/delivery data from ERP webhooks, formats it according to GST template specifications, compiles the PDF via dynamic HTML-to-PDF APIs, and routes it to WhatsApp/email."
-            tags={["n8n", "Node.js", "PDF generation"]}
-          />
-
-          <ProjectCard 
-            name="GhostRank SEO Engine" 
-            url="https://github.com/Primuez/primuez-seo-vault"
-            status="Built"
-            desc="A self-sustaining headless growth engine running on a Linux VPS. It autonomously polls keywords, invokes LLMs with fallbacks, and deploys pages to a GitHub CDN."
-            techDetails="Utilizes crontab jobs to trigger keyword research scripts. Orchestrates API fallback logic between Gemini and DeepSeek models, generates markup pages, commits to git, and pushes updates to a CDN."
-            tags={["Node.js / Bash", "Gemini & DeepSeek", "Git Automation", "Programmatic SEO"]}
-          />
-
-          <ProjectCard 
-            name="Voice AI Agent" 
-            status="Built"
-            desc="A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
-            techDetails="Ties real-time audio WebSockets to TTS and STT engines. Processes incoming commands through n8n tool-calling agents to execute operations across business apps."
-            tags={["Voice AI", "LLM", "n8n", "Real-Time"]}
-            logoUrl="/voice-ai-agent.png"
-          />
-
-          <ProjectCard 
-            name="Odoo Eye Attendance" 
-            status="Built"
-            desc="AI-powered camera attendance system that logs check-ins directly into Odoo ERP."
-            techDetails="Captures face signatures locally on edge cameras, evaluates them using OpenCV, and calls Odoo JSON-RPC API via n8n to log employee attendance in real-time."
-            tags={["Odoo ERP", "Computer Vision", "n8n", "Python"]}
-          />
-
-          <div className="md:col-span-2 lg:col-span-3">
-            <ProjectCard 
-              name="The Autonomous Enterprise Blueprint" 
-              status="Architecture Blueprint — Available to Build"
-              desc="End-to-end automation architecture designed for manufacturing businesses: IndiaMART lead capture → email verification → Odoo CRM → WhatsApp follow-up → order creation → GST reconciliation."
-              techDetails="Integrates IndiaMART webhook API, Kickbox email validation, Odoo CRM API calls, WhatsApp Evolution API message queues, Odoo manufacturing order triggers, and daily automated GST ledger reconciliation workflows. Presented at Odoo Business Show, Raipur."
-              tags={["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise", "Architecture Blueprint"]}
-              bannerUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80"
-            >
-              <div className="mt-4 flex justify-center">
-                <GlassButton 
-                  size="lg"
-                  onClick={() => setModalType('workflow')}
-                  glowColor="rgba(0, 240, 255, 0.2)"
-                  className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20"
+                {/* Top layer — rendered, clipped by laser */}
+                <motion.div
+                  className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  style={{ clipPath }}
                 >
-                  <Activity size={18} /> View Interactive Architecture Diagram
-                </GlassButton>
+                  {PROJECTS_DATA.map((p, i) => (
+                    <div key={i} className={p.colSpan || ''}>
+                      <ProjectCard {...p}>
+                        {p.hasCustomBtn && (
+                          <div className="mt-4 flex justify-center">
+                            <GlassButton 
+                              size="lg"
+                              onClick={() => setModalType('workflow')}
+                              glowColor="rgba(0, 240, 255, 0.2)"
+                              className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20"
+                            >
+                              <Activity size={18} /> View Interactive Architecture Diagram
+                            </GlassButton>
+                          </div>
+                        )}
+                      </ProjectCard>
+                    </div>
+                  ))}
+                </motion.div>
+
+                {/* Glowing laser line */}
+                <motion.div
+                  className="absolute left-0 right-0 pointer-events-none z-10"
+                  style={{ top: laserTop, opacity: laserOpacity }}
+                >
+                  <div className="w-full h-[2px] bg-[#00FFCC]
+                    shadow-[0_0_8px_#00FFCC,0_0_20px_#00FFCC,0_0_40px_rgba(0,255,204,0.6)]" />
+                </motion.div>
               </div>
-            </ProjectCard>
-          </div>
+            ) : (
+              /* Mobile layout */
+              <div className="grid grid-cols-1 gap-6">
+                {PROJECTS_DATA.map((p, i) => (
+                  <div key={i} className={p.colSpan || ''}>
+                    <ProjectCard {...p}>
+                      {p.hasCustomBtn && (
+                        <div className="mt-4 flex justify-center">
+                          <GlassButton 
+                            size="lg"
+                            onClick={() => setModalType('workflow')}
+                            glowColor="rgba(0, 240, 255, 0.2)"
+                            className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20"
+                          >
+                            <Activity size={18} /> View Interactive Architecture Diagram
+                          </GlassButton>
+                        </div>
+                      )}
+                    </ProjectCard>
+                  </div>
+                ))}
+              </div>
+            )}
+          </LiquidGlassParallaxSection>
         </div>
-      </LiquidGlassParallaxSection>
+      </div>
 
       {/* Credibility Line */}
       <div className="mt-6 text-center">
@@ -292,6 +375,6 @@ export const ProjectsSection: React.FC = () => {
           )}
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };

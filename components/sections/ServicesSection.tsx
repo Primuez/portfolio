@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { SectionHeader } from '@/components/SectionHeader';
-import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Service {
   icon: string;
@@ -132,11 +132,38 @@ const SERVICES_CATEGORIES: ServiceCategory[] = [
   }
 ];
 
-function ServiceCategoryBlock({ category, index }: { category: ServiceCategory; index: number }) {
+function ServiceCategoryBlock({ category, index, total }: { category: ServiceCategory; index: number; total: number }) {
   const [expanded, setExpanded] = React.useState(false);
-  
+  const isMobile = useIsMobile();
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Track the scroll of this card relative to the top of the viewport
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "start start"]
+  });
+
+  // Scale down and fade as the card scrolls up under the next cards
+  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0.88]);
+  const filter = useTransform(scrollYProgress, [0.75, 1], ["brightness(1)", "brightness(0.7)"]);
+
+  const yOffset = index * 24; // cascading layout spacing on desktop
+
+  const motionStyle = isMobile ? {} : {
+    position: 'sticky' as const,
+    top: `${90 + yOffset}px`,
+    scale,
+    opacity,
+    filter
+  };
+
   return (
-    <div className="border border-white/10 rounded-2xl bg-panel/30 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/30">
+    <motion.div 
+      ref={cardRef}
+      style={motionStyle}
+      className="border border-white/10 rounded-2xl bg-[#090b11] backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/30 shadow-[0_20px_50px_rgba(0,0,0,0.6)] mb-8"
+    >
       <button 
         onClick={() => setExpanded(!expanded)}
         className="w-full p-6 text-left flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-cyan/5 transition-colors select-none min-h-[80px] cursor-pointer"
@@ -200,11 +227,12 @@ function ServiceCategoryBlock({ category, index }: { category: ServiceCategory; 
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
 export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }) {
+  const isMobile = useIsMobile();
   return (
     <section id="services" className="pt-16 md:pt-32 relative">
       <div className="relative z-10">
@@ -215,10 +243,15 @@ export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => 
           Every service below is a working system built to automate manual work. Pick a category, expand to scan capabilities, and select what your workflow needs.
         </p>
 
-        {/* Categories Stack */}
-        <div className="flex flex-col gap-6 mt-8">
+        {/* Categories Stack with scroll-driven cascading sticky pin on desktop */}
+        <div className={`flex flex-col gap-0 mt-8 ${isMobile ? '' : 'pb-[10vh]'}`}>
           {SERVICES_CATEGORIES.map((category, index) => (
-            <ServiceCategoryBlock key={index} category={category} index={index} />
+            <ServiceCategoryBlock 
+              key={index} 
+              category={category} 
+              index={index} 
+              total={SERVICES_CATEGORIES.length} 
+            />
           ))}
         </div>
 
