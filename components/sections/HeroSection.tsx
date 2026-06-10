@@ -75,8 +75,8 @@ export const HeroSection: React.FC = () => {
           className="text-[2.25rem] md:text-5xl lg:text-6xl font-bold leading-[1.08] md:leading-[1.1] mb-5 md:mb-6 tracking-tight"
         >
           <LiquidGlassTitle>
-            I Believe Business Owners <br/>
-            <ShaderIridescentText as="span" className="text-4xl md:text-5xl lg:text-6xl font-bold">Shouldn't Be Slaves to Repetitive Tasks.</ShaderIridescentText>
+            I Build Autonomous Systems <br/>
+            <ShaderIridescentText as="span" className="text-4xl md:text-5xl lg:text-6xl font-bold">That Give You Your Time Back.</ShaderIridescentText>
           </LiquidGlassTitle>
         </motion.h1>
 
@@ -84,16 +84,25 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-text-muted text-base md:text-lg lg:text-xl max-w-2xl mb-6 md:mb-8 leading-relaxed font-sans text-balance"
+          className="text-text-muted text-base md:text-lg lg:text-xl max-w-2xl mb-4 leading-relaxed font-sans text-balance"
         >
-          That’s why I architect autonomous systems that work while you sleep. From routing IndiaMART leads directly into Odoo to reconciling GST without sacrificing your weekend, I build the engines that give you your freedom back.
+          From AI agents that handle tax and legal queries to n8n pipelines that eliminate manual data entry — systems built and running.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="font-mono text-xs text-amber/95 mb-6 md:mb-8 border-l border-amber/40 pl-3 leading-relaxed max-w-2xl"
+        >
+          InkTwin and PrimuezSure — live SaaS products built and running. Tax Advisor and Legal Advisor agents — deployed and working.
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-8 md:mb-10"
+          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4"
         >
           <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
             <ChevronRight size={16} /> View My Work
@@ -109,6 +118,36 @@ export const HeroSection: React.FC = () => {
           <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
             <Download size={16} /> Resume
           </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-3 max-w-xl mb-8 border border-white/5 bg-panel/35 p-5 rounded-xl backdrop-blur-sm relative z-20"
+        >
+          <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-1">[ OR SCHEDULE A DIRECT CALL ]</p>
+          <div className="flex flex-col min-[480px]:flex-row gap-3">
+            <a 
+              href="https://cal.com/prime-s/30min" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 px-5 py-3.5 bg-cyan/10 border border-cyan/35 text-cyan hover:bg-cyan hover:text-bg font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+            >
+              📅 Book 30-min Scope Call
+            </a>
+            <a 
+              href="https://cal.com/prime-s/15min" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 px-5 py-3.5 bg-transparent border border-white/20 text-white hover:border-cyan/50 hover:text-cyan font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+            >
+              ☕ 15-min Quick Chat
+            </a>
+          </div>
+          <p className="text-zinc-400 text-xs mt-1 text-center min-[480px]:text-left font-sans leading-normal">
+            Prefer a quick call? No sales pitch — just scope your project.
+          </p>
         </motion.div>
 
         <motion.div

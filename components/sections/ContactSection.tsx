@@ -382,26 +382,41 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           pieces handle their own pointer-events. */}
       <div className={`text-center pt-12 ${!collapsed && !permanent ? 'pointer-events-none' : ''}`}>
         {/* Heading */}
-        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight">
-          <FallingPiece {...fp('w0')}><span className="inline-block px-1">Let&apos;s</span></FallingPiece>
-          <FallingPiece {...fp('w1')}><span className="inline-block px-1">Build</span></FallingPiece>
-          <FallingPiece {...fp('w2')}><span className="inline-block px-1">Something</span></FallingPiece>
-          <FallingPiece {...fp('w3')} className="text-cyan"><span className="inline-block px-1">Autonomous.</span></FallingPiece>
+        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight text-white">
+          <FallingPiece {...fp('w0')}><span className="inline-block px-1">Ready</span></FallingPiece>
+          <FallingPiece {...fp('w1')}><span className="inline-block px-1">to stop</span></FallingPiece>
+          <FallingPiece {...fp('w2')}><span className="inline-block px-1">doing this</span></FallingPiece>
+          <FallingPiece {...fp('w3')} className="text-cyan"><span className="inline-block px-1">manually?</span></FallingPiece>
         </div>
 
         {/* Subtitle */}
         <FallingPiece {...fp('sub')}>
           <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
-            If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
+            Book a free 20-min call. I&apos;ll tell you exactly what to automate and how long it&apos;ll take.
           </p>
         </FallingPiece>
 
-        {/* CTA button */}
-        <div className="mt-10 flex justify-center">
+        {/* CTA buttons */}
+        <div className="mt-10 flex justify-center z-20 relative">
           <FallingPiece {...fp('btn')}>
-            <GlassButton size="lg" onClick={onContact} glowColor="rgba(0, 240, 255, 0.3)" className="glass-btn-glow text-cyan hover:text-white">
-              <Send size={16} /> Let&apos;s Connect
-            </GlassButton>
+            <div className="flex flex-col min-[480px]:flex-row gap-3">
+              <a 
+                href="https://cal.com/prime-s/30min" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3.5 bg-cyan/10 border border-cyan/35 text-cyan hover:bg-cyan hover:text-bg font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold rounded-lg cursor-pointer"
+              >
+                Book 30-min Scope Call
+              </a>
+              <a 
+                href="https://cal.com/prime-s/15min" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3.5 bg-transparent border border-white/20 text-white hover:border-cyan/50 hover:text-cyan font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold rounded-lg cursor-pointer"
+              >
+                Quick 15-min Chat
+              </a>
+            </div>
           </FallingPiece>
         </div>
 
@@ -463,6 +478,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
                 </ShaderLogoGlow>
               </span>
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
+              <a href="mailto:contact@primuez.in" className="font-mono text-xs text-cyan hover:underline mt-1">contact@primuez.in</a>
             </div>
             <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
               <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">GitHub</a>

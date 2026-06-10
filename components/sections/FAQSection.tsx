@@ -17,7 +17,7 @@ const FAQ_DATA = [
   },
   {
     q: "You're self-taught — how do I know the work will be solid?",
-    a: 'Look at what shipped: InkTwin (live SaaS), PrimuezSure (live SaaS), the Odoo Enterprise architecture presented at a business show in Raipur, the CA Automation Suite used by actual firms. Self-taught means I learned by building real systems, not passing exams. The credentials section has the verifiable proof.',
+    a: 'Look at what shipped: InkTwin (live SaaS), PrimuezSure (live SaaS), the Odoo Enterprise architecture presented at a business show in Raipur, and the CA Automation Suite (AI Legal and Tax advisors built and working). Self-taught means I learned by building real systems, not passing exams. The credentials section has the verifiable proof.',
   },
   {
     q: "What if I don't know exactly what I need?",

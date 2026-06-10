@@ -380,6 +380,7 @@ export default function StackSection() {
 
   const yLeftSpring = useSpring(yLeft, { stiffness: 90, damping: 25, restDelta: 0.001 });
   const yRightSpring = useSpring(yRight, { stiffness: 90, damping: 25, restDelta: 0.001 });
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const yL = isMobile ? 0 : yLeftSpring;
   const yR = isMobile ? 0 : yRightSpring;
@@ -396,18 +397,30 @@ export default function StackSection() {
     >
       <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
       <h2 id="stack-heading" className="sr-only">What tools and technologies does Primuez use for AI automation and SaaS development?</h2>
-      <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
+      
+      <p className="text-text-muted mt-4 mb-6 max-w-2xl text-base leading-relaxed font-sans">
         I don&apos;t just read tutorials. Below are the actual tools and technologies running live on my systems, fully customized for enterprise automation.
       </p>
 
-      {/* Grid of Double-Bezel Hardware Cards */}
-      <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-12 md:pb-12">
-        <StackGroup title="AI & Orchestration" items={aiTools} border="cyan" isMobile={isMobile} y={yL} />
-        <StackGroup title="Personal AI Agents" items={agentTools} border="cyan" isMobile={isMobile} y={0} />
-        <StackGroup title="CLI & Developer Tooling" items={cliTools} border="amber" isMobile={isMobile} y={yR} />
-        <StackGroup title="Infra & Deploy" items={infraTools} border="amber" isMobile={isMobile} y={yL} />
-        <StackGroup title="ERP & Business" items={erpTools} border="cyan" isMobile={isMobile} y={0} />
-        <StackGroup title="Dev Languages" items={langTools} border="amber" isMobile={isMobile} y={yR} />
+      <div className="mt-6">
+        <button
+          onClick={() => setIsOpen(o => !o)}
+          className="w-full flex items-center justify-between py-3.5 px-5 min-h-[48px] font-mono text-xs uppercase tracking-[0.15em] text-cyan border border-cyan/20 rounded-lg bg-panel/40 hover:bg-cyan/5 transition-colors cursor-pointer text-left z-20 relative"
+        >
+          <span>{isOpen ? '▼ Hide Technical Arsenal' : '▶ Show Technical Arsenal (Tools & stacks running live)'}</span>
+          <span>{isOpen ? '▲' : '▼'}</span>
+        </button>
+
+        {isOpen && (
+          <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-6 md:pb-12">
+            <StackGroup title="AI & Orchestration" items={aiTools} border="cyan" isMobile={isMobile} y={yL} />
+            <StackGroup title="Personal AI Agents" items={agentTools} border="cyan" isMobile={isMobile} y={0} />
+            <StackGroup title="CLI & Developer Tooling" items={cliTools} border="amber" isMobile={isMobile} y={yR} />
+            <StackGroup title="Infra & Deploy" items={infraTools} border="amber" isMobile={isMobile} y={yL} />
+            <StackGroup title="ERP & Business" items={erpTools} border="cyan" isMobile={isMobile} y={0} />
+            <StackGroup title="Dev Languages" items={langTools} border="amber" isMobile={isMobile} y={yR} />
+          </div>
+        )}
       </div>
     </motion.section>
   );

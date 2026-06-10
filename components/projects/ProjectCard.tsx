@@ -12,13 +12,16 @@ interface ProjectCardProps {
   logoUrl?: string;
   bannerUrl?: string;
   videoUrl?: string;
+  status?: string;
+  techDetails?: string;
   children?: React.ReactNode;
 }
 
-export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, children }: ProjectCardProps) {
+export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, status, techDetails, children }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
+  const [showTech, setShowTech] = useState(false);
   const glowBackground = useMotionTemplate`radial-gradient(300px circle at ${mouseX}% ${mouseY}%, rgba(0,240,255,0.06), transparent 60%)`;
   
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -82,7 +85,22 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
               />
             </div>
           )}
-          <h4 className="text-lg font-bold group-hover:text-white transition-colors duration-300">{name}</h4>
+          <div>
+            <h4 className="text-lg font-bold group-hover:text-white transition-colors duration-300 flex items-center gap-2 flex-wrap">
+              {name}
+              {status && (
+                <span className={`text-[9px] font-mono uppercase px-2 py-0.5 rounded-full border ${
+                  status.toLowerCase().includes('live') || status.toLowerCase().includes('running')
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.15)]'
+                    : status.toLowerCase().includes('blueprint')
+                    ? 'bg-amber/10 text-amber border-amber/30'
+                    : 'bg-cyan/10 text-cyan border-cyan/30'
+                }`}>
+                  {status}
+                </span>
+              )}
+            </h4>
+          </div>
         </div>
         {url && (
           <a href={url} target="_blank" rel="noopener noreferrer" className="flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase px-3 py-2 md:px-2 md:py-1 bg-white/5 text-text-muted border border-white/10 rounded hover:bg-cyan/10 hover:text-cyan hover:border-cyan/30 transition-colors relative z-20">
@@ -91,7 +109,32 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
         )}
       </div>
       
-      <ExpandableDesc desc={desc} />
+      <div className="mb-4 relative z-[1]">
+        <p className="text-text-muted text-sm leading-relaxed">
+          {desc}
+        </p>
+      </div>
+
+      {techDetails && (
+        <div className="mb-4 relative z-20">
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowTech(v => !v); }}
+            className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors"
+            aria-label={showTech ? 'Hide details' : 'Show details'}
+          >
+            {showTech ? <><ChevronUp size={12} /> ▼ Hide details</> : <><ChevronDown size={12} /> ▶ Show details</>}
+          </button>
+          {showTech && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              className="mt-2 text-xs text-text-muted/80 leading-relaxed font-mono border-l-2 border-cyan/30 pl-3 py-0.5 bg-white/[0.01]"
+            >
+              {techDetails}
+            </motion.div>
+          )}
+        </div>
+      )}
       
       {children && <div className="mb-6 relative z-10">{children}</div>}
 
@@ -106,25 +149,3 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
   );
 }
 
-function ExpandableDesc({ desc }: { desc: string }) {
-  const [expanded, setExpanded] = useState(false);
-  // Descriptions over ~120 chars benefit from truncation on mobile
-  const isLong = desc.length > 120;
-
-  return (
-    <div className="mb-6 relative z-[1]">
-      <p className={`text-text-muted text-sm leading-relaxed ${!expanded && isLong ? 'line-clamp-3' : ''}`}>
-        {desc}
-      </p>
-      {isLong && (
-        <button
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setExpanded(v => !v); }}
-          className="mt-1.5 flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors md:hidden"
-          aria-label={expanded ? 'Show less' : 'Read more'}
-        >
-          {expanded ? <><ChevronUp size={12} /> Show less</> : <><ChevronDown size={12} /> Read more</>}
-        </button>
-      )}
-    </div>
-  );
-}
