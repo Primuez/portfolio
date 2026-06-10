@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform, useInView } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform, useInView } from 'motion/react';
 import { Activity } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import dynamic from 'next/dynamic';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const ModelViewer = dynamic(
   () => import('@/components/ModelViewer').then((mod) => mod.ModelViewer),
@@ -27,210 +28,232 @@ import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-contain
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { useUI } from '@/lib/contexts/UIContext';
 
-const PROJECTS_DATA = [
+interface Project {
+  name: string;
+  url?: string;
+  status: string;
+  desc: string;
+  techDetails: string;
+  tags: string[];
+  logoUrl?: string;
+  bannerUrl?: string;
+  colSpan?: string;
+  hasCustomBtn?: boolean;
+}
+
+interface ProjectCategory {
+  title: string;
+  tagline: string;
+  projects: Project[];
+}
+
+const PROJECT_CATEGORIES: ProjectCategory[] = [
   {
-    name: "InkTwin",
-    url: "https://ink-twin.primuez.in",
-    status: "Live",
-    desc: "For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font to effortlessly generate documents.",
-    techDetails: "Generates custom handwriting fonts from a photo. Performs OCR and stroke vectorization using Hono on Cloudflare Workers, storing user state in D1 and files in R2 CDN. Includes AI solver powered by Gemini API.",
-    tags: ["Cloudflare Workers", "AI", "JavaScript", "Font Generation"],
-    logoUrl: "/logo-inktwin.png"
+    title: "SaaS & Programmatic SEO Products",
+    tagline: "Live, production-grade applications serving real users and generating traffic.",
+    projects: [
+      {
+        name: "InkTwin",
+        url: "https://ink-twin.primuez.in",
+        status: "Live",
+        desc: "For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font to effortlessly generate documents.",
+        techDetails: "Generates custom handwriting fonts from a photo. Performs OCR and stroke vectorization using Hono on Cloudflare Workers, storing user state in D1 and files in R2 CDN. Includes AI solver powered by Gemini API.",
+        tags: ["Cloudflare Workers", "AI", "JavaScript", "Font Generation"],
+        logoUrl: "/logo-inktwin.png"
+      },
+      {
+        name: "PrimuezSure Advisor",
+        url: "https://primuezsure.primuez.in",
+        status: "Live",
+        desc: "For insurance advisors who need instant, multilingual policy decoding and automated fraud prevention, built securely on official data.",
+        techDetails: "Integrates Retrieval-Augmented Generation (RAG) over PDF insurance policy clauses. Built on Cloudflare Workers with serverless vector embeddings for sub-second multilingual response times.",
+        tags: ["AI Agent", "SaaS", "Cloudflare Workers", "LLM"],
+        logoUrl: "/logo-primuezsure.png"
+      },
+      {
+        name: "GhostRank SEO Engine",
+        url: "https://github.com/Primuez/primuez-seo-vault",
+        status: "Built",
+        desc: "A self-sustaining headless growth engine running on a Linux VPS. It autonomously polls keywords, invokes LLMs with fallbacks, and deploys pages to a GitHub CDN.",
+        techDetails: "Utilizes crontab jobs to trigger keyword research scripts. Orchestrates API fallback logic between Gemini and DeepSeek models, generates markup pages, commits to git, and pushes updates to a CDN.",
+        tags: ["Node.js / Bash", "Gemini & DeepSeek", "Git Automation", "Programmatic SEO"]
+      }
+    ]
   },
   {
-    name: "PrimuezSure Advisor",
-    url: "https://primuezsure.primuez.in",
-    status: "Live",
-    desc: "For insurance advisors who need instant, multilingual policy decoding and automated fraud prevention, built securely on official data.",
-    techDetails: "Integrates Retrieval-Augmented Generation (RAG) over PDF insurance policy clauses. Built on Cloudflare Workers with serverless vector embeddings for sub-second multilingual response times.",
-    tags: ["AI Agent", "SaaS", "Cloudflare Workers", "LLM"],
-    logoUrl: "/logo-primuezsure.png"
+    title: "Autonomous AI Agents",
+    tagline: "Intelligent cognitive layers that query compliance/legal frameworks and execute stack workflows.",
+    projects: [
+      {
+        name: "Tax Advisor Agent",
+        status: "Built",
+        desc: "Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms.",
+        techDetails: "Uses advanced financial prompt-chains to ingest GST/tax sheets and cross-reference them with regional tax rules. Generates structured JSON reports for Odoo or custom ledgers.",
+        tags: ["Taxation", "RAG", "Automation", "Compliance"],
+        logoUrl: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        name: "Legal Advisor Agent",
+        status: "Built",
+        desc: "Autonomous legal Q&A assistant trained on regulatory guidelines and contracts.",
+        techDetails: "Uses RAG models to parse Indian legal acts, contract drafts, and corporate bylaws. Generates structured risk summaries and contract redlines with citation tracking.",
+        tags: ["Legal AI", "Contract Analysis", "LLM"],
+        logoUrl: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        name: "Voice AI Agent",
+        status: "Built",
+        desc: "A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free.",
+        techDetails: "Ties real-time audio WebSockets to TTS and STT engines. Processes incoming commands through n8n tool-calling agents to execute operations across business apps.",
+        tags: ["Voice AI", "LLM", "n8n", "Real-Time"],
+        logoUrl: "/voice-ai-agent.png"
+      }
+    ]
   },
   {
-    name: "Tax Advisor Agent",
-    status: "Built",
-    desc: "Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms.",
-    techDetails: "Uses advanced financial prompt-chains to ingest GST/tax sheets and cross-reference them with regional tax rules. Generates structured JSON reports for Odoo or custom ledgers.",
-    tags: ["Taxation", "RAG", "Automation", "Compliance"],
-    logoUrl: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
-  },
-  {
-    name: "Legal Advisor Agent",
-    status: "Built",
-    desc: "Autonomous legal Q&A assistant trained on regulatory guidelines and contracts.",
-    techDetails: "Uses RAG models to parse Indian legal acts, contract drafts, and corporate bylaws. Generates structured risk summaries and contract redlines with citation tracking.",
-    tags: ["Legal AI", "Contract Analysis", "LLM"],
-    logoUrl: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
-  },
-  {
-    name: "Invoice Generator",
-    status: "Built",
-    desc: "Automated system that compiles data and builds professional PDF invoices.",
-    techDetails: "Pulls order/delivery data from ERP webhooks, formats it according to GST template specifications, compiles the PDF via dynamic HTML-to-PDF APIs, and routes it to WhatsApp/email.",
-    tags: ["n8n", "Node.js", "PDF generation"]
-  },
-  {
-    name: "GhostRank SEO Engine",
-    url: "https://github.com/Primuez/primuez-seo-vault",
-    status: "Built",
-    desc: "A self-sustaining headless growth engine running on a Linux VPS. It autonomously polls keywords, invokes LLMs with fallbacks, and deploys pages to a GitHub CDN.",
-    techDetails: "Utilizes crontab jobs to trigger keyword research scripts. Orchestrates API fallback logic between Gemini and DeepSeek models, generates markup pages, commits to git, and pushes updates to a CDN.",
-    tags: ["Node.js / Bash", "Gemini & DeepSeek", "Git Automation", "Programmatic SEO"]
-  },
-  {
-    name: "Voice AI Agent",
-    status: "Built",
-    desc: "A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free.",
-    techDetails: "Ties real-time audio WebSockets to TTS and STT engines. Processes incoming commands through n8n tool-calling agents to execute operations across business apps.",
-    tags: ["Voice AI", "LLM", "n8n", "Real-Time"],
-    logoUrl: "/voice-ai-agent.png"
-  },
-  {
-    name: "Odoo Eye Attendance",
-    status: "Built",
-    desc: "AI-powered camera attendance system that logs check-ins directly into Odoo ERP.",
-    techDetails: "Captures face signatures locally on edge cameras, evaluates them using OpenCV, and calls Odoo JSON-RPC API via n8n to log employee attendance in real-time.",
-    tags: ["Odoo ERP", "Computer Vision", "n8n", "Python"]
-  },
-  {
-    name: "The Autonomous Enterprise Blueprint",
-    status: "Architecture Blueprint — Available to Build",
-    desc: "End-to-end automation architecture designed for manufacturing businesses: IndiaMART lead capture → email verification → Odoo CRM → WhatsApp follow-up → order creation → GST reconciliation.",
-    techDetails: "Integrates IndiaMART webhook API, Kickbox email validation, Odoo CRM API calls, WhatsApp Evolution API message queues, Odoo manufacturing order triggers, and daily automated GST ledger reconciliation workflows. Presented at Odoo Business Show, Raipur.",
-    tags: ["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise", "Architecture Blueprint"],
-    bannerUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80",
-    colSpan: "md:col-span-2 lg:col-span-3",
-    hasCustomBtn: true
+    title: "Custom Automations & Enterprise Systems",
+    tagline: "Bespoke integrations connecting ERP platforms, lead pipelines, and physical checkpoints.",
+    projects: [
+      {
+        name: "Invoice Generator",
+        status: "Built",
+        desc: "Automated system that compiles data and builds professional PDF invoices.",
+        techDetails: "Pulls order/delivery data from ERP webhooks, formats it according to GST template specifications, compiles the PDF via dynamic HTML-to-PDF APIs, and routes it to WhatsApp/email.",
+        tags: ["n8n", "Node.js", "PDF generation"]
+      },
+      {
+        name: "Odoo Eye Attendance",
+        status: "Built",
+        desc: "AI-powered camera attendance system that logs check-ins directly into Odoo ERP.",
+        techDetails: "Captures face signatures locally on edge cameras, evaluates them using OpenCV, and calls Odoo JSON-RPC API via n8n to log employee attendance in real-time.",
+        tags: ["Odoo ERP", "Computer Vision", "n8n", "Python"]
+      },
+      {
+        name: "The Autonomous Enterprise Blueprint",
+        status: "Architecture Blueprint — Available to Build",
+        desc: "End-to-end automation architecture designed for manufacturing businesses: IndiaMART lead capture → email verification → Odoo CRM → WhatsApp follow-up → order creation → GST reconciliation.",
+        techDetails: "Integrates IndiaMART webhook API, Kickbox email validation, Odoo CRM API calls, WhatsApp Evolution API message queues, Odoo manufacturing order triggers, and daily automated GST ledger reconciliation workflows. Presented at Odoo Business Show, Raipur.",
+        tags: ["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise", "Architecture Blueprint"],
+        bannerUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80",
+        colSpan: "md:col-span-2 lg:col-span-3",
+        hasCustomBtn: true
+      }
+    ]
   }
 ];
 
+function ProjectCategoryBlock({ category, index, total }: { category: ProjectCategory; index: number; total: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const isMobile = useIsMobile();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { setModalType } = useUI();
+
+  // Track the scroll of this category relative to the viewport
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "start start"]
+  });
+
+  // Scale down and fade as the card scrolls up under the next cards
+  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0.88]);
+  const filter = useTransform(scrollYProgress, [0.75, 1], ["brightness(1)", "brightness(0.7)"]);
+
+  const yOffset = index * 24; // cascading layout spacing on desktop
+
+  const motionStyle = isMobile ? {} : {
+    position: 'sticky' as const,
+    top: `${90 + yOffset}px`,
+    scale,
+    opacity,
+    filter
+  };
+
+  return (
+    <motion.div 
+      ref={cardRef}
+      style={motionStyle}
+      className="border border-white/10 rounded-2xl bg-[#090b11] backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/30 shadow-[0_20px_50px_rgba(0,0,0,0.6)] mb-8"
+    >
+      <button 
+        onClick={() => setExpanded(!expanded)}
+        className="w-full p-6 text-left flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-cyan/5 transition-colors select-none min-h-[80px] cursor-pointer"
+      >
+        <div>
+          <span className="font-mono text-cyan text-[10px] tracking-widest uppercase block mb-1">0{index + 1} // PORTFOLIO CATEGORY</span>
+          <h3 className="text-xl font-bold text-white tracking-wide font-sans">{category.title}</h3>
+          <p className="text-text-muted text-xs md:text-sm mt-1 leading-relaxed font-sans">{category.tagline}</p>
+        </div>
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase text-cyan shrink-0">
+          <span>{expanded ? '▼ Hide Projects' : '▶ Show Projects'}</span>
+        </div>
+      </button>
+      
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="border-t border-white/5 bg-black/25 overflow-hidden"
+          >
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {category.projects.map((project, pIdx) => (
+                <div key={pIdx} className={project.colSpan || ''}>
+                  <ProjectCard {...project}>
+                    {project.hasCustomBtn && (
+                      <div className="mt-4 flex justify-center">
+                        <GlassButton 
+                          size="lg"
+                          onClick={() => setModalType('workflow')}
+                          glowColor="rgba(0, 240, 255, 0.2)"
+                          className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer"
+                        >
+                          <Activity size={18} /> View Interactive Architecture Diagram
+                        </GlassButton>
+                      </div>
+                    )}
+                  </ProjectCard>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 export const ProjectsSection: React.FC = () => {
-  const { isMobile, setModalType } = useUI();
+  const { isMobile } = useUI();
   const [favOpen, setFavOpen] = useState(false);
   const globeContainerRef = useRef<HTMLDivElement>(null);
   const isGlobeInView = useInView(globeContainerRef, { once: true, margin: "200px" });
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 55, damping: 18, restDelta: 0.001 });
-
-  // clipBottom: 100 → 0 as user scrolls through section
-  const clipBottom = useTransform(smoothProgress, [0.04, 0.88], [100, 0]);
-  const clipPath = useTransform(clipBottom, v => {
-    const clamped = Math.max(0, Math.min(100, isNaN(v) ? 100 : v));
-    return `inset(0 0 ${clamped.toFixed(2)}% 0)`;
-  });
-
-  // laser sits right at the clip boundary
-  const laserTop = useTransform(clipBottom, v => {
-    const clamped = Math.max(0, Math.min(100, isNaN(v) ? 100 : v));
-    return `${(100 - clamped).toFixed(2)}%`;
-  });
-  const laserOpacity = useTransform(clipBottom, [100, 96, 4, 0], [0, 1, 1, 0]);
 
   return (
     <section id="projects" className="pt-16 md:pt-32">
-      {/* Sticky blueprint scanner container */}
-      <div
-        ref={containerRef}
-        style={isMobile ? undefined : { height: '320vh', position: 'relative' }}
-        className="w-full"
-      >
-        <div
-          style={isMobile ? undefined : { position: 'sticky', top: '72px' }}
-          className={isMobile ? '' : 'pt-6 pb-16'}
-        >
-          <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
-            <SectionHeader number="02" command="> ./projects --what-i-built" title="What I've Actually Built and Shipped" />
-          </LiquidGlassTitle>
-          
-          <p className="text-text-muted mt-4 mb-8 max-w-2xl text-base leading-relaxed font-sans">
-            No fake case studies. These are real products and agents I built, own, and run. Expand any card to see its full architecture details.
-          </p>
+      <LiquidGlassTitle glowColor="rgba(0, 240, 255, 0.25)">
+        <SectionHeader number="02" command="> ./projects --what-i-built" title="What I've Actually Built and Shipped" />
+      </LiquidGlassTitle>
+      
+      <p className="text-text-muted mt-4 mb-8 max-w-2xl text-base leading-relaxed font-sans">
+        No fake case studies. These are real products and agents I built, own, and run. Expand any category, and toggle details on cards to see full architecture.
+      </p>
 
-          {!isMobile && (
-            <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2">
-              <span className="text-[#00FFCC] animate-pulse">▼</span> scroll to scan built architecture
-            </p>
-          )}
-
-          <LiquidGlassParallaxSection parallaxDistance={30}>
-            {/* ── Desktop layout ── */}
-            {!isMobile ? (
-              <div className="relative">
-                {/* Bottom layer — wireframe blueprint */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {PROJECTS_DATA.map((p, i) => (
-                    <div key={i} className={p.colSpan || ''}>
-                      <ProjectCard wireframe={true} {...p} />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Top layer — rendered, clipped by laser */}
-                <motion.div
-                  className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  style={{ clipPath }}
-                >
-                  {PROJECTS_DATA.map((p, i) => (
-                    <div key={i} className={p.colSpan || ''}>
-                      <ProjectCard {...p}>
-                        {p.hasCustomBtn && (
-                          <div className="mt-4 flex justify-center">
-                            <GlassButton 
-                              size="lg"
-                              onClick={() => setModalType('workflow')}
-                              glowColor="rgba(0, 240, 255, 0.2)"
-                              className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20"
-                            >
-                              <Activity size={18} /> View Interactive Architecture Diagram
-                            </GlassButton>
-                          </div>
-                        )}
-                      </ProjectCard>
-                    </div>
-                  ))}
-                </motion.div>
-
-                {/* Glowing laser line */}
-                <motion.div
-                  className="absolute left-0 right-0 pointer-events-none z-10"
-                  style={{ top: laserTop, opacity: laserOpacity }}
-                >
-                  <div className="w-full h-[2px] bg-[#00FFCC]
-                    shadow-[0_0_8px_#00FFCC,0_0_20px_#00FFCC,0_0_40px_rgba(0,255,204,0.6)]" />
-                </motion.div>
-              </div>
-            ) : (
-              /* Mobile layout */
-              <div className="grid grid-cols-1 gap-6">
-                {PROJECTS_DATA.map((p, i) => (
-                  <div key={i} className={p.colSpan || ''}>
-                    <ProjectCard {...p}>
-                      {p.hasCustomBtn && (
-                        <div className="mt-4 flex justify-center">
-                          <GlassButton 
-                            size="lg"
-                            onClick={() => setModalType('workflow')}
-                            glowColor="rgba(0, 240, 255, 0.2)"
-                            className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20"
-                          >
-                            <Activity size={18} /> View Interactive Architecture Diagram
-                          </GlassButton>
-                        </div>
-                      )}
-                    </ProjectCard>
-                  </div>
-                ))}
-              </div>
-            )}
-          </LiquidGlassParallaxSection>
+      <LiquidGlassParallaxSection parallaxDistance={30}>
+        {/* Categories Stack with scroll-driven cascading sticky pin on desktop */}
+        <div className={`flex flex-col gap-0 mt-8 ${isMobile ? '' : 'pb-[10vh]'}`}>
+          {PROJECT_CATEGORIES.map((category, index) => (
+            <ProjectCategoryBlock 
+              key={index} 
+              category={category} 
+              index={index} 
+              total={PROJECT_CATEGORIES.length} 
+            />
+          ))}
         </div>
-      </div>
+      </LiquidGlassParallaxSection>
 
       {/* Credibility Line */}
       <div className="mt-6 text-center">

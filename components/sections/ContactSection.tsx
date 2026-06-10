@@ -404,24 +404,14 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         {/* CTA buttons */}
         <div className="mt-10 flex justify-center z-20 relative">
           <FallingPiece {...fp('btn')}>
-            <div className="flex flex-col min-[480px]:flex-row gap-3">
-              <a 
-                href="https://cal.com/prime-s/30min" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3.5 bg-cyan/10 border border-cyan/35 text-cyan hover:bg-cyan hover:text-bg font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold rounded-lg cursor-pointer"
-              >
-                Book 30-min Scope Call
-              </a>
-              <a 
-                href="https://cal.com/prime-s/15min" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3.5 bg-transparent border border-white/20 text-white hover:border-cyan/50 hover:text-cyan font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold rounded-lg cursor-pointer"
-              >
-                Quick 15-min Chat
-              </a>
-            </div>
+            <GlassButton 
+              size="lg" 
+              onClick={onContact} 
+              glowColor="rgba(0, 240, 255, 0.3)" 
+              className="glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer font-bold font-mono text-xs uppercase tracking-widest"
+            >
+              <Send size={16} /> Let&apos;s Connect / Fill Form
+            </GlassButton>
           </FallingPiece>
         </div>
 

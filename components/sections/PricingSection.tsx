@@ -394,18 +394,6 @@ export default function PricingSection() {
           </div>
         )}
 
-        {/* Credibility / Trust / CTA */}
-        <div className="mt-12 text-center max-w-xl mx-auto border border-dashed border-cyan/20 rounded-xl bg-panel/30 p-6 backdrop-blur-sm">
-          <p className="font-mono text-xs text-text-muted tracking-widest mb-4 uppercase">[ NOT SURE WHICH SERVICE FITS? ]</p>
-          <a
-            href="https://cal.com/prime-s/15min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/35 px-6 py-3.5 hover:bg-cyan hover:text-bg transition-all duration-300 font-bold"
-          >
-            Not sure which service fits? → Book a Free 20-min Automation Audit
-          </a>
-        </div>
       </div>
     </section>
   );

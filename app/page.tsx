@@ -193,7 +193,7 @@ function HomeContent() {
       <ScrollProgressBar />
  
       <main id="main-content" aria-label="Portfolio content">
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-16 md:pb-32">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-0">
         <HeroSection />
 
         <AboutSection />

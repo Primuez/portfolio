@@ -31,7 +31,65 @@ const WHY_ITEMS = [
     detail: "Still in college, already running a SaaS brand. Zero bureaucratic red tape. That means faster turnaround, lower overhead, and direct access to the architect.",
     longDetail: "Free from the bloat of traditional agencies and legacy processes. We operate with rapid dev cycles, delivering custom integrations in days rather than months. You deal directly with the system architect who writes the code, ensuring zero communication drift, absolute transparency, and extreme speed.",
   },
+  {
+    num: '05',
+    title: 'Is This\na Fit?',
+    detail: "I value your time and mine. A transparent look at who I work best with (manufacturers, traders, CAs, fast-moving founders) and who is not a good match (cheapest option seekers, bureaucratic layers).",
+    longDetail: "Good Fit / Not a Fit columns.",
+  },
 ];
+
+function FitCheckDetails({ isMobile = false }: { isMobile?: boolean }) {
+  return (
+    <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-6'} w-full text-left font-sans mt-2`}>
+      {/* Good Fit */}
+      <div className="bg-emerald-950/20 border border-emerald-500/20 rounded-xl p-4 backdrop-blur-sm shadow-[0_4px_20px_rgba(16,185,129,0.05)]">
+        <h4 className="text-emerald-400 font-mono text-[10px] uppercase tracking-wider font-bold mb-3 flex items-center gap-1.5 border-b border-emerald-500/10 pb-2">
+          <CheckCircle2 size={12} className="shrink-0" /> ✅ Good Fit
+        </h4>
+        <ul className="space-y-2 text-[11px] md:text-xs text-zinc-300 leading-relaxed">
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+            <span>Manufacturers & traders drowning in manual data entry (IndiaMART, Odoo, custom ERPs).</span>
+          </li>
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+            <span>CAs handling GST, reconciliation, or reporting by hand.</span>
+          </li>
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+            <span>Founders who need a working SaaS MVP shipped fast without hiring a full team.</span>
+          </li>
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+            <span>Business owners who want always-on AI agents handling customer queries.</span>
+          </li>
+        </ul>
+      </div>
+
+      {/* Not a Fit */}
+      <div className="bg-rose-950/20 border border-rose-500/20 rounded-xl p-4 backdrop-blur-sm shadow-[0_4px_20px_rgba(244,63,94,0.05)]">
+        <h4 className="text-rose-400 font-mono text-[10px] uppercase tracking-wider font-bold mb-3 flex items-center gap-1.5 border-b border-rose-500/10 pb-2">
+          <XCircle size={12} className="shrink-0" /> ❌ Not a Fit
+        </h4>
+        <ul className="space-y-2 text-[11px] md:text-xs text-zinc-300 leading-relaxed">
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-rose-400 mt-1.5 shrink-0" />
+            <span>Cheapest option seekers. I write custom, robust production code built for long-term reliability.</span>
+          </li>
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-rose-400 mt-1.5 shrink-0" />
+            <span>Projects requiring large ongoing teams or bureaucratic management layers.</span>
+          </li>
+          <li className="flex items-start gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-rose-400 mt-1.5 shrink-0" />
+            <span>Anyone who is not clear on what business outcome they want to automate.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+}
 
 function WhyPrimuezDot({
   index, total, scrollYProgress,
@@ -78,7 +136,7 @@ function WhyPrimuezSlide({
       <div className="w-1/2 flex items-center justify-end pr-10 md:pr-16 lg:pr-24">
         <motion.div style={{ y: leftY, clipPath: leftClip }} className="text-right">
           <span className="font-mono text-indigo-400 text-xs uppercase tracking-[0.25em] block mb-3">
-            {item.num} / 04
+            {item.num} / 05
           </span>
           <h3
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight"
@@ -97,10 +155,14 @@ function WhyPrimuezSlide({
 
       {/* Right panel — detail */}
       <div className="w-1/2 flex items-center justify-start pl-10 md:pl-16 lg:pr-24">
-        <motion.div style={{ y: rightY, clipPath: rightClip }} className="max-w-xs md:max-w-md">
-          <p className="text-base md:text-lg text-gray-300 leading-relaxed font-sans text-balance">
-            {detailMode === 'detailed' ? item.longDetail : item.detail}
-          </p>
+        <motion.div style={{ y: rightY, clipPath: rightClip }} className="max-w-xs md:max-w-md lg:max-w-xl w-full">
+          {index === 4 && detailMode === 'detailed' ? (
+            <FitCheckDetails />
+          ) : (
+            <p className="text-base md:text-lg text-gray-300 leading-relaxed font-sans text-balance">
+              {detailMode === 'detailed' ? item.longDetail : item.detail}
+            </p>
+          )}
         </motion.div>
       </div>
     </motion.div>
@@ -175,7 +237,6 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
   );
 }
 
-/** Mobile-optimized WhyPrimuez — now mirrors desktop scroll-driven split animation */
 function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -237,7 +298,6 @@ function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' |
   );
 }
 
-/** Mobile slide — mirrors desktop WhyPrimuezSlide with vertically stacked layout */
 function MobileWhySlide({
   item, index, total, scrollYProgress, detailMode,
 }: {
@@ -265,7 +325,7 @@ function MobileWhySlide({
       {/* Title */}
       <motion.div style={{ y: titleY }} className="text-center mb-6">
         <span className="font-mono text-indigo-400 text-xs uppercase tracking-[0.25em] block mb-3">
-          {item.num} / 04
+          {item.num} / 05
         </span>
         <h3
           className="text-2xl sm:text-3xl font-bold text-white leading-tight"
@@ -282,10 +342,14 @@ function MobileWhySlide({
       />
 
       {/* Detail */}
-      <motion.div style={{ y: detailY }} className="max-w-xs text-center">
-        <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-sans">
-          {detailMode === 'detailed' ? item.longDetail : item.detail}
-        </p>
+      <motion.div style={{ y: detailY }} className="max-w-xs text-center w-full">
+        {index === 4 && detailMode === 'detailed' ? (
+          <FitCheckDetails isMobile={true} />
+        ) : (
+          <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-sans">
+            {detailMode === 'detailed' ? item.longDetail : item.detail}
+          </p>
+        )}
       </motion.div>
     </motion.div>
   );
@@ -315,77 +379,11 @@ export default function WhySection() {
         <SectionHeader number="03.5" command="> ./why --us" title="Why Primuez?" />
         <h2 id="why-heading" className="sr-only">Why should you choose Primuez over other AI developers and automation engineers?</h2>
         <p className="text-text-muted mt-4 max-w-2xl text-base leading-relaxed">
-          Four sharp arguments for working with us — not a pitch deck, just the truth.
+          Five sharp arguments for working with us — not a pitch deck, just the truth.
           <span className="ml-3 font-mono text-[10px] text-indigo-400/70 uppercase tracking-widest">[ toggle detail level inside ↓ ]</span>
         </p>
       </div>
       <WhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />
-
-      <div className="mt-20 border-t border-white/5 pt-16">
-        <h3 className="font-mono text-xs uppercase tracking-widest text-[#00f0ff] mb-4">
-          [ 03.5.B // FIT_CHECK ]
-        </h3>
-        <h4 className="text-2xl md:text-3xl font-bold text-white mb-4 font-sans">
-          Is This a Fit?
-        </h4>
-        <p className="text-text-muted mb-10 max-w-2xl text-base leading-relaxed font-sans">
-          I value your time and mine. Here is a transparent look at who I work best with, and when we might not be a good match.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Good Fit */}
-          <div className="bg-[#07090e]/95 border border-emerald-500/20 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.05)] transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full blur-[30px] bg-emerald-500/5 group-hover:bg-emerald-500/10 transition-all duration-500 pointer-events-none" />
-            <h5 className="text-emerald-400 font-mono text-sm uppercase tracking-widest mb-6 flex items-center gap-2 font-bold border-b border-emerald-500/10 pb-3">
-              <CheckCircle2 size={16} /> ✅ Good Fit
-            </h5>
-            <ul className="space-y-4 font-sans text-sm text-text-main leading-relaxed">
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
-                <span><strong>Manufacturers & traders</strong> drowning in manual data entry (IndiaMART, Odoo, custom ERPs).</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
-                <span><strong>Chartered Accountants (CAs)</strong> handling GST, reconciliation, or client reporting by hand.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
-                <span><strong>Founders</strong> who need a working SaaS MVP shipped fast without hiring a full development team.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
-                <span><strong>Business owners</strong> who want always-on AI agents handling customer/legal queries automatically.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Not a Fit */}
-          <div className="bg-[#07090e]/95 border border-rose-500/20 rounded-2xl p-6 backdrop-blur-md hover:border-rose-500/40 hover:shadow-[0_0_30px_rgba(244,63,94,0.05)] transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full blur-[30px] bg-rose-500/5 group-hover:bg-rose-500/10 transition-all duration-500 pointer-events-none" />
-            <h5 className="text-rose-400 font-mono text-sm uppercase tracking-widest mb-6 flex items-center gap-2 font-bold border-b border-rose-500/10 pb-3">
-              <XCircle size={16} /> ❌ Not a Fit
-            </h5>
-            <ul className="space-y-4 font-sans text-sm text-text-main leading-relaxed">
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0" />
-                <span><strong>Cheapest option seekers</strong>. I write custom, robust production code that is priced for long-term reliability.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0" />
-                <span>Projects requiring a large ongoing team or bureaucratic management layers.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0" />
-                <span>Anyone who is not clear on what business outcome they want to automate.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-8 text-center font-mono text-[10px] text-text-muted/80 tracking-wide">
-          🛡️ Fixed-price proposals &middot; 30-day free support on every build &middot; Clear delivery timeline agreed upfront
-        </div>
-      </div>
     </section>
   );
 }

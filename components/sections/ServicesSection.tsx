@@ -184,6 +184,7 @@ function ServiceCategoryBlock({ category, index, total }: { category: ServiceCat
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="border-t border-white/5 bg-black/25 overflow-hidden"
           >
             <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -253,19 +254,6 @@ export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => 
               total={SERVICES_CATEGORIES.length} 
             />
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="mt-12 text-center border border-dashed border-cyan/20 rounded-xl bg-panel/30 p-6 max-w-xl mx-auto backdrop-blur-sm">
-          <p className="font-mono text-xs text-text-muted tracking-widest mb-4 uppercase">[ NOT SURE WHICH SERVICE FITS? ]</p>
-          <a
-            href="https://cal.com/prime-s/15min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/35 px-6 py-3.5 hover:bg-cyan hover:text-bg transition-all duration-300 font-bold"
-          >
-            Not sure which service fits? → Book a Free 20-min Automation Audit
-          </a>
         </div>
       </div>
     </section>
