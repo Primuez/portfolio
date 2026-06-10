@@ -161,6 +161,7 @@ function LiquidRepoCard({
 export default function GithubSection() {
   const [repos, setRepos] = useState<GithubRepo[]>([]);
   const [loadingRepos, setLoadingRepos] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -202,46 +203,71 @@ export default function GithubSection() {
         <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
         <h2 id="github-heading" className="sr-only">What open-source projects has Primuez published on GitHub?</h2>
         <p className="sr-only">Rahul Kasturiya (Primuez) publishes automation workflows, AI agent experiments, and SaaS boilerplates across two GitHub profiles: @primuez and @primmius.</p>
-        <div className="mt-12">
-          <AnimatePresence mode="wait">
-            {loadingRepos ? (
+        
+        <p className="text-text-muted mt-4 mb-6 max-w-2xl text-base leading-relaxed font-sans">
+          Open-source repositories, developer tools, and automation scripts published across @primuez and @primmius.
+        </p>
+
+        <div className="mt-6">
+          <button
+            onClick={() => setIsOpen(o => !o)}
+            className="w-full flex items-center justify-between py-3.5 px-5 min-h-[48px] font-mono text-xs uppercase tracking-[0.15em] text-cyan border border-cyan/20 rounded-lg bg-panel/40 hover:bg-cyan/5 transition-colors cursor-pointer text-left z-20 relative"
+          >
+            <span>{isOpen ? '▼ Hide GitHub Activity' : '▶ Show details (6 active repositories)'}</span>
+            <span>{isOpen ? '▲' : '▼'}</span>
+          </button>
+
+          <AnimatePresence>
+            {isOpen && (
               <motion.div
-                key="fetching"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-                className="flex flex-col items-center justify-center h-32 gap-4"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="overflow-hidden mt-6"
               >
-                <div className="font-mono text-cyan text-sm tracking-widest animate-pulse">[ FETCHING REPOSITORIES ]</div>
-                <div className="w-1/2 max-w-sm h-1 bg-cyan/20 overflow-hidden">
-                  <div className="h-full bg-cyan w-1/3 animate-[slide_1.5s_ease-in-out_infinite]"></div>
-                </div>
-              </motion.div>
-            ) : repos.length > 0 ? (
-              <motion.div
-                key="repos"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <LiquidRepoGrid repos={repos} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="ratelimit"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-                className="text-center font-mono text-text-muted p-12 border border-dashed border-cyan/20 rounded-xl bg-panel"
-              >
-                <span>[ Rate Limited by GitHub API. View profiles directly: ]</span>
-                <div className="flex justify-center gap-4 mt-4">
-                  <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primuez</a>
-                  <a href="https://github.com/primmius" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primmius</a>
-                </div>
+                <AnimatePresence mode="wait">
+                  {loadingRepos ? (
+                    <motion.div
+                      key="fetching"
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.5, ease: 'easeInOut' }}
+                      className="flex flex-col items-center justify-center h-32 gap-4"
+                    >
+                      <div className="font-mono text-cyan text-sm tracking-widest animate-pulse">[ FETCHING REPOSITORIES ]</div>
+                      <div className="w-1/2 max-w-sm h-1 bg-cyan/20 overflow-hidden">
+                        <div className="h-full bg-cyan w-1/3 animate-[slide_1.5s_ease-in-out_infinite]"></div>
+                      </div>
+                    </motion.div>
+                  ) : repos.length > 0 ? (
+                    <motion.div
+                      key="repos"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <LiquidRepoGrid repos={repos} />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="ratelimit"
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.5, ease: 'easeInOut' }}
+                      className="text-center font-mono text-text-muted p-12 border border-dashed border-cyan/20 rounded-xl bg-panel"
+                    >
+                      <span>[ Rate Limited by GitHub API. View profiles directly: ]</span>
+                      <div className="flex justify-center gap-4 mt-4">
+                        <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primuez</a>
+                        <a href="https://github.com/primmius" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primmius</a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>

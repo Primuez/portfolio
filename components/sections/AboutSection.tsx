@@ -196,14 +196,12 @@ export const AboutSection: React.FC = () => {
                 </span>
               </h3>
 
-              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans">
+              <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans text-balance">
                 <p>
-                  I orchestrate high-availability pipelines that seamlessly tie external tools to central enterprise databases. Inbound streams from IndiaMART flow cleanly into Odoo, sales orders compile automatically, and follow-up systems run with absolute zero maintenance.
+                  I build automation systems using n8n, Cloudflare Workers, and AI — connecting the tools businesses already use so manual work disappears.
                 </p>
                 <p className="text-zinc-300/90 text-xs md:text-sm">
-                  By nesting <strong className="text-white font-medium">n8n workflow networks</strong>,{' '}
-                  <strong className="text-white font-medium">autonomous AI sandboxes</strong>, and{' '}
-                  <strong className="text-white font-medium">Cloudflare Edge workers</strong>, I solve workflow bottlenecks at the architectural level.
+                  I&apos;ve shipped live SaaS products (InkTwin, PrimuezSure), built AI agents for tax and legal queries, and designed enterprise automation architecture for manufacturing workflows. If a system can be automated, I can build it.
                 </p>
               </div>
             </div>

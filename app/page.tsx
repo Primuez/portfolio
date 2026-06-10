@@ -17,6 +17,7 @@ import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import ServicesSection from '@/components/sections/ServicesSection';
+
 import ProcessSection from '@/components/sections/ProcessSection';
 import WhySection from '@/components/sections/WhySection';
 import PricingSection from '@/components/sections/PricingSection';
@@ -188,45 +189,35 @@ function HomeContent() {
         </AnimatePresence>
       </nav>
       </header>
-
+ 
       <ScrollProgressBar />
-
+ 
       <main id="main-content" aria-label="Portfolio content">
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-16 md:pb-32">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-0">
         <HeroSection />
 
         <AboutSection />
 
-        <ProjectsSection />
-
-        {/* 03. SERVICES */}
         <ServicesSection onWorkWithMe={() => setModalType('form')} />
 
-        {/* HOW WE WORK */}
-        <ProcessSection />
+        <ProjectsSection />
 
-        {/* WHY PRIMUEZ */}
-        <WhySection />
-
-        {/* 04. PRICING */}
         <PricingSection />
 
-        {/* 05. GITHUB */}
+        <ProcessSection />
+
+        <WhySection />
+
         <GithubSection />
 
-        {/* 06. VIDEOS */}
         <VideosSection />
 
-        {/* 07. TECHNICAL ARSENAL */}
         <StackSection />
 
-        {/* 08. CREDENTIALS */}
         <CredentialsSection />
 
-        {/* 09. FAQ */}
         <FAQSection />
 
-        {/* 10. CONTACT */}
         <ContactSection />
       </div>
       </main>

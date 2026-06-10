@@ -11,7 +11,7 @@ import { ShaderLogoGlow } from '@/components/ShaderLogoGlow';
 import { SectionHeader } from '@/components/SectionHeader';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 
-function SocialIcon({ icon, label, href }: { icon: React.ReactNode; label: string; href: string }) {
+function SocialIcon({ icon, label, href, highlight }: { icon: React.ReactNode; label: string; href: string; highlight?: boolean }) {
   return (
     <a
       href={href}
@@ -19,7 +19,10 @@ function SocialIcon({ icon, label, href }: { icon: React.ReactNode; label: strin
       rel="noopener noreferrer"
       draggable={false}
       onDragStart={(e) => e.preventDefault()}
-      className="group relative flex items-center justify-center w-12 h-12 bg-panel border border-cyan/20 rounded-lg text-text-muted hover:text-white hover:border-white/50 hover:shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 hover:-translate-y-1"
+      className={`group relative flex items-center justify-center w-12 h-12 bg-panel rounded-lg text-text-muted hover:text-white transition-all duration-300 hover:-translate-y-1
+        ${highlight 
+          ? 'border border-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.15)] hover:border-cyan hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]' 
+          : 'border border-cyan/20 hover:border-white/50 hover:shadow-[0_0_15px_rgba(255,255,255,0.15)]'}`}
     >
       {icon}
       <span className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-panel border border-cyan/30 text-cyan text-xs font-mono px-3 py-1 rounded pointer-events-none whitespace-nowrap shadow-[0_0_10px_rgba(0,240,255,0.2)] flex flex-col items-center">
@@ -313,6 +316,8 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
     { id: 's4', dx:  300 * xs, dy:   55 * ys, rot: -17, delay: 0.67 },
     { id: 's5', dx:  -58 * xs, dy: -150 * ys, rot:  11, delay: 0.70 },
     { id: 's6', dx:   12 * xs, dy: -200 * ys, rot: -20, delay: 0.73 },
+    { id: 'c15', dx: -100 * xs, dy: -120 * ys, rot:   8, delay: 0.76 },
+    { id: 'c30', dx:  220 * xs, dy: -120 * ys, rot: -12, delay: 0.79 },
   ];
 
   const fp = (id: string) => {
@@ -382,25 +387,30 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           pieces handle their own pointer-events. */}
       <div className={`text-center pt-12 ${!collapsed && !permanent ? 'pointer-events-none' : ''}`}>
         {/* Heading */}
-        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight">
-          <FallingPiece {...fp('w0')}><span className="inline-block px-1">Let&apos;s</span></FallingPiece>
-          <FallingPiece {...fp('w1')}><span className="inline-block px-1">Build</span></FallingPiece>
-          <FallingPiece {...fp('w2')}><span className="inline-block px-1">Something</span></FallingPiece>
-          <FallingPiece {...fp('w3')} className="text-cyan"><span className="inline-block px-1">Autonomous.</span></FallingPiece>
+        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight text-white">
+          <FallingPiece {...fp('w0')}><span className="inline-block px-1">Ready</span></FallingPiece>
+          <FallingPiece {...fp('w1')}><span className="inline-block px-1">to stop</span></FallingPiece>
+          <FallingPiece {...fp('w2')}><span className="inline-block px-1">doing this</span></FallingPiece>
+          <FallingPiece {...fp('w3')} className="text-cyan"><span className="inline-block px-1">manually?</span></FallingPiece>
         </div>
 
         {/* Subtitle */}
         <FallingPiece {...fp('sub')}>
           <p className="text-text-muted max-w-2xl mx-auto px-4 bg-bg/40 backdrop-blur-sm rounded-md py-2 font-mono text-xs uppercase tracking-wider">
-            If you believe your team&apos;s time is meant for growth, not data entry — let&apos;s talk.
+            Book a free 20-min call. I&apos;ll tell you exactly what to automate and how long it&apos;ll take.
           </p>
         </FallingPiece>
 
-        {/* CTA button */}
-        <div className="mt-10 flex justify-center">
+        {/* CTA buttons */}
+        <div className="mt-10 flex justify-center z-20 relative">
           <FallingPiece {...fp('btn')}>
-            <GlassButton size="lg" onClick={onContact} glowColor="rgba(0, 240, 255, 0.3)" className="glass-btn-glow text-cyan hover:text-white">
-              <Send size={16} /> Let&apos;s Connect
+            <GlassButton 
+              size="lg" 
+              onClick={onContact} 
+              glowColor="rgba(0, 240, 255, 0.3)" 
+              className="glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer font-bold font-mono text-xs uppercase tracking-widest"
+            >
+              <Send size={16} /> Let&apos;s Connect / Fill Form
             </GlassButton>
           </FallingPiece>
         </div>
@@ -427,6 +437,8 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         {/* Socials */}
         <div className="mt-12 pb-10 flex flex-wrap justify-center gap-4">
           {[
+            { id: 'c15', icon: <span className="font-mono font-bold text-lg leading-none text-cyan">15</span>, label: '15-Min Quick Chat', href: 'https://cal.com/prime-s/15min', highlight: true },
+            { id: 'c30', icon: <span className="font-mono font-bold text-lg leading-none text-amber">30</span>, label: '30-Min Scope Call', href: 'https://cal.com/prime-s/30min', highlight: true },
             { id: 's0', icon: <Github size={20} />,    label: 'GitHub (primuez)',  href: 'https://github.com/primuez' },
             { id: 's1', icon: <Github size={20} />,    label: 'GitHub (primmius)', href: 'https://github.com/primmius' },
             { id: 's2', icon: <Linkedin size={20} />,  label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363' },
@@ -436,7 +448,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
             { id: 's6', icon: <span className="font-bold text-lg leading-none">Up</span>, label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f' },
           ].map((s) => (
             <FallingPiece key={s.id} {...fp(s.id)}>
-              <SocialIcon icon={s.icon} label={s.label} href={s.href} />
+              <SocialIcon icon={s.icon} label={s.label} href={s.href} highlight={s.highlight} />
             </FallingPiece>
           ))}
         </div>
@@ -463,6 +475,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
                 </ShaderLogoGlow>
               </span>
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
+              <a href="mailto:contact@primuez.in" className="font-mono text-xs text-cyan hover:underline mt-1">contact@primuez.in</a>
             </div>
             <div className="flex items-center gap-6 font-mono text-xs text-text-muted">
               <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:text-glow-cyan transition-colors duration-200">GitHub</a>

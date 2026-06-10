@@ -8,48 +8,53 @@ import { SectionHeader } from '@/components/SectionHeader';
 
 const RECEIPT_CARDS = [
   {
-    tier: 'Professional Automation',
-    usd: 'Starts at $150',
-    inr: '₹12,000+',
+    tier: 'Starter Automation',
+    usd: 'Starts at $180',
+    inr: 'Starting at ₹15,000',
     color: 'cyan' as const,
+    desc: 'Single workflow. n8n, WhatsApp, API, or AI agent build.',
     features: [
-      'Multi-step workflows & CRM setups',
+      'Single n8n workflow or AI agent',
+      'WhatsApp / custom API integration',
       'Full error handling & logging',
-      '3–6 node workflow or AI agent',
-      'Documentation + handover call',
-      '30-day bug support',
+      'Fixed-price proposal — no surprises',
+      '30-day free support included',
     ],
-    cta: 'Get Professional Build',
-    footerNote: "Need a micro-fix under $150? Let's discuss it.",
+    cta: 'Book Scope Call',
+    url: 'https://cal.com/prime-s/30min',
   },
   {
-    tier: 'Premium AI Integration',
-    usd: '$300 - $800',
-    inr: '₹25,000 - ₹65,000',
+    tier: 'Enterprise Automation',
+    usd: 'Starts at $900',
+    inr: 'Starting at ₹75,000',
     color: 'amber' as const,
     popular: true,
+    desc: 'Multi-system architecture. Odoo, AI agents, n8n pipelines, full integration.',
     features: [
-      'End-to-end AI systems',
-      'Multi-model orchestration',
-      'SaaS MVPs & enterprise pipelines',
-      'Full system architecture',
-      'Unlimited revisions in scope',
+      'Multi-system enterprise architecture',
+      'Odoo ERP / CRM lead integrations',
+      'Multi-agent AI workflows',
+      'Fixed-price proposal — no surprises',
+      '30-day free support included',
     ],
-    cta: 'Build Something Premium',
+    cta: 'Book Scope Call',
+    url: 'https://cal.com/prime-s/30min',
   },
   {
-    tier: 'Advanced Enterprise Systems',
-    usd: 'Up to $1,000',
-    inr: '₹75,000 - ₹1,00,000+',
+    tier: 'SaaS MVP',
+    usd: 'Starts at $1,450',
+    inr: 'Starting at ₹1,20,000',
     color: 'violet' as const,
+    desc: 'Full product on Cloudflare Workers. Idea to live in 4–6 weeks.',
     features: [
-      'High-level complex architectures',
-      'Full architecture ownership',
-      'Multi-department automation',
-      'Ongoing async support',
-      'Architecture reviews & Roadmap planning',
+      'Full-stack SaaS MVP build',
+      'Serverless edge (Cloudflare Workers)',
+      'Database setup (Supabase / D1)',
+      'Modern responsive glassmorphic UI',
+      '30-day free support included',
     ],
-    cta: 'Discuss Scope',
+    cta: 'Book Scope Call',
+    url: 'https://cal.com/prime-s/30min',
   },
 ];
 
@@ -125,9 +130,10 @@ function ReceiptCardInner({
 
       {/* ── HEADER ── */}
       <div className={`p-6 pb-4 ${card.popular ? 'pt-8' : ''}`}>
-        <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-3">{card.tier}</p>
-        <h2 className={`font-sans font-bold text-3xl leading-tight ${cls.text}`}>{card.usd}</h2>
-        <span className="font-mono text-sm text-text-muted block mt-1">{card.inr}</span>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-2">{card.tier}</p>
+        <h3 className={`font-sans font-bold text-3xl leading-tight ${cls.text}`}>{card.inr}</h3>
+        <span className="font-mono text-xs text-text-muted block mt-1">{card.usd}</span>
+        <p className="text-zinc-400 text-xs mt-2 font-sans leading-relaxed min-h-[32px]">{card.desc}</p>
       </div>
 
       {/* paper edge divider */}
@@ -138,7 +144,7 @@ function ReceiptCardInner({
         <motion.div style={{ clipPath }} className="px-6 pt-4">
           <ul className="space-y-2.5 pb-6">
             {card.features.map((f, i) => (
-              <li key={i} className="flex items-start gap-2.5 text-sm text-text-main font-mono">
+              <li key={i} className="flex items-start gap-2.5 text-xs text-text-main font-mono leading-normal">
                 <CheckCircle2 size={14} className={`shrink-0 mt-0.5 ${cls.text}`} />
                 {f}
               </li>
@@ -154,16 +160,15 @@ function ReceiptCardInner({
       </div>
 
       {/* ── CTA ── */}
-      <motion.div style={{ opacity: ctaOpacity, y: ctaY }} className="px-6 pb-6 pt-2">
-        <button
-          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-          className={`w-full font-mono text-xs uppercase tracking-widest border py-3 transition-all duration-300 rounded ${cls.btn}`}
+      <motion.div style={{ opacity: ctaOpacity, y: ctaY }} className="px-6 pb-6 pt-2 z-20">
+        <a
+          href={card.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`w-full block text-center font-mono text-xs uppercase tracking-widest border py-3.5 transition-all duration-300 rounded font-bold ${cls.btn}`}
         >
           {card.cta}
-        </button>
-        {card.footerNote && (
-          <p className="text-center text-[11px] text-text-muted mt-2.5 font-mono leading-snug">{card.footerNote}</p>
-        )}
+        </a>
       </motion.div>
     </div>
   );
@@ -233,9 +238,9 @@ function VipReceiptCard({
             <button
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               className="font-mono text-xs uppercase tracking-widest border border-red-500/60 text-red-400
-                px-8 py-3 rounded transition-all duration-300
+                px-8 py-3.5 rounded transition-all duration-300
                 hover:bg-red-500/10 hover:border-red-400
-                shadow-[0_0_14px_rgba(239,68,68,0.1)]"
+                shadow-[0_0_14px_rgba(239,68,68,0.1)] cursor-pointer font-bold"
             >
               {VIP_CARD.cta}
             </button>
@@ -273,7 +278,7 @@ function VipReceiptCard({
           onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           className="w-full font-mono text-xs uppercase tracking-widest border border-red-500/60 text-red-400
             py-3 rounded transition-all duration-300
-            hover:bg-red-500/10 hover:border-red-400"
+            hover:bg-red-500/10 hover:border-red-400 cursor-pointer font-bold"
         >
           {VIP_CARD.cta}
         </button>
@@ -317,7 +322,7 @@ export default function PricingSection() {
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
   const smoothP = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
 
-  // Top-3 cards: unroll 8% → 68% of scroll
+  // Top-3 cards: unroll 8% → 62% of scroll
   const clipPct    = useTransform(smoothP, [0.06, 0.62], [100, 0]);
   const ctaOpacity = useTransform(smoothP, [0.60, 0.72], [0, 1]);
   const ctaY       = useTransform(smoothP, [0.60, 0.72], [14, 0]);
@@ -345,14 +350,15 @@ export default function PricingSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SectionHeader number="04" command="> ./pricing --transparent" title="Pricing" />
+          <SectionHeader number="04" command="> ./pricing --transparent" title="What's the Investment?" />
           <h2 id="pricing-heading" className="sr-only">What does Primuez charge for AI automation, n8n workflows, and SaaS development projects?</h2>
-          <p className="text-text-muted mt-4 mb-10 max-w-2xl text-base leading-relaxed">
-            No hidden rates. No surprise scope creep. Pick the tier that fits — or tell me what you need and I&apos;ll tell you which applies.
+          
+          <p className="text-text-muted mt-4 mb-6 max-w-2xl text-base leading-relaxed font-sans">
+            No hidden rates. No surprise scope creep. Fixed-price proposals, 30-day free support, and clear delivery timelines.
           </p>
           {!isMobile && (
             <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2">
-              <span className="text-cyan animate-pulse">▼</span> scroll to print pricing
+              <span className="text-cyan animate-pulse">▼</span> scroll to print receipts
             </p>
           )}
         </motion.div>
@@ -388,9 +394,6 @@ export default function PricingSection() {
           </div>
         )}
 
-        <p className="mt-10 text-center font-mono text-xs text-text-muted tracking-widest">
-          All prices are project-based, not hourly. Scope is agreed before any work begins.
-        </p>
       </div>
     </section>
   );
