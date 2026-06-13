@@ -27,6 +27,7 @@ import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { useUI } from '@/lib/contexts/UIContext';
+import { trackEvent } from '@/lib/analytics';
 
 interface Project {
   name: string;
@@ -206,7 +207,7 @@ function ProjectCategoryBlock({ category, index, total }: { category: ProjectCat
                       <div className="mt-4 flex justify-center">
                         <GlassButton 
                           size="lg"
-                          onClick={() => setModalType('workflow')}
+                          onClick={() => { trackEvent('click_project_architecture'); setModalType('workflow'); }}
                           glowColor="rgba(0, 240, 255, 0.2)"
                           className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer"
                         >

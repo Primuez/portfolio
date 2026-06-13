@@ -11,6 +11,7 @@ import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { UIProvider, useUI } from '@/lib/contexts/UIContext';
 import { MobileStickyCtA } from '@/components/MobileStickyCtA';
+import { trackEvent } from '@/lib/analytics';
 
 // Modularized Sections
 import { HeroSection } from '@/components/sections/HeroSection';
@@ -57,7 +58,10 @@ function ScrollToTopButton({ scrolled }: { scrolled: boolean }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => {
+            trackEvent('click_back_to_top');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           className="fixed bottom-20 right-6 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-11 md:h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
           aria-label="Scroll to top"
         >
@@ -88,6 +92,20 @@ function HomeContent() {
   }, []);
 
   const showMobileLayout = mounted ? isMobile : false;
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    
+    trackEvent(`nav_click`, { label, href });
+
+    const targetId = href.replace('#', '');
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      history.pushState(null, '', href);
+    }
+  };
 
   return (
     <div className="relative min-h-screen">
@@ -126,12 +144,19 @@ function HomeContent() {
           </div>
           {/* Desktop nav */}
           <div className="hidden md:flex gap-8 font-mono text-[11px] tracking-widest uppercase text-text-muted">
-            <a href="#whoami" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">About</a>
-            <a href="#projects" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">Work</a>
-            <a href="#services" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">Services</a>
-            <a href="#pricing" className="hover:text-white transition-colors duration-200 text-amber/80 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-amber after:transition-all after:duration-300 hover:after:w-full">Pricing</a>
-            <a href="#stack" className="hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-cyan after:transition-all after:duration-300 hover:after:w-full">Stack</a>
-            <a href="#contact" className="hover:text-white transition-colors duration-200 border border-white/20 px-3 py-1 -my-1 rounded hover:border-cyan/50 hover:shadow-[0_0_12px_rgba(0,240,255,0.15)]">Contact</a>
+            {['About:#whoami', 'Work:#projects', 'Services:#services', 'Pricing:#pricing', 'Stack:#stack', 'Contact:#contact'].map(item => {
+              const [label, href] = item.split(':');
+              return (
+                <a 
+                  key={href} 
+                  href={href} 
+                  onClick={(e) => handleNavClick(e, href, label)}
+                  className={`hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:transition-all after:duration-300 hover:after:w-full ${label === 'Pricing' ? 'text-amber/80 after:bg-amber' : 'after:bg-cyan'} ${label === 'Contact' ? 'border border-white/20 px-3 py-1 -my-1 rounded hover:border-cyan/50 hover:shadow-[0_0_12px_rgba(0,240,255,0.15)] after:hidden' : ''}`}
+                >
+                  {label}
+                </a>
+              );
+            })}
           </div>
           {/* Mobile hamburger */}
           <button
@@ -158,26 +183,30 @@ function HomeContent() {
                 {['About:#whoami','Projects:#projects','Services:#services','Pricing:#pricing'].map(item => {
                   const [label, href] = item.split(':');
                   return (
-                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
+                    <a key={href} href={href} onClick={(e) => handleNavClick(e, href, label)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
                   );
                 })}
                 <div className="text-[10px] text-text-muted/50 tracking-[0.3em] mt-3">Info</div>
                 {['Why Us:#why-primuez','Stack:#stack','Credentials:#credentials','FAQ:#faq'].map(item => {
                   const [label, href] = item.split(':');
                   return (
-                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
+                    <a key={href} href={href} onClick={(e) => handleNavClick(e, href, label)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
                   );
                 })}
                 <div className="text-[10px] text-text-muted/50 tracking-[0.3em] mt-3">Connect</div>
-                {['GitHub:#github','Videos:#youtube','Contact:#contact'].map(item => {
+                {['GitHub:#github','Videos:#videos','Contact:#contact'].map(item => {
                   const [label, href] = item.split(':');
                   return (
-                    <a key={href} href={href} onClick={() => setMenuOpen(false)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
+                    <a key={href} href={href} onClick={(e) => handleNavClick(e, href, label)} className="hover:text-white transition-colors pl-2 border-l border-white/10 py-3">{label}</a>
                   );
                 })}
                 <GlassButton 
                   size="lg"
-                  onClick={() => { setMenuOpen(false); setModalType('form'); }}
+                  onClick={() => { 
+                    setMenuOpen(false); 
+                    trackEvent('click_mobile_nav_letstalk');
+                    setModalType('form'); 
+                  }}
                   glowColor="rgba(0, 240, 255, 0.3)"
                   className="mt-4 w-full glass-btn-glow text-cyan"
                 >

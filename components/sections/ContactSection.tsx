@@ -10,6 +10,7 @@ import { ShaderLogo } from '@/components/ShaderText';
 import { ShaderLogoGlow } from '@/components/ShaderLogoGlow';
 import { SectionHeader } from '@/components/SectionHeader';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
+import { trackEvent } from '@/lib/analytics';
 
 function SocialIcon({ icon, label, href, highlight }: { icon: React.ReactNode; label: string; href: string; highlight?: boolean }) {
   return (
@@ -509,7 +510,7 @@ export default function ContactSection() {
       <h2 id="contact-heading" className="sr-only">
         How can you get in touch with Primuez to start an AI automation project?
       </h2>
-      <GravityCollapse onContact={() => setModalType('form')} />
+      <GravityCollapse onContact={() => { trackEvent('click_contact_form'); setModalType('form'); }} />
     </motion.section>
   );
 }

@@ -8,6 +8,7 @@ import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { ShaderIridescentText } from '@/components/ShaderText';
 import { useUI } from '@/lib/contexts/UIContext';
+import { trackEvent } from '@/lib/analytics';
 
 const phrases = [
   "Workflow Automation.",
@@ -104,18 +105,27 @@ export const HeroSection: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4"
         >
-          <a href="#projects" className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2">
+          <a 
+            href="#projects" 
+            onClick={() => trackEvent('click_hero_view_work')}
+            className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2"
+          >
             <ChevronRight size={16} /> View My Work
           </a>
           <GlassButton 
             size="lg" 
-            onClick={() => setModalType('form')} 
+            onClick={() => { trackEvent('click_hero_lets_talk'); setModalType('form'); }} 
             glowColor="rgba(0, 240, 255, 0.25)"
             className="glass-btn-glow text-cyan hover:text-white"
           >
             Let&apos;s Talk
           </GlassButton>
-          <a href="/documents/resume.pdf" download="Rahul_Kasturiya_Resume.pdf" className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2">
+          <a 
+            href="/documents/resume.pdf" 
+            download="Rahul_Kasturiya_Resume.pdf" 
+            onClick={() => trackEvent('click_hero_download_resume')}
+            className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2"
+          >
             <Download size={16} /> Resume
           </a>
         </motion.div>
@@ -132,6 +142,7 @@ export const HeroSection: React.FC = () => {
               href="https://cal.com/prime-s/30min" 
               target="_blank" 
               rel="noopener noreferrer"
+              onClick={() => trackEvent('click_hero_book_30min')}
               className="flex-1 px-5 py-3.5 bg-cyan/10 border border-cyan/35 text-cyan hover:bg-cyan hover:text-bg font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
             >
               📅 Book 30-min Scope Call
@@ -140,6 +151,7 @@ export const HeroSection: React.FC = () => {
               href="https://cal.com/prime-s/15min" 
               target="_blank" 
               rel="noopener noreferrer"
+              onClick={() => trackEvent('click_hero_book_15min')}
               className="flex-1 px-5 py-3.5 bg-transparent border border-white/20 text-white hover:border-cyan/50 hover:text-cyan font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
             >
               ☕ 15-min Quick Chat
