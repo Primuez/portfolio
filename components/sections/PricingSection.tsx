@@ -8,69 +8,66 @@ import { SectionHeader } from '@/components/SectionHeader';
 
 const RECEIPT_CARDS = [
   {
-    tier: 'Starter Automation',
-    usd: 'Starts at $180',
-    inr: 'Starting at ₹15,000',
+    tier: 'Professional Automation',
+    usd: 'Starts at $150',
+    inr: '₹12,000+',
     color: 'cyan' as const,
-    desc: 'Single workflow. n8n, WhatsApp, API, or AI agent build.',
+    desc: 'Multi-step workflows & CRM setups. Documentation + handover call.',
     features: [
-      'Single n8n workflow or AI agent',
-      'WhatsApp / custom API integration',
+      'Multi-step workflows & CRM setups',
       'Full error handling & logging',
-      'Fixed-price proposal — no surprises',
-      '30-day free support included',
+      '3-6 node workflow or AI agent',
+      'Documentation + handover call',
+      '30-day bug support',
     ],
-    cta: 'Book Scope Call',
+    cta: 'Get Professional Build',
     url: 'https://cal.com/prime-s/30min',
   },
   {
-    tier: 'Enterprise Automation',
-    usd: 'Starts at $900',
-    inr: 'Starting at ₹75,000',
+    tier: 'Premium AI Integration',
+    usd: '$300 - $800',
+    inr: '₹25,000 - ₹65,000',
     color: 'amber' as const,
     popular: true,
-    desc: 'Multi-system architecture. Odoo, AI agents, n8n pipelines, full integration.',
+    desc: 'End-to-end AI systems, SaaS MVPs & enterprise pipelines.',
     features: [
-      'Multi-system enterprise architecture',
-      'Odoo ERP / CRM lead integrations',
-      'Multi-agent AI workflows',
-      'Fixed-price proposal — no surprises',
-      '30-day free support included',
+      'End-to-end AI systems',
+      'Multi-model orchestration',
+      'SaaS MVPs & enterprise pipelines',
+      'Full system architecture',
+      'Unlimited revisions in scope',
     ],
-    cta: 'Book Scope Call',
+    cta: 'Build Something Premium',
     url: 'https://cal.com/prime-s/30min',
   },
   {
-    tier: 'SaaS MVP',
-    usd: 'Starts at $1,450',
-    inr: 'Starting at ₹1,20,000',
+    tier: 'Advanced Enterprise Systems',
+    usd: 'Up to $1,000',
+    inr: '₹75,000 - ₹1,00,000+',
     color: 'violet' as const,
-    desc: 'Full product on Cloudflare Workers. Idea to live in 4–6 weeks.',
+    desc: 'High-level complex architectures. Full architecture ownership.',
     features: [
-      'Full-stack SaaS MVP build',
-      'Serverless edge (Cloudflare Workers)',
-      'Database setup (Supabase / D1)',
-      'Modern responsive glassmorphic UI',
-      '30-day free support included',
+      'Complex architectures',
+      'Full architecture ownership',
+      'Multi-department automation',
+      'Ongoing async support',
+      'Architecture reviews & Roadmap planning',
     ],
-    cta: 'Book Scope Call',
+    cta: 'Discuss Scope',
     url: 'https://cal.com/prime-s/30min',
   },
 ];
 
 const VIP_CARD = {
-  tier: 'Enterprise / Fractional CTO',
-  usd: 'Custom / Retainer',
-  inr: 'Open for discussion',
+  tier: 'Monthly Retainer / Fractional CTO',
+  usd: 'Open for discussion',
+  inr: 'Custom Retainer',
   features: [
-    'Full architecture ownership',
-    'Multi-department automation',
     'Ongoing async support',
     'Weekly strategic check-ins',
-    'Architecture reviews',
     'Roadmap planning',
   ],
-  cta: 'Discuss Scope',
+  cta: 'Discuss Retainer',
 };
 
 type ReceiptCardData = (typeof RECEIPT_CARDS)[0];
@@ -131,8 +128,8 @@ function ReceiptCardInner({
       {/* ── HEADER ── */}
       <div className={`p-6 pb-4 ${card.popular ? 'pt-8' : ''}`}>
         <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-2">{card.tier}</p>
-        <h3 className={`font-sans font-bold text-3xl leading-tight ${cls.text}`}>{card.inr}</h3>
-        <span className="font-mono text-xs text-text-muted block mt-1">{card.usd}</span>
+        <h3 className={`font-sans font-bold text-3xl leading-tight ${cls.text}`}>{card.usd}</h3>
+        <span className="font-mono text-xs text-text-muted block mt-1">{card.inr}</span>
         <p className="text-zinc-400 text-xs mt-2 font-sans leading-relaxed min-h-[32px]">{card.desc}</p>
       </div>
 
