@@ -63,8 +63,11 @@ const VIP_CARD = {
   usd: 'Open for discussion',
   inr: 'Custom Retainer',
   features: [
+    'Full architecture ownership',
+    'Multi-department automation',
     'Ongoing async support',
     'Weekly strategic check-ins',
+    'Architecture reviews',
     'Roadmap planning',
   ],
   cta: 'Discuss Retainer',
