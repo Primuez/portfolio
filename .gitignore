@@ -11,3 +11,8 @@ node_modules
 # Local Netlify folder
 .netlify
 .vercel
+
+# Secrets and environment files
+.env
+.env.*
+!.env.example

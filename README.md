@@ -30,7 +30,16 @@ While the proprietary code for these projects remains private, this portfolio hi
 * **Development Environment:** Edited and refined in Replit
 * **Hosting & Infrastructure:** Deployed on Cloudflare for edge-network speed
 
-## License & Usage Notification
+## License
 Copyright (c) 2026 Rahul Kasturiya. All Rights Reserved.
 
-The source code for this website is viewable for educational and portfolio demonstration purposes. You are strictly prohibited from copying, duplicating, or repurposing the design, assets, custom animations, branding (including the name "Primuez"), or structure of this website for your own commercial or personal projects without explicit permission.
+The source code for this website is viewable for educational and portfolio demonstration purposes. It is licensed under the restricted terms described in the `LICENSE.txt` file.
+
+## What is not licensed
+You are strictly prohibited from copying, duplicating, or repurposing the design, assets, custom animations, screenshots, portfolio text, case study copy, client testimonials, and structure of this website for your own commercial or personal projects. Please see `NOTICE.md` for explicit exclusions.
+
+## Trademark and brand use
+No trademark rights or permissions are granted. My personal and product brand names (such as "Primuez", "Ink Twin", "PrimuezSure", etc.), logos, and domain branding are fully protected and may not be reused. See `TRADEMARKS.md` for complete details.
+
+## Security
+If you discover a vulnerability or security issue, please practice responsible disclosure. View the `SECURITY.md` file for instructions on how to report security findings.
