@@ -154,23 +154,27 @@ export function ShaderBackground({
     if (!canvas) return;
 
     const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
-    if (!gl) return;
+    if (!gl || gl.isContextLost()) return;
     glRef.current = gl;
 
     // Compile shaders
-    const vs = gl.createShader(gl.VERTEX_SHADER)!;
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    if (!vs) return;
     gl.shaderSource(vs, vertexShaderSource);
     gl.compileShader(vs);
     if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
-      console.error('Vertex shader error:', gl.getShaderInfoLog(vs));
+      const info = gl.getShaderInfoLog(vs);
+      if (info) console.warn('Vertex shader warning:', info);
       return;
     }
 
-    const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    if (!fs) return;
     gl.shaderSource(fs, fragmentShaderSource);
     gl.compileShader(fs);
     if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-      console.error('Fragment shader error:', gl.getShaderInfoLog(fs));
+      const info = gl.getShaderInfoLog(fs);
+      if (info) console.warn('Fragment shader warning:', info);
       return;
     }
 

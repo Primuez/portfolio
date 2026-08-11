@@ -144,19 +144,22 @@ export function HexShaderBackground() {
     if (!canvas) return;
 
     const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: false });
-    if (!gl) return;
+    if (!gl || gl.isContextLost()) return;
     glRef.current = gl;
 
-    const vs = gl.createShader(gl.VERTEX_SHADER)!;
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    if (!vs) return;
     gl.shaderSource(vs, vertexShaderSource);
     gl.compileShader(vs);
 
-    const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    if (!fs) return;
     gl.shaderSource(fs, fragmentShaderSource);
     gl.compileShader(fs);
 
     if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-      console.error('Hex shader compile error:', gl.getShaderInfoLog(fs));
+      const info = gl.getShaderInfoLog(fs);
+      if (info) console.warn('Hex shader compile warning:', info);
       return;
     }
 

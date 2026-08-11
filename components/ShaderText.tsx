@@ -156,18 +156,26 @@ export function ShaderIridescentText({
     if (!canvas) return false;
 
     const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
-    if (!gl) return false;
+    if (!gl || gl.isContextLost()) return false;
     glRef.current = gl;
 
-    const vs = gl.createShader(gl.VERTEX_SHADER)!;
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    if (!vs) return false;
     gl.shaderSource(vs, vertexShader);
     gl.compileShader(vs);
+    if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
+      const info = gl.getShaderInfoLog(vs);
+      if (info) console.warn('ShaderIridescentText vertex info:', info);
+      return false;
+    }
 
-    const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    if (!fs) return false;
     gl.shaderSource(fs, fragmentShader);
     gl.compileShader(fs);
     if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-      console.error('ShaderIridescentText compile error:', gl.getShaderInfoLog(fs));
+      const info = gl.getShaderInfoLog(fs);
+      if (info) console.warn('ShaderIridescentText fragment info:', info);
       return false;
     }
 

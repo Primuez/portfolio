@@ -169,20 +169,13 @@ function WhyPrimuezSlide({
   );
 }
 
-function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
-  const isMobile = useIsMobile();
+function DesktopWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-  if (isMobile) {
-    return (
-      <MobileWhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />
-    );
-  }
 
   return (
     <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 70}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
@@ -235,6 +228,14 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
       </div>
     </div>
   );
+}
+
+function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
+  const isMobile = useIsMobile();
+  if (isMobile) {
+    return <MobileWhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />;
+  }
+  return <DesktopWhyPrimuez detailMode={detailMode} setDetailMode={setDetailMode} />;
 }
 
 function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
