@@ -49,21 +49,19 @@ export function LiquidGlassLogo({
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={!isMobile ? { rotateX, rotateY, transformPerspective: 600 } : undefined}
+      style={{ rotateX, rotateY, transformPerspective: 600 }}
       className={cn(
         'relative inline-flex items-center cursor-pointer group',
         className
       )}
     >
       {/* Glass refraction overlay — responds to mouse position */}
-      {!isMobile && (
-        <motion.div
-          className="absolute inset-0 rounded-xl pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background: glareBg,
-          }}
-        />
-      )}
+      <motion.div
+        className="absolute inset-0 rounded-xl pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden md:block"
+        style={{
+          background: glareBg,
+        }}
+      />
       
       {/* Liquid glass depth border — subtle bottom shadow for floating effect */}
       <div className="absolute inset-0 rounded-xl pointer-events-none z-0 border border-white/[0.04] group-hover:border-white/[0.08] transition-all duration-500" />
@@ -89,15 +87,14 @@ export function LiquidGlassTitle({
   className?: string;
   glowColor?: string;
 }) {
-  const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
-      onHoverStart={() => !isMobile && setIsHovered(true)}
+      onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className={cn('relative inline-block', className)}
-      whileHover={!isMobile ? { scale: 1.02, transition: { duration: 0.3 } } : undefined}
+      whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
     >
       {/* Glow backdrop on hover */}
       <motion.div

@@ -259,15 +259,13 @@ export function ShaderIridescentText({
 
   return (
     <div ref={containerRef} className="relative inline-block">
-      {/* Hidden WebGL canvas — skipped on mobile to prevent GPU crash */}
-      {!isMobile && (
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full pointer-events-none opacity-0"
-          style={{ zIndex: -1 }}
-          aria-hidden="true"
-        />
-      )}
+      {/* Hidden WebGL canvas — hidden on mobile via CSS to prevent GPU overhead */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-0 hidden md:block"
+        style={{ zIndex: -1 }}
+        aria-hidden="true"
+      />
       {/* The text element with CSS background-clip using the shader canvas as texture source.
           Falls back to shader-text-iridescent CSS class if WebGL unavailable */}
       <Tag className={`shader-text-iridescent-clip ${className}`}>

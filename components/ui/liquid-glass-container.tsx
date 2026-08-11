@@ -54,14 +54,12 @@ export function LiquidGlassContainer({
       )}
     >
       {/* Cursor-following refraction glow */}
-      {!isMobile && (
-        <div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0 rounded-[inherit]"
-          style={{
-            background: `radial-gradient(400px circle at ${mousePos.x}% ${mousePos.y}%, ${glowColor}, transparent 60%)`,
-          }}
-        />
-      )}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0 rounded-[inherit] hidden md:block"
+        style={{
+          background: `radial-gradient(400px circle at ${mousePos.x}% ${mousePos.y}%, ${glowColor}, transparent 60%)`,
+        }}
+      />
       {/* Top edge highlight — simulates glass refraction */}
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent pointer-events-none z-10" />
       {/* Content */}
