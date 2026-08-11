@@ -355,43 +355,39 @@ export default function PricingSection() {
           <p className="text-text-muted mt-4 mb-6 max-w-2xl text-base leading-relaxed font-sans">
             No hidden rates. No surprise scope creep. Fixed-price proposals, 30-day free support, and clear delivery timelines.
           </p>
-          {!isMobile && (
-            <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2">
-              <span className="text-cyan animate-pulse">▼</span> scroll to print receipts
-            </p>
-          )}
+          <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-8 hidden md:flex items-center gap-2">
+            <span className="text-cyan animate-pulse">▼</span> scroll to print receipts
+          </p>
         </motion.div>
 
         {/* ── Desktop layout ── */}
-        {!isMobile && (
-          <>
-            <div className="grid lg:grid-cols-3 gap-6 pt-6">
-              {RECEIPT_CARDS.map((card, i) => (
-                <ReceiptCardInner
-                  key={i}
-                  card={card}
-                  clipPct={clipPct}
-                  ctaOpacity={ctaOpacity}
-                  ctaY={ctaY}
-                />
-              ))}
-            </div>
+        <div className="hidden md:block">
+          <div className="grid lg:grid-cols-3 gap-6 pt-6">
+            {RECEIPT_CARDS.map((card, i) => (
+              <ReceiptCardInner
+                key={i}
+                card={card}
+                clipPct={clipPct}
+                ctaOpacity={ctaOpacity}
+                ctaY={ctaY}
+              />
+            ))}
+          </div>
 
-            <div className="mt-6">
-              <VipReceiptCard clipPct={vipClip} ctaOpacity={vipCtaOp} ctaY={vipCtaY} />
-            </div>
-          </>
-        )}
+          <div className="mt-6">
+            <VipReceiptCard clipPct={vipClip} ctaOpacity={vipCtaOp} ctaY={vipCtaY} />
+          </div>
+        </div>
 
         {/* ── Mobile layout ── */}
-        {isMobile && (
+        <div className="block md:hidden">
           <div className="flex flex-col gap-8 pt-6">
             {RECEIPT_CARDS.map((card, i) => (
               <MobileReceiptCard key={i} card={card} />
             ))}
             <MobileVipCard />
           </div>
-        )}
+        </div>
 
       </div>
     </section>

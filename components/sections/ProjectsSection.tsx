@@ -263,9 +263,8 @@ export const ProjectsSection: React.FC = () => {
       </div>
       
       <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
-        {!isMobile && (
-          <section aria-labelledby="interactive-heading">
-            <div className="shader-section-divider absolute top-0 left-0 right-0" />
+        <section aria-labelledby="interactive-heading" className="hidden md:block">
+          <div className="shader-section-divider absolute top-0 left-0 right-0" />
             <h2 id="interactive-heading" className="sr-only">Interactive 3D Elements & Personal Favourites</h2>
             <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
             
@@ -333,7 +332,6 @@ export const ProjectsSection: React.FC = () => {
               </div>
             </div>
           </section>
-        )}
 
         <div className={isMobile ? "" : "mt-16"}>
           <button

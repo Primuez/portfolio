@@ -95,12 +95,10 @@ function StackGroup({ title, items, border, isMobile = false, y = 0 }: StackGrou
         </div>
 
         {/* Dynamic Cursor Spotlight Glow */}
-        {!isMobile && (
-          <motion.div
-            className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-            style={{ background: spotlightBg }}
-          />
-        )}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 hidden md:block"
+          style={{ background: spotlightBg }}
+        />
 
         {/* Title */}
         <div className={`text-xs font-mono uppercase tracking-[0.2em] mb-6 flex items-center justify-between ${textColor} font-bold z-20 relative`}>
