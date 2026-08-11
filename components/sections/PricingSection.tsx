@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useSpring, useTransform, useMotionValue, useInView, animate, MotionValue } from 'motion/react';
+import { motion, useSpring, useTransform, useMotionValue, useInView, animate, MotionValue } from 'motion/react';
 import { CheckCircle2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { SectionHeader } from '@/components/SectionHeader';
 
 const RECEIPT_CARDS = [
@@ -316,10 +317,8 @@ function MobileVipCard() {
 }
 
 export default function PricingSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
+  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({ offset: ['start start', 'end end'] });
   const smoothP = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
 
   // Top-3 cards: unroll 8% → 62% of scroll

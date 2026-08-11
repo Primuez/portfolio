@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform, MotionValue } from 'motion/react';
+import { motion, useSpring, useTransform, MotionValue } from 'motion/react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { SectionHeader } from '@/components/SectionHeader';
 import { CheckCircle2, XCircle } from 'lucide-react';
 
@@ -170,9 +171,7 @@ function WhyPrimuezSlide({
 }
 
 function DesktopWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
+  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ['start start', 'end end'],
   });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -239,9 +238,7 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
 }
 
 function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
+  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ['start start', 'end end'],
   });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });

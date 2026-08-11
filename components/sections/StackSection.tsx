@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, useScroll } from 'motion/react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { SectionHeader } from '@/components/SectionHeader';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -368,10 +369,8 @@ export default function StackSection() {
   ];
 
   const isMobile = useIsMobile();
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
+  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({
     offset: ["start end", "end start"]
   });
 

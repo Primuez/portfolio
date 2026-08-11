@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useSpring, useTransform } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 
 interface ProjectGroupProps {
   title: string;
@@ -13,9 +14,7 @@ export function ProjectGroup({ title, children, color }: ProjectGroupProps) {
   const borderColor = color === 'cyan' ? 'border-cyan/30' : 'border-amber/30';
   const textColor = color === 'cyan' ? 'text-cyan' : 'text-amber';
   const glowColor = color === 'cyan' ? 'rgba(0, 240, 255, 0.08)' : 'rgba(245, 166, 35, 0.08)';
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
+  const { ref, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ['start end', 'end start'],
   });
 

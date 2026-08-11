@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { useScroll, useTransform, motion, useSpring } from "motion/react";
+import { useTransform, motion, useSpring } from "motion/react";
+import { useScrollTarget } from "@/hooks/use-scroll-target";
 
 export const ContainerScroll = ({
   titleComponent,
@@ -10,11 +11,8 @@ export const ContainerScroll = ({
   titleComponent: string | React.ReactNode;
   children: React.ReactNode;
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
   // Track scroll position
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
+  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ["start end", "end start"],
   });
 

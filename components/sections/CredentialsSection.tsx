@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence, MotionValue } from 'motion/react';
+import { motion, useTransform, AnimatePresence, MotionValue } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { CheckCircle2, ChevronDown } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { useUI } from '@/lib/contexts/UIContext';
@@ -37,10 +38,8 @@ function CVAccordion({ title, children }: { title: string; children: React.React
 }
 
 function RubiksCredentials({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
   const { isMobile } = useUI();
-  const { scrollYProgress } = useScroll({
-    target: ref,
+  const { ref, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ['start end', 'start 25%'],
   });
 

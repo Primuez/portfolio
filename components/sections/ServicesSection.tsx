@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { motion, AnimatePresence, useTransform } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { SectionHeader } from '@/components/SectionHeader';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -146,11 +147,9 @@ function ServiceCategoryBlock({
   onToggle: () => void;
 }) {
   const isMobile = useIsMobile();
-  const cardRef = useRef<HTMLDivElement>(null);
 
   // Scroll animation: only active when NO category is focused
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
+  const { ref: cardRef, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ["start end", "start center"]
   });
 

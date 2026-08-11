@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView, useSpring } from 'motion/react';
+import { motion, useTransform, useInView, useSpring } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import { SectionHeader } from '@/components/SectionHeader';
 
@@ -83,8 +84,7 @@ function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title:
 }
 
 export default function ProcessSection() {
-  const processRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: processScrollY } = useScroll({ target: processRef, offset: ['start 0.8', 'end 0.2'] });
+  const { ref: processRef, scrollYProgress: processScrollY } = useScrollTarget<HTMLElement>({ offset: ['start 0.8', 'end 0.2'] });
   const smoothScrollY = useSpring(processScrollY, { stiffness: 80, damping: 25, restDelta: 0.001 });
   const lineScale = useTransform(smoothScrollY, [0, 1], [0, 1]);
 

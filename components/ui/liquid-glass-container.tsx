@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef, useCallback, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useTransform, useSpring } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -87,11 +88,9 @@ export function LiquidGlassParallaxSection({
   parallaxDistance?: number;
   scaleRange?: [number, number];
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   
-  const { scrollYProgress } = useScroll({
-    target: ref,
+  const { ref, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ['start end', 'end start'],
   });
 

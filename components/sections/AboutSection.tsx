@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useTransform, useSpring } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { MapPin, GraduationCap, Calendar, Languages, Terminal, Activity, Brain } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ShaderIridescentText } from '@/components/ShaderText';
@@ -36,11 +37,9 @@ const cardTransition = (delay: number) => ({
 
 export const AboutSection: React.FC = () => {
   const isMobile = useIsMobile();
-  const containerRef = useRef<HTMLDivElement>(null);
 
   /* ── Parallax scroll hooks (always called unconditionally) ── */
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
+  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({
     offset: ['start end', 'end start'],
   });
 

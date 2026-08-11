@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useTransform, useInView } from 'motion/react';
+import { motion, AnimatePresence, useSpring, useTransform, useInView } from 'motion/react';
+import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { Activity } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
@@ -146,12 +147,10 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
 function ProjectCategoryBlock({ category, index, total }: { category: ProjectCategory; index: number; total: number }) {
   const [expanded, setExpanded] = useState(false);
   const isMobile = useIsMobile();
-  const cardRef = useRef<HTMLDivElement>(null);
   const { setModalType } = useUI();
 
   // Track the scroll of this category relative to the viewport
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
+  const { ref: cardRef, scrollYProgress } = useScrollTarget<HTMLDivElement>({
     offset: ["start end", "start start"]
   });
 
