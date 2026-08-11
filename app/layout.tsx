@@ -314,14 +314,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   };
 
   return (
-    <html lang="en" className={`${spaceMono.variable} ${syne.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${spaceMono.variable} ${syne.variable}`}>
       <head>
         <meta name="theme-color" content="#00f0ff" />
         <meta name="msapplication-TileColor" content="#0a0a0f" />
         <link rel="canonical" href="https://primuez.in" />
         <link rel="image_src" href="https://primuez.in/opengraph-image.png" />
         <script
+          id="json-ld"
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
