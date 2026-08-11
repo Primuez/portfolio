@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import type * as THREE from 'three';
 import type { OrbitControls as OrbitControlsType } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useIsMobile } from '@/hooks/use-mobile';
+import LightweightCyberOrb from './LightweightCyberOrb';
 
 export function ModelViewer() {
   const isMobile = useIsMobile();
@@ -189,6 +190,11 @@ export function ModelViewer() {
       let isVisible = true;
       let animating = false;
 
+      // Real-time FPS & Lag Monitoring for weaker hardware protection
+      let frameCount = 0;
+      let lastFpsCheckTime = performance.now();
+      let lowFpsConsecutiveCount = 0;
+
       const animate = () => {
         if (!isVisible) {
           animating = false;
@@ -196,6 +202,28 @@ export function ModelViewer() {
         }
         animating = true;
         animId = requestAnimationFrame(animate);
+
+        // Calculate active FPS every 1000ms
+        const now = performance.now();
+        frameCount++;
+        if (now - lastFpsCheckTime >= 1000) {
+          const fps = (frameCount * 1000) / (now - lastFpsCheckTime);
+          frameCount = 0;
+          lastFpsCheckTime = now;
+
+          // If frame rate drops below 22 FPS for 2 consecutive seconds on weaker hardware,
+          // automatically switch to LightweightCyberOrb to keep the website smooth & lag-free.
+          if (fps < 22) {
+            lowFpsConsecutiveCount++;
+            if (lowFpsConsecutiveCount >= 2) {
+              setWebglFailed(true);
+              return;
+            }
+          } else {
+            lowFpsConsecutiveCount = 0;
+          }
+        }
+
         const delta = Math.min(clock.getDelta(), 0.1);
         elapsed += delta;
         cloudMesh.rotation.y += delta * 0.04;
@@ -260,17 +288,7 @@ export function ModelViewer() {
   }, [onTextureLoaded, router, isMobile]);
 
   if (webglFailed) {
-    return (
-      <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
-        <div className="absolute top-4 left-4 z-10 font-mono text-xs text-cyan tracking-widest bg-black/60 px-3 py-1 rounded border border-cyan/20 backdrop-blur-md">
-          n8n_CORE_ORCHESTRATOR.obj
-        </div>
-        <div className="w-12 h-12 rounded-full border border-cyan/20 flex items-center justify-center text-cyan bg-cyan/5">
-          🌐
-        </div>
-        <span className="font-mono text-xs text-text-muted tracking-widest">3D GLOBE FALLBACK ACTIVE</span>
-      </div>
-    );
+    return <LightweightCyberOrb />;
   }
 
   const isLoading = loadedCount < 5;
