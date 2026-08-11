@@ -113,14 +113,10 @@ function HomeContent() {
       <CustomCursor />
       
       {/* Interactive WebGL shader background */}
-      {showMobileLayout ? (
-        <div className="fixed inset-0 z-0 w-full h-full bg-gradient-to-br from-[#0a0a0f] via-[#0d1117] to-[#0a0e1a]" />
-      ) : (
-        <ShaderBackground className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
-      )}
+      <ShaderBackground className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
       
       {/* Interactive liquid glass refraction overlay */}
-      {!showMobileLayout && <GlassRefractionOverlay />}
+      <GlassRefractionOverlay />
       
       {/* Blueprint animated grid overlay */}
       <div className="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none"></div>
