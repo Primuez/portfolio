@@ -37,6 +37,11 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .gpu-accelerated {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
 }
 
 @keyframes grid-drift {

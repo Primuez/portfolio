@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   title: 'Primuez | AI Systems Builder & Automation Engineer Indore',
   description: 'Self-taught AI Developer, Automation Engineer & SaaS Founder from Indore, Raipur, India. I build custom n8n workflows, autonomous LLM agents, and Odoo ERP integrations for Indian SMEs.',
   keywords: [
+    'n8n Automation Freelancer',
+    'AI Workflow Automation Engineer',
+    'Hire n8n Developer India',
+    'Custom AI Agent Developer',
+    'No-Code Automation Specialist',
     'AI Automation Indore',
     'AI Automation Raipur',
     'n8n developer India',
@@ -27,7 +32,6 @@ export const metadata: Metadata = {
     'Primuez AI',
     'Rahul Kasturiya',
     'autonomous business systems builder',
-    'no code automation India',
     'enterprise n8n integrations'
   ],
   alternates: {
@@ -119,39 +123,39 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "sameAs": [
           "https://github.com/primuez",
           "https://youtube.com/@Primuez",
-          "https://www.linkedin.com/in/rahul-kasturiya-796910363"
+          "https://linkedin.com/in/rahul-kasturiya-796910363"
         ],
-        "jobTitle": "AI Developer & SaaS Entrepreneur",
-        "description": "Self-taught AI Developer and SaaS Entrepreneur specialising in n8n automation, Supabase-powered backends, and autonomous AI agent systems. Creator of Primuez Guard — a security-monitoring autonomous agent — and multiple production SaaS products including InkTwin and PrimuezSure.",
+        "jobTitle": "Lead AI & n8n Automation Engineer",
+        "description": "Self-taught AI Developer, n8n Automation Specialist, and SaaS Entrepreneur. Creator of Primuez Guard and founder of InkTwin and PrimuezSure.",
         "knowsAbout": [
           "n8n Workflow Automation",
+          "Agentic AI Architecture",
+          "OpenAI & LLM API Integration",
+          "ZeptoMail & Cold Outreach Pipelines",
+          "PostgreSQL & SQLite Database Engineering",
           "Supabase",
-          "Autonomous AI Agents",
-          "Large Language Models",
           "Cloudflare Workers",
-          "Odoo ERP Integration",
-          "SaaS Development",
-          "Primuez Guard"
+          "Odoo ERP Integration"
         ],
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "AI Developer & SaaS Entrepreneur",
-          "description": "Builds n8n automation pipelines, Supabase-backed SaaS products, and autonomous agent systems for Indian SMEs.",
+          "name": "Lead AI & n8n Automation Engineer",
+          "description": "Builds autonomous workflow pipelines, custom AI agents, and lead outreach engines.",
           "occupationLocation": {
             "@type": "City",
-            "name": "Indore, Madhya Pradesh, India"
+            "name": "Raipur / Durg, Chhattisgarh, India"
           },
-          "skills": "n8n, Supabase, Autonomous Agents, LLM Orchestration, Cloudflare Workers, Odoo ERP"
+          "skills": "n8n, Supabase, Autonomous Agents, LLM Orchestration, Cloudflare Workers, Odoo ERP, Postgres"
         },
         "worksFor": {
           "@type": "Organization",
-          "name": "Primuez",
+          "name": "Primuez AI & Workflow Automation Agency",
           "url": "https://primuez.in"
         },
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "Indore",
-          "addressRegion": "Madhya Pradesh",
+          "addressLocality": "Raipur / Durg",
+          "addressRegion": "Chhattisgarh",
           "addressCountry": "IN"
         }
       },
@@ -159,8 +163,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "@type": "WebSite",
         "@id": "https://primuez.in/#website",
         "url": "https://primuez.in",
-        "name": "Primuez — AI Developer & SaaS Entrepreneur",
-        "description": "Portfolio and services site for Rahul Kasturiya (Primuez) — AI Developer specialising in n8n automation, Supabase, and autonomous agents including Primuez Guard.",
+        "name": "Primuez — AI Developer & n8n Automation Specialist",
+        "description": "Enterprise n8n workflow automation, agentic AI pipelines, lead generation systems, and custom API integrations engineered by Rahul Kasturiya (Primuez).",
         "publisher": {
           "@id": "https://primuez.in/#person"
         },
@@ -177,27 +181,22 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       {
         "@type": "ProfessionalService",
         "@id": "https://primuez.in/#service",
-        "name": "Primuez AI Systems",
+        "name": "Primuez AI & Workflow Automation Agency",
         "url": "https://primuez.in",
         "logo": "https://primuez.in/primuez-logo.svg",
         "image": "https://primuez.in/opengraph-image",
-        "description": "Custom workflow automations, n8n integration, LLM autonomous agent design, Odoo ERP connection, and serverless edge deployment for small and mid-sized businesses.",
+        "description": "Enterprise n8n workflow automation, agentic AI pipelines, lead generation systems, and custom API integrations engineered by Rahul Kasturiya (Primuez).",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "Indore",
-          "addressRegion": "Madhya Pradesh",
+          "addressLocality": "Raipur / Durg",
+          "addressRegion": "Chhattisgarh",
           "addressCountry": "IN"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "22.7196",
-          "longitude": "75.8577"
         },
         "priceRange": "$$",
         "telephone": "+91-7838363463",
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
-          "name": "AI Automation Services",
+          "name": "AI Automation & Workflow Engineering Services",
           "itemListElement": [
             {
               "@type": "Offer",
@@ -211,16 +210,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               "@type": "Offer",
               "itemOffered": {
                 "@type": "Service",
-                "name": "Autonomous LLM Agents",
-                "description": "Build personal agents like OpenClaw and Hermes to securely audit and monitor business infrastructure."
+                "name": "Agentic AI Pipelines",
+                "description": "Build autonomous AI agents to audit, monitor, and execute complex business workflows."
               }
             },
             {
               "@type": "Offer",
               "itemOffered": {
                 "@type": "Service",
-                "name": "Odoo ERP Integrations",
-                "description": "Seamless real-time ledger entries, GST auto-reconciliation, and IndiaMART webhook setups."
+                "name": "Automated Outreach & Lead Generation",
+                "description": "Scalable cold outreach pipelines via ZeptoMail, CRM sync, and lead enrichment engines."
               }
             }
           ]
@@ -230,6 +229,22 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         "@type": "FAQPage",
         "@id": "https://primuez.in/#faq",
         "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What services does Primuez offer for n8n workflow automation?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Primuez specializes in custom n8n workflow engineering, AI agent pipelines, automated cold outreach via ZeptoMail, CRM sync, ATS job-hunter automation, and enterprise database integrations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I hire a freelance n8n automation developer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can hire Rahul Kasturiya (Primuez) directly through primuez.in or via contact@primuez.in for fixed-scope automation builds or ongoing agency retainers."
+            }
+          },
           {
             "@type": "Question",
             "name": "How long does a project typically take?",
@@ -244,14 +259,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "No. You describe the outcome you need, I ask any clarifying questions upfront, then disappear and build. You get async updates and a final handover call. You don't need to know how any of it works technically."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "You're self-taught — how do I know the work will be solid?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Look at what shipped: InkTwin (live SaaS), PrimuezSure (live SaaS), the Odoo Enterprise architecture presented at a business show in Raipur, the CA Automation Suite used by actual firms. Self-taught means I learned by building real systems, not passing exams."
             }
           },
           {
@@ -322,6 +329,18 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning className={`${spaceMono.variable} ${syne.variable}`}>
       <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
+        {/* SVG Noise Texture Overlay — pointer-events: none, GPU-accelerated */}
+        <div
+          aria-hidden="true"
+          className="fixed inset-0 pointer-events-none z-50 opacity-[0.035] mix-blend-overlay gpu-accelerated"
+        >
+          <svg className="w-full h-full">
+            <filter id="noiseFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+          </svg>
+        </div>
         <script
           id="json-ld"
           type="application/ld+json"

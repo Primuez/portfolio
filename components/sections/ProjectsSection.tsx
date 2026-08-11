@@ -11,14 +11,14 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import dynamic from 'next/dynamic';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const ModelViewer = dynamic(
-  () => import('@/components/ModelViewer').then((mod) => mod.ModelViewer),
+const AdaptiveOrchestrationCore = dynamic(
+  () => import('@/components/AdaptiveOrchestrationCore'),
   {
     ssr: false,
     loading: () => (
       <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
         <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
-        <span className="font-mono text-xs text-cyan tracking-widest animate-pulse">LOADING GLOBE…</span>
+        <span className="font-mono text-xs text-cyan tracking-widest animate-pulse">LOADING ORCHESTRATION CORE…</span>
       </div>
     ),
   }
@@ -321,11 +321,11 @@ export const ProjectsSection: React.FC = () => {
               <div ref={globeContainerRef}>
                 <ErrorBoundary>
                   {isGlobeInView ? (
-                    <ModelViewer />
+                    <AdaptiveOrchestrationCore />
                   ) : (
                     <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
                       <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
-                      <span className="font-mono text-xs text-cyan tracking-widest">LOADING GLOBE…</span>
+                      <span className="font-mono text-xs text-cyan tracking-widest">LOADING ORCHESTRATION CORE…</span>
                     </div>
                   )}
                 </ErrorBoundary>
