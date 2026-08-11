@@ -61,10 +61,15 @@ export const AboutSection: React.FC = () => {
   const yCardB1Val = useTransform(smoothProgress, [0, 1], [-35, 35]);
   const yCardB2Val = useTransform(smoothProgress, [0, 1], [-5, 5]);
 
-  const yCardA1 = isMobile ? useSpring(yCardA1Val, { stiffness: 70, damping: 20 }) : 0;
-  const yCardA2 = isMobile ? useSpring(yCardA2Val, { stiffness: 70, damping: 20 }) : 0;
-  const yCardB1 = isMobile ? useSpring(yCardB1Val, { stiffness: 70, damping: 20 }) : 0;
-  const yCardB2 = isMobile ? useSpring(yCardB2Val, { stiffness: 70, damping: 20 }) : 0;
+  const springCardA1 = useSpring(yCardA1Val, { stiffness: 70, damping: 20 });
+  const springCardA2 = useSpring(yCardA2Val, { stiffness: 70, damping: 20 });
+  const springCardB1 = useSpring(yCardB1Val, { stiffness: 70, damping: 20 });
+  const springCardB2 = useSpring(yCardB2Val, { stiffness: 70, damping: 20 });
+
+  const yCardA1 = isMobile ? springCardA1 : 0;
+  const yCardA2 = isMobile ? springCardA2 : 0;
+  const yCardB1 = isMobile ? springCardB1 : 0;
+  const yCardB2 = isMobile ? springCardB2 : 0;
 
   return (
     <section
