@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Space_Mono, Syne } from 'next/font/google';
 import './globals.css';
 
@@ -92,6 +92,10 @@ export const metadata: Metadata = {
     ],
   },
   manifest: 'https://primuez.in/site.webmanifest',
+};
+
+export const viewport: Viewport = {
+  themeColor: '#00f0ff',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -315,19 +319,12 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 
   return (
     <html lang="en" suppressHydrationWarning className={`${spaceMono.variable} ${syne.variable}`}>
-      <head>
-        <meta name="theme-color" content="#00f0ff" />
-        <meta name="msapplication-TileColor" content="#0a0a0f" />
-        <link rel="canonical" href="https://primuez.in" />
-        <link rel="image_src" href="https://primuez.in/opengraph-image.png" />
+      <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
         <script
           id="json-ld"
           type="application/ld+json"
-          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
         {children}
       </body>
     </html>
