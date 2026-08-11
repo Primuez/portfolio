@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, Download, Code2, Terminal, Activity } from 'lucide-react';
+import { ChevronRight, Download, Code2, Terminal } from 'lucide-react';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { ShaderIridescentText } from '@/components/ShaderText';
 import { useUI } from '@/lib/contexts/UIContext';
 import { trackEvent } from '@/lib/analytics';
+import GlobeWrapper from '@/components/GlobeWrapper';
 
 const phrases = [
   "Workflow Automation.",
@@ -18,10 +19,9 @@ const phrases = [
 ];
 
 export const HeroSection: React.FC = () => {
-  const { isMobile, setModalType } = useUI();
+  const { setModalType } = useUI();
   const [phraseIndex, setPhraseIndex] = React.useState(0);
 
-  // Phrase cycling (fade-morph) - moved local to Hero to keep state encapsulated
   React.useEffect(() => {
     const interval = setInterval(() => {
       setPhraseIndex((p) => (p + 1) % phrases.length);
@@ -30,148 +30,164 @@ export const HeroSection: React.FC = () => {
   }, []);
 
   return (
-    <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-12 pb-8 md:pb-0 relative overflow-hidden -mx-4 sm:-mx-6 md:-mx-12 px-4 sm:px-6 md:px-12">
+    <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-12 pb-12 md:pb-0 relative overflow-hidden -mx-4 sm:-mx-6 md:-mx-12 px-4 sm:px-6 md:px-12">
       {/* Interactive Hex Path shader — glows on cursor hover (desktop only) — full-bleed center aligned */}
       <div className="absolute inset-y-0 w-screen left-1/2 -translate-x-1/2 scale-[1.02] origin-center overflow-hidden pointer-events-none z-0 hidden md:block">
         <HexShaderBackground />
       </div>
-      <div className="max-w-3xl relative z-10">
-        <motion.a
-          href="#process"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-amber/80 text-xs md:text-sm mb-4 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
-        >
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
-        </motion.a>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-8 md:h-10 mb-3 md:mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
-        >
-          <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={phraseIndex}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {phrases[phraseIndex]}
-            </motion.span>
-          </AnimatePresence>
-        </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[2.25rem] md:text-5xl lg:text-6xl font-bold leading-[1.08] md:leading-[1.1] mb-5 md:mb-6 tracking-tight"
-        >
-          <LiquidGlassTitle>
-            I Build Autonomous Systems <br/>
-            <ShaderIridescentText as="span" className="text-4xl md:text-5xl lg:text-6xl font-bold">That Give You Your Time Back.</ShaderIridescentText>
-          </LiquidGlassTitle>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-text-muted text-base md:text-lg lg:text-xl max-w-2xl mb-4 leading-relaxed font-sans text-balance"
-        >
-          From AI agents that handle tax and legal queries to n8n pipelines that eliminate manual data entry — systems built and running.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-xs text-amber/95 mb-6 md:mb-8 border-l border-amber/40 pl-3 leading-relaxed max-w-2xl"
-        >
-          InkTwin and PrimuezSure — live SaaS products built and running. Tax Advisor and Legal Advisor agents — deployed and working.
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4"
-        >
-          <a 
-            href="#projects" 
-            onClick={() => trackEvent('click_hero_view_work')}
-            className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2"
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 w-full max-w-7xl mx-auto">
+        {/* Left Hero Column */}
+        <div className="lg:col-span-7 max-w-3xl">
+          <motion.a
+            href="#process"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+            className="font-mono text-amber/80 text-xs md:text-sm mb-4 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
           >
-            <ChevronRight size={16} /> View My Work
-          </a>
-          <GlassButton 
-            size="lg" 
-            onClick={() => { trackEvent('click_hero_lets_talk'); setModalType('form'); }} 
-            glowColor="rgba(0, 240, 255, 0.25)"
-            className="glass-btn-glow text-cyan hover:text-white"
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
+          </motion.a>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-8 md:h-10 mb-3 md:mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
           >
-            Let&apos;s Talk
-          </GlassButton>
-          <a 
-            href="/documents/resume.pdf" 
-            download="Rahul_Kasturiya_Resume.pdf" 
-            onClick={() => trackEvent('click_hero_download_resume')}
-            className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2"
-          >
-            <Download size={16} /> Resume
-          </a>
-        </motion.div>
+            <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={phraseIndex}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {phrases[phraseIndex]}
+              </motion.span>
+            </AnimatePresence>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-3 max-w-xl mb-8 border border-white/5 bg-panel/35 p-5 rounded-xl backdrop-blur-sm relative z-20"
-        >
-          <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-1">[ OR SCHEDULE A DIRECT CALL ]</p>
-          <div className="flex flex-col min-[480px]:flex-row gap-3">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[2.25rem] md:text-5xl lg:text-6xl font-bold leading-[1.08] md:leading-[1.1] mb-5 md:mb-6 tracking-tight"
+          >
+            <LiquidGlassTitle>
+              Enterprise n8n Automation &amp; <br/>
+              <ShaderIridescentText as="span" className="text-4xl md:text-5xl lg:text-6xl font-bold">Agentic AI Systems.</ShaderIridescentText>
+            </LiquidGlassTitle>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="text-text-muted text-base md:text-lg lg:text-xl max-w-2xl mb-4 leading-relaxed font-sans text-balance"
+          >
+            I build autonomous workflow pipelines, custom AI agents, and lead outreach engines that scale your business without bloating headcount.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="font-mono text-xs text-amber/95 mb-6 md:mb-8 border-l border-amber/40 pl-3 leading-relaxed max-w-2xl"
+          >
+            InkTwin and PrimuezSure — live SaaS products built and running. Tax Advisor and Legal Advisor agents — deployed and working.
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4"
+          >
             <a 
-              href="https://cal.com/prime-s/30min" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onClick={() => trackEvent('click_hero_book_30min')}
-              className="flex-1 px-5 py-3.5 bg-cyan/10 border border-cyan/35 text-cyan hover:bg-cyan hover:text-bg font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+              href="#projects" 
+              onClick={() => trackEvent('click_hero_view_work')}
+              className="px-8 py-4 bg-transparent border border-white/20 text-white font-mono text-sm uppercase tracking-widest hover:border-cyan/60 hover:text-cyan transition-all duration-300 text-center flex items-center justify-center gap-2"
             >
-              📅 Book 30-min Scope Call
+              <ChevronRight size={16} /> View My Work
             </a>
+            <GlassButton 
+              size="lg" 
+              onClick={() => { trackEvent('click_hero_lets_talk'); setModalType('form'); }} 
+              glowColor="rgba(0, 240, 255, 0.25)"
+              className="glass-btn-glow text-cyan hover:text-white"
+            >
+              Let&apos;s Talk
+            </GlassButton>
             <a 
-              href="https://cal.com/prime-s/15min" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onClick={() => trackEvent('click_hero_book_15min')}
-              className="flex-1 px-5 py-3.5 bg-transparent border border-white/20 text-white hover:border-cyan/50 hover:text-cyan font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+              href="/documents/resume.pdf" 
+              download="Rahul_Kasturiya_Resume.pdf" 
+              onClick={() => trackEvent('click_hero_download_resume')}
+              className="px-8 py-4 bg-transparent border border-amber/40 text-amber font-mono text-sm uppercase tracking-widest hover:bg-amber/10 hover:border-amber/60 transition-all duration-300 text-center flex items-center justify-center gap-2"
             >
-              ☕ 15-min Quick Chat
+              <Download size={16} /> Resume
             </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col gap-3 max-w-xl mb-8 border border-white/5 bg-panel/35 p-5 rounded-xl backdrop-blur-sm relative z-20"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-widest text-text-muted mb-1">[ OR SCHEDULE A DIRECT CALL ]</p>
+            <div className="flex flex-col min-[480px]:flex-row gap-3">
+              <a 
+                href="https://cal.com/prime-s/30min" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('click_hero_book_30min')}
+                className="flex-1 px-5 py-3.5 bg-cyan/10 border border-cyan/35 text-cyan hover:bg-cyan hover:text-bg font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+              >
+                📅 Book 30-min Scope Call
+              </a>
+              <a 
+                href="https://cal.com/prime-s/15min" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('click_hero_book_15min')}
+                className="flex-1 px-5 py-3.5 bg-transparent border border-white/20 text-white hover:border-cyan/50 hover:text-cyan font-mono text-xs uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+              >
+                ☕ 15-min Quick Chat
+              </a>
+            </div>
+            <p className="text-zinc-400 text-xs mt-1 text-center min-[480px]:text-left font-sans leading-normal">
+              Prefer a quick call? No sales pitch — just scope your project.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-wrap gap-3 font-mono text-xs"
+          >
+            <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
+              <Code2 size={14} className="text-amber" /> 10+ Businesses Automated
+            </span>
+            <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
+              <Terminal size={14} className="text-cyan/70" /> 10+ Systems Running 24/7
+            </span>
+          </motion.div>
+        </div>
+
+        {/* Right Hero Column: Adaptive 3D Globe or Cyber-Orb Fallback */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-5 flex flex-col items-center justify-center relative"
+        >
+          <div className="w-full max-w-[420px] relative">
+            <GlobeWrapper />
           </div>
-          <p className="text-zinc-400 text-xs mt-1 text-center min-[480px]:text-left font-sans leading-normal">
-            Prefer a quick call? No sales pitch — just scope your project.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-wrap gap-3 font-mono text-xs"
-        >
-          <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
-            <Code2 size={14} className="text-amber" /> 10+ Businesses Automated
-          </span>
-          <span className="bg-panel/80 border border-white/10 text-text-muted px-3 py-1.5 rounded-md flex items-center gap-2">
-            <Terminal size={14} className="text-cyan/70" /> 10+ Systems Running 24/7
-          </span>
         </motion.div>
       </div>
     </section>
