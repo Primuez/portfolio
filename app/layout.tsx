@@ -74,6 +74,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@Primuez',
+    creator: '@Primuez',
     title: 'Primuez | AI Systems Builder & Automation Engineer',
     description: 'Custom n8n workflows, autonomous agents & serverless edge systems running 24/7.',
     images: ['https://primuez.in/opengraph-image.png'],
