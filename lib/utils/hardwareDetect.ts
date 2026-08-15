@@ -1,34 +1,42 @@
 export function checkDeviceCapability(): boolean {
   if (typeof window === 'undefined') return false;
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return false;
-  }
-
-  const cores = navigator.hardwareConcurrency || 2;
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  if (cores < 4 || isMobile) return false;
-
   try {
+    // Check if WebGL or WebGL2 is supported by the browser and GPU
     const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    const gl =
+      canvas.getContext('webgl2') ||
+      canvas.getContext('webgl') ||
+      canvas.getContext('experimental-webgl');
+
     if (!gl) return false;
 
+    // Check maximum texture size capability (modern hardware supports 4096+, minimum 2048 required for globe textures)
+    const maxTextureSize = (gl as WebGLRenderingContext).getParameter(
+      (gl as WebGLRenderingContext).MAX_TEXTURE_SIZE
+    );
+    if (!maxTextureSize || maxTextureSize < 2048) {
+      return false;
+    }
+
+    // Check for extreme software-only fallback renderers (e.g. headless CPU emulators with no GPU acceleration)
     const debugInfo = (gl as WebGLRenderingContext).getExtension('WEBGL_debug_renderer_info');
     if (debugInfo) {
-      const renderer = (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)?.toString().toLowerCase() || '';
+      const renderer = (gl as WebGLRenderingContext)
+        .getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        ?.toString()
+        .toLowerCase() || '';
+
       if (
-        renderer.includes('software') ||
-        renderer.includes('llvm') ||
-        renderer.includes('basic') ||
-        renderer.includes('swiftshader')
+        renderer.includes('llvmpipe') ||
+        renderer.includes('softpipe')
       ) {
         return false;
       }
     }
+
+    return true;
   } catch (e) {
     return false;
   }
-
-  return true;
 }
