@@ -1,8 +1,6 @@
 'use client';
 
-import { ModelViewer } from './ModelViewer';
+import InteractiveOrchestratorSection from './InteractiveOrchestratorSection';
 
-export default function AdaptiveOrchestrationCore() {
-  return <ModelViewer />;
-}
-
+export default InteractiveOrchestratorSection;
+export { InteractiveOrchestratorSection };

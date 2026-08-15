@@ -7,21 +7,12 @@ import { Activity } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
 import dynamic from 'next/dynamic';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const AdaptiveOrchestrationCore = dynamic(
-  () => import('@/components/AdaptiveOrchestrationCore'),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
-        <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
-        <span className="font-mono text-xs text-cyan tracking-widest animate-pulse">LOADING ORCHESTRATION CORE…</span>
-      </div>
-    ),
-  }
+const InteractiveOrchestratorSection = dynamic(
+  () => import('@/components/InteractiveOrchestratorSection'),
+  { ssr: false }
 );
 
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
@@ -228,8 +219,6 @@ function ProjectCategoryBlock({ category, index, total }: { category: ProjectCat
 export const ProjectsSection: React.FC = () => {
   const { isMobile } = useUI();
   const [favOpen, setFavOpen] = useState(false);
-  const globeContainerRef = useRef<HTMLDivElement>(null);
-  const isGlobeInView = useInView(globeContainerRef, { once: true, margin: "200px" });
 
   return (
     <section id="projects" className="pt-16 md:pt-32">
@@ -245,11 +234,11 @@ export const ProjectsSection: React.FC = () => {
         {/* Categories Stack with scroll-driven cascading sticky pin on desktop */}
         <div className={`flex flex-col gap-0 mt-8 ${isMobile ? '' : 'pb-[10vh]'}`}>
           {PROJECT_CATEGORIES.map((category, index) => (
-            <ProjectCategoryBlock 
-              key={index} 
-              category={category} 
-              index={index} 
-              total={PROJECT_CATEGORIES.length} 
+            <ProjectCategoryBlock
+              key={index}
+              category={category}
+              index={index}
+              total={PROJECT_CATEGORIES.length}
             />
           ))}
         </div>
@@ -263,75 +252,8 @@ export const ProjectsSection: React.FC = () => {
       </div>
       
       <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
-        <section aria-labelledby="interactive-heading" className="hidden md:block">
-          <div className="shader-section-divider absolute top-0 left-0 right-0" />
-            <h2 id="interactive-heading" className="sr-only">Interactive 3D Elements & Personal Favourites</h2>
-            <SectionHeader number="02.1" command="> ./render --3d" title="Interactive Elements & Favorites" />
-            
-            <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
-              <div>
-                <motion.h3
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className="text-2xl font-bold mb-4 font-sans border-l-4 border-cyan pl-4 text-white"
-                >
-                  Interactive 3D Orchestration Core
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className="text-text-muted mb-6 leading-relaxed font-sans"
-                >
-                  Hover and grab the core object to rotate. This interactive 3D model powered by Three.js and React Three Fiber serves as an abstraction of my n8n central orchestrator—routing payloads, scaling compute, and connecting multiple AI pipelines.
-                </motion.p>
-                <ul className="space-y-2 font-mono text-xs text-text-muted">
-                  <motion.li
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span> @react-three/fiber processing
-                  </motion.li>
-                  <motion.li
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse delay-75"></span> MeshDistortMaterial applied
-                  </motion.li>
-                  <motion.li
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse delay-150"></span> Interactive rotation axes mapped
-                  </motion.li>
-                </ul>
-              </div>
-              <div ref={globeContainerRef}>
-                <ErrorBoundary>
-                  {isGlobeInView ? (
-                    <AdaptiveOrchestrationCore />
-                  ) : (
-                    <div className="w-full h-[400px] border border-cyan/20 rounded-xl overflow-hidden relative shadow-[0_0_50px_rgba(0,240,255,0.1)] bg-bg flex flex-col items-center justify-center gap-3">
-                      <div className="w-8 h-8 rounded-full border-2 border-cyan/30 border-t-cyan animate-spin" />
-                      <span className="font-mono text-xs text-cyan tracking-widest">LOADING ORCHESTRATION CORE…</span>
-                    </div>
-                  )}
-                </ErrorBoundary>
-              </div>
-            </div>
-          </section>
+        {/* Safe hardware degradation: hides the entire section (text + 3D canvas) on weak devices */}
+        <InteractiveOrchestratorSection />
 
         <div className={isMobile ? "" : "mt-16"}>
           <button
@@ -343,51 +265,51 @@ export const ProjectsSection: React.FC = () => {
           </button>
           {favOpen && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px] mt-6">
-              <WorkflowCard 
-                name="Daily AI News Agent" 
+              <WorkflowCard
+                name="Daily AI News Agent"
                 desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
                 image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={0}
                 videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
               />
-              <WorkflowCard 
-                name="Personal Jarvis (Updated)" 
+              <WorkflowCard
+                name="Personal Jarvis (Updated)"
                 desc="For extra daily needs, my updated personal jarvis orchestrates everything I need in a unified environment."
                 image="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={100}
               />
-              <WorkflowCard 
-                name="n8n Updates Tester" 
+              <WorkflowCard
+                name="n8n Updates Tester"
                 desc="Used for testing new n8n updates. It is the most easy and quick to use workflow."
                 image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={200}
               />
-              <WorkflowCard 
-                name="Drive & Docs Agent" 
+              <WorkflowCard
+                name="Drive & Docs Agent"
                 desc="Additional workflow to manage my drives, docs, and emails. Can be sent to WhatsApp and controlled via SAM."
                 image="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={300}
               />
-              <WorkflowCard 
-                name="AI Outreach & Follow-up" 
+              <WorkflowCard
+                name="AI Outreach & Follow-up"
                 desc="One of my most complex and useful workflows—from AI cold outreach to strategic follow-ups, automated replies, and all extras."
                 image="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={400}
               />
-              <WorkflowCard 
-                name="Search MCP & Image Gen" 
+              <WorkflowCard
+                name="Search MCP & Image Gen"
                 desc="My additional searching MCP combined with image generation. Fully automated and can be sent to WhatsApp controlled via SAM."
                 image="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={500}
               />
-              <WorkflowCard 
-                name="AI Presentation Generator" 
+              <WorkflowCard
+                name="AI Presentation Generator"
                 desc="Free Gemma-alternative AI presentation generator capable of creating unlimited presentations. Can be sent to WhatsApp controlled via SAM."
                 image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
                 delay={600}
               />
-              <WorkflowCard 
-                name="Voice AI Agent" 
+              <WorkflowCard
+                name="Voice AI Agent"
                 desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
                 image="/voice-ai-agent.png"
                 delay={700}

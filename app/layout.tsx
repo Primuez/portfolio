@@ -327,8 +327,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   };
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${spaceMono.variable} ${syne.variable}`}>
-      <body suppressHydrationWarning className="bg-[#0a0a0f] text-[#e8e8ec] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
+    <html lang="en" suppressHydrationWarning className={`dark ${spaceMono.variable} ${syne.variable}`} style={{ backgroundColor: '#0a0a0f', color: '#ffffff', colorScheme: 'dark' }}>
+      <body suppressHydrationWarning style={{ backgroundColor: '#0a0a0f', color: '#ffffff', colorScheme: 'dark' }} className="bg-[#0a0a0f] text-[#ffffff] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
         {/* SVG Noise Texture Overlay — pointer-events: none, GPU-accelerated */}
         <div
           aria-hidden="true"
