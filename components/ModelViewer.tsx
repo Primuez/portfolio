@@ -34,17 +34,17 @@ export function ModelViewer() {
       if (!mounted || !mount) return;
 
       try {
-        const w = mount.clientWidth;
-        const h = mount.clientHeight;
+        const w = mount.clientWidth || mount.offsetWidth || 400;
+        const h = mount.clientHeight || mount.offsetHeight || 400;
 
         const scene = new T.Scene();
         const camera = new T.PerspectiveCamera(45, w / h, 0.1, 1000);
         camera.position.set(0, 0, 5.5);
 
-        const renderer = new T.WebGLRenderer({ antialias: !isMobile, alpha: true });
-      renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(w, h);
-      mount.appendChild(renderer.domElement);
+        const renderer = new T.WebGLRenderer({ antialias: !isMobile, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setSize(w, h);
+        mount.appendChild(renderer.domElement);
 
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableZoom = false;
@@ -190,39 +190,13 @@ export function ModelViewer() {
       let isVisible = true;
       let animating = false;
 
-      // Real-time FPS & Lag Monitoring for weaker hardware protection
-      let frameCount = 0;
-      let lastFpsCheckTime = performance.now();
-      let lowFpsConsecutiveCount = 0;
-
       const animate = () => {
-        if (!isVisible) {
+        if (!isVisible || !mounted) {
           animating = false;
           return;
         }
         animating = true;
         animId = requestAnimationFrame(animate);
-
-        // Calculate active FPS every 1000ms
-        const now = performance.now();
-        frameCount++;
-        if (now - lastFpsCheckTime >= 1000) {
-          const fps = (frameCount * 1000) / (now - lastFpsCheckTime);
-          frameCount = 0;
-          lastFpsCheckTime = now;
-
-          // If frame rate drops below 22 FPS for 2 consecutive seconds on weaker hardware,
-          // automatically switch to LightweightCyberOrb to keep the website smooth & lag-free.
-          if (fps < 22) {
-            lowFpsConsecutiveCount++;
-            if (lowFpsConsecutiveCount >= 2) {
-              setWebglFailed(true);
-              return;
-            }
-          } else {
-            lowFpsConsecutiveCount = 0;
-          }
-        }
 
         const delta = Math.min(clock.getDelta(), 0.1);
         elapsed += delta;
