@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Plus, Cpu, Zap, ArrowRight, Sparkles, CheckCircle2, ShieldAlert } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useUI } from '@/lib/contexts/UIContext';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -190,7 +191,7 @@ function CyberBlade({
   return (
     <motion.div
       layout
-      className="cyber-blade-item w-full relative mb-4"
+      className="cyber-blade-item gpu-accelerated w-full relative mb-4"
       animate={{
         scale: isFocused ? (isMobile ? 1.01 : 1.03) : (anyFocused ? 0.95 : 1),
         opacity: isFocused ? 1 : (anyFocused ? 0.35 : 1),
@@ -354,7 +355,9 @@ function CyberBlade({
   );
 }
 
-export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => void }) {
+export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe?: () => void } = {}) {
+  const { setModalType } = useUI();
+  const handleWorkWithMe = onWorkWithMe || (() => setModalType('form'));
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -417,7 +420,7 @@ export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe: () => 
               isFocused={activeCategory === index}
               anyFocused={activeCategory !== null}
               onToggle={() => setActiveCategory(activeCategory === index ? null : index)}
-              onWorkWithMe={onWorkWithMe}
+              onWorkWithMe={handleWorkWithMe}
             />
           ))}
         </div>
