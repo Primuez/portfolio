@@ -140,6 +140,42 @@ export default function CredentialsSection() {
           <div className="flex flex-col gap-4">
             <h3 className="text-amber uppercase font-mono tracking-widest text-sm mb-2 pl-2 border-l-2 border-amber">[ CERTIFICATIONS ]</h3>
             
+            <CVAccordion title="Oracle AI Certifications (Triple Certified)">
+              <p className="text-sm text-text-muted mb-3">Official Oracle credentials spanning Autonomous Agentic AI, Fusion AI Agent Studio, and OCI AI Foundations.</p>
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Agentic AI Certified Foundations Associate</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">Oracle · Aug 12, 2026 · ID: 330545114AAI26OFA</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Agentic AI Certified Foundations Associate', issuer: 'Oracle', date: 'August 12, 2026', id: '330545114AAI26OFA', pdfUrl: '/documents/cert-oracle-agentic-ai.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Oracle Fusion AI Agent Studio Certified Associate</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">Oracle · Aug 12, 2026 · ID: 330545114OFAASOFA</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Oracle Fusion AI Agent Studio Certified Foundations Associate - Rel 1', issuer: 'Oracle', date: 'August 12, 2026', id: '330545114OFAASOFA', pdfUrl: '/documents/cert-oracle-fusion-ai.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Oracle Cloud Infrastructure (OCI) AI Associate</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">Oracle · Aug 12, 2026 · ID: 330545114OCI26AICFA</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Oracle Cloud Infrastructure Certified AI Foundations Associate', issuer: 'Oracle', date: 'August 12, 2026', id: '330545114OCI26AICFA', pdfUrl: '/documents/cert-oracle-oci-ai.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+              </div>
+            </CVAccordion>
+
             <CVAccordion title="n8n Official Certifications">
               <p className="text-sm text-text-muted mb-4">Completed both official n8n course levels demonstrating advanced automation mastery.</p>
               <div className="flex flex-wrap gap-2">
@@ -169,7 +205,7 @@ export default function CredentialsSection() {
             <CVAccordion title="Kaggle × Google: AI Agents Intensive">
               <p className="text-sm text-text-muted mb-4">5-Day AI Agents Intensive Course with Google. Earned Official Badge.</p>
               <button 
-                onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG', pdfUrl: '/documents/cert-kaggle-google.pdf#page=2'})}
+                onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG', pdfUrl: '/documents/cert-kaggle-google.pdf'})}
                 className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
               >View Badge</button>
             </CVAccordion>

@@ -321,35 +321,67 @@ export default function StackSection() {
         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         <circle cx="12" cy="16" r="1" />
       </svg>
+    ),
+    oracle: (
+      <svg className="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3C6.5 3 3 4.8 3 7s3.5 4 9 4 9-1.8 9-4-3.5-4-9-4z" />
+        <path d="M3 7v5c0 2.2 3.5 4 9 4s9-1.8 9-4V7" />
+        <path d="M3 12v5c0 2.2 3.5 4 9 4s9-1.8 9-4v-5" />
+      </svg>
+    ),
+    whatsapp: (
+      <svg className="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+      </svg>
+    ),
+    typescript: (
+      <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M7 8h6M10 8v8" />
+        <path d="M14 15.5c1 1 2.5 1 3.5 0s0-2-1.5-2.5 0-2 1.5-2.5" />
+      </svg>
+    ),
+    tailwind: (
+      <svg className="w-5 h-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 12c.5-2.5 2.5-4 5-4 3.5 0 4.5 3 6.5 3 2 0 3-1.5 3.5-3-.5 2.5-2.5 4-5 4-3.5 0-4.5-3-6.5-3-2 0-3 1.5-3.5 3z" />
+        <path d="M3 17c.5-2.5 2.5-4 5-4 3.5 0 4.5 3 6.5 3 2 0 3-1.5 3.5-3-.5 2.5-2.5 4-5 4-3.5 0-4.5-3-6.5-3-2 0-3 1.5-3.5 3z" />
+      </svg>
+    ),
+    uv: (
+      <svg className="w-5 h-5 text-violet-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
     )
   };
 
   const aiTools: Tool[] = [
     { name: 'n8n Workflow Automation', desc: 'Primary workflows, APIs & auto-triggers', icon: icons.n8n },
+    { name: 'Oracle Cloud & Fusion AI', desc: 'Agentic AI, Agent Studio & OCI Foundations', icon: icons.oracle },
     { name: 'OpenRouter Aggregator', desc: 'Unified LLM access & token cost optimizations', icon: icons.openrouter },
     { name: 'DeepSeek Reasoning', desc: 'Deep-reasoning chain for core decision logic', icon: icons.deepseek },
-    { name: 'Mistral Weights', desc: 'Sleek open-weight engines for specific parsing', icon: icons.mistral },
-    { name: 'LLaMA3 Inference', desc: 'Self-hosted LLMs for offline pattern analysis', icon: icons.llama },
-    { name: 'AI Agents & RAG', desc: 'Vector search & autonomous prompt pipelines', icon: icons.agents }
+    { name: 'Mistral & LLaMA3 Weights', desc: 'Open-weight engines for high-speed & local inference', icon: icons.mistral },
+    { name: 'AI Agents & Vector RAG', desc: 'Context retrieval & autonomous prompt pipelines', icon: icons.agents }
   ];
 
   const agentTools: Tool[] = [
+    { name: 'Hermes Agent', desc: 'Autonomous multi-tool runtime & self-healing cron jobs', icon: icons.hermes },
     { name: 'OpenClaw Security', desc: 'Cryptographic verification & sandbox security audits', icon: icons.openclaw },
-    { name: 'Hermes Agent', desc: 'Runtime traffic analysis & telemetry logs', icon: icons.hermes },
-    { name: 'Picoclaw Agent', desc: 'Lightweight proxy gateway & drift posture checking', icon: icons.picoclaw },
+    { name: 'Picoclaw Gateway', desc: 'Lightweight proxy gateway & drift posture checking', icon: icons.picoclaw },
     { name: 'Soul Guardian', desc: 'Baseline file integrity and proactive drift alerts', icon: icons.soulguardian }
   ];
 
   const cliTools: Tool[] = [
     { name: 'Claude Code CLI', desc: 'Interactive terminal pair-programming & git automation', icon: icons.claudecode },
     { name: 'Gemini CLI', desc: 'Command-line code review, semantic search & reasoning', icon: icons.geminicli },
-    { name: 'Google Workspace CLI', desc: 'Automated Workspace integrations & GCP OAuth', icon: icons.gws },
-    { name: '1Password CLI (op)', desc: 'Secure environment secrets management & OP vaults', icon: icons.onepassword }
+    { name: 'Google Workspace CLI (gws)', desc: 'Automated Workspace integrations & GCP OAuth', icon: icons.gws },
+    { name: '1Password CLI (op)', desc: 'Secure environment secrets management & OP vaults', icon: icons.onepassword },
+    { name: 'uv & Python Toolchain', desc: 'Ultra-fast package manager & PEP-compliant virtual environments', icon: icons.uv }
   ];
 
   const infraTools: Tool[] = [
+    { name: 'Oracle Cloud (OCI)', desc: 'ARM 24GB VPS, Traefik Zero-Trust & DuckDNS', icon: icons.oracle },
+    { name: 'Hostinger VPS', desc: 'Long-lived cron queues & production Docker stacks', icon: icons.vps },
     { name: 'Cloudflare Workers', desc: 'Serverless deployment globally at the edge', icon: icons.cloudflare },
-    { name: 'Hostinger VPS', desc: 'Long-lived cron queues & task schedulers', icon: icons.vps },
     { name: 'Docker Containers', desc: 'Secure system containment & virtualization', icon: icons.docker },
     { name: 'Vercel Deployment', desc: 'Edge CDN frontend hosting with instant builds', icon: icons.vercel }
   ];
@@ -357,13 +389,15 @@ export default function StackSection() {
   const erpTools: Tool[] = [
     { name: 'Odoo ERP / CRM', desc: 'Enterprise data hub & automated ledger entries', icon: icons.odoo },
     { name: 'GST Auto-Reconciliation', desc: 'Government tax filing verification engines', icon: icons.gst },
-    { name: 'IndiaMART Webhooks', desc: 'Sub-second real-time lead capturing API', icon: icons.indiamart }
+    { name: 'IndiaMART Webhooks', desc: 'Sub-second real-time lead capturing API', icon: icons.indiamart },
+    { name: 'WhatsApp (Evolution API)', desc: 'Inbound customer routing & conversational agent workflows', icon: icons.whatsapp }
   ];
 
   const langTools: Tool[] = [
-    { name: 'JavaScript / Node.js', desc: 'Custom serverless APIs & script logic', icon: icons.js },
-    { name: 'Python Systems', desc: 'AI orchestration, math models & script agents', icon: icons.python },
-    { name: 'Bash & Shell scripting', desc: 'VPS administration, backups & file checks', icon: icons.bash }
+    { name: 'TypeScript & Next.js', desc: 'Type-safe fullstack architectures & React Server Components', icon: icons.typescript },
+    { name: 'Python Systems (FastAPI / uv)', desc: 'AI orchestration, math models & script agents', icon: icons.python },
+    { name: 'Tailwind CSS & GSAP', desc: 'Fluid responsive UI & hardware-accelerated animations', icon: icons.tailwind },
+    { name: 'Bash & Linux Administration', desc: 'VPS administration, backups & file checks', icon: icons.bash }
   ];
 
   const isMobile = useIsMobile();
