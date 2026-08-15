@@ -1,5 +1,4 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import { HomeClientLayout } from '@/components/HomeClientLayout';
 
 // Modularized Sections
@@ -16,12 +15,6 @@ import StackSection from '@/components/sections/StackSection';
 import CredentialsSection from '@/components/sections/CredentialsSection';
 import FAQSection from '@/components/sections/FAQSection';
 import ContactSection from '@/components/sections/ContactSection';
-
-// Isolated 3D Island — SSR disabled (exact Next.js equivalent of Astro's client:only="react")
-const InteractiveOrchestratorSection = dynamic(
-  () => import('@/components/InteractiveOrchestratorSection'),
-  { ssr: false }
-);
 
 export default function Home() {
   return (
