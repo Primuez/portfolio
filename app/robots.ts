@@ -1,4 +1,4 @@
-import type { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,22 +6,23 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/'],
+        disallow: ['/api/', '/private/', '/_next/', '/.env'],
       },
       {
-        // Allow major AI crawlers explicitly for GEO indexing
         userAgent: [
           'GPTBot',
           'ChatGPT-User',
-          'Google-Extended',
-          'anthropic-ai',
-          'Claude-Web',
-          'Applebot-Extended',
           'PerplexityBot',
-          'YouBot',
+          'ClaudeBot',
+          'Claude-Web',
+          'Google-Extended',
+          'Bytespider',
+          'Applebot-Extended',
+          'CCBot'
         ],
         allow: '/',
-      },
+        disallow: ['/api/', '/private/'],
+      }
     ],
     sitemap: 'https://primuez.in/sitemap.xml',
     host: 'https://primuez.in',

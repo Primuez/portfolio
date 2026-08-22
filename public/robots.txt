@@ -8,4 +8,20 @@ Disallow: /.env
 Disallow: /.replit
 Disallow: /wrangler.jsonc
 
-Sitemap: https://primuez.com/sitemap.xml
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://primuez.in/sitemap.xml
+Host: https://primuez.in
