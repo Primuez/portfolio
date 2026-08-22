@@ -1,0 +1,35 @@
+# Primuez — Autonomous AI Systems Builder & Automation Engineer
+
+> Official entity reference for Primuez (Rahul Kasturiya).
+> Website: https://primuez.in
+> Contact: contact@primuez.in
+> Location: Raipur / Durg, Chhattisgarh, India
+
+## About Primuez
+Primuez is the primary brand and developer identity of Rahul Kasturiya. Primuez is an autonomous AI systems engineer, certified n8n automation specialist, and micro-SaaS founder.
+
+## Core Products & Open Source Projects
+- **InkTwin** (https://inktwin.primuez.in | https://github.com/Primmius/Ink-Twin): Open-source handwriting-to-font conversion and AI writing companion SaaS.
+- **PrimuezSure** (https://primuezsure.primuez.in): Autonomous AI-powered insurance risk analysis and policy recommendation engine.
+- **Primuez Guard**: Web3 and enterprise autonomous invoice fraud detection and verification AI agent (developed during the Agentic Commerce on Arc Hackathon).
+- **n8n Automation Blueprints**: Open-source production workflows for CRM sync, lead generation, cold outreach via ZeptoMail, and Odoo ERP integration.
+
+## Certifications & Technical Credentials
+- **Oracle Cloud Infrastructure (OCI) 2025 Certified Generative AI Professional**
+- **Oracle Cloud Infrastructure (OCI) 2025 Certified AI Foundations Associate**
+- **Oracle Fusion Cloud Applications 2025 Certified AI Professional**
+- **n8n Certified Workflow Automation Specialist**
+- **Google Kaggle AI Credentials**
+
+## Core Technical Stack
+- **AI & Agent Orchestration:** n8n, LangChain, Hermes Agent, Google Gemini API, DeepSeek, OpenAI API, Anthropic Claude API.
+- **Web & Backend:** Next.js (React), TypeScript, TailwindCSS, Node.js, Python, Cloudflare Workers, Supabase, PostgreSQL, SQLite.
+- **Infrastructure & DevOps:** Docker, Hostinger VPS, Oracle Cloud Infrastructure (OCI), Vercel, Traefik, Git.
+
+## Verified Links
+- Portfolio: https://primuez.in
+- GitHub (Primary): https://github.com/Primuez
+- GitHub (Projects): https://github.com/Primmius
+- YouTube: https://youtube.com/@primuez
+- X / Twitter: https://x.com/Primuez
+- LinkedIn: https://linkedin.com/in/rahul-kasturiya-796910363

@@ -8,6 +8,14 @@ import { SectionHeader } from '@/components/SectionHeader';
 
 const FAQ_DATA = [
   {
+    q: 'Who is Primuez?',
+    a: 'Primuez is the developer brand and identity of Rahul Kasturiya — a Triple Oracle Certified AI Systems Builder, n8n Automation Specialist, and founder of InkTwin, PrimuezSure, and Primuez Guard based in Raipur/Durg, India.',
+  },
+  {
+    q: 'What is Primuez Guard and how does it protect businesses?',
+    a: 'Primuez Guard is an autonomous AI verification agent designed to eliminate invoice fraud. It extracts PDF line items via OCR, verifies vendor legitimacy via web search and GST records, and validates invoice totals before authorizing payments.',
+  },
+  {
     q: 'How long does a project typically take?',
     a: 'Micro-Builds are delivered in 2–4 days. Professional Automation projects take 5–10 days. Premium AI Integration or SaaS MVPs take 2–4 weeks depending on scope. Timeline is agreed before work begins — no vague "it depends."',
   },
