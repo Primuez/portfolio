@@ -11,6 +11,8 @@ node_modules
 # Local Netlify folder
 .netlify
 .vercel
+.claude/
+.codex/
 
 # Secrets and environment files
 .env
