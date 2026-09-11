@@ -11,11 +11,11 @@ endobj
 endobj
 
 3 0 obj
-<</XObject<</fzImg0 5 0 R>>>>
+<</XObject<</fzImg0 5 0 R>>/Font<</helv 9 0 R>>>>
 endobj
 
 4 0 obj
-<</Type/Page/MediaBox[0 0 960 462.1229]/Rotate 0/Resources 3 0 R/Parent 2 0 R/Contents[8 0 R]/Annots[9 0 R]>>
+<</Type/Page/MediaBox[0 0 960 500.1229]/Rotate 0/Resources 3 0 R/Parent 2 0 R/Contents[8 0 R 10 0 R 11 0 R]/Annots[12 0 R]>>
 endobj
 
 5 0 obj
@@ -595,11 +595,11 @@ endobj
 endobj
 
 8 0 obj
-<</Length 40>>
+<</Length 48>>
 stream
 
 q
-960 0 0 462.1229 0 0 cm
+960 0 0 462.1229 0 38.000017 cm
 /fzImg0 Do
 Q
 
@@ -607,24 +607,48 @@ endstream
 endobj
 
 9 0 obj
-<</A<</S/URI/URI(https://skills.yourlearning.ibm.com/certificate/ISG-DL08027G)>>/Rect[0 0 960 58.100557]/BS<</W 0>>/Subtype/Link/NM(fitz-L0)>>
+<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding>>
+endobj
+
+10 0 obj
+<</Length 153/Filter/FlateDecode>>
+stream
+xÚU±
+ADûıŠ|Á¹›d“[A;e;±Ğ»İ³ĞB¿ß±4Ãğ˜d á¶5$ŠP¢Ä”òP0c)TŸauo¥HµÓ g”é´ÿ‹ï…Îk]¡è"WîÜ]ìfÅ&›\¸y±îÙ9[nÍœd›A±v=Wì´Õ2w-YÔyVÕI¢Œ0n.õv5ÃdÈ.Ÿ
+endstream
+endobj
+
+11 0 obj
+<</Length 109/Filter/FlateDecode>>
+stream
+xÚUˆ½
+Â@„û}Šy‚ËşÜÉˆE é”í‚EˆF‹X˜Âçw[gø¾¡õN
+ªHI-R[ƒ¿©{=¶/„á+’iP²âzşÓı‰éhb¢«±µXµƒ.ÊñÍ–•çûéæ#Núûaı
+endstream
+endobj
+
+12 0 obj
+<</A<</S/URI/URI(https://skills.yourlearning.ibm.com/certificate/ISG-DL08027G)>>/Rect[10 0 800 26]/BS<</W 0>>/Subtype/Link/NM(fitz-L0)>>
 endobj
 
 xref
-0 10
+0 13
 0000000000 65535 f 
 0000000042 00000 n 
 0000000120 00000 n 
 0000000172 00000 n 
-0000000218 00000 n 
-0000000344 00000 n 
-0006663596 00000 n 
-0006666247 00000 n 
-0006666281 00000 n 
-0006666370 00000 n 
+0000000238 00000 n 
+0000000379 00000 n 
+0006663631 00000 n 
+0006666282 00000 n 
+0006666316 00000 n 
+0006666413 00000 n 
+0006666502 00000 n 
+0006666725 00000 n 
+0006666904 00000 n 
 
 trailer
-<</Size 10/Root 1 0 R/ID[<C283C3A8C39CC384C2BE12C393C29A00><F988FA289FB9F349E0F53CD8E09904DA>]>>
+<</Size 13/Root 1 0 R/ID[<7E521F2DC39E12C2BBC39B4EC39FC2B7><C1AA5CF448D878C99919AD39341B14EB>]>>
 startxref
-6666529
+6667058
 %%EOF
