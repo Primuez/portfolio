@@ -222,6 +222,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               "name": "IBM SkillsBuild"
             },
             "url": "https://primuez.in/documents/cert-ibm-skillsbuild-data-analysis.pdf"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "IBM SkillsBuild Cohesity Cyber Resilience Foundations",
+            "credentialCategory": "Professional Certification",
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": "IBM SkillsBuild & Cohesity"
+            },
+            "url": "https://primuez.in/documents/cert-cohesity-cyber-resilience.pdf"
           }
         ],
         "hasOccupation": {

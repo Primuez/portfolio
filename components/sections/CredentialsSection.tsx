@@ -226,6 +226,14 @@ export default function CredentialsSection() {
               >View Certificate</button>
             </CVAccordion>
 
+            <CVAccordion title="IBM SkillsBuild: Cyber Resilience">
+              <p className="text-sm text-text-muted mb-4">Cohesity Cyber Resilience Foundations (ISG-DL08027G) credentialed by IBM SkillsBuild &amp; Cohesity.</p>
+              <button 
+                onClick={() => openCert({title: 'Cohesity Cyber Resilience Foundations', issuer: 'IBM SkillsBuild & Cohesity', date: 'September 11, 2026', id: 'ISG-DL08027G', pdfUrl: '/documents/cert-cohesity-cyber-resilience.pdf'})}
+                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
+              >View Certificate</button>
+            </CVAccordion>
+
             <div className="mt-2 pt-2 border-t border-white/10">
               <button 
                 onClick={() => openCert({title: 'Complete Master Certification Portfolio', issuer: 'Oracle, Google, IBM, n8n', date: 'August - September 2026', id: 'MASTER-PORTFOLIO', pdfUrl: '/documents/Certified.pdf'})}
