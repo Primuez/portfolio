@@ -218,6 +218,14 @@ export default function CredentialsSection() {
               >View Certificate</button>
             </CVAccordion>
 
+            <CVAccordion title="IBM SkillsBuild: Data Analysis with Python">
+              <p className="text-sm text-text-muted mb-4">Data Analysis with Python (ALM-COURSE_4079777) credentialed by IBM &amp; Adobe Learning Manager.</p>
+              <button 
+                onClick={() => openCert({title: 'Data Analysis with Python', issuer: 'IBM SkillsBuild', date: 'September 11, 2026', id: 'ALM-COURSE_4079777', pdfUrl: '/documents/cert-ibm-skillsbuild-data-analysis.pdf'})}
+                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
+              >View Certificate</button>
+            </CVAccordion>
+
             <div className="mt-2 pt-2 border-t border-white/10">
               <button 
                 onClick={() => openCert({title: 'Complete Master Certification Portfolio', issuer: 'Oracle, Google, IBM, n8n', date: 'August - September 2026', id: 'MASTER-PORTFOLIO', pdfUrl: '/documents/Certified.pdf'})}

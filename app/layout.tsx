@@ -212,6 +212,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               "name": "IBM SkillsBuild"
             },
             "url": "https://primuez.in/documents/cert-ibm-skillsbuild-prompting.pdf"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "IBM SkillsBuild Data Analysis with Python",
+            "credentialCategory": "Professional Certification",
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": "IBM SkillsBuild"
+            },
+            "url": "https://primuez.in/documents/cert-ibm-skillsbuild-data-analysis.pdf"
           }
         ],
         "hasOccupation": {
