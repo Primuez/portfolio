@@ -209,6 +209,23 @@ export default function CredentialsSection() {
                 className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
               >View Badge</button>
             </CVAccordion>
+
+            <CVAccordion title="IBM SkillsBuild: Prompt Engineering">
+              <p className="text-sm text-text-muted mb-4">Mastering the Art of Prompting (ALM-COURSE_4058858) credentialed by IBM &amp; Adobe Learning Manager.</p>
+              <button 
+                onClick={() => openCert({title: 'Mastering the Art of Prompting', issuer: 'IBM SkillsBuild', date: 'September 11, 2026', id: 'ALM-COURSE_4058858', pdfUrl: '/documents/cert-ibm-skillsbuild-prompting.pdf'})}
+                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
+              >View Certificate</button>
+            </CVAccordion>
+
+            <div className="mt-2 pt-2 border-t border-white/10">
+              <button 
+                onClick={() => openCert({title: 'Complete Master Certification Portfolio', issuer: 'Oracle, Google, IBM, n8n', date: 'August - September 2026', id: 'MASTER-PORTFOLIO', pdfUrl: '/documents/Certified.pdf'})}
+                className="w-full font-mono text-xs uppercase bg-amber/10 text-amber border border-amber/30 px-4 py-3 hover:bg-amber hover:text-bg transition-colors flex items-center justify-center gap-2"
+              >
+                <span>📜 View Complete Master Certified Portfolio (PDF)</span>
+              </button>
+            </div>
           </div>
           
           <div className="flex flex-col gap-4">

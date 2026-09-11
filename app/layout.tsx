@@ -202,6 +202,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               "name": "n8n"
             },
             "url": "https://primuez.in/documents/cert-n8n-1.pdf"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "IBM SkillsBuild Mastering the Art of Prompting",
+            "credentialCategory": "Professional Certification",
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": "IBM SkillsBuild"
+            },
+            "url": "https://primuez.in/documents/cert-ibm-skillsbuild-prompting.pdf"
           }
         ],
         "hasOccupation": {
