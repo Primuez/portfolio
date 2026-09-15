@@ -4,6 +4,7 @@ Disallow: /_next/
 Disallow: /static/
 Disallow: /api/
 Disallow: /private/
+Disallow: /documents/
 Disallow: /.env
 Disallow: /.replit
 Disallow: /wrangler.jsonc
