@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, useTransform, AnimatePresence, MotionValue } from 'motion/react';
 import { useScrollTarget } from '@/hooks/use-scroll-target';
-import { CheckCircle2, ChevronDown } from 'lucide-react';
+import { CheckCircle2, ChevronDown, ExternalLink } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { useUI } from '@/lib/contexts/UIContext';
 
@@ -176,70 +176,162 @@ export default function CredentialsSection() {
               </div>
             </CVAccordion>
 
-            <CVAccordion title="n8n Official Certifications">
-              <p className="text-sm text-text-muted mb-4">Completed both official n8n course levels demonstrating advanced automation mastery.</p>
-              <div className="flex flex-wrap gap-2">
-                <button 
-                  onClick={() => openCert({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2', pdfUrl: '/documents/cert-n8n-1.pdf'})}
-                  className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-                >View Master Certificate</button>
+            <CVAccordion title="Cybersecurity & Defense (IBM & Cohesity)">
+              <p className="text-sm text-text-muted mb-3">Enterprise cyber resilience, offensive &amp; defensive threat analysis, and cryptographic security architectures.</p>
+              <div className="flex flex-col gap-2.5">
+                <div className="p-3 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex flex-col min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-white leading-tight">Cybersecurity Fundamentals Specialization</span>
+                        <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber/20 text-amber border border-amber/30">Credly Verified</span>
+                      </div>
+                      <span className="text-[10px] text-cyan font-mono mt-0.5">IBM SkillsBuild · Sep 15, 2026 · Credly Badge</span>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <a 
+                        href="https://www.credly.com/badges/1bd709be-42f9-4d0c-9b19-67db4e84b94d" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1"
+                      >
+                        Credly <ExternalLink size={10} />
+                      </a>
+                      <button 
+                        onClick={() => openCert({title: 'Cybersecurity Fundamentals Credential', issuer: 'IBM SkillsBuild', date: 'September 15, 2026', id: 'PLAN-4FB8400F05FC', pdfUrl: '/documents/cert-ibm-cybersecurity-fundamentals.pdf'})}
+                        className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors"
+                      >PDF</button>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2.5 pt-2 border-t border-white/[0.06] grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    <button
+                      onClick={() => openCert({title: 'Introduction to Cybersecurity', issuer: 'IBM SkillsBuild', date: 'September 15, 2026', id: 'ALM-COURSE_4058978', pdfUrl: '/documents/cert-ibm-cyber-intro.pdf'})}
+                      className="text-left font-mono text-[10px] text-text-muted hover:text-cyan transition-colors truncate p-1 rounded bg-white/[0.01] hover:bg-cyan/5"
+                    >
+                      • 1. Intro to Security
+                    </button>
+                    <button
+                      onClick={() => openCert({title: 'Your Future in Cybersecurity: Job Landscape', issuer: 'IBM SkillsBuild', date: 'September 15, 2026', id: 'ALM-COURSE_4058981', pdfUrl: '/documents/cert-ibm-cyber-job-landscape.pdf'})}
+                      className="text-left font-mono text-[10px] text-text-muted hover:text-cyan transition-colors truncate p-1 rounded bg-white/[0.01] hover:bg-cyan/5"
+                    >
+                      • 2. Job Landscape
+                    </button>
+                    <button
+                      onClick={() => openCert({title: 'Cybersecurity: On the Offense', issuer: 'IBM SkillsBuild', date: 'September 15, 2026', id: 'ALM-COURSE_4058979', pdfUrl: '/documents/cert-ibm-cyber-offense.pdf'})}
+                      className="text-left font-mono text-[10px] text-text-muted hover:text-cyan transition-colors truncate p-1 rounded bg-white/[0.01] hover:bg-cyan/5"
+                    >
+                      • 3. On the Offense
+                    </button>
+                    <button
+                      onClick={() => openCert({title: 'Cybersecurity: On the Defense', issuer: 'IBM SkillsBuild', date: 'September 15, 2026', id: 'ALM-COURSE_4058980', pdfUrl: '/documents/cert-ibm-cyber-defense.pdf'})}
+                      className="text-left font-mono text-[10px] text-text-muted hover:text-cyan transition-colors truncate p-1 rounded bg-white/[0.01] hover:bg-cyan/5"
+                    >
+                      • 4. On the Defense
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Cohesity Cyber Resilience Foundations</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">IBM SkillsBuild &amp; Cohesity · Sep 11, 2026 · ID: ISG-DL08027G</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Cohesity Cyber Resilience Foundations', issuer: 'IBM SkillsBuild & Cohesity', date: 'September 11, 2026', id: 'ISG-DL08027G', pdfUrl: '/documents/cert-cohesity-cyber-resilience.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
               </div>
             </CVAccordion>
 
-            <CVAccordion title="SimpliLearn: n8n No Code AI Agent">
-              <p className="text-sm text-text-muted mb-4">Certificate #8723146 - Completed Aug 2, 2025.</p>
-              <button 
-                onClick={() => openCert({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146', pdfUrl: '/documents/cert-n8n-2.pdf'})}
-                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-              >View Certificate</button>
+            <CVAccordion title="Automation & Autonomous Agents (n8n & Google)">
+              <p className="text-sm text-text-muted mb-3">Production workflow automation, multi-agent frameworks, and serverless enterprise orchestration.</p>
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">n8n Course Level 1 &amp; 2 (Master Automation)</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">n8n Official · Verified · ID: N8N-L1-L2</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'n8n Course Level 1 & 2', issuer: 'n8n', date: 'Verified', id: 'N8N-L1-L2', pdfUrl: '/documents/cert-n8n-1.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">5-Day AI Agents Intensive Course</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">Kaggle &amp; Google · Dec 18, 2025 · ID: KAG-GOOG</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG', pdfUrl: '/documents/cert-kaggle-google.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">No Code AI Agent Builder</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">SimpliLearn SkillUP · Aug 2, 2025 · ID: 8723146</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'n8n Course: No Code AI Agent Builder', issuer: 'SimpliLearn SkillUP', date: '2nd August 2025', id: '8723146', pdfUrl: '/documents/cert-n8n-2.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+              </div>
             </CVAccordion>
 
-            <CVAccordion title="Outskill: Generative AI Mastermind">
-              <p className="text-sm text-text-muted mb-4">Successfully completed Generative AI Mastermind hosted by Vaibhav Sisinty.</p>
-              <button 
-                onClick={() => openCert({title: 'Generative AI Mastermind', issuer: 'Outskill by Vaibhav Sisinty', date: 'Verified', id: 'OUT-GENAI-M'})}
-                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-              >View Certificate</button>
+            <CVAccordion title="Applied AI & Systems (IBM & Outskill)">
+              <p className="text-sm text-text-muted mb-3">Advanced prompt engineering architectures, Python data pipelines, and generative AI execution.</p>
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Mastering the Art of Prompting</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">IBM SkillsBuild · Sep 11, 2026 · ID: ALM-COURSE_4058858</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Mastering the Art of Prompting', issuer: 'IBM SkillsBuild', date: 'September 11, 2026', id: 'ALM-COURSE_4058858', pdfUrl: '/documents/cert-ibm-skillsbuild-prompting.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Data Analysis with Python</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">IBM SkillsBuild · Sep 11, 2026 · ID: ALM-COURSE_4079777</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Data Analysis with Python', issuer: 'IBM SkillsBuild', date: 'September 11, 2026', id: 'ALM-COURSE_4079777', pdfUrl: '/documents/cert-ibm-skillsbuild-data-analysis.pdf'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">Generative AI Mastermind</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">Outskill by Vaibhav Sisinty · Verified · ID: OUT-GENAI-M</span>
+                  </div>
+                  <button 
+                    onClick={() => openCert({title: 'Generative AI Mastermind', issuer: 'Outskill by Vaibhav Sisinty', date: 'Verified', id: 'OUT-GENAI-M'})}
+                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                  >View</button>
+                </div>
+              </div>
             </CVAccordion>
 
-            <CVAccordion title="Kaggle × Google: AI Agents Intensive">
-              <p className="text-sm text-text-muted mb-4">5-Day AI Agents Intensive Course with Google. Earned Official Badge.</p>
-              <button 
-                onClick={() => openCert({title: '5-Day AI Agents Intensive Course with Google', issuer: 'Kaggle & Google', date: 'December 18, 2025', id: 'KAG-GOOG', pdfUrl: '/documents/cert-kaggle-google.pdf'})}
-                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-              >View Badge</button>
-            </CVAccordion>
-
-            <CVAccordion title="IBM SkillsBuild: Prompt Engineering">
-              <p className="text-sm text-text-muted mb-4">Mastering the Art of Prompting (ALM-COURSE_4058858) credentialed by IBM &amp; Adobe Learning Manager.</p>
-              <button 
-                onClick={() => openCert({title: 'Mastering the Art of Prompting', issuer: 'IBM SkillsBuild', date: 'September 11, 2026', id: 'ALM-COURSE_4058858', pdfUrl: '/documents/cert-ibm-skillsbuild-prompting.pdf'})}
-                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-              >View Certificate</button>
-            </CVAccordion>
-
-            <CVAccordion title="IBM SkillsBuild: Data Analysis with Python">
-              <p className="text-sm text-text-muted mb-4">Data Analysis with Python (ALM-COURSE_4079777) credentialed by IBM &amp; Adobe Learning Manager.</p>
-              <button 
-                onClick={() => openCert({title: 'Data Analysis with Python', issuer: 'IBM SkillsBuild', date: 'September 11, 2026', id: 'ALM-COURSE_4079777', pdfUrl: '/documents/cert-ibm-skillsbuild-data-analysis.pdf'})}
-                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-              >View Certificate</button>
-            </CVAccordion>
-
-            <CVAccordion title="IBM SkillsBuild: Cyber Resilience">
-              <p className="text-sm text-text-muted mb-4">Cohesity Cyber Resilience Foundations (ISG-DL08027G) credentialed by IBM SkillsBuild &amp; Cohesity.</p>
-              <button 
-                onClick={() => openCert({title: 'Cohesity Cyber Resilience Foundations', issuer: 'IBM SkillsBuild & Cohesity', date: 'September 11, 2026', id: 'ISG-DL08027G', pdfUrl: '/documents/cert-cohesity-cyber-resilience.pdf'})}
-                className="font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 md:py-2 hover:bg-cyan hover:text-bg transition-colors"
-              >View Certificate</button>
-            </CVAccordion>
-
-            <div className="mt-2 pt-2 border-t border-white/10">
+            <div className="mt-2 pt-2 border-t border-white/10 flex flex-col sm:flex-row gap-2">
+              <a 
+                href="https://www.credly.com/users/rahul-kasturiya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-3 hover:bg-cyan hover:text-bg transition-colors flex items-center justify-center gap-2"
+              >
+                <span>🎖️ Verify Badges on Credly</span>
+                <ExternalLink size={12} />
+              </a>
               <button 
                 onClick={() => openCert({title: 'Complete Master Certification Portfolio', issuer: 'Oracle, Google, IBM, n8n', date: 'August - September 2026', id: 'MASTER-PORTFOLIO', pdfUrl: '/documents/Certified.pdf'})}
-                className="w-full font-mono text-xs uppercase bg-amber/10 text-amber border border-amber/30 px-4 py-3 hover:bg-amber hover:text-bg transition-colors flex items-center justify-center gap-2"
+                className="flex-1 font-mono text-xs uppercase bg-amber/10 text-amber border border-amber/30 px-4 py-3 hover:bg-amber hover:text-bg transition-colors flex items-center justify-center gap-2"
               >
-                <span>📜 View Complete Master Certified Portfolio (PDF)</span>
+                <span>📜 Master Portfolio (PDF)</span>
               </button>
             </div>
           </div>
