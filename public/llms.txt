@@ -18,8 +18,10 @@ Primuez is the primary brand and developer identity of Rahul Kasturiya. Primuez 
 - **Oracle Cloud Infrastructure (OCI) 2025 Certified Generative AI Professional**
 - **Oracle Cloud Infrastructure (OCI) 2025 Certified AI Foundations Associate**
 - **Oracle Fusion Cloud Applications 2025 Certified AI Professional**
-- **n8n Certified Workflow Automation Specialist**
-- **Google Kaggle AI Credentials**
+- **IBM SkillsBuild Cybersecurity Fundamentals (5-Part Specialization - Credly Verified)**
+- **IBM SkillsBuild & Cohesity Cyber Resilience Foundations**
+- **n8n Certified Workflow Automation Specialist (Level 1 & 2)**
+- **Google Kaggle AI Agents Intensive Credentials**
 
 ## Core Technical Stack
 - **AI & Agent Orchestration:** n8n, LangChain, Hermes Agent, Google Gemini API, DeepSeek, OpenAI API, Anthropic Claude API.
@@ -33,3 +35,4 @@ Primuez is the primary brand and developer identity of Rahul Kasturiya. Primuez 
 - YouTube: https://youtube.com/@primuez
 - X / Twitter: https://x.com/Primuez
 - LinkedIn: https://linkedin.com/in/rahul-kasturiya-796910363
+- Credly (Badges): https://www.credly.com/users/rahul-kasturiya
