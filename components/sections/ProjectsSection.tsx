@@ -78,24 +78,32 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
     tagline: "Intelligent cognitive layers that query compliance/legal frameworks and execute stack workflows.",
     projects: [
       {
-        name: "Tax Advisor Agent",
-        status: "Built",
-        desc: "Automated reasoning engine for complex tax compliance. Consumes raw financial data to predict tax liabilities and autonomously draft compliance workflows for firms.",
-        techDetails: "Uses advanced financial prompt-chains to ingest GST/tax sheets and cross-reference them with regional tax rules. Generates structured JSON reports for Odoo or custom ledgers.",
-        tags: ["Taxation", "RAG", "Automation", "Compliance"],
-        logoUrl: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&w=200&h=200&q=80"
+        name: "Autonomous ITC Guard & Vendor Recovery Suite",
+        status: "Production Built",
+        desc: "Autonomous tax audit and working capital preservation agent. Reconciles purchase ledgers against GSTR-2B to enforce Section 16(2)(aa) compliance, halts payment to defaulting suppliers, and drafts itemized legal recovery notices.",
+        techDetails: "Built in n8n with Gemini 3.8 Flash, fuzzy invoice reconciliation, and penny-rounding tolerance. Queries live vendor GSTIN filings via self-hosted SearXNG, generating CFO audit briefings, withholding schedules, and automated WhatsApp/Email chase notices.",
+        tags: ["n8n", "Gemini 3.8 Flash", "GST Section 16(2)(aa)", "SearXNG", "WhatsApp API", "Autonomous Agent"],
+        logoUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=200&h=200&q=80"
       },
       {
-        name: "Legal Advisor Agent",
-        status: "Built",
-        desc: "Autonomous legal Q&A assistant trained on regulatory guidelines and contracts.",
-        techDetails: "Uses RAG models to parse Indian legal acts, contract drafts, and corporate bylaws. Generates structured risk summaries and contract redlines with citation tracking.",
-        tags: ["Legal AI", "Contract Analysis", "LLM"],
-        logoUrl: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=200&h=200&q=80"
+        name: "Pre-Liquidity Wealth & M&A Advisory Engine",
+        status: "Production Built",
+        desc: "Autonomous M&A advisory engine for business owners ($2M–$100M ARR) and RIAs. Ingests financial statements to synthesize institutional valuation spreads, comps, and pre-exit estate tax shelters (QSBS, SLAT, GRAT) in 60 seconds.",
+        techDetails: "Routes balance sheets and cap tables through Mistral OCR. Couples LangChain deterministic calculators (Rule of 40, concentration risk) with Gemini Pro synthesis. Benchmarks live sector ARR/EBITDA multiples via Composio MCP and SearXNG.",
+        tags: ["n8n", "Mistral OCR", "Composio MCP", "LangChain", "M&A Valuation", "SearXNG"],
+        logoUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        name: "Autonomous Real Estate Due Diligence & Underwriting Agent",
+        status: "Production Built",
+        desc: "24/7 autonomous underwriting analyst and speed-to-lead conversion engine for brokerages. Ingests property listings to execute institutional underwriting (NOI, Cap Rate, DSCR, cash flow) and cross-monetizes internal inventory within seconds.",
+        techDetails: "Evaluates listing URLs (Zillow/Redfin) via n8n Assistant and self-hosted SearXNG. Runs leveraged debt-service calculations, identifies negative leverage risks, and executes automatic buyer intent scoring (Hot/Warm/Cold) with CRM ingestion.",
+        tags: ["n8n", "SearXNG", "Real Estate AI", "Institutional Underwriting", "Speed-to-Lead", "Autonomous Agent"],
+        logoUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&h=200&q=80"
       },
       {
         name: "Voice AI Agent",
-        status: "Built",
+        status: "Production Built",
         desc: "A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free.",
         techDetails: "Ties real-time audio WebSockets to TTS and STT engines. Processes incoming commands through n8n tool-calling agents to execute operations across business apps.",
         tags: ["Voice AI", "LLM", "n8n", "Real-Time"],
@@ -266,10 +274,28 @@ export const ProjectsSection: React.FC = () => {
           {favOpen && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-[2000px] mt-6">
               <WorkflowCard
+                name="Autonomous ITC Guard & Vendor Chase"
+                desc="Enforces GST Section 16(2)(aa) compliance by reconciling purchase ledgers with GSTR-2B. Identifies trapped working capital, locks defaulting vendor payments, and automates legal recovery notices via WhatsApp & Email."
+                image="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={0}
+              />
+              <WorkflowCard
+                name="Pre-Liquidity Wealth & M&A Engine"
+                desc="Institutional M&A advisory engine for $2M-$100M ARR founders. Ingests financial statements via Mistral OCR, calculates Rule of 40 & concentration risk, and structures pre-exit tax shelters (QSBS/SLAT/GRAT)."
+                image="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={50}
+              />
+              <WorkflowCard
+                name="Real Estate Underwriting & Lead Engine"
+                desc="24/7 autonomous underwriting analyst for brokerages. Computes NOI, Cap Rate, DSCR, and cash flow on property URLs, cross-monetizes internal inventory, and qualifies leads under a 5-minute speed-to-lead rule."
+                image="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={100}
+              />
+              <WorkflowCard
                 name="Daily AI News Agent"
                 desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
                 image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
-                delay={0}
+                delay={150}
                 videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
               />
               <WorkflowCard
