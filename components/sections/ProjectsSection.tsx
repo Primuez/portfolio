@@ -335,6 +335,24 @@ export const ProjectsSection: React.FC = () => {
                 delay={600}
               />
               <WorkflowCard
+                name="PrimuezSure Policy Auditor"
+                desc="Autonomous health insurance policy auditor. Scans multi-page policy PDFs to expose hidden room-rent sub-limits, disease copays, and claim traps before you file."
+                image="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={650}
+              />
+              <WorkflowCard
+                name="HackPulse Radar"
+                desc="Resilient autonomous hackathon ingestion pipeline. Ingests 44+ live hackathons with automated schema circuit breakers and deploy guards."
+                image="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={675}
+              />
+              <WorkflowCard
+                name="Multimodal AI Expense Tracker"
+                desc="Telegram-first financial logging agent. Ingests audio voice memos, photographed physical receipts, and text notes, parsing GST and categorizing into Google Sheets."
+                image="https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=800&h=600&q=80"
+                delay={690}
+              />
+              <WorkflowCard
                 name="Voice AI Agent"
                 desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
                 image="/voice-ai-agent.png"
