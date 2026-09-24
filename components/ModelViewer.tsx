@@ -20,7 +20,7 @@ export function ModelViewer() {
   }, []);
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    if (!mountRef.current || isMobile) return;
     const mount = mountRef.current;
 
     let mounted = true;
@@ -260,6 +260,10 @@ export function ModelViewer() {
       cleanupFn?.();
     };
   }, [onTextureLoaded, router, isMobile]);
+
+  if (isMobile) {
+    return null;
+  }
 
   if (webglFailed) {
     return <LightweightCyberOrb />;

@@ -1,5 +1,30 @@
+export function isMobileDevice(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  // 1. Check viewport width (< 768px is mobile)
+  if (window.innerWidth < 768) return true;
+
+  // 2. Check mobile User Agent
+  const ua = navigator.userAgent || '';
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
+    return true;
+  }
+
+  // 3. Touch device with compact screen (< 1024px)
+  if (('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth < 1024) {
+    return true;
+  }
+
+  return false;
+}
+
 export function checkDeviceCapability(): boolean {
   if (typeof window === 'undefined') return false;
+
+  // Safe mobile degradation: Never render heavy 3D globe / WebGL orchestrator on mobile mode
+  if (isMobileDevice()) {
+    return false;
+  }
 
   try {
     // Check if WebGL or WebGL2 is supported by the browser and GPU

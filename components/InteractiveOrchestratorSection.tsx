@@ -2,33 +2,43 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { checkDeviceCapability } from '@/lib/utils/hardwareDetect';
+import { checkDeviceCapability, isMobileDevice } from '@/lib/utils/hardwareDetect';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ModelViewer } from '@/components/ModelViewer';
 
 export default function InteractiveOrchestratorSection() {
-  const [isHighSpec, setIsHighSpec] = useState<boolean | null>(null);
+  const [shouldRender, setShouldRender] = useState<boolean | null>(null);
   const globeContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check if the device is a powerful PC vs weak mobile/laptop
-    setIsHighSpec(checkDeviceCapability());
+    const updateCapability = () => {
+      // In mobile mode or weak devices: completely skip rendering 3D orchestrator/globe
+      if (isMobileDevice() || !checkDeviceCapability()) {
+        setShouldRender(false);
+      } else {
+        setShouldRender(true);
+      }
+    };
+
+    updateCapability();
+
+    window.addEventListener('resize', updateCapability);
+    return () => window.removeEventListener('resize', updateCapability);
   }, []);
 
-  // 1. LOADING STATE / HYDRATION: Prevent layout shift while checking
-  if (isHighSpec === null) {
+  // 1. LOADING / HYDRATION: Prevent layout shift while checking
+  if (shouldRender === null) {
     return null;
   }
 
-  // 2. WEAK DEVICE: Nuke the ENTIRE section safely.
-  // No text, no empty gaps, just seamless scrolling to the next section.
-  if (!isHighSpec) {
+  // 2. MOBILE OR WEAK DEVICE: Safely nuke the entire 3D section.
+  // Zero canvas creation, zero WebGL texture load, zero memory crashes.
+  if (!shouldRender) {
     return null;
   }
 
-  // 3. POWERFUL DEVICE: Render the full, beautiful UI and Shaders.
-  // KEEP ALL MY EXISTING 3D CODE INTACT HERE.
+  // 3. DESKTOP / HIGH SPEC DEVICE: Render interactive 3D core
   return (
     <section aria-labelledby="interactive-heading" className="relative w-full my-12 md:my-16">
       <div className="shader-section-divider absolute top-0 left-0 right-0" />
@@ -38,7 +48,7 @@ export default function InteractiveOrchestratorSection() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-12 mt-12 mb-16 items-center">
-        {/* The Text Content - Only renders if device is High Spec */}
+        {/* The Text Content - Only renders if device is High Spec Desktop */}
         <div>
           <motion.h3
             initial={{ opacity: 0 }}
