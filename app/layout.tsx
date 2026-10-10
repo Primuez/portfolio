@@ -238,16 +238,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           },
           {
             "@type": "EducationalOccupationalCredential",
-            "name": "CryptoHack Cryptography & Cryptanalysis Track",
-            "credentialCategory": "Professional Certification / Practical CTF",
-            "recognizedBy": {
-              "@type": "Organization",
-              "name": "CryptoHack"
-            },
-            "url": "https://cryptohack.org/user/Primuez/"
-          },
-          {
-            "@type": "EducationalOccupationalCredential",
             "name": "The Linux Foundation Developing Secure Software (LFD121)",
             "credentialCategory": "Professional Certification",
             "recognizedBy": {
