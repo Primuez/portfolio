@@ -179,18 +179,30 @@ export default function CredentialsSection() {
             <CVAccordion title="Cybersecurity & Secure Software (Linux Foundation & IBM)">
               <p className="text-sm text-text-muted mb-3">Enterprise cyber resilience, offensive &amp; defensive threat analysis, and cryptographic security architectures.</p>
               <div className="flex flex-col gap-2.5">
-                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
-                  <div className="flex flex-col min-w-0 pr-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-white leading-tight">Developing Secure Software (LFD121)</span>
-                      <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyan/20 text-cyan border border-cyan/30">OpenSSF</span>
+                <div className="p-3 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex flex-col min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-white leading-tight">Developing Secure Software (LFD121)</span>
+                        <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber/20 text-amber border border-amber/30">Credly Verified</span>
+                      </div>
+                      <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation (OpenSSF) · Oct 10, 2026 · ID: LF-rho2gumy1d</span>
                     </div>
-                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Oct 10, 2026 · ID: LF-rho2gumy1d</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <a 
+                        href="https://www.credly.com/badges/64211ae0-da26-4aaf-9d72-4dd87658a17f/public_url" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1"
+                      >
+                        Credly <ExternalLink size={10} />
+                      </a>
+                      <button 
+                        onClick={() => openCert({title: 'Developing Secure Software (LFD121)', issuer: 'The Linux Foundation (OpenSSF)', date: 'October 10, 2026', id: 'LF-rho2gumy1d', pdfUrl: '/documents/cert-linux-foundation-lfd121.pdf'})}
+                        className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
+                      >View</button>
+                    </div>
                   </div>
-                  <button 
-                    onClick={() => openCert({title: 'Developing Secure Software (LFD121)', issuer: 'The Linux Foundation (OpenSSF)', date: 'October 10, 2026', id: 'LF-rho2gumy1d', pdfUrl: '/documents/cert-linux-foundation-lfd121.pdf'})}
-                    className="font-mono text-[10px] uppercase bg-cyan/10 text-cyan border border-cyan/30 px-3 py-1.5 hover:bg-cyan hover:text-bg transition-colors shrink-0"
-                  >View</button>
                 </div>
 
                 <div className="p-3 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
