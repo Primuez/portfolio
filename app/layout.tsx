@@ -235,6 +235,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               "name": "IBM SkillsBuild & Cohesity"
             },
             "url": "https://primuez.in/documents/cert-cohesity-cyber-resilience.pdf"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "The Linux Foundation Developing Secure Software (LFD121)",
+            "credentialCategory": "Professional Certification",
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": "The Linux Foundation (OpenSSF)"
+            },
+            "url": "https://primuez.in/documents/cert-linux-foundation-lfd121.pdf"
           }
         ],
         "hasOccupation": {
