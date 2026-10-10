@@ -176,9 +176,46 @@ export default function CredentialsSection() {
               </div>
             </CVAccordion>
 
-            <CVAccordion title="Cybersecurity & Secure Software (Linux Foundation & IBM)">
+            <CVAccordion title="Cybersecurity & Cryptography (Linux Foundation, IBM & CryptoHack)">
               <p className="text-sm text-text-muted mb-3">Enterprise cyber resilience, offensive &amp; defensive threat analysis, and cryptographic security architectures.</p>
               <div className="flex flex-col gap-2.5">
+                <div className="p-3 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex flex-col min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-white leading-tight">CryptoHack Cryptography &amp; Cryptanalysis</span>
+                        <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber/20 text-amber border border-amber/30">Top 1% CTF (Rank #1,414)</span>
+                      </div>
+                      <span className="text-[10px] text-cyan font-mono mt-0.5">CryptoHack · Completed All 5 Core Tracks · Score: 2,180 · ID: Primuez</span>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <a 
+                        href="https://cryptohack.org/user/Primuez/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1"
+                      >
+                        Profile <ExternalLink size={10} />
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2.5 pt-2 border-t border-white/[0.06] grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    <span className="text-left font-mono text-[10px] text-text-muted p-1 rounded bg-white/[0.01]">
+                      • RSA &amp; Public-Key Attacks
+                    </span>
+                    <span className="text-left font-mono text-[10px] text-text-muted p-1 rounded bg-white/[0.01]">
+                      • Elliptic Curves &amp; Diffie-Hellman
+                    </span>
+                    <span className="text-left font-mono text-[10px] text-text-muted p-1 rounded bg-white/[0.01]">
+                      • Symmetric Ciphers &amp; AES Oracles
+                    </span>
+                    <span className="text-left font-mono text-[10px] text-text-muted p-1 rounded bg-white/[0.01]">
+                      • Modular Arithmetic Foundations
+                    </span>
+                  </div>
+                </div>
+
                 <div className="p-3 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex flex-col min-w-0">
