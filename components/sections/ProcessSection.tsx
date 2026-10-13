@@ -16,7 +16,7 @@ const STEPS = [
 
 function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title: string; desc: string; icon: string; isLast?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: '-30% 0px -30% 0px', once: false });
+  const inView = useInView(ref, { margin: '-15% 0px -15% 0px', once: true });
 
   return (
     <div ref={ref} className="relative flex items-start gap-0">
@@ -89,37 +89,32 @@ export default function ProcessSection() {
   const lineScale = useTransform(smoothScrollY, [0, 1], [0, 1]);
 
   return (
-    <motion.section
+    <section
       id="process"
       aria-labelledby="process-heading"
       className="pt-16 md:pt-32 relative overflow-hidden"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
     >
-      <HowWeWorkBackground />
-      <div ref={processRef} className="relative z-10">
-        <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
-        <h2 id="process-heading" className="sr-only">How does the Primuez project engagement process work from discovery to handover?</h2>
-        <div className="mt-12 relative max-w-3xl">
-          {/* Spine — desktop */}
-          <div className="hidden md:block">
-            <div className="absolute left-7 top-10 bottom-10 w-px bg-white/10" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.01, margin: "100px 0px" }}
+        style={{ willChange: 'transform, opacity' }}
+      >
+        <HowWeWorkBackground />
+        <div ref={processRef} className="relative z-10">
+          <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
+          <h2 id="process-heading" className="sr-only">How does the Primuez project engagement process work from discovery to handover?</h2>
+          <div className="mt-12 relative max-w-3xl">
+            {/* Unified responsive spine line — background guide */}
+            <div className="absolute left-3.5 md:left-7 top-3.5 md:top-10 bottom-3.5 md:bottom-10 w-px bg-white/[0.08] -translate-x-1/2 md:translate-x-0" />
+            {/* Unified responsive spine line — scroll-fill progress */}
             <motion.div
-              className="absolute left-7 top-10 bottom-10 w-px bg-gradient-to-b from-cyan to-cyan/20"
-              style={{ scaleY: lineScale, transformOrigin: 'top' }}
+              className="absolute left-3.5 md:left-7 top-3.5 md:top-10 bottom-3.5 md:bottom-10 w-px bg-gradient-to-b from-cyan via-cyan/60 to-cyan/10 -translate-x-1/2 md:translate-x-0"
+              style={{ scaleY: lineScale, transformOrigin: 'top', willChange: 'transform' }}
             />
-          </div>
 
-          {/* Spine — mobile: one continuous line behind all badges */}
-          <div className="md:hidden absolute left-3.5 top-3.5 bottom-3.5 w-px bg-white/[0.08] -translate-x-1/2" />
-          <motion.div
-            className="md:hidden absolute left-3.5 top-3.5 bottom-3.5 w-px bg-gradient-to-b from-cyan/70 via-cyan/30 to-cyan/5 -translate-x-1/2"
-            style={{ scaleY: lineScale, transformOrigin: 'top' }}
-          />
-
-          {/* Steps */}
+            {/* Steps */}
           <div className="space-y-8 md:space-y-10">
             {STEPS.map(({ step, title, desc, icon }, idx) => (
               <ProcessStep key={step} step={step} title={title} desc={desc} icon={icon} isLast={idx === STEPS.length - 1} />
@@ -128,6 +123,7 @@ export default function ProcessSection() {
         </div>
         <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
       </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

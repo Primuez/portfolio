@@ -7,7 +7,6 @@ import { Activity } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
-import dynamic from 'next/dynamic';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
@@ -329,7 +328,7 @@ export const ProjectsSection: React.FC = () => {
               <WorkflowCard
                 name="PrimuezSure Policy Auditor"
                 desc="Autonomous health insurance policy auditor. Scans multi-page policy PDFs to expose hidden room-rent sub-limits, disease copays, and claim traps before you file."
-                image="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/7821937/pexels-photo-7821937.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=800&h=600&q=80"
                 delay={650}
               />
               <WorkflowCard

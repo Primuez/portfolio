@@ -17,6 +17,63 @@ interface GithubRepo {
   language: string;
 }
 
+const FALLBACK_REPOS: LiquidRepo[] = [
+  {
+    id: 1218800483,
+    name: 'portfolio',
+    description: 'High-performance developer portfolio, credential verification engine & presentation platform.',
+    html_url: 'https://github.com/Primuez/portfolio',
+    stargazers_count: 1,
+    forks_count: 0,
+    language: 'Astro',
+  },
+  {
+    id: 1212318246,
+    name: 'Ink-Twin',
+    description: 'Instant handwriting synthesis, OCR vectorization & document intelligence engine on Cloudflare Workers.',
+    html_url: 'https://github.com/Primmius/Ink-Twin',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'TypeScript',
+  },
+  {
+    id: 1256932570,
+    name: 'primuez-seo-vault',
+    description: 'Headless programmatic SEO growth engine running autonomous keyword polling and CDN generation.',
+    html_url: 'https://github.com/Primuez/primuez-seo-vault',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'TypeScript',
+  },
+  {
+    id: 1366078942,
+    name: 'career-ops',
+    description: 'Multi-agent career intelligence pipeline, ATS resume parser and continuous opportunity triage.',
+    html_url: 'https://github.com/Primuez/career-ops',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Python',
+  },
+  {
+    id: 1366078943,
+    name: 'CLI-Skills-and-MDs',
+    description: 'Curated skills, operational playbooks, and architectural system prompts for autonomous agent fleets.',
+    html_url: 'https://github.com/Primuez/CLI-Skills-and-MDs',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Markdown',
+  },
+  {
+    id: 1366078944,
+    name: 'agents-backup',
+    description: 'Production container configuration, reverse proxy SSL configs, and automated n8n backup pipelines.',
+    html_url: 'https://github.com/Primuez/agents-backup',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Shell',
+  },
+];
+
 type LiquidRepo = {
   id: number | string;
   html_url: string;
@@ -67,7 +124,6 @@ function LiquidRepoCard({
   });
   const scaleY = useTransform(velocity, (v) => isMobile ? 1 : 1 + Math.min(0.08, Math.abs(v) / 8000));
   const scaleX = useTransform(velocity, (v) => isMobile ? 1 : 1 - Math.min(0.04, Math.abs(v) / 16000));
-  const filter = useTransform(velocity, (v) => isMobile ? 'blur(0px)' : `blur(${Math.min(2, Math.abs(v) / 1000)}px)`);
   const rotateZ = useTransform(velocity, (v) => {
     if (isMobile) return '0deg';
     const raw = (v / 1800) * colSign;
@@ -89,23 +145,15 @@ function LiquidRepoCard({
   
   const cardRotation = rotations[index % rotations.length];
 
-  const initialAnim = isMobile
-    ? { 
-        opacity: 0, 
-        scale: 0.92,
-        rotateX: index % 2 === 0 ? 30 : -30,
-        rotateY: index % 2 === 0 ? -30 : 30
-      }
-    : { 
-        opacity: 0, 
-        rotateX: cardRotation.rotateX, 
-        rotateY: cardRotation.rotateY, 
-        rotateZ: cardRotation.rotateZ,
-        x: cardRotation.x, 
-        y: cardRotation.y, 
-        scale: cardRotation.scale,
-        filter: 'blur(8px)'
-      };
+  const initialAnim = { 
+    opacity: 0, 
+    rotateX: cardRotation.rotateX, 
+    rotateY: cardRotation.rotateY, 
+    rotateZ: cardRotation.rotateZ,
+    x: cardRotation.x, 
+    y: cardRotation.y, 
+    scale: cardRotation.scale
+  };
 
   const whileInViewAnim = { 
     opacity: 1, 
@@ -114,8 +162,7 @@ function LiquidRepoCard({
     rotateZ: 0,
     x: 0, 
     y: 0, 
-    scale: 1,
-    filter: 'blur(0px)'
+    scale: 1
   };
 
   return (
@@ -123,19 +170,18 @@ function LiquidRepoCard({
       href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
-      style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
+      style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, rotateZ, transformOrigin: 'center center' }}
       initial={initialAnim}
-      whileInView={whileInViewAnim}
-      viewport={{ once: true, margin: isMobile ? '-15px' : '-40px' }}
-      transition={{ 
+      animate={whileInViewAnim}
+      transition={{
         type: 'spring',
-        stiffness: isMobile ? 60 : 45,
-        damping: isMobile ? 15 : 12,
-        mass: 1,
-        delay: index * (isMobile ? 0.08 : 0.15)
+        stiffness: 60,
+        damping: 16,
+        mass: 0.9,
+        delay: Math.min(index * 0.06, 0.3)
       }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
-      className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
+      className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden transform-gpu"
     >
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div>
@@ -159,8 +205,8 @@ function LiquidRepoCard({
 }
 
 export default function GithubSection() {
-  const [repos, setRepos] = useState<GithubRepo[]>([]);
-  const [loadingRepos, setLoadingRepos] = useState(true);
+  const [repos, setRepos] = useState<LiquidRepo[]>(FALLBACK_REPOS);
+  const [loadingRepos, setLoadingRepos] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -176,9 +222,16 @@ export default function GithubSection() {
         
         const combined = [...(Array.isArray(data1) ? data1 : []), ...(Array.isArray(data2) ? data2 : [])]
           .filter(r => !r.fork && !r.name.toLowerCase().includes('first-to-paste-osi-henti'))
-          .sort((a, b) => b.stargazers_count - a.stargazers_count)
-          .slice(0, 6);
-        setRepos(combined);
+          .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0));
+        
+        const merged = [
+          ...combined,
+          ...FALLBACK_REPOS.filter(fb => !combined.some(c => c.name.toLowerCase() === fb.name.toLowerCase()))
+        ].slice(0, 6);
+
+        if (merged.length > 0) {
+          setRepos(merged);
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -189,17 +242,19 @@ export default function GithubSection() {
   }, []);
 
   return (
-    <motion.section 
+    <section 
       id="github" 
       aria-labelledby="github-heading"
       className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: isMobile ? "-30px" : "-100px" }}
     >
-      <ShaderBackgroundSection opacity={0.6} />
-      <div className="relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.01, margin: "100px 0px" }}
+      >
+        <ShaderBackgroundSection opacity={0.6} />
+        <div className="relative z-10">
         <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
         <h2 id="github-heading" className="sr-only">What open-source projects has Primuez published on GitHub?</h2>
         <p className="sr-only">Rahul Kasturiya (Primuez) publishes automation workflows, AI agent experiments, and SaaS boilerplates across two GitHub profiles: @primuez and @primmius.</p>
@@ -226,53 +281,15 @@ export default function GithubSection() {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="overflow-hidden mt-6"
               >
-                <AnimatePresence mode="wait">
-                  {loadingRepos ? (
-                    <motion.div
-                      key="fetching"
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.5, ease: 'easeInOut' }}
-                      className="flex flex-col items-center justify-center h-32 gap-4"
-                    >
-                      <div className="font-mono text-cyan text-sm tracking-widest animate-pulse">[ FETCHING REPOSITORIES ]</div>
-                      <div className="w-1/2 max-w-sm h-1 bg-cyan/20 overflow-hidden">
-                        <div className="h-full bg-cyan w-1/3 animate-[slide_1.5s_ease-in-out_infinite]"></div>
-                      </div>
-                    </motion.div>
-                  ) : repos.length > 0 ? (
-                    <motion.div
-                      key="repos"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <LiquidRepoGrid repos={repos} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="ratelimit"
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.5, ease: 'easeInOut' }}
-                      className="text-center font-mono text-text-muted p-12 border border-dashed border-cyan/20 rounded-xl bg-panel"
-                    >
-                      <span>[ Rate Limited by GitHub API. View profiles directly: ]</span>
-                      <div className="flex justify-center gap-4 mt-4">
-                        <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primuez</a>
-                        <a href="https://github.com/primmius" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primmius</a>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div className="pt-2 pb-4">
+                  <LiquidRepoGrid repos={repos} />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

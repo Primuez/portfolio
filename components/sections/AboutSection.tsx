@@ -8,30 +8,30 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { ShaderIridescentText } from '@/components/ShaderText';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-/* ── Spectacular 3D vault-door swing entrance variants ── */
+/* ── Hardware-accelerated smooth entrance variants ── */
 const cardA1Variants = {
-  hidden: { opacity: 0, x: -120, rotateY: 24, rotateZ: -4, scale: 0.88, transformOrigin: 'left center' },
-  visible: { opacity: 1, x: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardA2Variants = {
-  hidden: { opacity: 0, y: 120, rotateX: 22, rotateZ: 3, scale: 0.88, transformOrigin: 'bottom center' },
-  visible: { opacity: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardB1Variants = {
-  hidden: { opacity: 0, x: 120, rotateY: -24, rotateZ: 4, scale: 0.88, transformOrigin: 'right center' },
-  visible: { opacity: 1, x: 0, rotateY: 0, rotateZ: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardB2Variants = {
-  hidden: { opacity: 0, y: -80, rotateX: -18, rotateZ: -3, scale: 0.9, transformOrigin: 'top center' },
-  visible: { opacity: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardTransition = (delay: number) => ({
-  duration: 1.2,
-  delay,
+  duration: 0.45,
+  delay: Math.min(delay, 0.12),
   ease: [0.16, 1, 0.3, 1] as const,
 });
 
@@ -55,21 +55,11 @@ export const AboutSection: React.FC = () => {
   const yA = isMobile ? 0 : springA;
   const yB = isMobile ? 0 : springB;
 
-  // Individual Card Differential Parallax on Mobile to prevent card overlaps and create floating depth
-  const yCardA1Val = useTransform(smoothProgress, [0, 1], [-45, 45]);
-  const yCardA2Val = useTransform(smoothProgress, [0, 1], [-15, 15]);
-  const yCardB1Val = useTransform(smoothProgress, [0, 1], [-35, 35]);
-  const yCardB2Val = useTransform(smoothProgress, [0, 1], [-5, 5]);
-
-  const springCardA1 = useSpring(yCardA1Val, { stiffness: 70, damping: 20 });
-  const springCardA2 = useSpring(yCardA2Val, { stiffness: 70, damping: 20 });
-  const springCardB1 = useSpring(yCardB1Val, { stiffness: 70, damping: 20 });
-  const springCardB2 = useSpring(yCardB2Val, { stiffness: 70, damping: 20 });
-
-  const yCardA1 = isMobile ? springCardA1 : 0;
-  const yCardA2 = isMobile ? springCardA2 : 0;
-  const yCardB1 = isMobile ? springCardB1 : 0;
-  const yCardB2 = isMobile ? springCardB2 : 0;
+  // Flat stable cards on mobile — zero main thread fighting
+  const yCardA1 = 0;
+  const yCardA2 = 0;
+  const yCardB1 = 0;
+  const yCardB2 = 0;
 
   return (
     <section
@@ -98,9 +88,9 @@ export const AboutSection: React.FC = () => {
             variants={cardA1Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={cardTransition(0)}
-            style={{ y: yCardA1 }}
+            style={{ y: yCardA1, willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -136,9 +126,9 @@ export const AboutSection: React.FC = () => {
             variants={cardA2Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.20)}
-            style={{ y: yCardA2 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={cardTransition(0.12)}
+            style={{ y: yCardA2, willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-amber/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -178,9 +168,9 @@ export const AboutSection: React.FC = () => {
             variants={cardB2Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.10)}
-            style={{ y: yCardB2 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={cardTransition(0.06)}
+            style={{ y: yCardB2, willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -216,9 +206,9 @@ export const AboutSection: React.FC = () => {
             variants={cardB1Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.30)}
-            style={{ y: yCardB1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={cardTransition(0.18)}
+            style={{ y: yCardB1, willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">

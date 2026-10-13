@@ -3,10 +3,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Download, Activity, Terminal, Send } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import { useUI } from '@/lib/contexts/UIContext';
 
-const CertPdfViewer = dynamic(() => import('@/components/CertPdfViewer').then(m => m.CertPdfViewer), { ssr: false });
+const CertPdfViewer = React.lazy(() => import('@/components/CertPdfViewer').then(m => ({ default: m.CertPdfViewer })));
 
 export default function ModalsSection() {
   const { modalType, setModalType, certData, isMobile } = useUI();
@@ -163,7 +162,9 @@ export default function ModalsSection() {
                     {certData.title}
                   </div>
                   {isMobile ? (
-                    <CertPdfViewer url={certData.pdfUrl!} title={certData.title} />
+                    <React.Suspense fallback={<div className="p-6 text-center text-xs font-mono text-cyan/70">LOADING VIEWER...</div>}>
+                      <CertPdfViewer url={certData.pdfUrl!} title={certData.title} />
+                    </React.Suspense>
                   ) : (
                     <iframe
                       src={certData.pdfUrl}

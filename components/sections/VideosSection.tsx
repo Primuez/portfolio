@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
 import { Link as IconLink, MonitorPlay } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface DropCardProps {
   children: React.ReactNode;
@@ -53,6 +54,8 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
 
   const glowBorder = color === 'cyan' ? 'group-hover:border-cyan/30' : 'group-hover:border-red-500/30';
 
+  const isMobile = useIsMobile();
+
   return (
     <div 
       className="perspective-1000 w-full"
@@ -60,11 +63,13 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        initial={{ y: -420, rotate: initialRotate * 4, opacity: 0 }}
+        initial={isMobile ? { y: 25, opacity: 0 } : { y: -280, rotate: initialRotate * 2, opacity: 0 }}
         whileInView={{ y: 0, rotate: 0, opacity: 1 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ type: 'spring', stiffness: 70, damping: 9, mass: 1.1, delay }}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        viewport={{ once: true, amount: 0.05 }}
+        transition={isMobile 
+          ? { duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: Math.min(delay, 0.15) } 
+          : { type: 'spring', stiffness: 90, damping: 16, mass: 1, delay }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d', willChange: 'transform, opacity' }}
         className="w-full relative group transition-all duration-300"
       >
         {/* Cursor Spotlight Background */}
@@ -129,10 +134,10 @@ function PhysicsChip({ label, color, x, y, delay, desktopOnly }: { label: string
       dragTransition={{ bounceStiffness: 280, bounceDamping: 14 }}
       whileDrag={{ scale: 1.18, zIndex: 50, rotate: 8 }}
       whileHover={{ scale: 1.1 }}
-      initial={{ y: -500, rotate: -30, opacity: 0 }}
+      initial={{ y: -180, rotate: -15, opacity: 0 }}
       whileInView={{ y: 0, rotate: 0, opacity: 1 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ type: 'spring', stiffness: 90, damping: 9, mass: 1, delay }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 1, delay: Math.min(delay, 0.2) }}
       style={{ left: x, top: y, position: 'absolute', touchAction: 'none' }}
       className={`${desktopOnly ? 'hidden md:flex' : 'flex'} pointer-events-auto select-none cursor-grab active:cursor-grabbing font-mono text-[9px] md:text-[11px] uppercase tracking-widest px-2 md:px-3 py-1 md:py-1.5 rounded-full border backdrop-blur-md whitespace-nowrap items-center ${colorMap[color]}`}
     >
@@ -143,16 +148,18 @@ function PhysicsChip({ label, color, x, y, delay, desktopOnly }: { label: string
 
 export default function VideosSection() {
   return (
-    <motion.section
+    <section
       id="videos"
       aria-labelledby="videos-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
     >
-      <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true }}
+      >
+        <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
       <h2 id="videos-heading" className="sr-only">What YouTube videos and playlists has Primuez published on AI automation?</h2>
       <div className="relative mt-12">
         <PhysicsChipsLayer />
@@ -188,6 +195,7 @@ export default function VideosSection() {
 
         </div>
       </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

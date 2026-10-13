@@ -123,16 +123,19 @@ export default function CredentialsSection() {
   };
 
   return (
-    <motion.section 
+    <section 
       id="credentials" 
       aria-labelledby="creds-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
     >
-      <SectionHeader number="06" command="> ./credentials --verified" title="Credentials & Hackathons" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.05 }}
+        style={{ willChange: 'transform, opacity' }}
+      >
+        <SectionHeader number="06" command="> ./credentials --verified" title="Credentials & Hackathons" />
       <h2 id="creds-heading" className="sr-only">What certifications and hackathon awards has Primuez earned in AI and automation?</h2>
       
       <RubiksCredentials>
@@ -358,6 +361,7 @@ export default function CredentialsSection() {
           </div>
         </div>
       </RubiksCredentials>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

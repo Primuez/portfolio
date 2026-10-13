@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useCallback } from 'react';
+import { isMobileDevice } from '@/lib/utils/hardwareDetect';
 
 /**
  * Interactive Hex Path shader background inspired by shaders.com/collection/hex-path.
@@ -206,6 +207,7 @@ export function HexShaderBackground() {
   }, []);
 
   useEffect(() => {
+    if (isMobileDevice()) return;
     initGL();
     rafRef.current = requestAnimationFrame(render);
 
@@ -232,6 +234,10 @@ export function HexShaderBackground() {
       window.removeEventListener('touchmove', handleMove);
     };
   }, [initGL, render]);
+
+  if (typeof window !== 'undefined' && isMobileDevice()) {
+    return null;
+  }
 
   return (
     <canvas

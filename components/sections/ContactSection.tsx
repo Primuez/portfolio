@@ -497,20 +497,24 @@ export default function ContactSection() {
   const { setModalType } = useUI();
 
   return (
-    <motion.section
+    <section
       id="contact"
       aria-labelledby="contact-heading"
       className="pt-16 md:pt-32 text-center pb-0"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: '-100px' }}
     >
-      <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
-      <h2 id="contact-heading" className="sr-only">
-        How can you get in touch with Primuez to start an AI automation project?
-      </h2>
-      <GravityCollapse onContact={() => { trackEvent('click_contact_form'); setModalType('form'); }} />
-    </motion.section>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.05 }}
+        style={{ willChange: 'transform, opacity' }}
+      >
+        <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
+        <h2 id="contact-heading" className="sr-only">
+          How can you get in touch with Primuez to start an AI automation project?
+        </h2>
+        <GravityCollapse onContact={() => { trackEvent('click_contact_form'); setModalType('form'); }} />
+      </motion.div>
+    </section>
   );
 }
