@@ -18,3 +18,5 @@ node_modules
 .env
 .env.*
 !.env.example
+.env*
+.open-next

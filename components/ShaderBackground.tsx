@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
  * Interactive WebGL shader background — "Undertones" iridescent liquid glass.
@@ -335,6 +336,17 @@ export function ShaderBackgroundSection({
   className?: string;
   opacity?: number;
 }) {
+  const isMobile = useIsMobile();
+  if (isMobile) {
+    return (
+      <div
+        className={`absolute inset-0 w-full h-full z-0 bg-gradient-to-b from-transparent via-cyan/[0.03] to-transparent pointer-events-none ${className}`}
+        style={{ opacity }}
+        aria-hidden="true"
+      />
+    );
+  }
+
   return (
     <ShaderBackground
       className={`absolute inset-0 w-full h-full z-0 ${className}`}

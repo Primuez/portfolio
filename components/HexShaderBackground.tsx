@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
  * Interactive Hex Path shader background inspired by shaders.com/collection/hex-path.
@@ -8,6 +9,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
  * Uses WebGL for GPU-accelerated rendering.
  */
 export function HexShaderBackground() {
+  const isMobile = useIsMobile();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const rafRef = useRef<number>(0);
@@ -206,6 +208,7 @@ export function HexShaderBackground() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
     initGL();
     rafRef.current = requestAnimationFrame(render);
 
@@ -230,8 +233,22 @@ export function HexShaderBackground() {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener('mousemove', handleMove);
       window.removeEventListener('touchmove', handleMove);
+      if (glRef.current) {
+        const ext = glRef.current.getExtension('WEBGL_lose_context');
+        if (ext) ext.loseContext();
+        glRef.current = null;
+      }
     };
-  }, [initGL, render]);
+  }, [initGL, render, isMobile]);
+
+  if (isMobile) {
+    return (
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 bg-blueprint opacity-10"
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <canvas

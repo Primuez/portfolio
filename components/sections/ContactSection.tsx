@@ -469,11 +469,17 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">
               <span className="font-mono text-cyan text-lg tracking-widest font-bold">
-                <ShaderLogoGlow>
+                {isMobile ? (
                   <LiquidGlassLogo>
                     <ShaderLogo>PRIMUEZ</ShaderLogo>
                   </LiquidGlassLogo>
-                </ShaderLogoGlow>
+                ) : (
+                  <ShaderLogoGlow>
+                    <LiquidGlassLogo>
+                      <ShaderLogo>PRIMUEZ</ShaderLogo>
+                    </LiquidGlassLogo>
+                  </ShaderLogoGlow>
+                )}
               </span>
               <span className="font-mono text-xs text-text-muted">AI Systems & Autonomous Workflows</span>
               <a href="mailto:contact@primuez.in" className="font-mono text-xs text-cyan hover:underline mt-1">contact@primuez.in</a>

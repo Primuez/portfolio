@@ -92,22 +92,7 @@ export const Card = ({
     });
   }, [isMobile]);
 
-  // Auto oscillating glow for mobile/touch devices
-  useEffect(() => {
-    if (!isMobile) return;
-    let t = 0;
-    let raf: number;
-    function animate() {
-      t += 0.008;
-      setGlowPos({
-        x: 50 + Math.sin(t) * 30,
-        y: 50 + Math.cos(t * 0.6) * 20,
-      });
-      raf = requestAnimationFrame(animate);
-    }
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, [isMobile]);
+  // Mobile: keep glow static centered to eliminate 60fps main-thread React re-renders
 
   return (
     <motion.div

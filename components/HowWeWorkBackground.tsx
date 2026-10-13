@@ -89,7 +89,7 @@ export function HowWeWorkBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || isMobile) return;
 
     const container = containerRef.current;
     let mounted = true;

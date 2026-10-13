@@ -130,22 +130,7 @@ export function GlassRefractionOverlay({
   const isMobile = useIsMobile();
   const rafRef = useRef<number>(0);
 
-  // Mobile: ambient animation
-  useEffect(() => {
-    if (!isMobile) return;
-    let t = 0;
-    function animate() {
-      t += 0.005;
-      setPos({
-        x: 50 + Math.sin(t) * 20,
-        y: 50 + Math.cos(t * 0.7) * 15,
-      });
-      rafRef.current = requestAnimationFrame(animate);
-    }
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [isMobile]);
-
+  // Mobile: static ambient gradient to eliminate 60fps main-thread React re-renders
   // Desktop: cursor tracking
   useEffect(() => {
     if (isMobile || !interactive) return;
