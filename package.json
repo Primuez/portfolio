@@ -7,6 +7,8 @@
     "build": "astro build",
     "preview": "astro preview --port 5000 --host 0.0.0.0",
     "check": "astro check",
+    "build:cloudflare": "astro build",
+    "deploy:cloudflare": "wrangler deploy",
     "build:next": "next build",
     "postinstall": "node -e \"const fs = require('fs'); if (fs.existsSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs')) { fs.mkdirSync('public', { recursive: true }); fs.copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs', 'public/pdf.worker.min.mjs'); }\""
   },
