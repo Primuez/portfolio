@@ -254,8 +254,8 @@ export const ProjectsSection: React.FC = () => {
         </p>
       </div>
       
-      <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
-        <div className={isMobile ? "" : "mt-16"}>
+      <div className="mt-12 relative">
+        <div>
           <button
             onClick={() => setFavOpen(o => !o)}
             className="w-full flex items-center justify-between py-3 px-4 min-h-[48px] font-mono text-xs uppercase tracking-[0.2em] text-cyan border border-cyan/20 rounded-lg bg-panel/40 hover:bg-cyan/5 transition-colors cursor-pointer"
