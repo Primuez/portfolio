@@ -129,28 +129,28 @@ const CATEGORIES = [
 <section id="services" class="pt-16 md:pt-28 scroll-mt-20">
   <SectionHeader number="03" command="> systemctl list-units --type=service" title="Services & Capabilities" />
 
-  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+  <p class="text-zinc-400 mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
     Production-grade automation blueprints and autonomous digital agents engineered for real business outcomes.
   </p>
 
   <div class="space-y-8">
-    {CATEGORIES.map((cat) => (
-      <div class="border border-white/10 rounded-2xl bg-[#090b11]/90 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/30 shadow-xl">
+    {CATEGORIES.map((cat, idx) => (
+      <div class={`service-blade service-blade-${idx} border border-white/10 rounded-2xl bg-[#090b16]/90 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/40 shadow-xl transform-gpu`}>
         {/* Category Header Blade */}
         <div class="p-6 md:p-7 border-b border-white/[0.06] bg-white/[0.01] flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div class="flex items-center gap-3 mb-1.5">
               <span class="font-mono text-cyan text-[10px] tracking-widest uppercase font-bold">{cat.slotNumber}</span>
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">{cat.statusText}</span>
             </div>
             <h3 class="text-xl md:text-2xl font-bold text-white tracking-wide font-sans">{cat.title}</h3>
-            <p class="text-text-muted text-xs md:text-sm mt-1 font-sans">{cat.tagline}</p>
+            <p class="text-zinc-400 text-xs md:text-sm mt-1 font-sans">{cat.tagline}</p>
           </div>
           <button
             type="button"
-            onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: { type: 'form' } }))"
-            class="self-start md:self-center px-4 py-2 bg-cyan/10 hover:bg-cyan/20 border border-cyan/40 text-cyan text-xs font-mono uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 cursor-pointer shrink-0"
+            onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: 'form' }))"
+            class="self-start md:self-center px-4 py-2.5 bg-cyan/10 hover:bg-cyan hover:text-black border border-cyan/40 text-cyan text-xs font-mono uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer shrink-0 font-bold shadow-[0_0_15px_rgba(0,240,255,0.15)]"
           >
             <span>Request Build</span>
             <span>&rarr;</span>
@@ -160,7 +160,7 @@ const CATEGORIES = [
         {/* Services Grid */}
         <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {cat.services.map((item) => (
-            <div class="group relative rounded-xl bg-panel/70 border border-white/[0.06] p-5 hover:border-cyan/30 hover:bg-panel transition-all duration-200 flex flex-col">
+            <div class="service-card group relative rounded-xl bg-[#0e1320]/80 border border-white/[0.06] p-5 hover:border-cyan/40 hover:bg-[#121929] transition-all duration-300 flex flex-col hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(0,240,255,0.08)]">
               <div class="flex items-start justify-between mb-3">
                 <span class="text-2xl">{item.icon}</span>
                 {item.honestLabel && (
@@ -172,7 +172,7 @@ const CATEGORIES = [
               <h4 class="text-base font-bold text-white mb-1.5 font-sans group-hover:text-cyan transition-colors">
                 {item.title}
               </h4>
-              <p class="text-cyan/80 text-xs font-mono mb-2">
+              <p class="text-cyan/85 text-xs font-mono mb-2">
                 &gt; {item.outcome}
               </p>
               <p class="text-zinc-400 text-xs leading-relaxed mb-4 flex-1 font-sans">
@@ -180,7 +180,7 @@ const CATEGORIES = [
               </p>
               <div class="flex flex-wrap gap-1.5 mt-auto pt-2 border-t border-white/[0.04]">
                 {item.tags.map((tag) => (
-                  <span class="text-[9px] font-mono text-text-muted/80 bg-white/[0.03] px-2 py-0.5 rounded">
+                  <span class="text-[9px] font-mono text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded">
                     {tag}
                   </span>
                 ))}
@@ -192,3 +192,33 @@ const CATEGORIES = [
     ))}
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced) {
+      document.querySelectorAll('.service-blade').forEach((blade) => {
+        gsap.fromTo(
+          blade,
+          { opacity: 0, y: 35, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.75,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: blade,
+              start: 'top 85%',
+            },
+          }
+        );
+      });
+    }
+  }
+</script>
