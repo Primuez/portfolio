@@ -17,6 +17,63 @@ interface GithubRepo {
   language: string;
 }
 
+const FALLBACK_REPOS: LiquidRepo[] = [
+  {
+    id: 1218800483,
+    name: 'portfolio',
+    description: 'High-performance developer portfolio, credential verification engine & presentation platform.',
+    html_url: 'https://github.com/Primuez/portfolio',
+    stargazers_count: 1,
+    forks_count: 0,
+    language: 'Astro',
+  },
+  {
+    id: 1212318246,
+    name: 'Ink-Twin',
+    description: 'Instant handwriting synthesis, OCR vectorization & document intelligence engine on Cloudflare Workers.',
+    html_url: 'https://github.com/Primmius/Ink-Twin',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'TypeScript',
+  },
+  {
+    id: 1256932570,
+    name: 'primuez-seo-vault',
+    description: 'Headless programmatic SEO growth engine running autonomous keyword polling and CDN generation.',
+    html_url: 'https://github.com/Primuez/primuez-seo-vault',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'TypeScript',
+  },
+  {
+    id: 1366078942,
+    name: 'career-ops',
+    description: 'Multi-agent career intelligence pipeline, ATS resume parser and continuous opportunity triage.',
+    html_url: 'https://github.com/Primuez/career-ops',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Python',
+  },
+  {
+    id: 1366078943,
+    name: 'CLI-Skills-and-MDs',
+    description: 'Curated skills, operational playbooks, and architectural system prompts for autonomous agent fleets.',
+    html_url: 'https://github.com/Primuez/CLI-Skills-and-MDs',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Markdown',
+  },
+  {
+    id: 1366078944,
+    name: 'agents-backup',
+    description: 'Production container configuration, reverse proxy SSL configs, and automated n8n backup pipelines.',
+    html_url: 'https://github.com/Primuez/agents-backup',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Shell',
+  },
+];
+
 type LiquidRepo = {
   id: number | string;
   html_url: string;
@@ -122,8 +179,7 @@ function LiquidRepoCard({
       rel="noopener noreferrer"
       style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
       initial={initialAnim}
-      whileInView={whileInViewAnim}
-      viewport={{ once: true, amount: 0.05 }}
+      animate={whileInViewAnim}
       transition={isMobile ? {
         duration: 0.4,
         ease: [0.16, 1, 0.3, 1],
@@ -136,7 +192,7 @@ function LiquidRepoCard({
         delay: index * 0.1
       }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
-      className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
+      className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden transform-gpu"
     >
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div>
@@ -160,8 +216,8 @@ function LiquidRepoCard({
 }
 
 export default function GithubSection() {
-  const [repos, setRepos] = useState<GithubRepo[]>([]);
-  const [loadingRepos, setLoadingRepos] = useState(true);
+  const [repos, setRepos] = useState<LiquidRepo[]>(FALLBACK_REPOS);
+  const [loadingRepos, setLoadingRepos] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -177,9 +233,16 @@ export default function GithubSection() {
         
         const combined = [...(Array.isArray(data1) ? data1 : []), ...(Array.isArray(data2) ? data2 : [])]
           .filter(r => !r.fork && !r.name.toLowerCase().includes('first-to-paste-osi-henti'))
-          .sort((a, b) => b.stargazers_count - a.stargazers_count)
-          .slice(0, 6);
-        setRepos(combined);
+          .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0));
+        
+        const merged = [
+          ...combined,
+          ...FALLBACK_REPOS.filter(fb => !combined.some(c => c.name.toLowerCase() === fb.name.toLowerCase()))
+        ].slice(0, 6);
+
+        if (merged.length > 0) {
+          setRepos(merged);
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -199,7 +262,7 @@ export default function GithubSection() {
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.01, margin: "100px 0px" }}
       >
         <ShaderBackgroundSection opacity={0.6} />
         <div className="relative z-10">
