@@ -89,20 +89,22 @@ export default function ProcessSection() {
   const lineScale = useTransform(smoothScrollY, [0, 1], [0, 1]);
 
   return (
-    <motion.section
+    <section
       id="process"
       aria-labelledby="process-heading"
       className="pt-16 md:pt-32 relative overflow-hidden"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
     >
-      <HowWeWorkBackground />
-      <div ref={processRef} className="relative z-10">
-        <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
-        <h2 id="process-heading" className="sr-only">How does the Primuez project engagement process work from discovery to handover?</h2>
-        <div className="mt-12 relative max-w-3xl">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true }}
+      >
+        <HowWeWorkBackground />
+        <div ref={processRef} className="relative z-10">
+          <SectionHeader number="03.1" command="> ./process --steps" title="How We Usually Work Together" />
+          <h2 id="process-heading" className="sr-only">How does the Primuez project engagement process work from discovery to handover?</h2>
+          <div className="mt-12 relative max-w-3xl">
           {/* Spine — desktop */}
           <div className="hidden md:block">
             <div className="absolute left-7 top-10 bottom-10 w-px bg-white/10" />
@@ -128,6 +130,7 @@ export default function ProcessSection() {
         </div>
         <p className="mt-8 font-mono text-xs text-text-muted tracking-widest uppercase">[ Most projects go live in 1–4 weeks. ]</p>
       </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

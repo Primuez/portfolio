@@ -1,0 +1,102 @@
+---
+import Layout from '@/src/layouts/Layout.astro';
+
+// Chrome and overlays
+import { Navbar } from '@/components/Navbar';
+import { CustomCursor } from '@/components/CustomCursor';
+import { ShaderBackground } from '@/components/ShaderBackground';
+import { GlassRefractionOverlay } from '@/components/ui/liquid-glass-logo';
+import { MobileStickyCtA } from '@/components/MobileStickyCtA';
+import { ScrollProgressBar, ScrollToTopButton } from '@/components/ScrollWidgets';
+import ModalsSection from '@/components/sections/ModalsSection';
+
+// 13 Modularized Sections
+import { HeroSection } from '@/components/sections/HeroSection';
+import { AboutSection } from '@/components/sections/AboutSection';
+import ServicesSection from '@/components/sections/ServicesSection';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import PricingSection from '@/components/sections/PricingSection';
+import ProcessSection from '@/components/sections/ProcessSection';
+import WhySection from '@/components/sections/WhySection';
+import GithubSection from '@/components/sections/GithubSection';
+import VideosSection from '@/components/sections/VideosSection';
+import StackSection from '@/components/sections/StackSection';
+import CredentialsSection from '@/components/sections/CredentialsSection';
+import FAQSection from '@/components/sections/FAQSection';
+import ContactSection from '@/components/sections/ContactSection';
+---
+
+<Layout>
+  <div class="relative min-h-screen">
+    <!-- Custom cursor & touch response -->
+    <CustomCursor client:idle />
+
+    <!-- Interactive WebGL shader background -->
+    <ShaderBackground client:idle className="fixed inset-0 z-0 w-full h-full" opacity={0.85} variant="hero" />
+
+    <!-- Interactive liquid glass refraction overlay -->
+    <GlassRefractionOverlay client:idle />
+
+    <!-- Blueprint animated grid overlay -->
+    <div class="fixed inset-0 z-[1] bg-blueprint opacity-15 animate-grid pointer-events-none gpu-accelerated"></div>
+
+    <!-- Navigation Header -->
+    <Navbar client:load />
+
+    <!-- Scroll Progress Bar -->
+    <ScrollProgressBar client:idle />
+
+    <!-- Main Content: Native Astro wrapper with hydrated islands -->
+    <main id="main-content" aria-label="Portfolio content">
+      <div class="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-0">
+        <!-- 1. HeroSection & HexShaderBackground -->
+        <HeroSection client:idle />
+
+        <!-- 2. AboutSection -->
+        <AboutSection client:visible />
+
+        <!-- 3. ServicesSection -->
+        <ServicesSection client:visible />
+
+        <!-- 4. ProjectsSection -->
+        <ProjectsSection client:visible />
+
+        <!-- 5. PricingSection -->
+        <PricingSection client:visible />
+
+        <!-- 6. ProcessSection -->
+        <ProcessSection client:visible />
+
+        <!-- 7. WhySection -->
+        <WhySection client:visible />
+
+        <!-- 8. GithubSection -->
+        <GithubSection client:visible />
+
+        <!-- 9. VideosSection (physics chips & motion tilt) -->
+        <VideosSection client:visible />
+
+        <!-- 10. StackSection -->
+        <StackSection client:visible />
+
+        <!-- 11. CredentialsSection -->
+        <CredentialsSection client:visible />
+
+        <!-- 12. FAQSection -->
+        <FAQSection client:visible />
+
+        <!-- 13. ContactSection -->
+        <ContactSection client:visible />
+      </div>
+    </main>
+
+    <!-- Mobile sticky CTA -->
+    <MobileStickyCtA client:idle />
+
+    <!-- Scroll to top button -->
+    <ScrollToTopButton client:idle />
+
+    <!-- Modals & Dialogs container -->
+    <ModalsSection client:load />
+  </div>
+</Layout>

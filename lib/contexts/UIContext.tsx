@@ -1,11 +1,78 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import React, { createContext, useContext, useSyncExternalStore } from 'react';
 
-type ModalType = 'form' | 'cert' | 'workflow' | null;
+export type ModalType = 'form' | 'cert' | 'workflow' | null;
 
-interface UIContextType {
+export interface UIState {
+  isMobile: boolean;
+  modalType: ModalType;
+  certData: any;
+  scrolled: boolean;
+}
+
+let state: UIState = {
+  isMobile: false,
+  modalType: null,
+  certData: null,
+  scrolled: false,
+};
+
+const listeners = new Set<() => void>();
+
+function emitChange() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+
+export const uiStore = {
+  getState() {
+    return state;
+  },
+  subscribe(listener: () => void) {
+    listeners.add(listener);
+    return () => {
+      listeners.delete(listener);
+    };
+  },
+  setModalType(type: ModalType) {
+    state = { ...state, modalType: type };
+    emitChange();
+  },
+  setCertData(data: any) {
+    state = { ...state, certData: data };
+    emitChange();
+  },
+  setScrolled(scrolled: boolean) {
+    if (state.scrolled !== scrolled) {
+      state = { ...state, scrolled };
+      emitChange();
+    }
+  },
+  setIsMobile(isMobile: boolean) {
+    if (state.isMobile !== isMobile) {
+      state = { ...state, isMobile };
+      emitChange();
+    }
+  },
+};
+
+// Global scroll and resize listeners in browser
+if (typeof window !== 'undefined') {
+  const checkMobile = () => {
+    uiStore.setIsMobile(window.innerWidth < 768);
+  };
+  const checkScroll = () => {
+    uiStore.setScrolled(window.scrollY > 50);
+  };
+  checkMobile();
+  checkScroll();
+  window.addEventListener('resize', checkMobile, { passive: true });
+  window.addEventListener('scroll', checkScroll, { passive: true });
+}
+
+export interface UIContextType {
   isMobile: boolean;
   modalType: ModalType;
   setModalType: (type: ModalType) => void;
@@ -17,26 +84,23 @@ interface UIContextType {
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const isMobile = useIsMobile();
-  const [modalType, setModalType] = useState<ModalType>(null);
-  const [certData, setCertData] = useState<any>(null);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const snapshot = useSyncExternalStore(
+    uiStore.subscribe,
+    uiStore.getState,
+    () => state
+  );
 
   return (
-    <UIContext.Provider value={{ 
-      isMobile, 
-      modalType, 
-      setModalType, 
-      certData, 
-      setCertData,
-      scrolled 
-    }}>
+    <UIContext.Provider
+      value={{
+        isMobile: snapshot.isMobile,
+        modalType: snapshot.modalType,
+        setModalType: uiStore.setModalType,
+        certData: snapshot.certData,
+        setCertData: uiStore.setCertData,
+        scrolled: snapshot.scrolled,
+      }}
+    >
       {children}
     </UIContext.Provider>
   );
@@ -44,8 +108,21 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
 
 export const useUI = () => {
   const context = useContext(UIContext);
-  if (context === undefined) {
-    throw new Error('useUI must be used within a UIProvider');
+  if (context !== undefined) {
+    return context;
   }
-  return context;
+  // Fallback if rendered outside UIProvider (e.g. across Astro island boundaries)
+  const snapshot = useSyncExternalStore(
+    uiStore.subscribe,
+    uiStore.getState,
+    () => state
+  );
+  return {
+    isMobile: snapshot.isMobile,
+    modalType: snapshot.modalType,
+    setModalType: uiStore.setModalType,
+    certData: snapshot.certData,
+    setCertData: uiStore.setCertData,
+    scrolled: snapshot.scrolled,
+  };
 };

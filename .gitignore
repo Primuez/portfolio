@@ -13,6 +13,8 @@ node_modules
 .vercel
 .claude/
 .codex/
+dist/
+.astro/
 
 # Secrets and environment files
 .env

@@ -223,24 +223,27 @@ export default function FAQSection() {
   }, [isMobile]);
 
   return (
-    <motion.section
+    <section
       id="faq"
       aria-labelledby="faq-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
     >
-      <SectionHeader number="09" command="> ./faq --resolve-objections" title="Frequently Asked Questions" />
-      <h2 id="faq-heading" className="sr-only">Frequently asked questions about Primuez AI automation projects, timelines, and pricing</h2>
-      <p className="text-text-muted mt-4 mb-8 md:mb-12 max-w-2xl text-sm md:text-base leading-relaxed">
-        Real answers to the questions clients ask before reaching out — so you don&apos;t have to wait for a reply to decide.
-      </p>
-      <div ref={listRef} className="max-w-3xl space-y-3 md:space-y-3" style={{ transformOrigin: 'center center' }}>
-        {FAQ_DATA.map((item, i) => (
-          <FAQDecryptItem key={i} q={item.q} a={item.a} />
-        ))}
-      </div>
-    </motion.section>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <SectionHeader number="09" command="> ./faq --resolve-objections" title="Frequently Asked Questions" />
+        <h2 id="faq-heading" className="sr-only">Frequently asked questions about Primuez AI automation projects, timelines, and pricing</h2>
+        <p className="text-text-muted mt-4 mb-8 md:mb-12 max-w-2xl text-sm md:text-base leading-relaxed">
+          Real answers to the questions clients ask before reaching out — so you don&apos;t have to wait for a reply to decide.
+        </p>
+        <div ref={listRef} className="max-w-3xl space-y-3 md:space-y-3" style={{ transformOrigin: 'center center' }}>
+          {FAQ_DATA.map((item, i) => (
+            <FAQDecryptItem key={i} q={item.q} a={item.a} />
+          ))}
+        </div>
+      </motion.div>
+    </section>
   );
 }

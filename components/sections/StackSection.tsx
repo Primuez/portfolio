@@ -417,16 +417,18 @@ export default function StackSection() {
   const yR = isMobile ? 0 : yRightSpring;
 
   return (
-    <motion.section 
+    <section 
       id="stack" 
       aria-labelledby="stack-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
     >
-      <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true }}
+      >
+        <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
       <h2 id="stack-heading" className="sr-only">What tools and technologies does Primuez use for AI automation and SaaS development?</h2>
       
       <p className="text-text-muted mt-4 mb-6 max-w-2xl text-base leading-relaxed font-sans">
@@ -453,6 +455,7 @@ export default function StackSection() {
           </div>
         )}
       </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

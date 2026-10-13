@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MapPageClient from '../../components/MapPageClient';
+---
+
+<Layout title="Primuez | Geographic Node Map" canonical="https://primuez.in/map">
+  <MapPageClient client:only="react" />
+</Layout>

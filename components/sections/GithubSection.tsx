@@ -189,17 +189,19 @@ export default function GithubSection() {
   }, []);
 
   return (
-    <motion.section 
+    <section 
       id="github" 
       aria-labelledby="github-heading"
       className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: isMobile ? "-30px" : "-100px" }}
     >
-      <ShaderBackgroundSection opacity={0.6} />
-      <div className="relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true }}
+      >
+        <ShaderBackgroundSection opacity={0.6} />
+        <div className="relative z-10">
         <SectionHeader number="03" command="> curl -s https://api.github.com" title="GitHub Activity" />
         <h2 id="github-heading" className="sr-only">What open-source projects has Primuez published on GitHub?</h2>
         <p className="sr-only">Rahul Kasturiya (Primuez) publishes automation workflows, AI agent experiments, and SaaS boilerplates across two GitHub profiles: @primuez and @primmius.</p>
@@ -273,6 +275,7 @@ export default function GithubSection() {
           </AnimatePresence>
         </div>
       </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

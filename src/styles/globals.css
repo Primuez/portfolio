@@ -1,0 +1,809 @@
+@import "tailwindcss";
+@import "@fontsource/syne/400.css";
+@import "@fontsource/syne/700.css";
+@import "@fontsource/syne/800.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+@import "@fontsource/geist-sans/400.css";
+@import "@fontsource/geist-sans/700.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/700.css";
+
+@theme {
+  --color-bg: #0a0a0f;
+  --color-cyan: #00f0ff;
+  --color-amber: #f5a623;
+  --color-panel: #111827;
+  --color-text-main: #e8e8ec;
+  --color-text-muted: #9ca3af;
+  
+  --font-sans: var(--font-syne), var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-space-mono), var(--font-geist-mono), monospace;
+  --font-syne: 'Syne', sans-serif;
+  --font-space-mono: 'Space Mono', monospace;
+  --font-geist: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
+
+/* Force-lock the global background to prevent CSS state leaks or light-mode flashes */
+:root {
+  --font-syne: 'Syne', sans-serif;
+  --font-space-mono: 'Space Mono', monospace;
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+  color-scheme: dark !important;
+  background-color: #0a0a0f !important;
+}
+
+html, body {
+  background-color: #0a0a0f !important;
+  color: #ffffff !important;
+  color-scheme: dark !important;
+}
+
+@layer utilities {
+  .bg-blueprint {
+    background-image: 
+      linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  }
+
+  .border-glow-cyan {
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+  }
+
+  /* Impeccable: Selective glow — only on primary CTAs */
+  .cta-glow {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Impeccable: Subtle text hierarchy via optical weight */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gpu-accelerated {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes grid-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-40px, -40px); }
+}
+
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* Impeccable: Refined typewriter cursor — less aggressive pulse */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-grid {
+  animation: grid-drift 10s linear infinite;
+}
+
+/* Impeccable: Smooth scroll behavior for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Impeccable: Better focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+
+/* Liquid Glass Scrolling Animations — Apple-style smooth */
+@keyframes liquid-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.liquid-glass-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(0, 240, 255, 0.04) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: liquid-shimmer 5s ease-in-out infinite;
+}
+
+/* ─── SHADER-INSPIRED EFFECTS ─────────────────────────────────────────────── */
+
+/* Shader Text: Chrome — animated chromatic gradient */
+@keyframes shader-chrome-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shader-text-chrome {
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #a78bfa 20%,
+    #00f0ff 40%,
+    #f5a623 60%,
+    #00f0ff 80%,
+    #a78bfa 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-chrome-shift 8s ease-in-out infinite;
+}
+
+/* Shader Text: Aurora — northern lights gradient (used for section headers) */
+@keyframes shader-aurora-shift {
+  0%   { background-position: 0% 50%; }
+  33%  { background-position: 50% 100%; }
+  66%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shader-text-aurora {
+  background: linear-gradient(
+    160deg,
+    #00f0ff 0%,
+    #06b6d4 20%,
+    #a78bfa 40%,
+    #00f0ff 60%,
+    #f5a623 80%,
+    #00f0ff 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-aurora-shift 10s ease-in-out infinite;
+}
+
+/* Shader Text: Ember — warm fire gradient */
+@keyframes shader-ember-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shader-text-ember {
+  background: linear-gradient(
+    135deg,
+    #f5a623 0%,
+    #ef4444 25%,
+    #f59e0b 50%,
+    #f97316 75%,
+    #f5a623 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-ember-shift 6s ease-in-out infinite;
+}
+
+/* Shader Text: Frost — icy cool gradient */
+@keyframes shader-frost-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shader-text-frost {
+  background: linear-gradient(
+    135deg,
+    #e0f7ff 0%,
+    #00f0ff 25%,
+    #bae6fd 50%,
+    #67e8f9 75%,
+    #e0f7ff 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-frost-shift 7s ease-in-out infinite;
+}
+
+/* Shader Text: Iridescent — WebGL-driven liquid glass clipping */
+@keyframes shader-iridescent-shift {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 50% 100%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shader-text-iridescent {
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #a78bfa 15%,
+    #00f0ff 30%,
+    #f5a623 45%,
+    #a78bfa 60%,
+    #00f0ff 75%,
+    #f5a623 90%,
+    #00f0ff 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-iridescent-shift 12s ease-in-out infinite;
+}
+
+/* WebGL-backed iridescent clip — the canvas provides the texture, 
+   this CSS makes the text a mask window into it */
+.shader-text-iridescent-clip {
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #a78bfa 15%,
+    #00f0ff 30%,
+    #f5a623 45%,
+    #a78bfa 60%,
+    #00f0ff 75%,
+    #f5a623 90%,
+    #00f0ff 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-iridescent-shift 10s ease-in-out infinite;
+  filter: saturate(1.2) brightness(1.1);
+}
+
+.shader-text-iridescent-clip:hover {
+  animation-duration: 4s;
+  filter: saturate(1.5) brightness(1.25) drop-shadow(0 0 20px rgba(0, 240, 255, 0.4));
+}
+
+/* Shader Logo: Stainless Steel shimmer */
+@keyframes shader-logo-shimmer {
+  0%   { background-position: -150% center; }
+  100% { background-position: 250% center; }
+}
+
+.shader-logo-shimmer {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+    110deg,
+    #00f0ff 0%,
+    #00f0ff 30%,
+    rgba(255, 255, 255, 0.9) 48%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.9) 52%,
+    #00f0ff 70%,
+    #00f0ff 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shader-logo-shimmer 4s ease-in-out infinite;
+}
+
+.shader-logo-shimmer:hover {
+  animation-duration: 1.5s;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.5));
+}
+
+/* Shader Glow Line: Edge Glow effect */
+@keyframes shader-glow-pulse {
+  0%   { opacity: 0.4; transform: scaleX(0.8); }
+  50%  { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0.4; transform: scaleX(0.8); }
+}
+
+.shader-glow-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 240, 255, 0.6),
+    rgba(167, 139, 250, 0.4),
+    rgba(0, 240, 255, 0.6),
+    transparent
+  );
+  animation: shader-glow-pulse 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Shader Card Overlay: refraction on hover */
+.shader-card-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 240, 255, 0.06) 0%,
+    transparent 60%
+  );
+}
+
+.group:hover .shader-card-overlay,
+*:hover > .shader-card-overlay {
+  opacity: 1;
+}
+
+/* ─── APPLE TAHOE LIQUID GLASS BUTTON ──────────────────────────────────────── */
+
+.glass-btn-glow {
+  position: relative;
+}
+
+.glass-btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.2),
+    rgba(167, 139, 250, 0.15),
+    rgba(0, 240, 255, 0.2)
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.glass-btn-glow:hover::before {
+  opacity: 1;
+}
+
+/* Interactive glass background — mouse-reactive gradient */
+@keyframes glass-ambient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.glass-interactive-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.02) 0%,
+    rgba(167, 139, 250, 0.015) 25%,
+    rgba(0, 240, 255, 0.01) 50%,
+    rgba(245, 166, 35, 0.01) 75%,
+    rgba(0, 240, 255, 0.02) 100%
+  );
+  background-size: 400% 400%;
+  animation: glass-ambient 12s ease-in-out infinite;
+}
+
+/* ─── APPLE LIQUID GLASS v2 ────────────────────────────────────────────────── */
+
+@keyframes liquid-glass-breathe {
+  0%   { transform: scale(1) rotate(0deg); opacity: 0.5; }
+  50%  { transform: scale(1.02) rotate(0.3deg); opacity: 0.7; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+}
+
+.liquid-glass-v2 {
+  position: relative;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liquid-glass-v2::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 24px;
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(0, 240, 255, 0.08),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+  animation: liquid-glass-breathe 6s ease-in-out infinite;
+}
+
+.liquid-glass-v2::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 50%,
+    rgba(0, 240, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(1px) saturate(1.3);
+  -webkit-backdrop-filter: blur(1px) saturate(1.3);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.liquid-glass-v2:hover::after {
+  opacity: 1;
+}
+
+/* ─── MOBILE WHY-PRIMUEZ SCROLL ANIMATION ──────────────────────────────────── */
+
+@keyframes mobile-why-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes mobile-why-line-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.mobile-why-card {
+  animation: mobile-why-slide-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.mobile-why-line {
+  transform-origin: left center;
+  animation: mobile-why-line-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+
+/* ─── CURSOR & TOUCH ANIMATIONS ────────────────────────────────────────────── */
+
+/* Touch ripple animation */
+@keyframes touch-ripple {
+  0%   { transform: scale(0); opacity: 0.7; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.touch-ripple {
+  animation: touch-ripple 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Interactive hover glow for cards */
+@keyframes card-glow-pulse {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── HEX SHADER SECTION ENHANCEMENTS ──────────────────────────────────────── */
+
+@keyframes hex-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 0.9; }
+}
+
+.hex-shader-enter {
+  animation: hex-fade-in 1.5s ease-out forwards;
+}
+
+/* ─── ENHANCED LIQUID GLASS — Apple Scroll-Driven ──────────────────────────── */
+
+@keyframes glass-refract {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+.liquid-glass-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liquid-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.04) 0%,
+    transparent 50%,
+    rgba(0, 240, 255, 0.02) 100%
+  );
+  background-size: 200% 200%;
+  animation: glass-refract 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.liquid-glass-card:hover::before {
+  opacity: 1;
+}
+
+/* ─── UX IMPROVEMENTS — Smooth Micro-interactions ──────────────────────────── */
+
+/* Smooth section transitions */
+section {
+  transition: opacity 0.3s ease;
+}
+
+/* Better button press feedback */
+button:active:not(:disabled),
+a:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* Smoother link underline on hover */
+a[href^="#"]:hover {
+  text-decoration: none;
+}
+
+/* Interactive card press effect */
+.group:active {
+  transform: scale(0.985);
+  transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Scroll-linked parallax feel for floating elements */
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.float-animation {
+  animation: float-subtle 4s ease-in-out infinite;
+}
+
+/* Custom scrollbar that matches theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 15, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.4);
+}
+
+
+/* ─── CONTAINER SCROLL 3D CARD ─────────────────────────────────────────────── */
+
+@keyframes container-card-ambient {
+  0%   { box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), 0 0 120px rgba(0, 0, 0, 0.3); }
+  50%  { box-shadow: 0 0 80px rgba(0, 240, 255, 0.08), 0 0 160px rgba(0, 0, 0, 0.4); }
+  100% { box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), 0 0 120px rgba(0, 0, 0, 0.3); }
+}
+
+.container-scroll-card-glow {
+  animation: container-card-ambient 5s ease-in-out infinite;
+}
+
+/* ─── INTERACTIVE SECTION SHADER DIVIDERS ──────────────────────────────────── */
+
+@keyframes shader-divider-flow {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shader-section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.0) 10%,
+    rgba(0, 240, 255, 0.3) 30%,
+    rgba(167, 139, 250, 0.4) 50%,
+    rgba(0, 240, 255, 0.3) 70%,
+    rgba(0, 240, 255, 0.0) 90%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shader-divider-flow 4s linear infinite;
+}
+
+/* ─── BLUR REVEAL ANIMATION UTILITY ───────────────────────────────────────── */
+
+@keyframes blur-reveal {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.animate-blur-reveal {
+  animation: blur-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+/* ─── INTERACTIVE CARD HOVER SHADER — cursor-reactive gradient ─────────────── */
+
+@keyframes card-shader-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.7; }
+}
+
+.interactive-shader-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-shader-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(0, 240, 255, 0.04),
+    rgba(167, 139, 250, 0.03),
+    rgba(245, 166, 35, 0.02),
+    rgba(0, 240, 255, 0.04)
+  );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: card-shader-pulse 4s ease-in-out infinite;
+}
+
+.interactive-shader-card:hover::after {
+  opacity: 1;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE UX OVERHAUL — UI/UX Pro Max Skill v2.0 Principles
+   Target: Business owners on mobile (375px-768px) for first-impression conversion
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* 1. TOUCH TARGETS — Minimum 44px (Apple HIG + WCAG 2.5.5) */
+@media (max-width: 767px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* 2. READABLE TEXT — Prevent browser zoom on focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* 3. CONTENT BREATHING ROOM — Better spacing on narrow screens */
+  section {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  /* 4. HERO SECTION — Maximum impact on first view */
+  #hero h1 {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  #hero p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* 5. CTA BUTTONS — Full-width on mobile for easier tapping */
+  #hero .flex-col a,
+  #hero .flex-col button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    justify-content: center;
+  }
+
+  /* 6. FAQ — Better mobile touch UX */
+  #faq button {
+    padding: 1.125rem 1rem;
+    min-height: 56px;
+  }
+
+  /* 7. PRICING CARDS — Better readability */
+  #pricing h2 {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+
+  /* 8. NAVIGATION — Larger touch targets */
+  nav button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* 9. SCROLL PERFORMANCE — Reduce layout thrashing */
+  .will-change-transform {
+    will-change: transform;
+    contain: layout style;
+  }
+
+  /* 10. SMOOTH SCROLLING — Better scroll feel on iOS */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 11. CARD GRID — Single column with consistent spacing */
+  .grid[class*="grid-cols"] {
+    gap: 1rem;
+  }
+
+  /* 12. FOOTER — Better spacing on mobile */
+  footer .flex-col {
+    gap: 1.5rem;
+    text-align: center;
+  }
+}
+
+/* 13. SAFE AREA INSETS — Notch-safe for iPhone */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* 14. REDUCED MOTION — Respect user preferences (UX Pro Max rule) */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 15. FOCUS VISIBLE — Keyboard navigation (accessibility requirement) */
+:focus-visible {
+  outline: 2px solid #00f0ff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 16. MOBILE CTA STICKY HELPER — Floating CTA for conversion */
+@media (max-width: 767px) {
+  .glass-btn-glow {
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.3), 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+}

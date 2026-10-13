@@ -7,7 +7,6 @@ import { Activity } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
-import dynamic from 'next/dynamic';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
