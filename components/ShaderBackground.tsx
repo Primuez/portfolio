@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { isMobileDevice } from '@/lib/utils/hardwareDetect';
 
 /**
  * Interactive WebGL shader background — "Undertones" iridescent liquid glass.
@@ -249,6 +250,9 @@ export function ShaderBackground({
   }, []);
 
   useEffect(() => {
+    if (isMobileDevice()) {
+      return;
+    }
     initGL();
     animatingRef.current = true;
     rafRef.current = requestAnimationFrame(render);
@@ -313,6 +317,19 @@ export function ShaderBackground({
       }
     };
   }, [initGL, render]);
+
+  if (typeof window !== 'undefined' && isMobileDevice()) {
+    return (
+      <div
+        className={`pointer-events-none fixed inset-0 z-0 w-full h-full ${className}`}
+        style={{
+          opacity,
+          background: 'radial-gradient(ellipse at 50% 20%, rgba(0, 240, 255, 0.05) 0%, rgba(168, 85, 247, 0.03) 40%, transparent 70%)',
+        }}
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <canvas

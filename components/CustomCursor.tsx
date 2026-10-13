@@ -99,29 +99,9 @@ export function CustomCursor() {
     };
   }, [isMobile, mouseX, mouseY]);
 
-  // Mobile: only show ripples
+  // Mobile: completely silent — pure touch interface, 0 re-renders
   if (isMobile) {
-    return (
-      <div className="fixed inset-0 z-[9999] pointer-events-none" aria-hidden="true">
-        <AnimatePresence>
-          {ripples.map(ripple => (
-            <motion.div
-              key={ripple.id}
-              initial={{ scale: 0, opacity: 0.7 }}
-              animate={{ scale: 2.5, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute w-12 h-12 rounded-full border border-cyan/60 pointer-events-none"
-              style={{
-                left: ripple.x - 24,
-                top: ripple.y - 24,
-                boxShadow: '0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1)',
-              }}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-    );
+    return null;
   }
 
   // Desktop: animated cursor system

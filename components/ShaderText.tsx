@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isMobileDevice } from '@/lib/utils/hardwareDetect';
 
 /**
  * Animated chromatic gradient text effect inspired by shaders.com Chroma Chrome preset.
@@ -222,7 +223,7 @@ export function ShaderIridescentText({
   }, []);
 
   useEffect(() => {
-    if (isMobile) return; // Skip WebGL on mobile — use CSS fallback only
+    if (isMobile || isMobileDevice()) return; // Skip WebGL on mobile — use CSS fallback only
     const success = initGL();
     if (!success) return; // Falls back to CSS gradient
     rafRef.current = requestAnimationFrame(render);
