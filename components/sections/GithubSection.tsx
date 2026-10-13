@@ -180,7 +180,7 @@ function LiquidRepoCard({
       target="_blank"
       rel="noopener noreferrer"
       style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
-      initial={initialAnim}
+      initial={false}
       whileInView={whileInViewAnim}
       viewport={{ once: true, margin: isMobile ? '-10px' : '-40px' }}
       transition={isMobile ? {
@@ -258,14 +258,10 @@ export default function GithubSection() {
   }, []);
 
   return (
-    <motion.section 
+    <section 
       id="github" 
       aria-labelledby="github-heading"
       className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: isMobile ? "-20px" : "-100px" }}
     >
       {!isMobile && <ShaderBackgroundSection opacity={0.6} />}
       <div className="relative z-10">
@@ -284,30 +280,10 @@ export default function GithubSection() {
           </div>
         </div>
 
-        <div className="mt-6">
-          <button
-            onClick={() => setIsOpen(o => !o)}
-            className="w-full flex items-center justify-between py-3 px-5 min-h-[44px] font-mono text-xs uppercase tracking-[0.15em] text-cyan border border-cyan/20 rounded-lg bg-panel/40 hover:bg-cyan/5 transition-colors cursor-pointer text-left z-20 relative"
-          >
-            <span>{isOpen ? '▼ Hide Repositories' : `▶ View Repositories (${repos.length} active)`}</span>
-            <span>{isOpen ? '▲' : '▼'}</span>
-          </button>
-
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="overflow-hidden mt-6"
-              >
-                <LiquidRepoGrid repos={repos} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="mt-8">
+          <LiquidRepoGrid repos={repos} />
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
