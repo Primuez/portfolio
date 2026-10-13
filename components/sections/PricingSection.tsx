@@ -193,10 +193,11 @@ function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      style={{ willChange: 'transform, opacity' }}
     >
       <ReceiptCardInner card={card} clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
     </motion.div>
@@ -306,10 +307,11 @@ function MobileVipCard() {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      style={{ willChange: 'transform, opacity' }}
     >
       <VipReceiptCard clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
     </motion.div>
@@ -344,10 +346,11 @@ export default function PricingSection() {
         className={isMobile ? '' : 'pt-16 md:pt-20 pb-16'}
       >
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          style={{ willChange: 'transform, opacity' }}
         >
           <SectionHeader number="04" command="> ./pricing --transparent" title="What's the Investment?" />
           <h2 id="pricing-heading" className="sr-only">What does Primuez charge for AI automation, n8n workflows, and SaaS development projects?</h2>

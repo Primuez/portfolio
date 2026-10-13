@@ -10,29 +10,29 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 /* ── Hardware-accelerated smooth entrance variants ── */
 const cardA1Variants = {
-  hidden: { opacity: 0, x: -35, y: 15, scale: 0.98 },
-  visible: { opacity: 1, x: 0, y: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardA2Variants = {
-  hidden: { opacity: 0, y: 35, scale: 0.98 },
-  visible: { opacity: 1, y: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardB1Variants = {
-  hidden: { opacity: 0, x: 35, y: 35, scale: 0.98 },
-  visible: { opacity: 1, x: 0, y: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardB2Variants = {
-  hidden: { opacity: 0, x: 35, y: 15, scale: 0.98 },
-  visible: { opacity: 1, x: 0, y: 0, scale: 1 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const cardTransition = (delay: number) => ({
-  duration: 0.65,
-  delay,
-  ease: [0.22, 1, 0.36, 1] as const,
+  duration: 0.45,
+  delay: Math.min(delay, 0.12),
+  ease: [0.16, 1, 0.3, 1] as const,
 });
 
 export const AboutSection: React.FC = () => {
@@ -55,21 +55,11 @@ export const AboutSection: React.FC = () => {
   const yA = isMobile ? 0 : springA;
   const yB = isMobile ? 0 : springB;
 
-  // Individual Card Differential Parallax on Mobile to prevent card overlaps and create floating depth
-  const yCardA1Val = useTransform(smoothProgress, [0, 1], [-45, 45]);
-  const yCardA2Val = useTransform(smoothProgress, [0, 1], [-15, 15]);
-  const yCardB1Val = useTransform(smoothProgress, [0, 1], [-35, 35]);
-  const yCardB2Val = useTransform(smoothProgress, [0, 1], [-5, 5]);
-
-  const springCardA1 = useSpring(yCardA1Val, { stiffness: 70, damping: 20 });
-  const springCardA2 = useSpring(yCardA2Val, { stiffness: 70, damping: 20 });
-  const springCardB1 = useSpring(yCardB1Val, { stiffness: 70, damping: 20 });
-  const springCardB2 = useSpring(yCardB2Val, { stiffness: 70, damping: 20 });
-
-  const yCardA1 = isMobile ? springCardA1 : 0;
-  const yCardA2 = isMobile ? springCardA2 : 0;
-  const yCardB1 = isMobile ? springCardB1 : 0;
-  const yCardB2 = isMobile ? springCardB2 : 0;
+  // Flat stable cards on mobile — zero main thread fighting
+  const yCardA1 = 0;
+  const yCardA2 = 0;
+  const yCardB1 = 0;
+  const yCardB2 = 0;
 
   return (
     <section

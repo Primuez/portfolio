@@ -95,10 +95,11 @@ export default function ProcessSection() {
       className="pt-16 md:pt-32 relative overflow-hidden"
     >
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.05 }}
+        style={{ willChange: 'transform, opacity' }}
       >
         <HowWeWorkBackground />
         <div ref={processRef} className="relative z-10">

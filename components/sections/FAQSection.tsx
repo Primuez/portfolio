@@ -229,9 +229,11 @@ export default function FAQSection() {
       className="pt-16 md:pt-32"
     >
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.05 }}
+        style={{ willChange: 'transform, opacity' }}
       >
         <SectionHeader number="09" command="> ./faq --resolve-objections" title="Frequently Asked Questions" />
         <h2 id="faq-heading" className="sr-only">Frequently asked questions about Primuez AI automation projects, timelines, and pricing</h2>

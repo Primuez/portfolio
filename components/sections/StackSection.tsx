@@ -111,9 +111,9 @@ function StackGroup({ title, items, border, isMobile = false, y = 0 }: StackGrou
           className="space-y-4 block z-20 relative"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.05 }}
           variants={{
-            visible: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } },
+            visible: { transition: { staggerChildren: 0.03, delayChildren: 0.05 } },
             hidden: {},
           }}
         >

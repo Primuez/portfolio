@@ -90,12 +90,7 @@ function LiquidRepoCard({
   const cardRotation = rotations[index % rotations.length];
 
   const initialAnim = isMobile
-    ? { 
-        opacity: 0, 
-        scale: 0.92,
-        rotateX: index % 2 === 0 ? 30 : -30,
-        rotateY: index % 2 === 0 ? -30 : 30
-      }
+    ? { opacity: 0, y: 25 }
     : { 
         opacity: 0, 
         rotateX: cardRotation.rotateX, 
@@ -107,32 +102,38 @@ function LiquidRepoCard({
         filter: 'blur(8px)'
       };
 
-  const whileInViewAnim = { 
-    opacity: 1, 
-    rotateX: 0, 
-    rotateY: 0, 
-    rotateZ: 0,
-    x: 0, 
-    y: 0, 
-    scale: 1,
-    filter: 'blur(0px)'
-  };
+  const whileInViewAnim = isMobile
+    ? { opacity: 1, y: 0 }
+    : { 
+        opacity: 1, 
+        rotateX: 0, 
+        rotateY: 0, 
+        rotateZ: 0,
+        x: 0, 
+        y: 0, 
+        scale: 1,
+        filter: 'blur(0px)'
+      };
 
   return (
     <motion.a
       href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
-      style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
+      style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
       initial={initialAnim}
       whileInView={whileInViewAnim}
-      viewport={{ once: true, margin: isMobile ? '-15px' : '-40px' }}
-      transition={{ 
+      viewport={{ once: true, amount: 0.05 }}
+      transition={isMobile ? {
+        duration: 0.4,
+        ease: [0.16, 1, 0.3, 1],
+        delay: Math.min(index * 0.05, 0.2),
+      } : { 
         type: 'spring',
-        stiffness: isMobile ? 60 : 45,
-        damping: isMobile ? 15 : 12,
+        stiffness: 55,
+        damping: 15,
         mass: 1,
-        delay: index * (isMobile ? 0.08 : 0.15)
+        delay: index * 0.1
       }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
