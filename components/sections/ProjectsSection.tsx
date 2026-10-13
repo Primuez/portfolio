@@ -10,11 +10,6 @@ import { WorkflowCard } from '@/components/projects/WorkflowCard';
 import dynamic from 'next/dynamic';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const InteractiveOrchestratorSection = dynamic(
-  () => import('@/components/InteractiveOrchestratorSection'),
-  { ssr: false }
-);
-
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
@@ -260,9 +255,6 @@ export const ProjectsSection: React.FC = () => {
       </div>
       
       <div className="mt-12 md:mt-24 pt-10 md:pt-16 relative">
-        {/* Safe hardware degradation: hides the entire section (text + 3D canvas) on weak devices */}
-        <InteractiveOrchestratorSection />
-
         <div className={isMobile ? "" : "mt-16"}>
           <button
             onClick={() => setFavOpen(o => !o)}
