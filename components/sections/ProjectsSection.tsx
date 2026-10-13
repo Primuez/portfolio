@@ -276,86 +276,86 @@ export const ProjectsSection: React.FC = () => {
               <WorkflowCard
                 name="Autonomous ITC Guard & Vendor Chase"
                 desc="Enforces GST Section 16(2)(aa) compliance by reconciling purchase ledgers with GSTR-2B. Identifies trapped working capital, locks defaulting vendor payments, and automates legal recovery notices via WhatsApp & Email."
-                image="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/8927657/pexels-photo-8927657.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={0}
               />
               <WorkflowCard
                 name="Pre-Liquidity Wealth & M&A Engine"
                 desc="Institutional M&A advisory engine for $2M-$100M ARR founders. Ingests financial statements via Mistral OCR, calculates Rule of 40 & concentration risk, and structures pre-exit tax shelters (QSBS/SLAT/GRAT)."
-                image="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/5561915/pexels-photo-5561915.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={50}
               />
               <WorkflowCard
                 name="Real Estate Underwriting & Lead Engine"
                 desc="24/7 autonomous underwriting analyst for brokerages. Computes NOI, Cap Rate, DSCR, and cash flow on property URLs, cross-monetizes internal inventory, and qualifies leads under a 5-minute speed-to-lead rule."
-                image="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/8954109/pexels-photo-8954109.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={100}
               />
               <WorkflowCard
                 name="Daily AI News Agent"
                 desc="Gives me signal from the noise, tells me its use cases for AI news both international & national, and generates a TTS voice note of the entire news."
-                image="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/7865064/pexels-photo-7865064.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={150}
                 videoUrl="https://youtu.be/mCPMyZor1nw?si=OqMp4jCl0_U9lRPF"
               />
               <WorkflowCard
                 name="Personal Jarvis (Updated)"
                 desc="For extra daily needs, my updated personal jarvis orchestrates everything I need in a unified environment."
-                image="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={100}
               />
               <WorkflowCard
                 name="n8n Updates Tester"
                 desc="Used for testing new n8n updates. It is the most easy and quick to use workflow."
-                image="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/37730212/pexels-photo-37730212.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={200}
               />
               <WorkflowCard
                 name="Drive & Docs Agent"
                 desc="Additional workflow to manage my drives, docs, and emails. Can be sent to WhatsApp and controlled via SAM."
-                image="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/7654452/pexels-photo-7654452.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={300}
               />
               <WorkflowCard
                 name="AI Outreach & Follow-up"
                 desc="One of my most complex and useful workflows—from AI cold outreach to strategic follow-ups, automated replies, and all extras."
-                image="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/8284724/pexels-photo-8284724.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={400}
               />
               <WorkflowCard
                 name="Search MCP & Image Gen"
                 desc="My additional searching MCP combined with image generation. Fully automated and can be sent to WhatsApp controlled via SAM."
-                image="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/17279851/pexels-photo-17279851.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={500}
               />
               <WorkflowCard
                 name="AI Presentation Generator"
                 desc="Free Gemma-alternative AI presentation generator capable of creating unlimited presentations. Can be sent to WhatsApp controlled via SAM."
-                image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/8761324/pexels-photo-8761324.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={600}
               />
               <WorkflowCard
                 name="PrimuezSure Policy Auditor"
                 desc="Autonomous health insurance policy auditor. Scans multi-page policy PDFs to expose hidden room-rent sub-limits, disease copays, and claim traps before you file."
-                image="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/7734574/pexels-photo-7734574.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={650}
               />
               <WorkflowCard
                 name="HackPulse Radar"
                 desc="Resilient autonomous hackathon ingestion pipeline. Ingests 44+ live hackathons with automated schema circuit breakers and deploy guards."
-                image="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/6424583/pexels-photo-6424583.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={675}
               />
               <WorkflowCard
                 name="Multimodal AI Expense Tracker"
                 desc="Telegram-first financial logging agent. Ingests audio voice memos, photographed physical receipts, and text notes, parsing GST and categorizing into Google Sheets."
-                image="https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=800&h=600&q=80"
+                image="https://images.pexels.com/photos/7680741/pexels-photo-7680741.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={690}
               />
               <WorkflowCard
                 name="Voice AI Agent"
                 desc="Doesn't just talk — it does the work for you. A voice-first agent that listens, reasons, and autonomously executes multi-step tasks across your stack while you keep your hands free."
-                image="/voice-ai-agent.png"
+                image="https://images.pexels.com/photos/765139/pexels-photo-765139.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
                 delay={700}
               />
             </div>

@@ -17,20 +17,30 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
   const isMobile = useIsMobile();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+
+  if (isMobile) {
+    const glowBorder = color === 'cyan' ? 'border-cyan/40 shadow-[0_0_20px_rgba(0,240,255,0.1)]' : 'border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.1)]';
+    return (
+      <div className="w-full">
+        <div className={`bg-panel/90 border p-6 sm:p-8 rounded-2xl flex flex-col justify-center items-center text-center font-mono relative overflow-hidden ${glowBorder}`}>
+          {children}
+        </div>
+      </div>
+    );
+  }
   
   const mouseXSpring = useSpring(x, { stiffness: 180, damping: 22 });
   const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
   
   // Custom tilt transformations
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], isMobile ? [0, 0] : [10, -10]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], isMobile ? [0, 0] : [-10, 10]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-10, 10]);
 
   // Spotlight coordinates
   const spotlightX = useMotionValue(0);
   const spotlightY = useMotionValue(0);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -63,11 +73,11 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        initial={isMobile ? { opacity: 0, y: 15 } : { y: -240, rotate: initialRotate * 2, opacity: 0 }}
-        whileInView={isMobile ? { opacity: 1, y: 0 } : { y: 0, rotate: 0, opacity: 1 }}
-        viewport={{ once: true, margin: isMobile ? '80px' : '-20px' }}
-        transition={isMobile ? { duration: 0.35, ease: 'easeOut' } : { type: 'spring', stiffness: 90, damping: 14, delay: delay * 0.5 }}
-        style={isMobile ? undefined : { rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        initial={{ y: -240, rotate: initialRotate * 2, opacity: 0 }}
+        whileInView={{ y: 0, rotate: 0, opacity: 1 }}
+        viewport={{ once: true, margin: '-20px' }}
+        transition={{ type: 'spring', stiffness: 90, damping: 14, delay: delay * 0.5 }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         className="w-full relative group transition-all duration-300"
       >
         {/* Cursor Spotlight Background */}
@@ -110,8 +120,11 @@ const PHYSICS_CHIPS: { label: string; color: 'cyan' | 'amber' | 'red'; x: string
 ];
 
 function PhysicsChipsLayer() {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+
   return (
-    <div aria-hidden className="absolute inset-0 pointer-events-none z-10 overflow-visible">
+    <div aria-hidden className="absolute inset-0 pointer-events-none z-10 overflow-visible hidden md:block">
       {PHYSICS_CHIPS.map((c) => (
         <PhysicsChip key={c.label} {...c} />
       ))}

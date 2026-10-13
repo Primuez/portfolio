@@ -78,7 +78,13 @@ function HomeClientShell({ children }: { children: React.ReactNode }) {
     const targetId = href.replace('#', '');
     const el = document.getElementById(targetId);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      const navOffset = 84;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
       history.pushState(null, '', href);
     }
   };

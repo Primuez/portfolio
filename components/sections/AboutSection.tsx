@@ -38,22 +38,152 @@ const cardTransition = (delay: number, isMobile = false) => ({
 export const AboutSection: React.FC = () => {
   const isMobile = useIsMobile();
 
-  /* ── Parallax scroll hooks (always called unconditionally) ── */
+  if (isMobile) {
+    return (
+      <section
+        id="whoami"
+        className="relative py-12 overflow-hidden scroll-mt-20"
+      >
+        <SectionHeader number="01" command="> whoami --verbose" title="Architecting Autonomy" />
+
+        <div className="relative flex flex-col gap-5 mt-6 z-10">
+          {/* Card A1: Operator Creed */}
+          <div className="group relative rounded-2xl bg-white/[0.02] border border-white/[0.06] p-1 shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+            <div className="rounded-[calc(1rem-0.25rem)] bg-[#05060a]/90 p-4 sm:p-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 mb-4">
+                <span>[ 01 ]</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">operator_creed</span>
+                <Terminal size={14} strokeWidth={1.2} className="text-purple-400 ml-auto" />
+              </div>
+
+              <blockquote className="text-white italic text-sm border-l-2 border-cyan/40 pl-3 py-1 leading-relaxed font-sans mb-3">
+                &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
+              </blockquote>
+              <p className="text-zinc-200 text-xs leading-relaxed font-sans mb-3">
+                I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic.
+              </p>
+
+              <div className="mt-3 bg-black/50 p-3 rounded-xl border border-white/[0.03] font-mono text-[10px] text-zinc-300 space-y-1">
+                <div className="text-emerald-400 font-semibold">$&gt; primuez --execute-creed</div>
+                <div>[SUCCESS] PRACTICALITY_OVER_HYPOTHESIS = TRUE</div>
+                <div>[SUCCESS] BARE_METAL_AUTONOMY = ACTIVE</div>
+                <div className="text-zinc-400">// Raipur Core Integration // रायपुर, छ.ग.</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card B2: Core Identity */}
+          <div className="group relative rounded-2xl bg-white/[0.02] border border-white/[0.06] p-1 shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+            <div className="rounded-[calc(1rem-0.25rem)] bg-[#05060a]/90 p-4 sm:p-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 mb-4">
+                <span>[ 02 ]</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
+                <Brain size={14} strokeWidth={1.2} className="text-cyan ml-auto" />
+              </div>
+
+              <h3 className="text-2xl font-bold tracking-tight text-white leading-tight font-sans mb-3">
+                I am{' '}
+                <ShaderIridescentText className="font-bold">
+                  Rahul Kasturiya
+                </ShaderIridescentText>
+                <span className="text-zinc-300 block mt-1 text-lg font-medium">
+                  Known as Primuez.
+                </span>
+              </h3>
+
+              <div className="space-y-2 text-zinc-200 text-sm leading-relaxed font-sans">
+                <p>
+                  I build automation systems using n8n, Cloudflare Workers, and AI — connecting the tools businesses already use so manual work disappears.
+                </p>
+                <p className="text-zinc-300/90 text-xs">
+                  I&apos;ve shipped live SaaS products (InkTwin, PrimuezSure), built AI agents for tax and legal queries, and designed enterprise automation architecture for manufacturing workflows. If a system can be automated, I can build it.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Card A2: System Specs */}
+          <div className="group relative rounded-2xl bg-white/[0.02] border border-white/[0.06] p-1 shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+            <div className="rounded-[calc(1rem-0.25rem)] bg-[#05060a]/90 p-4 sm:p-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 mb-4">
+                <span>[ 03 ]</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">system_specs</span>
+                <Activity size={14} strokeWidth={1.2} className="text-amber ml-auto" />
+              </div>
+
+              <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-3">
+                {[
+                  { icon: <Calendar size={16} strokeWidth={1.2} className="text-cyan" />, label: 'Experience', value: 'AI Automation', sub: 'Since July 2025' },
+                  { icon: <MapPin size={16} strokeWidth={1.2} className="text-rose-400" />, label: 'Coordinates', value: 'Indore, MP, India', sub: 'Raipur Core Center' },
+                  { icon: <GraduationCap size={16} strokeWidth={1.2} className="text-purple-400" />, label: 'Education', value: 'KPS · SSIPS (BCA)', sub: 'Systems Foundations' },
+                  { icon: <Languages size={16} strokeWidth={1.2} className="text-emerald-400" />, label: 'Dialect Compilers', value: 'Hindi · English · Sindhi', sub: 'Multi-channel' },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="p-3 bg-white/[0.02] border border-white/[0.05] rounded-xl"
+                  >
+                    <div className="mb-1.5">{item.icon}</div>
+                    <span className="text-cyan/70 font-mono text-[9px] uppercase tracking-widest block mb-0.5">{item.label}</span>
+                    <span className="text-white text-xs font-bold block leading-tight">{item.value}</span>
+                    <span className="text-zinc-400 text-[9px] block mt-0.5">{item.sub}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Card B1: Live Telemetry */}
+          <div className="group relative rounded-2xl bg-white/[0.02] border border-white/[0.06] p-1 shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+            <div className="rounded-[calc(1rem-0.25rem)] bg-[#05060a]/90 p-4 sm:p-5">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 mb-4">
+                <span>[ 04 ]</span>
+                <span className="text-zinc-200 font-semibold uppercase tracking-wider">live_telemetry</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-auto" />
+              </div>
+
+              <div className="text-zinc-200 text-sm leading-relaxed font-sans mb-3">
+                I build self-governing networks of automation, replacing expensive human latency loops with highly robust agent architectures. My systems think, execute, and self-correct 24/7.
+              </div>
+
+              <div className="flex flex-col gap-1.5 p-3 bg-black/40 border border-white/[0.04] rounded-xl font-mono text-[10px] text-zinc-300">
+                <div className="flex justify-between items-center">
+                  <span>STATUS:</span>
+                  <span className="text-cyan font-bold">ACTIVE ENGINE</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>COORDINATES:</span>
+                  <span className="text-white">RAIPUR CORE // INDIA</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>INFRASTRUCTURE:</span>
+                  <span className="text-cyan/90 font-bold">VPS // DOCKER // TRAEFIK</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>ACTIVE PIPELINES:</span>
+                  <span className="text-amber">NOMINAL</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>AUTONOMOUS AGENTS:</span>
+                  <span className="text-emerald-400 font-bold">ONLINE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ── Parallax scroll hooks (always called unconditionally on desktop) ── */
   const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({
     offset: ['start end', 'end start'],
   });
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 24, restDelta: 0.001 });
 
-  // Parallax range on desktop
-  const yColA = useTransform(smoothProgress, [0, 1], [-120, 120]);
-  const yColB = useTransform(smoothProgress, [0, 1], [120, -120]);
-
-  const springA = useSpring(yColA, { stiffness: 50, damping: 24 });
-  const springB = useSpring(yColB, { stiffness: 50, damping: 24 });
-
-  const yA = isMobile ? 0 : springA;
-  const yB = isMobile ? 0 : springB;
+  // Stable column layout - zero bleed into adjacent sections
+  const yA = 0;
+  const yB = 0;
 
   // Zero parallax on mobile to prevent GPU compositor thrashing
   const yCardA1 = 0;
@@ -76,11 +206,11 @@ export const AboutSection: React.FC = () => {
     <section
       id="whoami"
       ref={containerRef}
-      className="relative py-20 md:py-36 overflow-hidden"
+      className="relative py-20 md:py-36 overflow-hidden scroll-mt-20 md:scroll-mt-24"
     >
-      {/* Background glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan/5 rounded-full blur-[120px] pointer-events-none z-0" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-amber/5 rounded-full blur-[120px] pointer-events-none z-0" />
+      {/* Background glowing orbs (desktop only to prevent mobile compositor re-rasterization) */}
+      <div className="hidden md:block absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan/5 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="hidden md:block absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-amber/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
       <SectionHeader number="01" command="> whoami --verbose" title="Architecting Autonomy" />
 
@@ -89,7 +219,7 @@ export const AboutSection: React.FC = () => {
           Column A: Core Identity + System Specs
           Column B: Live Telemetry + Operator Creed
           ════════════════════════════════════════════════════ */}
-      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10" style={{ perspective: '1200px' }}>
+      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10" style={isMobile ? undefined : { perspective: '1200px' }}>
 
         {/* ╔═══ COLUMN A ═══╗ */}
         <motion.div style={{ y: yA }} className="flex flex-col gap-5 md:gap-8">
