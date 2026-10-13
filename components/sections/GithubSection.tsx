@@ -27,13 +27,70 @@ type LiquidRepo = {
   forks_count: number;
 };
 
+const FALLBACK_REPOS: LiquidRepo[] = [
+  {
+    id: 1218800483,
+    name: 'portfolio',
+    description: 'High-performance developer portfolio, credential verification engine & presentation platform.',
+    html_url: 'https://github.com/Primuez/portfolio',
+    stargazers_count: 1,
+    forks_count: 0,
+    language: 'Astro',
+  },
+  {
+    id: 1212318246,
+    name: 'Ink-Twin',
+    description: 'Instant handwriting synthesis, OCR vectorization & document intelligence engine on Cloudflare Workers.',
+    html_url: 'https://github.com/Primmius/Ink-Twin',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'TypeScript',
+  },
+  {
+    id: 1256932570,
+    name: 'primuez-seo-vault',
+    description: 'Headless programmatic SEO growth engine running autonomous keyword polling and CDN generation.',
+    html_url: 'https://github.com/Primuez/primuez-seo-vault',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'TypeScript',
+  },
+  {
+    id: 1366078942,
+    name: 'career-ops',
+    description: 'Multi-agent career intelligence pipeline, ATS resume parser and continuous opportunity triage.',
+    html_url: 'https://github.com/Primuez/career-ops',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Python',
+  },
+  {
+    id: 1366078943,
+    name: 'CLI-Skills-and-MDs',
+    description: 'Curated skills, operational playbooks, and architectural system prompts for autonomous agent fleets.',
+    html_url: 'https://github.com/Primuez/CLI-Skills-and-MDs',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Markdown',
+  },
+  {
+    id: 1366078944,
+    name: 'agents-backup',
+    description: 'Production container configuration, reverse proxy SSL configs, and automated n8n backup pipelines.',
+    html_url: 'https://github.com/Primuez/agents-backup',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Shell',
+  },
+];
+
 function LiquidRepoGrid({ repos }: { repos: LiquidRepo[] }) {
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
   const smoothV = useSpring(velocity, { stiffness: 70, damping: 32, mass: 1 });
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: '1200px' }}>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:[perspective:1200px]">
       {repos.map((repo, i) => (
         <LiquidRepoCard key={repo.id} repo={repo} velocity={smoothV} index={i} />
       ))}
@@ -74,68 +131,21 @@ function LiquidRepoCard({
     return `${Math.max(-1.5, Math.min(1.5, raw))}deg`;
   });
 
-  // Alternate 3D tilt directions for a gorgeous layout cascade
-  const tiltAngle = index % 3 === 0 ? -12 : index % 3 === 2 ? 12 : 0;
-
-  // Assign a distinct 3D rotation axis and direction to each card to simulate a Rubik's Cube rotation assembly
-  const rotations = [
-    { rotateX: 90, rotateY: 0, rotateZ: -10, x: -80, y: 0, scale: 0.8 },      // Left-face twist
-    { rotateX: 0, rotateY: -90, rotateZ: 10, x: 0, y: -80, scale: 0.8 },      // Top-face twist
-    { rotateX: -90, rotateY: 0, rotateZ: -10, x: 80, y: 0, scale: 0.8 },     // Right-face twist
-    { rotateX: 0, rotateY: 90, rotateZ: 10, x: -80, y: 80, scale: 0.8 },     // Bottom-left corner spin
-    { rotateX: 90, rotateY: 90, rotateZ: 0, x: 0, y: 80, scale: 0.8 },        // Center-bottom twist
-    { rotateX: -90, rotateY: -90, rotateZ: 15, x: 80, y: 80, scale: 0.8 }    // Bottom-right corner spin
-  ];
-  
-  const cardRotation = rotations[index % rotations.length];
-
-  const initialAnim = isMobile
-    ? { opacity: 0, y: 25 }
-    : { 
-        opacity: 0, 
-        rotateX: cardRotation.rotateX, 
-        rotateY: cardRotation.rotateY, 
-        rotateZ: cardRotation.rotateZ,
-        x: cardRotation.x, 
-        y: cardRotation.y, 
-        scale: cardRotation.scale,
-        filter: 'blur(8px)'
-      };
-
-  const whileInViewAnim = isMobile
-    ? { opacity: 1, y: 0 }
-    : { 
-        opacity: 1, 
-        rotateX: 0, 
-        rotateY: 0, 
-        rotateZ: 0,
-        x: 0, 
-        y: 0, 
-        scale: 1,
-        filter: 'blur(0px)'
-      };
-
   return (
     <motion.a
       href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
       style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
-      initial={initialAnim}
-      whileInView={whileInViewAnim}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.05 }}
-      transition={isMobile ? {
+      transition={{
         duration: 0.4,
         ease: [0.16, 1, 0.3, 1],
         delay: Math.min(index * 0.05, 0.2),
-      } : { 
-        type: 'spring',
-        stiffness: 55,
-        damping: 15,
-        mass: 1,
-        delay: index * 0.1
       }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden"
     >
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -160,9 +170,9 @@ function LiquidRepoCard({
 }
 
 export default function GithubSection() {
-  const [repos, setRepos] = useState<GithubRepo[]>([]);
-  const [loadingRepos, setLoadingRepos] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
+  const [repos, setRepos] = useState<LiquidRepo[]>(FALLBACK_REPOS);
+  const [loadingRepos, setLoadingRepos] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -177,9 +187,11 @@ export default function GithubSection() {
         
         const combined = [...(Array.isArray(data1) ? data1 : []), ...(Array.isArray(data2) ? data2 : [])]
           .filter(r => !r.fork && !r.name.toLowerCase().includes('first-to-paste-osi-henti'))
-          .sort((a, b) => b.stargazers_count - a.stargazers_count)
+          .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0))
           .slice(0, 6);
-        setRepos(combined);
+        if (combined.length > 0) {
+          setRepos(combined);
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -196,10 +208,11 @@ export default function GithubSection() {
       className="pt-16 md:pt-32 pb-28 md:pb-20 relative overflow-hidden"
     >
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.05 }}
+        style={{ willChange: 'transform, opacity' }}
       >
         <ShaderBackgroundSection opacity={0.6} />
         <div className="relative z-10">

@@ -121,8 +121,8 @@ export function LiquidGlassParallaxSection({
   return (
     <motion.div
       ref={ref}
-      style={{ y, opacity, scale, filter: filterStr }}
-      className={cn('will-change-transform', className)}
+      style={isMobile ? undefined : { y, opacity, scale, filter: filterStr }}
+      className={cn(isMobile ? '' : 'will-change-transform', className)}
     >
       {children}
     </motion.div>

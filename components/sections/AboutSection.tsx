@@ -67,9 +67,9 @@ export const AboutSection: React.FC = () => {
       ref={containerRef}
       className="relative py-20 md:py-36 overflow-hidden"
     >
-      {/* Background glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan/5 rounded-full blur-[120px] pointer-events-none z-0" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-amber/5 rounded-full blur-[120px] pointer-events-none z-0" />
+      {/* Background glowing orbs — desktop only for zero mobile GPU rasterization */}
+      <div className="hidden md:block absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan/5 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="hidden md:block absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-amber/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
       <SectionHeader number="01" command="> whoami --verbose" title="Architecting Autonomy" />
 
@@ -78,19 +78,19 @@ export const AboutSection: React.FC = () => {
           Column A: Core Identity + System Specs
           Column B: Live Telemetry + Operator Creed
           ════════════════════════════════════════════════════ */}
-      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10" style={{ perspective: '1200px' }}>
+      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10 md:[perspective:1200px]">
 
         {/* ╔═══ COLUMN A ═══╗ */}
-        <motion.div style={{ y: yA }} className="flex flex-col gap-5 md:gap-8">
+        <motion.div style={isMobile ? undefined : { y: yA }} className="flex flex-col gap-5 md:gap-8">
 
           {/* Card A1: Operator Creed — slides in from left */}
           <motion.div
             variants={cardA1Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0)}
-            style={{ y: yCardA1, willChange: 'transform, opacity' }}
+            style={{ willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -126,9 +126,9 @@ export const AboutSection: React.FC = () => {
             variants={cardA2Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0.12)}
-            style={{ y: yCardA2, willChange: 'transform, opacity' }}
+            style={{ willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-amber/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -161,16 +161,16 @@ export const AboutSection: React.FC = () => {
         </motion.div>
 
         {/* ╔═══ COLUMN B ═══╗ */}
-        <motion.div style={{ y: yB }} className="flex flex-col gap-5 md:gap-8">
+        <motion.div style={isMobile ? undefined : { y: yB }} className="flex flex-col gap-5 md:gap-8">
 
           {/* Card B2: Core Identity — slides in from right */}
           <motion.div
             variants={cardB2Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0.06)}
-            style={{ y: yCardB2, willChange: 'transform, opacity' }}
+            style={{ willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -206,9 +206,9 @@ export const AboutSection: React.FC = () => {
             variants={cardB1Variants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0.18)}
-            style={{ y: yCardB1, willChange: 'transform, opacity' }}
+            style={{ willChange: 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">

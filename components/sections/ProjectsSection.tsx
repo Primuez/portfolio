@@ -147,20 +147,21 @@ function ProjectCategoryBlock({ category, index, total }: { category: ProjectCat
     offset: ["start end", "start start"]
   });
 
-  // Scale down and fade as the card scrolls up under the next cards
+  // Scale down and fade as the card scrolls up under the next cards on desktop
   const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.95]);
   const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0.88]);
-  const filter = useTransform(scrollYProgress, [0.75, 1], ["brightness(1)", "brightness(0.7)"]);
 
   const yOffset = index * 24; // cascading layout spacing on desktop
 
-  const motionStyle = isMobile ? {} : {
+  const isMobileClient = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+  const shouldAnimate = !isMobile && !isMobileClient;
+
+  const motionStyle = shouldAnimate ? {
     position: 'sticky' as const,
     top: `${90 + yOffset}px`,
     scale,
     opacity,
-    filter
-  };
+  } : undefined;
 
   return (
     <motion.div 

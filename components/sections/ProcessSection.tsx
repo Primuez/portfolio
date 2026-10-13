@@ -16,22 +16,21 @@ const STEPS = [
 
 function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title: string; desc: string; icon: string; isLast?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: '-30% 0px -30% 0px', once: false });
+  const inView = useInView(ref, { margin: '-10% 0px -10% 0px', once: true });
 
   return (
     <div ref={ref} className="relative flex items-start gap-0">
       {/* ── Mobile left track: badge only (line is in the parent container) ── */}
       <div className="flex md:hidden flex-col items-center mr-4 mt-0.5 shrink-0">
-        <motion.div
-          animate={inView
-            ? { backgroundColor: 'rgba(0,240,255,0.15)', borderColor: 'rgba(0,240,255,0.8)', color: '#00f0ff', boxShadow: '0 0 12px rgba(0,240,255,0.4)' }
-            : { backgroundColor: 'rgba(9,11,17,1)', borderColor: 'rgba(113,113,122,0.4)', color: '#71717a', boxShadow: 'none' }
-          }
-          transition={{ duration: 0.4 }}
-          className="w-7 h-7 rounded-full border-2 flex items-center justify-center font-mono text-[9px] font-bold z-10 select-none bg-[#090b11]"
+        <div
+          className={`w-7 h-7 rounded-full border-2 flex items-center justify-center font-mono text-[9px] font-bold z-10 select-none transition-all duration-300 ${
+            inView
+              ? 'bg-cyan/15 border-cyan text-cyan shadow-[0_0_12px_rgba(0,240,255,0.4)]'
+              : 'bg-[#090b11] border-zinc-700/40 text-zinc-500'
+          }`}
         >
           {step}
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Desktop spine dot ── */}
@@ -48,37 +47,29 @@ function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title:
       </div>
 
       {/* Card */}
-      <motion.div
-        className="ml-0 md:ml-20 w-full p-5 border rounded-lg bg-[#0a0f1a]/70 backdrop-blur-sm cursor-default transition-all duration-500"
-        initial={{ opacity: 0.35, x: 8 }}
-        animate={{
-          opacity: inView ? 1 : 0.35,
-          x: inView ? 0 : 8,
-          borderColor: inView ? 'rgba(0, 240, 255, 0.3)' : 'rgba(255, 255, 255, 0.06)',
-          boxShadow: inView ? '0 0 25px rgba(0, 240, 255, 0.06)' : 'none'
-        }}
-        whileHover={{
-          scale: 1.015,
-          borderColor: 'rgba(0, 240, 255, 0.5)',
-          boxShadow: '0 8px 30px rgba(0, 240, 255, 0.12)'
-        }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      <div
+        className={`ml-0 md:ml-20 w-full p-5 border rounded-lg bg-[#0a0f1a]/70 backdrop-blur-sm cursor-default transition-all duration-300 transform-gpu ${
+          inView
+            ? 'opacity-100 translate-x-0 border-cyan/30 shadow-[0_0_25px_rgba(0,240,255,0.06)]'
+            : 'opacity-40 translate-x-2 border-white/[0.06]'
+        } hover:scale-[1.015] hover:border-cyan/50 hover:shadow-[0_8px_30px_rgba(0,240,255,0.12)]`}
+        style={{ willChange: 'transform, opacity' }}
       >
         <div className="flex items-start gap-3">
-          <motion.span
-            animate={inView ? { scale: 1.15, filter: 'drop-shadow(0 0 6px rgba(0,240,255,0.5))' } : { scale: 1, filter: 'none' }}
-            transition={{ duration: 0.4 }}
-            className="text-lg leading-none mt-0.5 select-none shrink-0"
+          <span
+            className={`text-lg leading-none mt-0.5 select-none shrink-0 transition-transform duration-300 ${
+              inView ? 'scale-110 text-cyan' : 'scale-100 text-zinc-400'
+            }`}
           >
             {icon}
-          </motion.span>
+          </span>
           <div>
             <span className="font-mono text-cyan text-xs font-bold">{step}</span>
             <h4 className="font-bold text-white text-sm mt-1 mb-1">{title}</h4>
-            <p className={`text-sm leading-relaxed transition-colors duration-500 ${inView ? 'text-zinc-200' : 'text-zinc-400'}`}>{desc}</p>
+            <p className={`text-sm leading-relaxed transition-colors duration-300 ${inView ? 'text-zinc-200' : 'text-zinc-400'}`}>{desc}</p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
