@@ -4,7 +4,7 @@ import SectionHeader from './SectionHeader.astro';
 const REPOS = [
   {
     name: 'Ink-Twin',
-    description: 'BYOK 4-phase AI handwriting synthesis and homework automation platform with OCR & vector font generation.',
+    description: 'BYOK 4-phase AI handwriting synthesis and document automation platform with OCR & vector font generation.',
     html_url: 'https://github.com/Primmius/Ink-Twin',
     stars: 14,
     forks: 3,
@@ -16,7 +16,7 @@ const REPOS = [
     html_url: 'https://github.com/Primuez/portfolio',
     stars: 8,
     forks: 2,
-    language: 'TypeScript',
+    language: 'Astro',
   },
   {
     name: 'traiecta-contracts',
@@ -42,82 +42,99 @@ const REPOS = [
     forks: 1,
     language: 'TypeScript',
   },
+  {
+    name: 'primuez-seo-vault',
+    description: 'Self-sustaining programmatic SEO engine autonomously polling keywords and deploying pages via Git CDN.',
+    html_url: 'https://github.com/Primuez/primuez-seo-vault',
+    stars: 5,
+    forks: 1,
+    language: 'Node.js',
+  },
 ];
 ---
 
-<section id="github" class="pt-16 md:pt-28 scroll-mt-20">
-  <SectionHeader number="09" command="> gh repo list primuez --public" title="Open Source & Repositories" />
+<section id="github" class="pt-20 md:pt-32 pb-16 scroll-mt-20 overflow-hidden">
+  <SectionHeader number="10" command="> gh repo list primuez --public" title="Open Source & Repositories" />
 
-  <p class="text-zinc-400 mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
-    Real code in public. Verified implementations across TypeScript, Rust, and Shell.
+  <p class="text-zinc-400 mt-2 mb-12 max-w-2xl text-base leading-relaxed font-sans">
+    Real code published in the open. Verified implementations across TypeScript, Astro, Rust, and Shell.
   </p>
 
+  {/* Dual-Track Multi-Speed Parallax Columns */}
   <div id="github-repos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {REPOS.map((repo, i) => (
-      <a
-        href={repo.html_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class={`github-repo-card github-repo-${i % 2 === 0 ? 'up' : 'down'} group p-6 rounded-2xl bg-[#090d16]/90 border border-white/10 hover:border-cyan/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-xl transform-gpu`}
-      >
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="font-mono text-xs text-cyan font-bold flex items-center gap-1.5">
-              <span>📁</span> {repo.name}
-            </span>
-            <span class="text-zinc-500 group-hover:text-cyan transition-colors text-xs">↗</span>
-          </div>
-          <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-6 font-sans">
-            {repo.description}
-          </p>
-        </div>
+    {REPOS.map((repo, i) => {
+      const isUpTrack = i % 2 === 0;
+      return (
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class={`github-repo-card ${isUpTrack ? 'github-col-fast' : 'github-col-slow'} p-1.5 rounded-[2rem] bg-gradient-to-b from-white/10 via-white/[0.03] to-transparent border border-white/10 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-cyan/50 hover:-translate-y-1 block`}
+        >
+          <div class="rounded-[calc(2rem-0.375rem)] bg-[#070b12]/95 p-6 sm:p-7 flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between mb-3 border-b border-white/[0.06] pb-3">
+                <span class="font-mono text-xs text-cyan font-bold flex items-center gap-2">
+                  <span>📁</span> {repo.name}
+                </span>
+                <span class="text-zinc-400 text-xs font-mono">↗</span>
+              </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-white/[0.04] font-mono text-xs text-zinc-400">
-          <span class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-cyan inline-block"></span>
-            {repo.language}
-          </span>
-          <div class="flex items-center gap-3">
-            <span class="flex items-center gap-1">★ {repo.stars}</span>
-            <span class="flex items-center gap-1">⑂ {repo.forks}</span>
+              <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-6 font-sans">
+                {repo.description}
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 border-t border-white/[0.06] font-mono text-xs text-zinc-400">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-cyan inline-block"></span>
+                {repo.language}
+              </span>
+              <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1">★ {repo.stars}</span>
+                <span class="flex items-center gap-1">⑂ {repo.forks}</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </a>
-    ))}
+        </a>
+      );
+    })}
   </div>
 </section>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { shouldReduceMotion } from '../../lib/motion';
 
-  if (typeof window !== 'undefined') {
+  if (!shouldReduceMotion()) {
     gsap.registerPlugin(ScrollTrigger);
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = window.innerWidth < 768;
+    const grid = document.querySelector('#github-repos-grid');
+    const fastCards = document.querySelectorAll('.github-col-fast');
+    const slowCards = document.querySelectorAll('.github-col-slow');
 
-    if (!prefersReduced && !isMobile) {
-      // Parallax alternating float on desktop
-      gsap.to('.github-repo-up', {
-        y: -18,
+    if (grid && window.innerWidth >= 768) {
+      // Multi-speed parallax column movement
+      gsap.to(fastCards, {
+        y: -35,
         ease: 'none',
         scrollTrigger: {
-          trigger: '#github-repos-grid',
+          trigger: grid,
           start: 'top 85%',
-          end: 'bottom 40%',
-          scrub: 0.8,
+          end: 'bottom 20%',
+          scrub: 0.6,
         },
       });
 
-      gsap.to('.github-repo-down', {
-        y: 18,
+      gsap.to(slowCards, {
+        y: 35,
         ease: 'none',
         scrollTrigger: {
-          trigger: '#github-repos-grid',
+          trigger: grid,
           start: 'top 85%',
-          end: 'bottom 40%',
-          scrub: 0.8,
+          end: 'bottom 20%',
+          scrub: 0.6,
         },
       });
     }
