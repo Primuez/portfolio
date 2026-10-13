@@ -146,31 +146,27 @@ function LiquidRepoCard({
   
   const cardRotation = rotations[index % rotations.length];
 
-  const initialAnim = isMobile
-    ? { opacity: 0, y: 25 }
-    : { 
-        opacity: 0, 
-        rotateX: cardRotation.rotateX, 
-        rotateY: cardRotation.rotateY, 
-        rotateZ: cardRotation.rotateZ,
-        x: cardRotation.x, 
-        y: cardRotation.y, 
-        scale: cardRotation.scale,
-        filter: 'blur(8px)'
-      };
+  const initialAnim = { 
+    opacity: 0, 
+    rotateX: cardRotation.rotateX, 
+    rotateY: cardRotation.rotateY, 
+    rotateZ: cardRotation.rotateZ,
+    x: cardRotation.x, 
+    y: cardRotation.y, 
+    scale: cardRotation.scale,
+    filter: 'blur(8px)'
+  };
 
-  const whileInViewAnim = isMobile
-    ? { opacity: 1, y: 0 }
-    : { 
-        opacity: 1, 
-        rotateX: 0, 
-        rotateY: 0, 
-        rotateZ: 0,
-        x: 0, 
-        y: 0, 
-        scale: 1,
-        filter: 'blur(0px)'
-      };
+  const whileInViewAnim = { 
+    opacity: 1, 
+    rotateX: 0, 
+    rotateY: 0, 
+    rotateZ: 0,
+    x: 0, 
+    y: 0, 
+    scale: 1,
+    filter: 'blur(0px)'
+  };
 
   return (
     <motion.a
@@ -180,16 +176,12 @@ function LiquidRepoCard({
       style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
       initial={initialAnim}
       animate={whileInViewAnim}
-      transition={isMobile ? {
-        duration: 0.4,
-        ease: [0.16, 1, 0.3, 1],
-        delay: Math.min(index * 0.05, 0.2),
-      } : { 
+      transition={{
         type: 'spring',
-        stiffness: 55,
-        damping: 15,
-        mass: 1,
-        delay: index * 0.1
+        stiffness: 60,
+        damping: 16,
+        mass: 0.9,
+        delay: Math.min(index * 0.06, 0.3)
       }}
       whileHover={{ scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
       className="bg-panel/60 backdrop-blur-md border border-cyan/10 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden transform-gpu"
@@ -292,48 +284,9 @@ export default function GithubSection() {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="overflow-hidden mt-6"
               >
-                <AnimatePresence mode="wait">
-                  {loadingRepos ? (
-                    <motion.div
-                      key="fetching"
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.5, ease: 'easeInOut' }}
-                      className="flex flex-col items-center justify-center h-32 gap-4"
-                    >
-                      <div className="font-mono text-cyan text-sm tracking-widest animate-pulse">[ FETCHING REPOSITORIES ]</div>
-                      <div className="w-1/2 max-w-sm h-1 bg-cyan/20 overflow-hidden">
-                        <div className="h-full bg-cyan w-1/3 animate-[slide_1.5s_ease-in-out_infinite]"></div>
-                      </div>
-                    </motion.div>
-                  ) : repos.length > 0 ? (
-                    <motion.div
-                      key="repos"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <LiquidRepoGrid repos={repos} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="ratelimit"
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.5, ease: 'easeInOut' }}
-                      className="text-center font-mono text-text-muted p-12 border border-dashed border-cyan/20 rounded-xl bg-panel"
-                    >
-                      <span>[ Rate Limited by GitHub API. View profiles directly: ]</span>
-                      <div className="flex justify-center gap-4 mt-4">
-                        <a href="https://github.com/primuez" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primuez</a>
-                        <a href="https://github.com/primmius" target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline">@primmius</a>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div className="pt-2 pb-4">
+                  <LiquidRepoGrid repos={repos} />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
