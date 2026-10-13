@@ -7,7 +7,7 @@ const CHIPS = ['n8n', 'Mistral', 'Supabase', 'Python', 'Docker', 'Cloudflare', '
 <section id="videos" class="pt-16 md:pt-28 scroll-mt-20">
   <SectionHeader number="04" command="> ./content --media" title="Video Presentations & Playlists" />
 
-  <p class="text-text-muted mt-2 mb-8 max-w-2xl text-base leading-relaxed font-sans">
+  <p class="text-zinc-400 mt-2 mb-8 max-w-2xl text-base leading-relaxed font-sans">
     Detailed walkthroughs of live n8n workflows, multi-agent cognitive layers, and enterprise architecture setups.
   </p>
 
@@ -26,47 +26,93 @@ const CHIPS = ['n8n', 'Mistral', 'Supabase', 'Python', 'Docker', 'Cloudflare', '
     ))}
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div id="video-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8" style="perspective: 1000px;">
     {/* Card 1 */}
-    <div class="p-8 rounded-2xl bg-panel/85 border border-cyan/30 flex flex-col items-center text-center justify-between shadow-[0_0_30px_rgba(0,240,255,0.08)] hover:border-cyan/60 transition-all duration-300">
-      <div class="w-16 h-16 rounded-full bg-cyan/10 border border-cyan/30 flex items-center justify-center mb-6 text-cyan text-2xl">
+    <div class="video-card-left p-8 rounded-2xl bg-[#090d16]/90 border border-cyan/30 flex flex-col items-center text-center justify-between shadow-[0_0_30px_rgba(0,240,255,0.08)] hover:border-cyan/60 transition-all duration-300 transform-gpu">
+      <div class="w-16 h-16 rounded-full bg-cyan/10 border border-cyan/30 flex items-center justify-center mb-6 text-cyan text-2xl shadow-[0_0_15px_rgba(0,240,255,0.2)]">
         📺
       </div>
       <h3 class="text-xl md:text-2xl font-bold text-white mb-3 font-sans">
         Automating Your Business & Playlists
       </h3>
-      <p class="text-text-muted text-xs sm:text-sm leading-relaxed mb-8 max-w-md font-sans">
+      <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-8 max-w-md font-sans">
         Access my curated playlists for complete run-throughs of the autonomous enterprise model, n8n orchestration setups, and advanced system architecture.
       </p>
       <a
         href="https://www.youtube.com/@Primuez/playlists"
         target="_blank"
         rel="noopener noreferrer"
-        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-cyan/10 hover:bg-cyan hover:text-bg border border-cyan text-cyan font-mono text-xs uppercase tracking-widest transition-all duration-300 font-bold shadow-[0_0_20px_rgba(0,240,255,0.2)]"
+        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-cyan/10 hover:bg-cyan hover:text-black border border-cyan text-cyan font-mono text-xs uppercase tracking-widest transition-all duration-300 font-bold shadow-[0_0_20px_rgba(0,240,255,0.2)] cursor-pointer"
       >
         View Playlists &rarr;
       </a>
     </div>
 
     {/* Card 2 */}
-    <div class="p-8 rounded-2xl bg-panel/85 border border-red-500/30 flex flex-col items-center text-center justify-between shadow-[0_0_30px_rgba(239,68,68,0.08)] hover:border-red-500/60 transition-all duration-300">
-      <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-6 text-red-400 text-2xl">
+    <div class="video-card-right p-8 rounded-2xl bg-[#090d16]/90 border border-red-500/30 flex flex-col items-center text-center justify-between shadow-[0_0_30px_rgba(239,68,68,0.08)] hover:border-red-500/60 transition-all duration-300 transform-gpu">
+      <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-6 text-red-400 text-2xl shadow-[0_0_15px_rgba(239,68,68,0.2)]">
         ▶
       </div>
       <h3 class="text-xl md:text-2xl font-bold text-white mb-3 font-sans">
         Subscribe to Primuez on YouTube
       </h3>
-      <p class="text-text-muted text-xs sm:text-sm leading-relaxed mb-8 max-w-md font-sans">
+      <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed mb-8 max-w-md font-sans">
         Subscribe for detailed walkthroughs of n8n automation deployments, multi-agent AI setups, and live build sessions from scratch.
       </p>
       <a
         href="https://youtube.com/@Primuez"
         target="_blank"
         rel="noopener noreferrer"
-        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500 text-red-400 font-mono text-xs uppercase tracking-widest transition-all duration-300 font-bold shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500 text-red-400 font-mono text-xs uppercase tracking-widest transition-all duration-300 font-bold shadow-[0_0_20px_rgba(239,68,68,0.2)] cursor-pointer"
       >
         Watch Channel &rarr;
       </a>
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768;
+
+    if (!prefersReduced && !isMobile) {
+      gsap.fromTo(
+        '.video-card-left',
+        { opacity: 0, rotateY: 14, x: -30 },
+        {
+          opacity: 1,
+          rotateY: 0,
+          x: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#video-cards-grid',
+            start: 'top 85%',
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.video-card-right',
+        { opacity: 0, rotateY: -14, x: 30 },
+        {
+          opacity: 1,
+          rotateY: 0,
+          x: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#video-cards-grid',
+            start: 'top 85%',
+          },
+        }
+      );
+    }
+  }
+</script>

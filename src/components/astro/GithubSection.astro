@@ -48,41 +48,78 @@ const REPOS = [
 <section id="github" class="pt-16 md:pt-28 scroll-mt-20">
   <SectionHeader number="09" command="> gh repo list primuez --public" title="Open Source & Repositories" />
 
-  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+  <p class="text-zinc-400 mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
     Real code in public. Verified implementations across TypeScript, Rust, and Shell.
   </p>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {REPOS.map((repo) => (
+  <div id="github-repos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {REPOS.map((repo, i) => (
       <a
         href={repo.html_url}
         target="_blank"
         rel="noopener noreferrer"
-        class="group p-6 rounded-2xl bg-panel/80 border border-white/10 hover:border-cyan/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
+        class={`github-repo-card github-repo-${i % 2 === 0 ? 'up' : 'down'} group p-6 rounded-2xl bg-[#090d16]/90 border border-white/10 hover:border-cyan/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-xl transform-gpu`}
       >
         <div>
           <div class="flex items-center justify-between mb-3">
             <span class="font-mono text-xs text-cyan font-bold flex items-center gap-1.5">
               <span>📁</span> {repo.name}
             </span>
-            <span class="text-text-muted/60 group-hover:text-cyan transition-colors text-xs">↗</span>
+            <span class="text-zinc-500 group-hover:text-cyan transition-colors text-xs">↗</span>
           </div>
           <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-6 font-sans">
             {repo.description}
           </p>
         </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-white/[0.06] font-mono text-xs text-text-muted">
+        <div class="flex items-center justify-between pt-4 border-t border-white/[0.04] font-mono text-xs text-zinc-400">
           <span class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-cyan"></span>
+            <span class="w-2 h-2 rounded-full bg-cyan inline-block"></span>
             {repo.language}
           </span>
           <div class="flex items-center gap-3">
-            <span>★ {repo.stars}</span>
-            <span>⑂ {repo.forks}</span>
+            <span class="flex items-center gap-1">★ {repo.stars}</span>
+            <span class="flex items-center gap-1">⑂ {repo.forks}</span>
           </div>
         </div>
       </a>
     ))}
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768;
+
+    if (!prefersReduced && !isMobile) {
+      // Parallax alternating float on desktop
+      gsap.to('.github-repo-up', {
+        y: -18,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#github-repos-grid',
+          start: 'top 85%',
+          end: 'bottom 40%',
+          scrub: 0.8,
+        },
+      });
+
+      gsap.to('.github-repo-down', {
+        y: 18,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#github-repos-grid',
+          start: 'top 85%',
+          end: 'bottom 40%',
+          scrub: 0.8,
+        },
+      });
+    }
+  }
+</script>
