@@ -13,37 +13,22 @@ const CATEGORIES = [
         icon: "⚙️",
         title: "n8n Workflow Automation",
         outcome: "Manual processes run themselves",
-        desc: "Eliminate manual lead capture, CRM injection, automated email sequences, GST reconciliation, and WhatsApp outreach to save hours of daily work.",
+        desc: "Eliminate manual lead capture, CRM injection, automated email sequences, GST reconciliation, and WhatsApp outreach.",
         tags: ["n8n", "Webhooks", "API Chains", "Scheduling"]
       },
       {
         icon: "🔗",
         title: "Custom API & Webhook Integration",
         outcome: "Any system connected to any other",
-        desc: "Connect ERPs, CRMs, WhatsApp, payment gateways, and government portals into a unified workflow with robust error handling and fail-safes.",
+        desc: "Connect ERPs, CRMs, WhatsApp, payment gateways, and government portals into a unified workflow with robust fail-safes.",
         tags: ["REST APIs", "Webhooks", "OAuth 2.0", "Fallback Logic"]
       },
       {
         icon: "🏢",
-        title: "Enterprise Architecture (Odoo + IndiaMART + GST)",
+        title: "Enterprise Architecture (Odoo + IndiaMART)",
         outcome: "Automated manufacturing sales pipeline",
-        desc: "Automate manufacturing sales pipelines. Connect IndiaMART leads directly to Odoo CRM and set up daily automated GST reconciliation using n8n.",
-        tags: ["Odoo ERP", "n8n", "IndiaMART", "Enterprise Architecture"],
-        honestLabel: "Built to order — architecture ready"
-      },
-      {
-        icon: "💼",
-        title: "CA Automation & Compliance Suite",
-        outcome: "Automated firm operations & filing",
-        desc: "Automate CA firm efficiency with AI Legal Advisor, Tax Advisor Agent, and Invoice Generator tools for frictionless compliance.",
-        tags: ["Taxation", "AI Legal", "Invoice Gen", "Compliance"]
-      },
-      {
-        icon: "💬",
-        title: "AI WhatsApp Business Agent",
-        outcome: "24/7 lead qualification & follow-up",
-        desc: "Engage leads and automate customer follow-ups 24/7 via semi-autonomous conversational agents featuring auto-token refresh lifecycles.",
-        tags: ["WhatsApp API", "Evolution API", "n8n", "Lead Nurture"]
+        desc: "Connect IndiaMART leads directly to Odoo CRM with automated GST reconciliation workflows using n8n.",
+        tags: ["Odoo ERP", "n8n", "IndiaMART", "Enterprise Architecture"]
       }
     ]
   },
@@ -58,21 +43,21 @@ const CATEGORIES = [
         icon: "🎙️",
         title: "Voice AI Customer Agents",
         outcome: "Voice agent that listens, reasons & acts",
-        desc: "Execute complex tasks hands-free with voice-first agents that listen, reason via LLMs, and take real-time actions across your internal apps.",
+        desc: "Execute complex tasks hands-free with voice-first agents that listen, reason via LLMs, and take real-time actions.",
         tags: ["Voice AI", "LLM Agents", "Real-Time Action", "n8n"]
       },
       {
         icon: "⚖️",
         title: "Tax & Legal Reasoning Agents",
         outcome: "Autonomous legal & tax compliance analysis",
-        desc: "Automated reasoning engines that parse raw financial/legal data, forecast liabilities, and draft compliance documents with strict precision.",
+        desc: "Automated reasoning engines that parse raw financial data, forecast liabilities, and draft compliance documents.",
         tags: ["Taxation AI", "RAG", "Legal Reasoning", "Document Synthesis"]
       },
       {
         icon: "🧠",
         title: "Multi-Model AI Orchestrator",
         outcome: "Zero-downtime model switching",
-        desc: "Orchestrate local LLMs (DeepSeek-R1, LLaMA3, Qwen) with intelligent fallback logic that switches models automatically if primary providers fail.",
+        desc: "Orchestrate local LLMs with intelligent fallback logic that switches models automatically if primary providers fail.",
         tags: ["Ollama", "Multi-Model", "Auto-Fallback", "Local LLM"]
       }
     ]
@@ -88,14 +73,14 @@ const CATEGORIES = [
         icon: "🎵",
         title: "AI Music Generation Pipelines",
         outcome: "Original audio tracks, zero licensing fees",
-        desc: "Generate original background music, jingles, and brand tracks on demand. Suno-powered pipelines that are batch-ready and copyright-clean.",
+        desc: "Generate original background music, jingles, and brand tracks on demand. Suno-powered pipelines that are batch-ready.",
         tags: ["Suno AI", "AI Audio", "Batch Processing", "Brand Audio"]
       },
       {
         icon: "🎬",
         title: "AI Video Ad & Clip Generator",
         outcome: "High-converting UGC ad creatives",
-        desc: "Produce script-to-video ads, product demos, and social content automatically without studio production crews or expensive video teams.",
+        desc: "Produce script-to-video ads, product demos, and social content automatically without studio production crews.",
         tags: ["UGC Ads", "AI Video", "Script-to-Video", "Content Automation"]
       }
     ]
@@ -111,14 +96,14 @@ const CATEGORIES = [
         icon: "🚀",
         title: "Full-Stack SaaS MVP Build",
         outcome: "Production software in 4-6 weeks",
-        desc: "Launch your custom SaaS product globally with zero server maintenance overhead. Built on Cloudflare Workers edge runtime for maximum speed.",
+        desc: "Launch your custom SaaS product globally with zero server maintenance overhead. Built on Cloudflare Workers edge runtime.",
         tags: ["Next.js", "Hono", "Cloudflare Workers", "SaaS MVP"]
       },
       {
         icon: "📈",
         title: "GhostRank SEO Automation Engine",
         outcome: "Hands-off organic search domination",
-        desc: "Self-sustaining search traffic engine that polls keywords, generates GEO-compliant landing pages via DeepSeek/Gemini, and pushes to CDN.",
+        desc: "Self-sustaining search traffic engine that polls keywords, generates GEO-compliant landing pages via LLMs, and pushes to CDN.",
         tags: ["Programmatic SEO", "GEO Compliance", "Git Automation", "Linux VPS"]
       }
     ]
@@ -126,98 +111,116 @@ const CATEGORIES = [
 ];
 ---
 
-<section id="services" class="pt-16 md:pt-28 scroll-mt-20">
-  <SectionHeader number="03" command="> systemctl list-units --type=service" title="Services & Capabilities" />
+<section id="services" class="pt-20 md:pt-32 pb-16 scroll-mt-20 overflow-hidden services-horizontal-section">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+    <SectionHeader number="03" command="> systemctl list-units --type=service" title="Services & Capabilities" />
 
-  <p class="text-zinc-400 mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
-    Production-grade automation blueprints and autonomous digital agents engineered for real business outcomes.
-  </p>
+    <p class="text-zinc-400 mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+      Production-grade automation blueprints and autonomous digital agents engineered for real business outcomes.
+    </p>
+  </div>
 
-  <div class="space-y-8">
-    {CATEGORIES.map((cat, idx) => (
-      <div class={`service-blade service-blade-${idx} border border-white/10 rounded-2xl bg-[#090b16]/90 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/40 shadow-xl transform-gpu`}>
-        {/* Category Header Blade */}
-        <div class="p-6 md:p-7 border-b border-white/[0.06] bg-white/[0.01] flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-3 mb-1.5">
-              <span class="font-mono text-cyan text-[10px] tracking-widest uppercase font-bold">{cat.slotNumber}</span>
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">{cat.statusText}</span>
+  {/* Pinned Horizontal Track Container (Horizontal scrub on desktop, clean vertical stack on mobile) */}
+  <div class="services-track-wrapper relative w-full overflow-hidden">
+    <div class="services-track flex flex-col lg:flex-row gap-6 px-4 sm:px-6 md:px-12 lg:w-max">
+      {CATEGORIES.map((cat, idx) => (
+        <div class={`service-blade service-blade-${idx} w-full lg:w-[480px] shrink-0 p-1.5 rounded-[2rem] bg-gradient-to-b from-white/10 via-white/[0.03] to-transparent border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] backdrop-blur-xl transition-all duration-300 hover:border-cyan/40`}>
+          <div class="rounded-[calc(2rem-0.375rem)] bg-[#070b12]/95 p-6 sm:p-7 flex flex-col justify-between h-full">
+            {/* Blade Header */}
+            <div class="border-b border-white/[0.08] pb-5 mb-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-mono text-cyan text-[10px] tracking-widest uppercase bg-cyan/10 border border-cyan/25 px-2.5 py-0.5 rounded-full font-bold">
+                  {cat.slotNumber}
+                </span>
+                <span class="flex items-center gap-1.5 font-mono text-[9px] text-emerald-400">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  {cat.statusText}
+                </span>
+              </div>
+              <h3 class="text-xl font-bold text-white tracking-wide font-sans mt-2">
+                {cat.title}
+              </h3>
+              <p class="text-zinc-400 text-xs mt-1 leading-relaxed font-sans">
+                {cat.tagline}
+              </p>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold text-white tracking-wide font-sans">{cat.title}</h3>
-            <p class="text-zinc-400 text-xs md:text-sm mt-1 font-sans">{cat.tagline}</p>
+
+            {/* Sub-services Stack inside this Blade */}
+            <div class="space-y-3.5 mb-6">
+              {cat.services.map((item) => (
+                <div class="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:border-cyan/30 hover:bg-white/[0.04] transition-all">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-base">{item.icon}</span>
+                    <h4 class="text-sm font-bold text-white font-sans">{item.title}</h4>
+                  </div>
+                  <p class="text-cyan/90 text-[11px] font-mono mb-1">&gt; {item.outcome}</p>
+                  <p class="text-zinc-400 text-xs leading-relaxed font-sans mb-2">{item.desc}</p>
+                  <div class="flex flex-wrap gap-1">
+                    {item.tags.map((tag) => (
+                      <span class="text-[9px] font-mono text-zinc-400 bg-black/40 px-2 py-0.5 rounded border border-white/[0.03]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Request Build Nested CTA */}
+            <button
+              type="button"
+              onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: 'form' }))"
+              class="w-full py-3 px-4 rounded-xl bg-cyan/15 hover:bg-cyan hover:text-black border border-cyan/40 text-cyan text-xs font-mono uppercase tracking-wider font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(0,240,255,0.15)] group"
+            >
+              <span>Request System Build</span>
+              <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+            </button>
           </div>
-          <button
-            type="button"
-            onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: 'form' }))"
-            class="self-start md:self-center px-4 py-2.5 bg-cyan/10 hover:bg-cyan hover:text-black border border-cyan/40 text-cyan text-xs font-mono uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer shrink-0 font-bold shadow-[0_0_15px_rgba(0,240,255,0.15)]"
-          >
-            <span>Request Build</span>
-            <span>&rarr;</span>
-          </button>
         </div>
-
-        {/* Services Grid */}
-        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {cat.services.map((item) => (
-            <div class="service-card group relative rounded-xl bg-[#0e1320]/80 border border-white/[0.06] p-5 hover:border-cyan/40 hover:bg-[#121929] transition-all duration-300 flex flex-col hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(0,240,255,0.08)]">
-              <div class="flex items-start justify-between mb-3">
-                <span class="text-2xl">{item.icon}</span>
-                {item.honestLabel && (
-                  <span class="text-[9px] font-mono text-amber bg-amber/10 border border-amber/30 px-2 py-0.5 rounded uppercase">
-                    {item.honestLabel}
-                  </span>
-                )}
-              </div>
-              <h4 class="text-base font-bold text-white mb-1.5 font-sans group-hover:text-cyan transition-colors">
-                {item.title}
-              </h4>
-              <p class="text-cyan/85 text-xs font-mono mb-2">
-                &gt; {item.outcome}
-              </p>
-              <p class="text-zinc-400 text-xs leading-relaxed mb-4 flex-1 font-sans">
-                {item.desc}
-              </p>
-              <div class="flex flex-wrap gap-1.5 mt-auto pt-2 border-t border-white/[0.04]">
-                {item.tags.map((tag) => (
-                  <span class="text-[9px] font-mono text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 </section>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { shouldReduceMotion } from '../../lib/motion';
 
-  if (typeof window !== 'undefined') {
+  if (!shouldReduceMotion()) {
     gsap.registerPlugin(ScrollTrigger);
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!prefersReduced) {
-      document.querySelectorAll('.service-blade').forEach((blade) => {
-        gsap.fromTo(
-          blade,
-          { opacity: 0, y: 35, scale: 0.98 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.75,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: blade,
-              start: 'top 85%',
-            },
-          }
-        );
+    const section = document.querySelector('.services-horizontal-section');
+    const track = document.querySelector('.services-track');
+
+    if (section && track && window.innerWidth >= 1024) {
+      // Pinned Horizontal Scrub for Desktop
+      const totalWidth = track.scrollWidth - window.innerWidth + 80;
+
+      gsap.to(track, {
+        x: () => -totalWidth,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          scrub: 1,
+          start: 'top 15%',
+          end: () => `+=${totalWidth}`,
+          invalidateOnRefresh: true,
+        },
+      });
+    } else if (section) {
+      // Mobile smooth vertical entry animation
+      gsap.from('.service-blade', {
+        y: 40,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+        },
       });
     }
   }
