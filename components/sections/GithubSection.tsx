@@ -124,7 +124,6 @@ function LiquidRepoCard({
   });
   const scaleY = useTransform(velocity, (v) => isMobile ? 1 : 1 + Math.min(0.08, Math.abs(v) / 8000));
   const scaleX = useTransform(velocity, (v) => isMobile ? 1 : 1 - Math.min(0.04, Math.abs(v) / 16000));
-  const filter = useTransform(velocity, (v) => isMobile ? 'blur(0px)' : `blur(${Math.min(2, Math.abs(v) / 1000)}px)`);
   const rotateZ = useTransform(velocity, (v) => {
     if (isMobile) return '0deg';
     const raw = (v / 1800) * colSign;
@@ -153,8 +152,7 @@ function LiquidRepoCard({
     rotateZ: cardRotation.rotateZ,
     x: cardRotation.x, 
     y: cardRotation.y, 
-    scale: cardRotation.scale,
-    filter: 'blur(8px)'
+    scale: cardRotation.scale
   };
 
   const whileInViewAnim = { 
@@ -164,8 +162,7 @@ function LiquidRepoCard({
     rotateZ: 0,
     x: 0, 
     y: 0, 
-    scale: 1,
-    filter: 'blur(0px)'
+    scale: 1
   };
 
   return (
@@ -173,7 +170,7 @@ function LiquidRepoCard({
       href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
-      style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
+      style={isMobile ? { willChange: 'transform, opacity' } : { skewY, skewX, scaleY, scaleX, rotateZ, transformOrigin: 'center center' }}
       initial={initialAnim}
       animate={whileInViewAnim}
       transition={{
