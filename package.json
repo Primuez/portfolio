@@ -10,7 +10,7 @@
     "build:cloudflare": "astro build",
     "deploy:cloudflare": "wrangler deploy",
     "build:next": "next build",
-    "postinstall": "node -e \"const fs = require('fs'); if (fs.existsSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs')) { fs.mkdirSync('public', { recursive: true }); fs.copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs', 'public/pdf.worker.min.mjs'); }\""
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
