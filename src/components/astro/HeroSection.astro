@@ -2,47 +2,176 @@
 import HeroInteractive from '../islands/HeroInteractive';
 ---
 
-<section id="hero" class="min-h-[100dvh] flex flex-col justify-center pt-24 md:pt-20 pb-12 relative overflow-hidden">
+<section id="hero" class="min-h-[100dvh] flex flex-col justify-center pt-24 md:pt-28 pb-16 relative overflow-hidden">
   {/* Cyber radial glow background */}
-  <div class="absolute top-1/3 -left-32 w-96 h-96 bg-cyan/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-  <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber/5 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+  <div class="absolute top-1/4 -left-32 w-96 h-96 bg-cyan/15 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+  <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber/10 rounded-full blur-[160px] pointer-events-none -z-10"></div>
 
-  <div class="max-w-3xl relative z-10">
-    {/* Micro banner */}
-    <a
-      href="#process"
-      class="inline-flex items-center gap-2 font-mono text-amber/90 text-xs md:text-sm mb-5 hover:text-amber transition-colors duration-200 py-1"
-    >
-      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span class="opacity-90">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
-    </a>
+  {/* Main 2-column Asymmetrical Split: Left Pitch & Controls / Right SVG Cyber Circuit */}
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10 w-full">
+    
+    {/* Left Column (Hero Content) */}
+    <div class="lg:col-span-7 flex flex-col justify-center hero-text-col">
+      {/* Micro Eyebrow Badge (impeccable + high-end-visual-design) */}
+      <div class="inline-flex items-center gap-2.5 px-3 py-1 rounded-full border border-cyan/30 bg-cyan/5 w-max mb-5 backdrop-blur-md">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono text-[11px] tracking-widest uppercase text-cyan/90 font-medium">AUTONOMOUS SYSTEMS // 2026 ACTIVE</span>
+      </div>
 
-    {/* Main Headline with Split-text entry */}
-    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] md:leading-[1.12] mb-5 tracking-tight font-sans">
-      I Build Autonomous Systems <br />
-      <span class="shader-text-iridescent font-bold">That Give You Your Time Back.</span>
-    </h1>
+      {/* Main Headline */}
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.08] mb-5 tracking-tight font-sans text-white">
+        I Build Autonomous Systems <br />
+        <span class="shader-text-iridescent font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan via-white to-amber">
+          That Give You Your Time Back.
+        </span>
+      </h1>
 
-    {/* Subtitle */}
-    <p class="text-zinc-300 text-base sm:text-lg lg:text-xl max-w-2xl mb-4 leading-relaxed font-sans text-balance">
-      From AI agents that handle tax and legal queries to n8n pipelines that eliminate manual data entry — systems built and running.
-    </p>
+      {/* Subtitle */}
+      <p class="text-zinc-300 text-base sm:text-lg max-w-2xl mb-4 leading-relaxed font-sans text-balance">
+        From cognitive AI agents that query compliance frameworks to 24/7 n8n enterprise workflows that eliminate manual friction — production-grade, bare-metal autonomy.
+      </p>
 
-    <div class="font-mono text-xs text-amber/95 mb-6 border-l-2 border-amber/50 pl-3 leading-relaxed max-w-2xl bg-amber/5 py-1.5 rounded-r">
-      InkTwin and PrimuezSure — live SaaS products built and running. Tax Advisor and Legal Advisor agents — deployed and working.
+      {/* Proof Quote Bar */}
+      <div class="font-mono text-xs text-amber mb-6 border-l-2 border-amber/60 pl-3.5 py-1.5 leading-relaxed max-w-xl bg-amber/5 rounded-r">
+        InkTwin and PrimuezSure — live SaaS deployed and running. Custom ERP & Tax Agents operating 24/7.
+      </div>
+
+      {/* Interactive Hero Controls */}
+      <HeroInteractive client:load />
+
+      {/* Social Proof Badges with Nested Doppelrand */}
+      <div class="flex flex-wrap gap-3 font-mono text-xs mt-2">
+        <div class="p-1 rounded-xl bg-white/[0.03] border border-white/10 shadow-sm">
+          <div class="bg-[#090d16] px-3.5 py-1.5 rounded-[calc(0.75rem-0.25rem)] text-zinc-300 flex items-center gap-2">
+            <span class="text-amber">⚙</span> 10+ Businesses Automated
+          </div>
+        </div>
+        <div class="p-1 rounded-xl bg-white/[0.03] border border-white/10 shadow-sm">
+          <div class="bg-[#090d16] px-3.5 py-1.5 rounded-[calc(0.75rem-0.25rem)] text-zinc-300 flex items-center gap-2">
+            <span class="text-cyan">⚡</span> 10+ Systems Running 24/7
+          </div>
+        </div>
+      </div>
     </div>
 
-    {/* Interactive Hero Island (Dynamic Phrase Matrix, CTAs, Direct Call booking) */}
-    <HeroInteractive client:load />
+    {/* Right Column: Dynamic SVG Cyber Circuit (Zero WebGL, Pure SVG & CSS/GSAP Animation) */}
+    <div class="lg:col-span-5 relative flex items-center justify-center hero-circuit-container mt-6 lg:mt-0">
+      <div class="relative w-full max-w-[460px] aspect-square rounded-[2rem] p-1.5 bg-gradient-to-b from-cyan/20 via-white/5 to-amber/10 border border-white/10 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden">
+        
+        {/* Machine Core Container */}
+        <div class="w-full h-full rounded-[calc(2rem-0.375rem)] bg-[#070b12]/95 p-6 flex flex-col justify-between relative overflow-hidden">
+          
+          {/* Header HUD */}
+          <div class="flex items-center justify-between font-mono text-[10px] text-zinc-400 border-b border-white/10 pb-3">
+            <span class="flex items-center gap-1.5 text-cyan font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan animate-ping"></span>
+              CORE_ROUTER // BUS_01
+            </span>
+            <span class="text-emerald-400 font-semibold">STATUS: NOMINAL</span>
+          </div>
 
-    {/* Social Proof Badges */}
-    <div class="flex flex-wrap gap-3 font-mono text-xs">
-      <span class="bg-[#090d16]/90 border border-white/10 text-zinc-300 px-3.5 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-        <span class="text-amber">⚙</span> 10+ Businesses Automated
-      </span>
-      <span class="bg-[#090d16]/90 border border-white/10 text-zinc-300 px-3.5 py-2 rounded-lg flex items-center gap-2 shadow-sm">
-        <span class="text-cyan">⚡</span> 10+ Systems Running 24/7
-      </span>
+          {/* Dynamic SVG Schematic */}
+          <div class="relative flex-1 flex items-center justify-center my-4">
+            <svg id="hero-circuit-svg" viewBox="0 0 340 340" class="w-full h-full max-w-[300px] text-cyan" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Outer boundary circles */}
+              <circle cx="170" cy="170" r="140" stroke="currentColor" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="6 6" class="circuit-outer-ring" />
+              <circle cx="170" cy="170" r="110" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5" />
+              
+              {/* Circuit Interconnect traces */}
+              <path class="circuit-trace" d="M170 30 V110 M170 230 V310 M30 170 H110 M230 170 H310" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path class="circuit-trace" d="M70 70 L115 115 M270 270 L225 225 M70 270 L115 225 M270 70 L225 115" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" />
+
+              {/* Orbital Nodes */}
+              <circle cx="170" cy="30" r="6" fill="#070b12" stroke="#00f0ff" stroke-width="2" />
+              <circle cx="310" cy="170" r="6" fill="#070b12" stroke="#fbbf24" stroke-width="2" />
+              <circle cx="170" cy="310" r="6" fill="#070b12" stroke="#10b981" stroke-width="2" />
+              <circle cx="30" cy="170" r="6" fill="#070b12" stroke="#a78bfa" stroke-width="2" />
+
+              {/* Central Power Core */}
+              <circle cx="170" cy="170" r="45" fill="rgba(0, 240, 255, 0.06)" stroke="currentColor" stroke-width="2" class="circuit-core" />
+              <circle cx="170" cy="170" r="22" fill="#00f0ff" fill-opacity="0.2" stroke="#00f0ff" stroke-width="2" />
+              
+              {/* Core Icon / Monogram */}
+              <text x="170" y="176" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="16" font-weight="bold" letter-spacing="2">PRM</text>
+            </svg>
+          </div>
+
+          {/* Footer Telemetry strip */}
+          <div class="bg-black/60 rounded-xl p-3 border border-white/5 font-mono text-[10px] space-y-1">
+            <div class="flex justify-between text-zinc-300">
+              <span>ACTIVE_RUNTIME:</span>
+              <span class="text-cyan font-bold">HERMES // CONTAINER_LINUX</span>
+            </div>
+            <div class="flex justify-between text-zinc-300">
+              <span>LATENCY_REDUCTION:</span>
+              <span class="text-amber font-bold">~3.2 HRS / DAY</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { shouldReduceMotion } from '../../lib/motion';
+
+  if (!shouldReduceMotion()) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const heroSection = document.querySelector('#hero');
+    const heroText = document.querySelector('.hero-text-col');
+    const heroCircuit = document.querySelector('.hero-circuit-container');
+    const circuitTraces = document.querySelectorAll('.circuit-trace');
+    const outerRing = document.querySelector('.circuit-outer-ring');
+
+    if (heroSection) {
+      // 1. Initial draw-on animation of SVG traces
+      gsap.from(circuitTraces, {
+        strokeDashoffset: 100,
+        strokeDasharray: 100,
+        duration: 1.6,
+        stagger: 0.15,
+        ease: 'power3.out'
+      });
+
+      if (outerRing) {
+        gsap.to(outerRing, {
+          rotation: 360,
+          transformOrigin: '170px 170px',
+          duration: 35,
+          repeat: -1,
+          ease: 'none'
+        });
+      }
+
+      // 2. Parallax fade-out scroll animation on scroll away
+      gsap.to(heroText, {
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        },
+        y: -60,
+        opacity: 0.2,
+        ease: 'none'
+      });
+
+      gsap.to(heroCircuit, {
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        },
+        y: -100,
+        scale: 0.88,
+        opacity: 0.1,
+        ease: 'none'
+      });
+    }
+  }
+</script>
