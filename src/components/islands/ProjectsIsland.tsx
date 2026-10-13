@@ -118,12 +118,8 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
 ];
 
 export default function ProjectsIsland() {
-  // Categories open by default on mobile / desktop for immediate access
-  const [openCategories, setOpenCategories] = useState<{ [key: number]: boolean }>({
-    0: true,
-    1: true,
-    2: true,
-  });
+  // All categories strictly default to compact on initial load at all viewports (zero flash)
+  const [openCategories, setOpenCategories] = useState<{ [key: number]: boolean }>({});
 
   const toggleCategory = (idx: number) => {
     setOpenCategories((prev) => ({
@@ -143,7 +139,10 @@ export default function ProjectsIsland() {
         return (
           <div
             key={idx}
-            className="border border-white/10 rounded-2xl bg-[#090b11] backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/30 shadow-xl"
+            style={{
+              top: `${88 + idx * 16}px`,
+            }}
+            className="sticky border border-white/10 rounded-2xl bg-[#090b16]/95 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/40 shadow-2xl mb-8 transform-gpu"
           >
             <button
               type="button"
