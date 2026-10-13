@@ -11,7 +11,9 @@ import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { UIProvider, useUI } from '@/lib/contexts/UIContext';
 import { MobileStickyCtA } from '@/components/MobileStickyCtA';
 import { trackEvent } from '@/lib/analytics';
-import ModalsSection from '@/components/sections/ModalsSection';
+import dynamic from 'next/dynamic';
+
+const ModalsSection = dynamic(() => import('@/components/sections/ModalsSection'), { ssr: false });
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();

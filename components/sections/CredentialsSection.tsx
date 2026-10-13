@@ -43,6 +43,14 @@ function RubiksCredentials({ children }: { children: React.ReactNode }) {
     offset: ['start end', 'start 25%'],
   });
 
+  if (isMobile) {
+    return (
+      <div className="relative w-full max-w-5xl mx-auto mt-8 md:mt-12">
+        {children}
+      </div>
+    );
+  }
+
   const cols = [
     { dir: -1, speed: 1.4, delay: 0.00, label: 'RESOLVING' },
     { dir:  1, speed: 1.0, delay: 0.06, label: 'SHUFFLE' },
@@ -56,11 +64,11 @@ function RubiksCredentials({ children }: { children: React.ReactNode }) {
   return (
     <div ref={ref} className="relative w-full max-w-5xl mx-auto mt-12">
       {children}
-        <div className="absolute inset-0 pointer-events-none flex z-20 overflow-hidden rounded-md">
-          {cols.map((c, i) => (
-            <RubiksColumn key={i} progress={scrollYProgress} {...c} />
-          ))}
-        </div>
+      <div className="absolute inset-0 pointer-events-none flex z-20 overflow-hidden rounded-md">
+        {cols.map((c, i) => (
+          <RubiksColumn key={i} progress={scrollYProgress} {...c} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -116,7 +124,7 @@ function RubiksColumn({
 }
 
 export default function CredentialsSection() {
-  const { setCertData, setModalType } = useUI();
+  const { setCertData, setModalType, isMobile } = useUI();
   const openCert = (data: { title: string; issuer: string; date: string; id: string; pdfUrl?: string }) => {
     setCertData(data);
     setModalType('cert');
@@ -127,10 +135,10 @@ export default function CredentialsSection() {
       id="credentials" 
       aria-labelledby="creds-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
+      initial={isMobile ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? "80px" : "0px" }}
     >
       <SectionHeader number="06" command="> ./credentials --verified" title="Credentials & Hackathons" />
       <h2 id="creds-heading" className="sr-only">What certifications and hackathon awards has Primuez earned in AI and automation?</h2>

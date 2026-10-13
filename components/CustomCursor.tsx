@@ -83,8 +83,6 @@ export function CustomCursor() {
       style.id = 'custom-cursor-style';
       style.textContent = '*, *::before, *::after { cursor: none !important; }';
       document.head.appendChild(style);
-    } else {
-      document.addEventListener('touchstart', handleTouch, { passive: true });
     }
 
     return () => {
@@ -92,36 +90,15 @@ export function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseover', handleHoverCheck);
-      document.removeEventListener('touchstart', handleTouch);
       document.documentElement.style.cursor = '';
       const existingStyle = document.getElementById('custom-cursor-style');
       if (existingStyle) existingStyle.remove();
     };
   }, [isMobile, mouseX, mouseY]);
 
-  // Mobile: only show ripples
+  // Mobile: completely bypass custom cursor and ripples for native touch responsiveness
   if (isMobile) {
-    return (
-      <div className="fixed inset-0 z-[9999] pointer-events-none" aria-hidden="true">
-        <AnimatePresence>
-          {ripples.map(ripple => (
-            <motion.div
-              key={ripple.id}
-              initial={{ scale: 0, opacity: 0.7 }}
-              animate={{ scale: 2.5, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute w-12 h-12 rounded-full border border-cyan/60 pointer-events-none"
-              style={{
-                left: ripple.x - 24,
-                top: ripple.y - 24,
-                boxShadow: '0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1)',
-              }}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-    );
+    return null;
   }
 
   // Desktop: animated cursor system

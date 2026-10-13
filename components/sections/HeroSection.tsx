@@ -29,6 +29,9 @@ export const HeroSection: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const duration = isMobile ? 0.25 : 0.7;
+  const delayStep = isMobile ? 0 : 0.1;
+
   return (
     <section id="hero" className="min-h-[100dvh] flex flex-col justify-center pt-20 md:pt-12 pb-8 md:pb-0 relative overflow-hidden -mx-4 sm:-mx-6 md:-mx-12 px-4 sm:px-6 md:px-12">
       {/* Interactive Hex Path shader — glows on cursor hover (desktop only) — full-bleed center aligned */}
@@ -38,9 +41,9 @@ export const HeroSection: React.FC = () => {
       <div className="max-w-3xl relative z-10">
         <motion.a
           href="#process"
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration, delay: 0, ease: [0.16, 1, 0.3, 1] }}
           className="font-mono text-amber/80 text-xs md:text-sm mb-4 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-2 md:py-0"
         >
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -48,9 +51,9 @@ export const HeroSection: React.FC = () => {
         </motion.a>
         
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration, delay: delayStep * 1, ease: [0.16, 1, 0.3, 1] }}
           className="h-8 md:h-10 mb-3 md:mb-4 font-mono text-xl md:text-2xl text-cyan flex items-center overflow-hidden"
         >
           <span className="opacity-70 mr-2 text-text-muted select-none">&gt;</span>
@@ -60,7 +63,7 @@ export const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               {phrases[phraseIndex]}
             </motion.span>
@@ -68,9 +71,9 @@ export const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration, delay: delayStep * 2, ease: [0.16, 1, 0.3, 1] }}
           className="text-[2.25rem] md:text-5xl lg:text-6xl font-bold leading-[1.08] md:leading-[1.1] mb-5 md:mb-6 tracking-tight"
         >
           <LiquidGlassTitle>
@@ -80,27 +83,27 @@ export const HeroSection: React.FC = () => {
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration, delay: delayStep * 3, ease: [0.16, 1, 0.3, 1] }}
           className="text-text-muted text-base md:text-lg lg:text-xl max-w-2xl mb-4 leading-relaxed font-sans text-balance"
         >
           From AI agents that handle tax and legal queries to n8n pipelines that eliminate manual data entry — systems built and running.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration, delay: delayStep * 3.5, ease: [0.16, 1, 0.3, 1] }}
           className="font-mono text-xs text-amber/95 mb-6 md:mb-8 border-l border-amber/40 pl-3 leading-relaxed max-w-2xl"
         >
           InkTwin and PrimuezSure — live SaaS products built and running. Tax Advisor and Legal Advisor agents — deployed and working.
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={isMobile ? false : { opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration, delay: delayStep * 4, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4"
         >
           <a 

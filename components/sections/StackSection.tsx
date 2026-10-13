@@ -109,11 +109,11 @@ function StackGroup({ title, items, border, isMobile = false, y = 0 }: StackGrou
         {/* List of tools with staggered fade-in */}
         <motion.ul
           className="space-y-4 block z-20 relative"
-          initial="hidden"
+          initial={isMobile ? false : "hidden"}
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: isMobile ? "80px" : "-20px" }}
           variants={{
-            visible: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } },
+            visible: { transition: { staggerChildren: isMobile ? 0.02 : 0.05, delayChildren: isMobile ? 0 : 0.05 } },
             hidden: {},
           }}
         >
@@ -421,10 +421,10 @@ export default function StackSection() {
       id="stack" 
       aria-labelledby="stack-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
+      initial={isMobile ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? "80px" : "0px" }}
     >
       <SectionHeader number="05" command="> ./stack --verbose" title="Technical Arsenal" />
       <h2 id="stack-heading" className="sr-only">What tools and technologies does Primuez use for AI automation and SaaS development?</h2>

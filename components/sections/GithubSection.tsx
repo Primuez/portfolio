@@ -182,10 +182,10 @@ function LiquidRepoCard({
       style={isMobile ? {} : { skewY, skewX, scaleY, scaleX, filter, rotateZ, transformOrigin: 'center center' }}
       initial={false}
       whileInView={whileInViewAnim}
-      viewport={{ once: true, margin: isMobile ? '-10px' : '-40px' }}
+      viewport={{ once: true, margin: isMobile ? '80px' : '-40px' }}
       transition={isMobile ? {
-        duration: 0.35,
-        delay: index * 0.05,
+        duration: 0.2,
+        delay: 0,
         ease: 'easeOut',
       } : { 
         type: 'spring',
@@ -194,7 +194,7 @@ function LiquidRepoCard({
         mass: 1,
         delay: index * 0.15
       }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+      whileHover={isMobile ? undefined : { scale: 1.02, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
       className={`border border-cyan/15 p-6 rounded-xl hover:border-cyan/50 hover:bg-cyan/5 transition-colors group block shadow-lg flex flex-col justify-between min-h-[160px] will-change-transform liquid-glass-card relative overflow-hidden ${
         isMobile ? 'bg-panel/90' : 'bg-panel/60 backdrop-blur-md'
       }`}

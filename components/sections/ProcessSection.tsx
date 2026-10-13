@@ -5,6 +5,7 @@ import { motion, useTransform, useInView, useSpring } from 'motion/react';
 import { useScrollTarget } from '@/hooks/use-scroll-target';
 import { HowWeWorkBackground } from '@/components/HowWeWorkBackground';
 import { SectionHeader } from '@/components/SectionHeader';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const STEPS = [
   { step: '01', title: 'Discovery', desc: "You describe your goal or the process that's slowing you down.", icon: '◎' },
@@ -15,23 +16,21 @@ const STEPS = [
 ];
 
 function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title: string; desc: string; icon: string; isLast?: boolean }) {
+  const isMobile = useIsMobile();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: '-30% 0px -30% 0px', once: false });
+  const inView = useInView(ref, { margin: isMobile ? '50px 0px 50px 0px' : '-20% 0px -20% 0px', once: isMobile });
+
+  const active = isMobile || inView;
 
   return (
     <div ref={ref} className="relative flex items-start gap-0">
       {/* ── Mobile left track: badge only (line is in the parent container) ── */}
       <div className="flex md:hidden flex-col items-center mr-4 mt-0.5 shrink-0">
-        <motion.div
-          animate={inView
-            ? { backgroundColor: 'rgba(0,240,255,0.15)', borderColor: 'rgba(0,240,255,0.8)', color: '#00f0ff', boxShadow: '0 0 12px rgba(0,240,255,0.4)' }
-            : { backgroundColor: 'rgba(9,11,17,1)', borderColor: 'rgba(113,113,122,0.4)', color: '#71717a', boxShadow: 'none' }
-          }
-          transition={{ duration: 0.4 }}
-          className="w-7 h-7 rounded-full border-2 flex items-center justify-center font-mono text-[9px] font-bold z-10 select-none bg-[#090b11]"
+        <div
+          className="w-7 h-7 rounded-full border-2 flex items-center justify-center font-mono text-[9px] font-bold z-10 select-none bg-[#090b11] border-cyan/60 text-cyan shadow-[0_0_8px_rgba(0,240,255,0.3)]"
         >
           {step}
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Desktop spine dot ── */}
@@ -49,33 +48,31 @@ function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title:
 
       {/* Card */}
       <motion.div
-        className="ml-0 md:ml-20 w-full p-5 border rounded-lg bg-[#0a0f1a]/70 backdrop-blur-sm cursor-default transition-all duration-500"
-        initial={{ opacity: 0.35, x: 8 }}
-        animate={{
+        className={`ml-0 md:ml-20 w-full p-5 border rounded-lg ${isMobile ? 'bg-panel/90 border-white/[0.08]' : 'bg-[#0a0f1a]/70 backdrop-blur-sm'} cursor-default transition-all duration-300`}
+        initial={isMobile ? false : { opacity: 0.35, x: 8 }}
+        animate={isMobile ? { opacity: 1, x: 0 } : {
           opacity: inView ? 1 : 0.35,
           x: inView ? 0 : 8,
           borderColor: inView ? 'rgba(0, 240, 255, 0.3)' : 'rgba(255, 255, 255, 0.06)',
           boxShadow: inView ? '0 0 25px rgba(0, 240, 255, 0.06)' : 'none'
         }}
-        whileHover={{
+        whileHover={isMobile ? undefined : {
           scale: 1.015,
           borderColor: 'rgba(0, 240, 255, 0.5)',
           boxShadow: '0 8px 30px rgba(0, 240, 255, 0.12)'
         }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-start gap-3">
-          <motion.span
-            animate={inView ? { scale: 1.15, filter: 'drop-shadow(0 0 6px rgba(0,240,255,0.5))' } : { scale: 1, filter: 'none' }}
-            transition={{ duration: 0.4 }}
+          <span
             className="text-lg leading-none mt-0.5 select-none shrink-0"
           >
             {icon}
-          </motion.span>
+          </span>
           <div>
             <span className="font-mono text-cyan text-xs font-bold">{step}</span>
             <h4 className="font-bold text-white text-sm mt-1 mb-1">{title}</h4>
-            <p className={`text-sm leading-relaxed transition-colors duration-500 ${inView ? 'text-zinc-200' : 'text-zinc-400'}`}>{desc}</p>
+            <p className={`text-sm leading-relaxed transition-colors duration-300 ${active ? 'text-zinc-200' : 'text-zinc-400'}`}>{desc}</p>
           </div>
         </div>
       </motion.div>
@@ -84,6 +81,7 @@ function ProcessStep({ step, title, desc, icon, isLast }: { step: string; title:
 }
 
 export default function ProcessSection() {
+  const isMobile = useIsMobile();
   const { ref: processRef, scrollYProgress: processScrollY } = useScrollTarget<HTMLElement>({ offset: ['start 0.8', 'end 0.2'] });
   const smoothScrollY = useSpring(processScrollY, { stiffness: 80, damping: 25, restDelta: 0.001 });
   const lineScale = useTransform(smoothScrollY, [0, 1], [0, 1]);
@@ -93,10 +91,10 @@ export default function ProcessSection() {
       id="process"
       aria-labelledby="process-heading"
       className="pt-16 md:pt-32 relative overflow-hidden"
-      initial={{ opacity: 0, y: 40 }}
+      initial={isMobile ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? "80px" : "0px" }}
     >
       <HowWeWorkBackground />
       <div ref={processRef} className="relative z-10">

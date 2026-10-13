@@ -29,9 +29,9 @@ const cardB2Variants = {
   visible: { opacity: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1 },
 };
 
-const cardTransition = (delay: number) => ({
-  duration: 1.2,
-  delay,
+const cardTransition = (delay: number, isMobile = false) => ({
+  duration: isMobile ? 0.35 : 0.8,
+  delay: isMobile ? 0 : delay * 0.5,
   ease: [0.16, 1, 0.3, 1] as const,
 });
 
@@ -45,9 +45,9 @@ export const AboutSection: React.FC = () => {
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 24, restDelta: 0.001 });
 
-  // Dramatic parallax range on desktop
-  const yColA = useTransform(smoothProgress, [0, 1], [-160, 160]);
-  const yColB = useTransform(smoothProgress, [0, 1], [160, -160]);
+  // Parallax range on desktop
+  const yColA = useTransform(smoothProgress, [0, 1], [-120, 120]);
+  const yColB = useTransform(smoothProgress, [0, 1], [120, -120]);
 
   const springA = useSpring(yColA, { stiffness: 50, damping: 24 });
   const springB = useSpring(yColB, { stiffness: 50, damping: 24 });
@@ -55,21 +55,22 @@ export const AboutSection: React.FC = () => {
   const yA = isMobile ? 0 : springA;
   const yB = isMobile ? 0 : springB;
 
-  // Individual Card Differential Parallax on Mobile to prevent card overlaps and create floating depth
-  const yCardA1Val = useTransform(smoothProgress, [0, 1], [-45, 45]);
-  const yCardA2Val = useTransform(smoothProgress, [0, 1], [-15, 15]);
-  const yCardB1Val = useTransform(smoothProgress, [0, 1], [-35, 35]);
-  const yCardB2Val = useTransform(smoothProgress, [0, 1], [-5, 5]);
+  // Zero parallax on mobile to prevent GPU compositor thrashing
+  const yCardA1 = 0;
+  const yCardA2 = 0;
+  const yCardB1 = 0;
+  const yCardB2 = 0;
 
-  const springCardA1 = useSpring(yCardA1Val, { stiffness: 70, damping: 20 });
-  const springCardA2 = useSpring(yCardA2Val, { stiffness: 70, damping: 20 });
-  const springCardB1 = useSpring(yCardB1Val, { stiffness: 70, damping: 20 });
-  const springCardB2 = useSpring(yCardB2Val, { stiffness: 70, damping: 20 });
+  const mobileVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0 },
+  };
 
-  const yCardA1 = isMobile ? springCardA1 : 0;
-  const yCardA2 = isMobile ? springCardA2 : 0;
-  const yCardB1 = isMobile ? springCardB1 : 0;
-  const yCardB2 = isMobile ? springCardB2 : 0;
+  const a1Var = isMobile ? mobileVariants : cardA1Variants;
+  const a2Var = isMobile ? mobileVariants : cardA2Variants;
+  const b1Var = isMobile ? mobileVariants : cardB1Variants;
+  const b2Var = isMobile ? mobileVariants : cardB2Variants;
+  const viewMargin = isMobile ? '80px' : '-40px';
 
   return (
     <section
@@ -95,11 +96,11 @@ export const AboutSection: React.FC = () => {
 
           {/* Card A1: Operator Creed — slides in from left */}
           <motion.div
-            variants={cardA1Variants}
-            initial="hidden"
+            variants={a1Var}
+            initial={isMobile ? false : "hidden"}
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0)}
+            viewport={{ once: true, margin: viewMargin }}
+            transition={cardTransition(0, isMobile)}
             style={{ y: yCardA1 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
           >
@@ -133,11 +134,11 @@ export const AboutSection: React.FC = () => {
 
           {/* Card A2: System Specs — rises up */}
           <motion.div
-            variants={cardA2Variants}
-            initial="hidden"
+            variants={a2Var}
+            initial={isMobile ? false : "hidden"}
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.20)}
+            viewport={{ once: true, margin: viewMargin }}
+            transition={cardTransition(0.15, isMobile)}
             style={{ y: yCardA2 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-amber/35 transition-colors duration-700"
           >
@@ -175,11 +176,11 @@ export const AboutSection: React.FC = () => {
 
           {/* Card B2: Core Identity — slides in from right */}
           <motion.div
-            variants={cardB2Variants}
-            initial="hidden"
+            variants={b2Var}
+            initial={isMobile ? false : "hidden"}
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.10)}
+            viewport={{ once: true, margin: viewMargin }}
+            transition={cardTransition(0.10, isMobile)}
             style={{ y: yCardB2 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
@@ -213,11 +214,11 @@ export const AboutSection: React.FC = () => {
 
           {/* Card B1: Live Telemetry — slides in from right */}
           <motion.div
-            variants={cardB1Variants}
-            initial="hidden"
+            variants={b1Var}
+            initial={isMobile ? false : "hidden"}
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            transition={cardTransition(0.30)}
+            viewport={{ once: true, margin: viewMargin }}
+            transition={cardTransition(0.20, isMobile)}
             style={{ y: yCardB1 }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >

@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
 import { Link as IconLink, MonitorPlay } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface DropCardProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ interface DropCardProps {
 }
 
 function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
+  const isMobile = useIsMobile();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -20,14 +22,15 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
   const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
   
   // Custom tilt transformations
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-10, 10]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], isMobile ? [0, 0] : [10, -10]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], isMobile ? [0, 0] : [-10, 10]);
 
   // Spotlight coordinates
   const spotlightX = useMotionValue(0);
   const spotlightY = useMotionValue(0);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -60,11 +63,11 @@ function DropCard({ children, delay, initialRotate, color }: DropCardProps) {
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        initial={{ y: -420, rotate: initialRotate * 4, opacity: 0 }}
-        whileInView={{ y: 0, rotate: 0, opacity: 1 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ type: 'spring', stiffness: 70, damping: 9, mass: 1.1, delay }}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        initial={isMobile ? { opacity: 0, y: 15 } : { y: -240, rotate: initialRotate * 2, opacity: 0 }}
+        whileInView={isMobile ? { opacity: 1, y: 0 } : { y: 0, rotate: 0, opacity: 1 }}
+        viewport={{ once: true, margin: isMobile ? '80px' : '-20px' }}
+        transition={isMobile ? { duration: 0.35, ease: 'easeOut' } : { type: 'spring', stiffness: 90, damping: 14, delay: delay * 0.5 }}
+        style={isMobile ? undefined : { rotateX, rotateY, transformStyle: 'preserve-3d' }}
         className="w-full relative group transition-all duration-300"
       >
         {/* Cursor Spotlight Background */}
@@ -117,6 +120,7 @@ function PhysicsChipsLayer() {
 }
 
 function PhysicsChip({ label, color, x, y, delay, desktopOnly }: { label: string; color: 'cyan' | 'amber' | 'red'; x: string; y: string; delay: number; desktopOnly?: boolean }) {
+  const isMobile = useIsMobile();
   const colorMap = {
     cyan:  'border-cyan/50 text-cyan bg-cyan/10 shadow-[0_0_18px_rgba(0,240,255,0.30)]',
     amber: 'border-amber/50 text-amber bg-amber/10 shadow-[0_0_18px_rgba(255,176,0,0.30)]',
@@ -124,15 +128,15 @@ function PhysicsChip({ label, color, x, y, delay, desktopOnly }: { label: string
   };
   return (
     <motion.div
-      drag
+      drag={!isMobile}
       dragSnapToOrigin
       dragTransition={{ bounceStiffness: 280, bounceDamping: 14 }}
       whileDrag={{ scale: 1.18, zIndex: 50, rotate: 8 }}
       whileHover={{ scale: 1.1 }}
-      initial={{ y: -500, rotate: -30, opacity: 0 }}
-      whileInView={{ y: 0, rotate: 0, opacity: 1 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ type: 'spring', stiffness: 90, damping: 9, mass: 1, delay }}
+      initial={isMobile ? { opacity: 0 } : { y: -200, rotate: -15, opacity: 0 }}
+      whileInView={isMobile ? { opacity: 1 } : { y: 0, rotate: 0, opacity: 1 }}
+      viewport={{ once: true, margin: isMobile ? '80px' : '-20px' }}
+      transition={isMobile ? { duration: 0.3 } : { type: 'spring', stiffness: 90, damping: 12, mass: 1, delay: delay * 0.5 }}
       style={{ left: x, top: y, position: 'absolute', touchAction: 'none' }}
       className={`${desktopOnly ? 'hidden md:flex' : 'flex'} pointer-events-auto select-none cursor-grab active:cursor-grabbing font-mono text-[9px] md:text-[11px] uppercase tracking-widest px-2 md:px-3 py-1 md:py-1.5 rounded-full border backdrop-blur-md whitespace-nowrap items-center ${colorMap[color]}`}
     >
@@ -142,15 +146,17 @@ function PhysicsChip({ label, color, x, y, delay, desktopOnly }: { label: string
 }
 
 export default function VideosSection() {
+  const isMobile = useIsMobile();
+
   return (
     <motion.section
       id="videos"
       aria-labelledby="videos-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
+      initial={isMobile ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? "80px" : "0px" }}
     >
       <SectionHeader number="04" command="> ./content --media" title="Video Presentations" />
       <h2 id="videos-heading" className="sr-only">What YouTube videos and playlists has Primuez published on AI automation?</h2>

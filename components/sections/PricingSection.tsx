@@ -176,27 +176,18 @@ function ReceiptCardInner({
 }
 
 function MobileReceiptCard({ card }: { card: ReceiptCardData }) {
-  const clipPct    = useMotionValue(100);
-  const ctaOpacity = useMotionValue(0);
-  const ctaY       = useMotionValue(14);
+  const clipPct    = useMotionValue(0);
+  const ctaOpacity = useMotionValue(1);
+  const ctaY       = useMotionValue(0);
   const ref        = useRef<HTMLDivElement>(null);
-  const inView     = useInView(ref, { once: true, margin: '-40px 0px -40px 0px' });
-
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(clipPct, 0, { duration: 2.0, ease: [0.16, 1, 0.3, 1] });
-    const ctaCtrl  = animate(ctaOpacity, 1, { duration: 0.8, delay: 1.6, ease: 'easeOut' });
-    const ctaYCtrl = animate(ctaY, 0, { duration: 0.8, delay: 1.6, ease: 'easeOut' });
-    return () => { controls.stop(); ctaCtrl.stop(); ctaYCtrl.stop(); };
-  }, [inView, clipPct, ctaOpacity, ctaY]);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '80px' }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
     >
       <ReceiptCardInner card={card} clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
     </motion.div>
@@ -289,27 +280,18 @@ function VipReceiptCard({
 }
 
 function MobileVipCard() {
-  const clipPct    = useMotionValue(100);
-  const ctaOpacity = useMotionValue(0);
-  const ctaY       = useMotionValue(14);
+  const clipPct    = useMotionValue(0);
+  const ctaOpacity = useMotionValue(1);
+  const ctaY       = useMotionValue(0);
   const ref        = useRef<HTMLDivElement>(null);
-  const inView     = useInView(ref, { once: true, margin: '-40px 0px -40px 0px' });
-
-  useEffect(() => {
-    if (!inView) return;
-    const c1 = animate(clipPct, 0, { duration: 2.4, ease: [0.16, 1, 0.3, 1] });
-    const c2 = animate(ctaOpacity, 1, { duration: 0.8, delay: 2.0, ease: 'easeOut' });
-    const c3 = animate(ctaY, 0, { duration: 0.8, delay: 2.0, ease: 'easeOut' });
-    return () => { c1.stop(); c2.stop(); c3.stop(); };
-  }, [inView, clipPct, ctaOpacity, ctaY]);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '80px' }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
     >
       <VipReceiptCard clipPct={clipPct} ctaOpacity={ctaOpacity} ctaY={ctaY} />
     </motion.div>
@@ -321,22 +303,22 @@ export default function PricingSection() {
   const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({ offset: ['start start', 'end end'] });
   const smoothP = useSpring(scrollYProgress, { stiffness: 160, damping: 40, restDelta: 0.001 });
 
-  // Top-3 cards: unroll 8% → 62% of scroll
-  const clipPct    = useTransform(smoothP, [0.06, 0.62], [100, 0]);
-  const ctaOpacity = useTransform(smoothP, [0.60, 0.72], [0, 1]);
-  const ctaY       = useTransform(smoothP, [0.60, 0.72], [14, 0]);
+  // Top-3 cards: unroll 2% → 38% of scroll
+  const clipPct    = useTransform(smoothP, [0.02, 0.38], [100, 0]);
+  const ctaOpacity = useTransform(smoothP, [0.28, 0.45], [0, 1]);
+  const ctaY       = useTransform(smoothP, [0.28, 0.45], [14, 0]);
 
-  // VIP card: unroll after top-3 are done, 72% → 92%
-  const vipClip    = useTransform(smoothP, [0.72, 0.93], [100, 0]);
-  const vipCtaOp   = useTransform(smoothP, [0.91, 0.98], [0, 1]);
-  const vipCtaY    = useTransform(smoothP, [0.91, 0.98], [14, 0]);
+  // VIP card: unroll smoothly 40% → 70%
+  const vipClip    = useTransform(smoothP, [0.40, 0.70], [100, 0]);
+  const vipCtaOp   = useTransform(smoothP, [0.60, 0.75], [0, 1]);
+  const vipCtaY    = useTransform(smoothP, [0.60, 0.75], [14, 0]);
 
   return (
     <section
       id="pricing"
       aria-labelledby="pricing-heading"
       ref={containerRef}
-      style={isMobile ? undefined : { height: '240vh', position: 'relative' }}
+      style={isMobile ? undefined : { height: '180vh', position: 'relative' }}
       className={isMobile ? 'pt-16' : ''}
     >
       <div
@@ -344,10 +326,10 @@ export default function PricingSection() {
         className={isMobile ? '' : 'pt-16 md:pt-20 pb-16'}
       >
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: isMobile ? '80px' : '0px' }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionHeader number="04" command="> ./pricing --transparent" title="What's the Investment?" />
           <h2 id="pricing-heading" className="sr-only">What does Primuez charge for AI automation, n8n workflows, and SaaS development projects?</h2>

@@ -500,17 +500,17 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 }
 
 export default function ContactSection() {
-  const { setModalType } = useUI();
+  const { setModalType, isMobile } = useUI();
 
   return (
     <motion.section
       id="contact"
       aria-labelledby="contact-heading"
       className="pt-16 md:pt-32 text-center pb-0"
-      initial={{ opacity: 0, y: 40 }}
+      initial={isMobile ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? '80px' : '0px' }}
     >
       <SectionHeader number="10" command="> ./contact --init" title="Connect" center />
       <h2 id="contact-heading" className="sr-only">

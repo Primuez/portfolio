@@ -115,10 +115,15 @@ function FAQDecryptItem({ q, a }: { q: string; a: string }) {
 
   function handleClick() {
     if (!open) {
-      const scrambled = a.split('').map(c => c === ' ' ? ' ' : DX_CHARS[Math.floor(Math.random() * DX_CHARS.length)]).join('');
-      setDisplayA(scrambled);
-      setOpen(true);
-      setTimeout(runDecrypt, 40);
+      if (isMobile.current) {
+        setDisplayA(a);
+        setOpen(true);
+      } else {
+        const scrambled = a.split('').map(c => c === ' ' ? ' ' : DX_CHARS[Math.floor(Math.random() * DX_CHARS.length)]).join('');
+        setDisplayA(scrambled);
+        setOpen(true);
+        setTimeout(runDecrypt, 40);
+      }
     } else {
       cancelAnimationFrame(decryptRaf.current);
       setOpen(false);
@@ -227,9 +232,10 @@ export default function FAQSection() {
       id="faq"
       aria-labelledby="faq-heading"
       className="pt-16 md:pt-32"
-      initial={{ opacity: 0, y: 40 }}
+      initial={isMobile ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
+      viewport={{ once: true, margin: isMobile ? '80px' : '0px' }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
       <SectionHeader number="09" command="> ./faq --resolve-objections" title="Frequently Asked Questions" />
       <h2 id="faq-heading" className="sr-only">Frequently asked questions about Primuez AI automation projects, timelines, and pricing</h2>

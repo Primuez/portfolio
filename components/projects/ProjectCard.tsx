@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useMotionTemplate } from 'motion/react';
 import { Link as IconLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ProjectCardProps {
   name: string;
@@ -19,6 +20,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUrl, status, techDetails, children, wireframe }: ProjectCardProps) {
+  const isMobile = useIsMobile();
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
@@ -26,7 +28,7 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
   const glowBackground = useMotionTemplate`radial-gradient(300px circle at ${mouseX}% ${mouseY}%, rgba(0,240,255,0.06), transparent 60%)`;
   
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!cardRef.current) return;
+    if (isMobile || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     mouseX.set(((e.clientX - rect.left) / rect.width) * 100);
     mouseY.set(((e.clientY - rect.top) / rect.height) * 100);
@@ -81,13 +83,13 @@ export function ProjectCard({ name, url, desc, tags, logoUrl, bannerUrl, videoUr
   return (
     <motion.div 
       ref={cardRef}
-      initial={{ opacity: 0, y: 60, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-60px" }}
-      whileHover={{ y: -4, transition: { duration: 0.3 } }}
+      initial={isMobile ? false : { opacity: 0, y: 40, scale: 0.98 }}
+      whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? "80px" : "-20px" }}
+      whileHover={isMobile ? undefined : { y: -4, transition: { duration: 0.3 } }}
       onMouseMove={handleMouseMove}
-      className="bg-panel/60 backdrop-blur-md border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)] liquid-glass-card"
+      className={`${isMobile ? 'bg-panel/90' : 'bg-panel/60 backdrop-blur-md'} border border-white/[0.06] rounded-xl p-6 transition-all duration-300 group overflow-hidden relative flex flex-col hover:border-cyan/30 hover:shadow-[0_8px_40px_rgba(0,240,255,0.08)] liquid-glass-card`}
     >
       <motion.div
         className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl z-0 will-change-transform"

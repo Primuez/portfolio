@@ -23,6 +23,7 @@ export function ShaderBackground({
   opacity?: number;
   variant?: 'hero' | 'section';
 }) {
+  const isMobile = useIsMobile();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const velocityRef = useRef({ x: 0, y: 0 });
@@ -250,6 +251,8 @@ export function ShaderBackground({
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
+
     initGL();
     animatingRef.current = true;
     rafRef.current = requestAnimationFrame(render);
@@ -314,6 +317,23 @@ export function ShaderBackground({
       }
     };
   }, [initGL, render]);
+
+  if (isMobile) {
+    return (
+      <div
+        className={`pointer-events-none ${className} bg-[#06080e]`}
+        style={{
+          opacity,
+          backgroundImage: `
+            radial-gradient(circle at 50% 15%, rgba(0, 240, 255, 0.08), transparent 50%),
+            radial-gradient(circle at 85% 65%, rgba(167, 139, 250, 0.05), transparent 45%),
+            radial-gradient(circle at 15% 80%, rgba(245, 166, 35, 0.04), transparent 45%)
+          `,
+        }}
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <canvas

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
  * ShaderLogoGlow — Interactive iridescent glow effect for the Primuez navbar logo.
@@ -19,6 +20,7 @@ export function ShaderLogoGlow({
   children: React.ReactNode;
   className?: string;
 }) {
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
@@ -183,6 +185,8 @@ export function ShaderLogoGlow({
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const success = initGL();
     if (!success) return;
     animatingRef.current = true;
@@ -249,14 +253,22 @@ export function ShaderLogoGlow({
       onMouseMove={handleMouseMove}
       onTouchStart={handleTouchStart}
     >
-      {/* WebGL glow canvas behind logo */}
-      {webglSupported && (
-        <canvas
-          ref={canvasRef}
-          className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] pointer-events-none z-0"
-          style={{ filter: 'blur(8px)' }}
+      {/* Fallback CSS glow on mobile */}
+      {isMobile ? (
+        <div
+          className="absolute -inset-2 rounded-xl pointer-events-none z-0 bg-cyan/15 blur-md"
           aria-hidden="true"
         />
+      ) : (
+        /* WebGL glow canvas behind logo on desktop */
+        webglSupported && (
+          <canvas
+            ref={canvasRef}
+            className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] pointer-events-none z-0"
+            style={{ filter: 'blur(8px)' }}
+            aria-hidden="true"
+          />
+        )
       )}
       {/* Logo content */}
       <div className="relative z-10">

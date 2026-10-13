@@ -198,8 +198,8 @@ function CyberBlade({
         filter: anyFocused && !isFocused ? 'grayscale(100%)' : 'grayscale(0%)',
         zIndex: isFocused ? 30 : 10 - index,
       }}
-      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-      style={{
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      style={isMobile ? undefined : {
         transformStyle: 'preserve-3d',
         perspective: '1000px'
       }}
@@ -357,42 +357,41 @@ function CyberBlade({
 
 export default function ServicesSection({ onWorkWithMe }: { onWorkWithMe?: () => void } = {}) {
   const { setModalType } = useUI();
+  const isMobile = useIsMobile();
   const handleWorkWithMe = onWorkWithMe || (() => setModalType('form'));
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // GSAP ScrollTrigger Entrance Animation (3D fly in from Z-axis)
+  // GSAP ScrollTrigger Entrance Animation (Desktop only)
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || isMobile) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.cyber-blade-item',
         {
           opacity: 0,
-          scale: 0.6,
-          y: 120,
-          rotateX: 15,
+          scale: 0.85,
+          y: 40,
         },
         {
           opacity: 1,
           scale: 1,
           y: 0,
-          rotateX: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'back.out(1.2)',
+          duration: 0.5,
+          stagger: 0.08,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            start: 'top 85%',
+            toggleActions: 'play none none none',
           },
         }
       );
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section id="services" className="pt-16 md:pt-32 relative">

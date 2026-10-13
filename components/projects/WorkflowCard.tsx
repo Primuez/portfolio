@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface WorkflowCardProps {
   name: string;
@@ -12,17 +13,19 @@ interface WorkflowCardProps {
 }
 
 export function WorkflowCard({ name, desc, image, delay = 0, videoUrl }: WorkflowCardProps) {
+  const isMobile = useIsMobile();
+
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 100, scale: 0.88, rotateX: 18, filter: "blur(12px)" }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: "blur(0px)" }}
-      transition={{ duration: 1.05, delay: delay / 1000, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, margin: "-60px" }}
-      whileTap={{ scale: 0.97 }}
+      initial={isMobile ? false : { opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: isMobile ? 0.2 : 0.5, delay: isMobile ? 0 : Math.min(delay / 1500, 0.2), ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: isMobile ? "80px" : "0px" }}
+      whileTap={{ scale: 0.98 }}
       className="group w-full block h-full md:[perspective:1000px]"
-      style={{ transformPerspective: 1200 }}
+      style={isMobile ? undefined : { transformPerspective: 1200 }}
     >
-      <div className="w-full h-full bg-panel/60 backdrop-blur-md border border-cyan/20 rounded-xl overflow-hidden shadow-lg transition-all duration-500 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d] liquid-glass-card">
+      <div className={`w-full h-full ${isMobile ? 'bg-panel/90' : 'bg-panel/60 backdrop-blur-md'} border border-cyan/20 rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform-gpu md:group-hover:rotate-x-12 md:group-hover:-rotate-y-12 group-hover:-translate-y-2 md:group-hover:-translate-y-4 group-hover:shadow-[0_8px_30px_rgba(0,240,255,0.15)] md:group-hover:shadow-[20px_20px_60px_rgba(0,240,255,0.2)] flex flex-col relative md:[transform-style:preserve-3d] liquid-glass-card`}>
         <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] via-transparent to-white/[0.02] z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
         <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent pointer-events-none z-20"></div>
         

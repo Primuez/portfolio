@@ -1,20 +1,23 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { HomeClientLayout } from '@/components/HomeClientLayout';
 
-// Modularized Sections
+// Above the fold - immediate load
 import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
-import ServicesSection from '@/components/sections/ServicesSection';
-import ProcessSection from '@/components/sections/ProcessSection';
-import WhySection from '@/components/sections/WhySection';
-import PricingSection from '@/components/sections/PricingSection';
-import GithubSection from '@/components/sections/GithubSection';
-import VideosSection from '@/components/sections/VideosSection';
-import StackSection from '@/components/sections/StackSection';
-import CredentialsSection from '@/components/sections/CredentialsSection';
-import FAQSection from '@/components/sections/FAQSection';
-import ContactSection from '@/components/sections/ContactSection';
+
+// Below the fold - code split into lazy chunks for fast mobile boot
+const ServicesSection = dynamic(() => import('@/components/sections/ServicesSection'));
+const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSection').then(m => ({ default: m.ProjectsSection })));
+const PricingSection = dynamic(() => import('@/components/sections/PricingSection'));
+const ProcessSection = dynamic(() => import('@/components/sections/ProcessSection'));
+const WhySection = dynamic(() => import('@/components/sections/WhySection'));
+const GithubSection = dynamic(() => import('@/components/sections/GithubSection'));
+const VideosSection = dynamic(() => import('@/components/sections/VideosSection'));
+const StackSection = dynamic(() => import('@/components/sections/StackSection'));
+const CredentialsSection = dynamic(() => import('@/components/sections/CredentialsSection'));
+const FAQSection = dynamic(() => import('@/components/sections/FAQSection'));
+const ContactSection = dynamic(() => import('@/components/sections/ContactSection'));
 
 export default function Home() {
   return (

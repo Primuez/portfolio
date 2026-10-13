@@ -238,59 +238,47 @@ function WhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'deta
 }
 
 function MobileWhyPrimuez({ detailMode, setDetailMode }: { detailMode: 'brief' | 'detailed'; setDetailMode: (v: 'brief' | 'detailed') => void }) {
-  const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLDivElement>({
-    offset: ['start start', 'end end'],
-  });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
   return (
-    <div ref={containerRef} style={{ height: `${WHY_ITEMS.length * 50}vh` }} className="relative -mx-4 sm:-mx-6 md:-mx-12">
-      <div
-        className="sticky top-0 h-screen w-full origin-center overflow-hidden flex items-center"
-        style={{ background: 'linear-gradient(to bottom, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.97) 15%, rgba(10,10,15,0.97) 85%, rgba(10,10,15,0.6) 100%)' }}
-      >
-        <div className="relative w-full h-full">
-          {WHY_ITEMS.map((item, i) => (
-            <MobileWhySlide
-              key={i}
-              item={item}
-              index={i}
-              total={WHY_ITEMS.length}
-              scrollYProgress={smoothProgress}
-              detailMode={detailMode}
-            />
-          ))}
+    <div className="relative flex flex-col gap-4 mt-6">
+      {/* Toggle */}
+      <div className="flex bg-[#05060a]/90 border border-white/10 p-1 rounded-xl font-mono text-[9px] tracking-widest uppercase w-fit mb-2 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        <button
+          onClick={() => setDetailMode('brief')}
+          className={`px-3 py-1.5 rounded-lg cursor-pointer transition-all duration-200 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white font-bold' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
+        >
+          Brief
+        </button>
+        <button
+          onClick={() => setDetailMode('detailed')}
+          className={`px-3 py-1.5 rounded-lg cursor-pointer transition-all duration-200 ${detailMode === 'detailed' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white font-bold' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
+        >
+          Full
+        </button>
+      </div>
 
-          {/* Dot nav */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
-            {WHY_ITEMS.map((_, i) => (
-              <MobileWhyDot key={i} index={i} total={WHY_ITEMS.length} scrollYProgress={smoothProgress} />
-            ))}
+      <div className="space-y-4">
+        {WHY_ITEMS.map((item, i) => (
+          <div
+            key={i}
+            className="p-5 rounded-xl border border-white/[0.08] bg-panel/90"
+          >
+            <div className="flex items-center justify-between mb-2 border-b border-white/[0.04] pb-2">
+              <span className="font-mono text-indigo-400 text-xs uppercase tracking-widest font-semibold">
+                {item.num} / 05
+              </span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2 leading-snug whitespace-pre-line">
+              {item.title}
+            </h3>
+            {i === 4 && detailMode === 'detailed' ? (
+              <FitCheckDetails isMobile={true} />
+            ) : (
+              <p className="text-sm text-zinc-300 leading-relaxed font-sans">
+                {detailMode === 'detailed' ? item.longDetail : item.detail}
+              </p>
+            )}
           </div>
-
-          {/* Scroll hint */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[9px] uppercase tracking-[0.3em] text-gray-600 flex items-center gap-2 pointer-events-none">
-            <span className="w-3 h-px bg-gray-700" />
-            scroll
-            <span className="w-3 h-px bg-gray-700" />
-          </div>
-
-          {/* Toggle — left side, 15% from top: clears header, above centred content */}
-          <div className="absolute top-[15%] left-4 z-30 flex bg-[#05060a]/90 border border-white/10 p-0.5 rounded-xl font-mono text-[8px] tracking-widest uppercase shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-            <button
-              onClick={() => setDetailMode('brief')}
-              className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'brief' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
-            >
-              Brief
-            </button>
-            <button
-              onClick={() => setDetailMode('detailed')}
-              className={`px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-300 ${detailMode === 'detailed' ? 'bg-indigo-600/30 border border-indigo-500/50 text-white' : 'text-zinc-500 hover:text-zinc-300 border border-transparent'}`}
-            >
-              Full
-            </button>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
