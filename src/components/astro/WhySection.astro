@@ -4,24 +4,32 @@ import SectionHeader from './SectionHeader.astro';
 const WHY_ITEMS = [
   {
     num: '01',
+    metric: '100%',
+    metricLabel: 'PRODUCTION SHIPPED',
     title: 'We Ship, Not Just Plan',
     detail: "Real products. Live URLs. InkTwin and PrimuezSure aren't concepts on a slide deck — they're deployed, working SaaS tools built by a solo developer from Raipur.",
     extended: "We build live, production-grade assets, not speculative wireframes. We engineer the complete lifecycle: responsive frontends, resilient background workers, and automated security controls. We sell the exact same execution we use to power our own business."
   },
   {
     num: '02',
+    metric: '3h/day',
+    metricLabel: 'SAVED PER WORKER',
     title: 'Automation-First Thinking',
     detail: 'Every solution starts with: what can be automated? Powered by n8n, LLMs, autonomous agents, and custom API pipelines — we remove the manual work before it becomes your problem.',
     extended: 'Every business bottleneck is solved at the architecture level. By combining high-density n8n workflow grids, Cloudflare Edge workers, and self-correcting AI sandboxes, we bypass human latency.'
   },
   {
     num: '03',
+    metric: '24/7',
+    metricLabel: 'AUTONOMOUS UPTIME',
     title: 'Certified & Self-Taught',
     detail: "n8n Official Badge Holder. Triple Oracle Certified. SimpliLearn Certified. But more importantly — everything here was built by doing, not just studying.",
     extended: "Holding official n8n creator badges and developer certifications is just the baseline. The real proof is in the code. We operate with a deep, self-taught systems knowledge forged by hands-on engineering."
   },
   {
     num: '04',
+    metric: '0',
+    metricLabel: 'BUREAUCRACY DELAYS',
     title: 'Young, Hungry & Agile',
     detail: "Still in college, already running a SaaS brand. Zero bureaucratic red tape. That means faster turnaround, lower overhead, and direct access to the architect.",
     extended: "Free from the bloat of traditional agencies and legacy processes. We deliver custom integrations in days rather than months. You deal directly with the system architect."
@@ -32,23 +40,29 @@ const WHY_ITEMS = [
 <section id="why-primuez" class="pt-16 md:pt-28 scroll-mt-20">
   <SectionHeader number="07" command="> diff --strategic ./agency ./primuez" title="Why Work With Primuez" />
 
-  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+  <p class="text-zinc-400 mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
     Direct execution over agency bloat. Built by someone who ships real code every single day.
   </p>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+  <div id="why-items-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
     {WHY_ITEMS.map((item) => (
-      <div class="group p-6 sm:p-7 rounded-2xl bg-panel/80 border border-white/10 hover:border-cyan/30 transition-all duration-300">
-        <div class="flex items-center gap-2 font-mono text-cyan text-xs font-bold mb-3">
-          <span>// {item.num}</span>
+      <div class="why-card group p-6 sm:p-7 rounded-2xl bg-[#090d16]/90 border border-white/10 hover:border-cyan/40 transition-all duration-300 shadow-xl transform-gpu flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between font-mono text-cyan text-xs font-bold mb-3">
+            <span>// {item.num}</span>
+            <div class="text-right">
+              <span class="text-lg md:text-xl font-bold text-amber block">{item.metric}</span>
+              <span class="text-[9px] text-zinc-400 uppercase tracking-widest">{item.metricLabel}</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2 font-sans group-hover:text-cyan transition-colors">
+            {item.title}
+          </h3>
+          <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-3 font-sans">
+            {item.detail}
+          </p>
         </div>
-        <h3 class="text-xl font-bold text-white mb-2 font-sans group-hover:text-cyan transition-colors">
-          {item.title}
-        </h3>
-        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-3 font-sans">
-          {item.detail}
-        </p>
-        <p class="text-zinc-400 text-xs leading-relaxed font-sans border-t border-white/[0.04] pt-3">
+        <p class="text-zinc-400 text-xs leading-relaxed font-sans border-t border-white/[0.04] pt-3 mt-2">
           {item.extended}
         </p>
       </div>
@@ -56,7 +70,7 @@ const WHY_ITEMS = [
   </div>
 
   {/* Fit Check Container */}
-  <div class="rounded-2xl border border-white/10 bg-[#090b11]/90 p-6 sm:p-8">
+  <div class="rounded-2xl border border-white/10 bg-[#090b16]/90 p-6 sm:p-8 shadow-2xl">
     <div class="text-center max-w-xl mx-auto mb-8">
       <span class="font-mono text-xs uppercase tracking-widest text-amber font-bold">[ CRITICAL FILTER ]</span>
       <h3 class="text-2xl font-bold text-white mt-1 font-sans">Is This a Good Fit?</h3>
@@ -108,3 +122,32 @@ const WHY_ITEMS = [
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced) {
+      gsap.fromTo(
+        '.why-card',
+        { opacity: 0, scale: 0.94, y: 30 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#why-items-grid',
+            start: 'top 85%',
+          },
+        }
+      );
+    }
+  }
+</script>
