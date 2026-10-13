@@ -1,0 +1,48 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const STEPS = [
+  { step: '01', title: 'Discovery', desc: "You describe your goal or the process that's slowing you down.", icon: '◎' },
+  { step: '02', title: 'Proposal', desc: 'I send a clear scope with a fixed price. No hourly surprises. (1–2 days)', icon: '▤' },
+  { step: '03', title: 'Build & Iterate', desc: 'I build in small iterations and share progress with you throughout.', icon: '⟳' },
+  { step: '04', title: 'Handover', desc: 'Live system + full documentation + a training session so you own it completely.', icon: '↗' },
+  { step: '05', title: 'Support', desc: '30 days of free bug fixes and adjustments included after launch.', icon: '❖' },
+];
+---
+
+<section id="process" class="pt-16 md:pt-28 scroll-mt-20">
+  <SectionHeader number="05" command="> cat /etc/workflow/pipeline.conf" title="How We Work Together" />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+    Simple, transparent, and outcome-focused. From scope to running autonomous systems.
+  </p>
+
+  <div class="relative max-w-4xl mx-auto">
+    {/* Center spine on desktop */}
+    <div class="hidden md:block absolute left-8 top-6 bottom-6 w-0.5 bg-gradient-to-b from-cyan/40 via-cyan/20 to-transparent"></div>
+
+    <div class="space-y-6">
+      {STEPS.map((s) => (
+        <div class="relative flex items-start gap-4 md:gap-8 group">
+          {/* Node Badge */}
+          <div class="shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-[#090b11] border-2 border-cyan/40 group-hover:border-cyan flex items-center justify-center font-mono text-cyan text-sm md:text-base font-bold shadow-[0_0_15px_rgba(0,240,255,0.15)] group-hover:shadow-[0_0_25px_rgba(0,240,255,0.3)] transition-all duration-300 z-10">
+            {s.step}
+          </div>
+
+          {/* Step Card */}
+          <div class="flex-1 p-5 sm:p-6 rounded-2xl bg-panel/80 border border-white/10 group-hover:border-cyan/30 transition-all duration-300">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg md:text-xl font-bold text-white font-sans group-hover:text-cyan transition-colors">
+                {s.title}
+              </h3>
+              <span class="text-text-muted/60 font-mono text-sm">{s.icon}</span>
+            </div>
+            <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans">
+              {s.desc}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

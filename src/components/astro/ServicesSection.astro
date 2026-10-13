@@ -1,0 +1,194 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const CATEGORIES = [
+  {
+    id: "automation-systems",
+    slotNumber: "BLADE_01 // AUTO_SYSTEMS",
+    title: "Business Automation & Workflow Systems",
+    tagline: "Stop doing repetitive work manually. Custom n8n pipelines that execute 24/7.",
+    statusText: "PIPELINES // ONLINE",
+    services: [
+      {
+        icon: "⚙️",
+        title: "n8n Workflow Automation",
+        outcome: "Manual processes run themselves",
+        desc: "Eliminate manual lead capture, CRM injection, automated email sequences, GST reconciliation, and WhatsApp outreach to save hours of daily work.",
+        tags: ["n8n", "Webhooks", "API Chains", "Scheduling"]
+      },
+      {
+        icon: "🔗",
+        title: "Custom API & Webhook Integration",
+        outcome: "Any system connected to any other",
+        desc: "Connect ERPs, CRMs, WhatsApp, payment gateways, and government portals into a unified workflow with robust error handling and fail-safes.",
+        tags: ["REST APIs", "Webhooks", "OAuth 2.0", "Fallback Logic"]
+      },
+      {
+        icon: "🏢",
+        title: "Enterprise Architecture (Odoo + IndiaMART + GST)",
+        outcome: "Automated manufacturing sales pipeline",
+        desc: "Automate manufacturing sales pipelines. Connect IndiaMART leads directly to Odoo CRM and set up daily automated GST reconciliation using n8n.",
+        tags: ["Odoo ERP", "n8n", "IndiaMART", "Enterprise Architecture"],
+        honestLabel: "Built to order — architecture ready"
+      },
+      {
+        icon: "💼",
+        title: "CA Automation & Compliance Suite",
+        outcome: "Automated firm operations & filing",
+        desc: "Automate CA firm efficiency with AI Legal Advisor, Tax Advisor Agent, and Invoice Generator tools for frictionless compliance.",
+        tags: ["Taxation", "AI Legal", "Invoice Gen", "Compliance"]
+      },
+      {
+        icon: "💬",
+        title: "AI WhatsApp Business Agent",
+        outcome: "24/7 lead qualification & follow-up",
+        desc: "Engage leads and automate customer follow-ups 24/7 via semi-autonomous conversational agents featuring auto-token refresh lifecycles.",
+        tags: ["WhatsApp API", "Evolution API", "n8n", "Lead Nurture"]
+      }
+    ]
+  },
+  {
+    id: "ai-agents",
+    slotNumber: "BLADE_02 // AGENT_RACK",
+    title: "Autonomous AI Agents & Voice Systems",
+    tagline: "Hands-free AI agents that think, reason, and execute actions across your stack.",
+    statusText: "LLM REASONER // ACTIVE",
+    services: [
+      {
+        icon: "🎙️",
+        title: "Voice AI Customer Agents",
+        outcome: "Voice agent that listens, reasons & acts",
+        desc: "Execute complex tasks hands-free with voice-first agents that listen, reason via LLMs, and take real-time actions across your internal apps.",
+        tags: ["Voice AI", "LLM Agents", "Real-Time Action", "n8n"]
+      },
+      {
+        icon: "⚖️",
+        title: "Tax & Legal Reasoning Agents",
+        outcome: "Autonomous legal & tax compliance analysis",
+        desc: "Automated reasoning engines that parse raw financial/legal data, forecast liabilities, and draft compliance documents with strict precision.",
+        tags: ["Taxation AI", "RAG", "Legal Reasoning", "Document Synthesis"]
+      },
+      {
+        icon: "🧠",
+        title: "Multi-Model AI Orchestrator",
+        outcome: "Zero-downtime model switching",
+        desc: "Orchestrate local LLMs (DeepSeek-R1, LLaMA3, Qwen) with intelligent fallback logic that switches models automatically if primary providers fail.",
+        tags: ["Ollama", "Multi-Model", "Auto-Fallback", "Local LLM"]
+      }
+    ]
+  },
+  {
+    id: "ai-content",
+    slotNumber: "BLADE_03 // MEDIA_ENGINE",
+    title: "AI Content & Media Generation",
+    tagline: "Generate original audio, video creatives, and marketing collateral at scale.",
+    statusText: "GENERATOR // STANDBY",
+    services: [
+      {
+        icon: "🎵",
+        title: "AI Music Generation Pipelines",
+        outcome: "Original audio tracks, zero licensing fees",
+        desc: "Generate original background music, jingles, and brand tracks on demand. Suno-powered pipelines that are batch-ready and copyright-clean.",
+        tags: ["Suno AI", "AI Audio", "Batch Processing", "Brand Audio"]
+      },
+      {
+        icon: "🎬",
+        title: "AI Video Ad & Clip Generator",
+        outcome: "High-converting UGC ad creatives",
+        desc: "Produce script-to-video ads, product demos, and social content automatically without studio production crews or expensive video teams.",
+        tags: ["UGC Ads", "AI Video", "Script-to-Video", "Content Automation"]
+      }
+    ]
+  },
+  {
+    id: "saas-development",
+    slotNumber: "BLADE_04 // SAAS_CORE",
+    title: "SaaS MVPs & Programmatic Growth Engines",
+    tagline: "From idea to live production software. Global scale, edge infrastructure.",
+    statusText: "EDGE_DEPLOY // READY",
+    services: [
+      {
+        icon: "🚀",
+        title: "Full-Stack SaaS MVP Build",
+        outcome: "Production software in 4-6 weeks",
+        desc: "Launch your custom SaaS product globally with zero server maintenance overhead. Built on Cloudflare Workers edge runtime for maximum speed.",
+        tags: ["Next.js", "Hono", "Cloudflare Workers", "SaaS MVP"]
+      },
+      {
+        icon: "📈",
+        title: "GhostRank SEO Automation Engine",
+        outcome: "Hands-off organic search domination",
+        desc: "Self-sustaining search traffic engine that polls keywords, generates GEO-compliant landing pages via DeepSeek/Gemini, and pushes to CDN.",
+        tags: ["Programmatic SEO", "GEO Compliance", "Git Automation", "Linux VPS"]
+      }
+    ]
+  }
+];
+---
+
+<section id="services" class="pt-16 md:pt-28 scroll-mt-20">
+  <SectionHeader number="03" command="> systemctl list-units --type=service" title="Services & Capabilities" />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+    Production-grade automation blueprints and autonomous digital agents engineered for real business outcomes.
+  </p>
+
+  <div class="space-y-8">
+    {CATEGORIES.map((cat) => (
+      <div class="border border-white/10 rounded-2xl bg-[#090b11]/90 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/30 shadow-xl">
+        {/* Category Header Blade */}
+        <div class="p-6 md:p-7 border-b border-white/[0.06] bg-white/[0.01] flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-3 mb-1.5">
+              <span class="font-mono text-cyan text-[10px] tracking-widest uppercase font-bold">{cat.slotNumber}</span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span class="font-mono text-[9px] text-zinc-400 uppercase tracking-wider">{cat.statusText}</span>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white tracking-wide font-sans">{cat.title}</h3>
+            <p class="text-text-muted text-xs md:text-sm mt-1 font-sans">{cat.tagline}</p>
+          </div>
+          <button
+            type="button"
+            onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: { type: 'form' } }))"
+            class="self-start md:self-center px-4 py-2 bg-cyan/10 hover:bg-cyan/20 border border-cyan/40 text-cyan text-xs font-mono uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            <span>Request Build</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+
+        {/* Services Grid */}
+        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {cat.services.map((item) => (
+            <div class="group relative rounded-xl bg-panel/70 border border-white/[0.06] p-5 hover:border-cyan/30 hover:bg-panel transition-all duration-200 flex flex-col">
+              <div class="flex items-start justify-between mb-3">
+                <span class="text-2xl">{item.icon}</span>
+                {item.honestLabel && (
+                  <span class="text-[9px] font-mono text-amber bg-amber/10 border border-amber/30 px-2 py-0.5 rounded uppercase">
+                    {item.honestLabel}
+                  </span>
+                )}
+              </div>
+              <h4 class="text-base font-bold text-white mb-1.5 font-sans group-hover:text-cyan transition-colors">
+                {item.title}
+              </h4>
+              <p class="text-cyan/80 text-xs font-mono mb-2">
+                &gt; {item.outcome}
+              </p>
+              <p class="text-zinc-400 text-xs leading-relaxed mb-4 flex-1 font-sans">
+                {item.desc}
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-auto pt-2 border-t border-white/[0.04]">
+                {item.tags.map((tag) => (
+                  <span class="text-[9px] font-mono text-text-muted/80 bg-white/[0.03] px-2 py-0.5 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

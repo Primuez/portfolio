@@ -1,0 +1,83 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const STACK_GROUPS = [
+  {
+    title: 'Automation & Orchestration',
+    border: 'cyan',
+    items: [
+      { name: 'n8n', desc: 'Self-hosted workflow engine, complex multi-node graphs & error fallbacks', badge: 'CORE' },
+      { name: 'Python', desc: 'Custom scraping, data normalization, NLP scripting & OpenCV pipelines', badge: 'LANGUAGE' },
+      { name: 'Docker & VPS', desc: 'Hostinger Linux VPS, containerized services behind reverse proxy', badge: 'INFRA' },
+      { name: 'Webhooks & Crons', desc: 'Sub-second event dispatch and reliable 24/7 background scheduled jobs', badge: 'EVENTS' },
+    ]
+  },
+  {
+    title: 'Edge & Backend Systems',
+    border: 'amber',
+    items: [
+      { name: 'Cloudflare Workers', desc: 'Serverless edge computing with D1 database and R2 object storage', badge: 'EDGE' },
+      { name: 'Hono.js', desc: 'Ultrafast, lightweight web framework running directly on the edge', badge: 'FRAMEWORK' },
+      { name: 'Supabase & Postgres', desc: 'Relational data persistence, row-level security & vector embeddings', badge: 'DATABASE' },
+      { name: 'Traefik', desc: 'Dynamic reverse proxy with automated SSL certificate provisioning', badge: 'ROUTING' },
+    ]
+  },
+  {
+    title: 'AI, LLMs & Cognitive Layers',
+    border: 'cyan',
+    items: [
+      { name: 'Google Gemini', desc: 'Multimodal vision, fast tool calling & structured JSON extraction', badge: 'MODEL' },
+      { name: 'DeepSeek & Ollama', desc: 'Cost-effective reasoning LLMs with private local deployment fallbacks', badge: 'LOCAL/API' },
+      { name: 'Mistral & LangChain', desc: 'High-speed OCR processing, chain logic & deterministic calculations', badge: 'RAG' },
+      { name: 'Suno & Whisper', desc: 'Real-time audio processing, transcription and audio asset generation', badge: 'MULTIMODAL' },
+    ]
+  },
+  {
+    title: 'Enterprise & Business Rails',
+    border: 'amber',
+    items: [
+      { name: 'Odoo ERP', desc: 'JSON-RPC integration with CRM, sales orders, inventory & attendance', badge: 'ERP' },
+      { name: 'Evolution API', desc: 'WhatsApp multi-instance messaging queues & automated client follow-ups', badge: 'MESSAGING' },
+      { name: 'IndiaMART Webhooks', desc: 'Automated inbound lead capture, parsing, and pipeline injection', badge: 'LEADS' },
+      { name: 'GST & Compliance', desc: 'Section 16(2)(aa) verification, reconciliation & PDF tax generation', badge: 'COMPLIANCE' },
+    ]
+  }
+];
+---
+
+<section id="stack" class="pt-16 md:pt-28 scroll-mt-20">
+  <SectionHeader number="08" command="> neofetch --architecture" title="Tech Stack & Infrastructure" />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+    Battle-tested tools engineered for maximum uptime, minimum latency, and zero unnecessary dependencies.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {STACK_GROUPS.map((group) => (
+      <div class={`p-6 sm:p-7 rounded-2xl bg-panel/80 border transition-all duration-300 hover:-translate-y-1 ${
+        group.border === 'cyan' ? 'border-cyan/20 hover:border-cyan/50' : 'border-amber/20 hover:border-amber/50'
+      }`}>
+        <div class="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-5">
+          <h3 class={`text-base font-bold font-mono uppercase tracking-wider ${group.border === 'cyan' ? 'text-cyan' : 'text-amber'}`}>
+            // {group.title}
+          </h3>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        </div>
+
+        <div class="space-y-4">
+          {group.items.map((item) => (
+            <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] flex items-start justify-between gap-3 group hover:border-white/10 transition-colors">
+              <div>
+                <span class="text-white text-sm font-bold font-sans block">{item.name}</span>
+                <span class="text-zinc-400 text-xs leading-relaxed font-sans block mt-0.5">{item.desc}</span>
+              </div>
+              <span class="font-mono text-[9px] uppercase px-2 py-0.5 rounded bg-white/5 text-text-muted border border-white/5 shrink-0 mt-0.5">
+                {item.badge}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

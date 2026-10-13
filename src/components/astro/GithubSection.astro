@@ -1,0 +1,88 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const REPOS = [
+  {
+    name: 'Ink-Twin',
+    description: 'BYOK 4-phase AI handwriting synthesis and homework automation platform with OCR & vector font generation.',
+    html_url: 'https://github.com/Primmius/Ink-Twin',
+    stars: 14,
+    forks: 3,
+    language: 'TypeScript',
+  },
+  {
+    name: 'portfolio',
+    description: 'High-performance developer portfolio, credential verification engine & dual-mode presentation platform.',
+    html_url: 'https://github.com/Primuez/portfolio',
+    stars: 8,
+    forks: 2,
+    language: 'TypeScript',
+  },
+  {
+    name: 'traiecta-contracts',
+    description: 'Cross-chain router contracts for Stellar and EVM networks, with CCTP, Axelar, and Allbridge integrations.',
+    html_url: 'https://github.com/Primuez/traiecta-contracts',
+    stars: 5,
+    forks: 1,
+    language: 'Rust',
+  },
+  {
+    name: 'local-ai-registry',
+    description: 'Local AI registry: one validated recipe per machine, with verified execution evidence attached.',
+    html_url: 'https://github.com/Primuez/local-ai-registry',
+    stars: 6,
+    forks: 1,
+    language: 'Shell',
+  },
+  {
+    name: 'traiecta-api',
+    description: 'Backend infrastructure for indexing, monitoring, and managing Traiecta cross-chain transfers.',
+    html_url: 'https://github.com/Primuez/traiecta-api',
+    stars: 4,
+    forks: 1,
+    language: 'TypeScript',
+  },
+];
+---
+
+<section id="github" class="pt-16 md:pt-28 scroll-mt-20">
+  <SectionHeader number="09" command="> gh repo list primuez --public" title="Open Source & Repositories" />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+    Real code in public. Verified implementations across TypeScript, Rust, and Shell.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {REPOS.map((repo) => (
+      <a
+        href={repo.html_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group p-6 rounded-2xl bg-panel/80 border border-white/10 hover:border-cyan/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
+      >
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-mono text-xs text-cyan font-bold flex items-center gap-1.5">
+              <span>📁</span> {repo.name}
+            </span>
+            <span class="text-text-muted/60 group-hover:text-cyan transition-colors text-xs">↗</span>
+          </div>
+          <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-6 font-sans">
+            {repo.description}
+          </p>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-white/[0.06] font-mono text-xs text-text-muted">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan"></span>
+            {repo.language}
+          </span>
+          <div class="flex items-center gap-3">
+            <span>★ {repo.stars}</span>
+            <span>⑂ {repo.forks}</span>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,83 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const SOCIALS = [
+  { label: '15-Min Quick Chat', href: 'https://cal.com/prime-s/15min', icon: '15', highlight: 'cyan' },
+  { label: '30-Min Scope Call', href: 'https://cal.com/prime-s/30min', icon: '30', highlight: 'amber' },
+  { label: 'GitHub (primuez)', href: 'https://github.com/primuez', icon: 'GH' },
+  { label: 'GitHub (primmius)', href: 'https://github.com/primmius', icon: 'GH2' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363', icon: 'IN' },
+  { label: 'X / Twitter', href: 'https://x.com/Primuez', icon: 'X' },
+  { label: 'Instagram', href: 'https://www.instagram.com/primuez5', icon: 'IG' },
+  { label: 'Ko-fi', href: 'https://ko-fi.com/primuez', icon: '☕' },
+  { label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f', icon: 'UP' },
+];
+---
+
+<section id="contact" class="pt-16 md:pt-32 pb-16 text-center scroll-mt-20">
+  <SectionHeader number="10" command="> ./contact --init" title="Connect & Scope" center />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-xl mx-auto text-base leading-relaxed font-sans">
+    Ready to eliminate manual operations or deploy an autonomous agent? Let's talk directly.
+  </p>
+
+  <div class="max-w-2xl mx-auto p-8 rounded-2xl bg-[#090b11]/90 border border-cyan/30 shadow-[0_0_40px_rgba(0,240,255,0.1)] mb-10">
+    <h3 class="text-2xl font-bold text-white mb-2 font-sans">Send Your Project Details</h3>
+    <p class="text-zinc-400 text-xs sm:text-sm mb-6 leading-relaxed font-sans">
+      Fill out the scoped questionnaire. I review all inquiries directly and respond within 24 hours.
+    </p>
+
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <button
+        type="button"
+        onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: { type: 'form' } }))"
+        class="px-8 py-4 bg-cyan text-bg hover:bg-cyan/90 font-mono text-xs uppercase tracking-widest rounded-xl transition-all duration-300 font-bold shadow-[0_0_25px_rgba(0,240,255,0.3)] cursor-pointer"
+      >
+        Open Project Form &rarr;
+      </button>
+
+      <div class="flex items-center justify-center gap-2 px-6 py-4 bg-white/5 border border-white/10 rounded-xl font-mono text-xs text-text-muted">
+        <span>Email:</span>
+        <a href="mailto:contact@primuez.in" class="text-cyan hover:underline font-bold">contact@primuez.in</a>
+        <button
+          type="button"
+          id="copy-email-btn"
+          class="ml-2 px-2 py-1 bg-white/10 hover:bg-white/20 text-white rounded text-[10px] uppercase transition-colors"
+          title="Copy email"
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Socials Grid */}
+  <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+    {SOCIALS.map((s) => (
+      <a
+        href={s.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={`px-4 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider flex items-center gap-2 border transition-all duration-300 ${
+          s.highlight === 'cyan'
+            ? 'bg-cyan/10 border-cyan/40 text-cyan hover:bg-cyan hover:text-bg shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+            : s.highlight === 'amber'
+              ? 'bg-amber/10 border-amber/40 text-amber hover:bg-amber hover:text-bg shadow-[0_0_15px_rgba(245,166,35,0.2)]'
+              : 'bg-panel/80 border-white/10 text-zinc-300 hover:border-cyan/40 hover:text-white'
+        }`}
+      >
+        <span class="font-bold">{s.icon}</span>
+        <span>{s.label}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<script is:inline>
+  document.getElementById('copy-email-btn')?.addEventListener('click', function() {
+    navigator.clipboard.writeText('contact@primuez.in');
+    const prev = this.textContent;
+    this.textContent = '✓ Copied';
+    setTimeout(() => { this.textContent = prev; }, 2000);
+  });
+</script>

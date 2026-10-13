@@ -1,0 +1,129 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const TIERS = [
+  {
+    tier: 'Professional Automation',
+    usd: 'Starts at $150',
+    inr: '₹12,000+',
+    color: 'cyan',
+    desc: 'Multi-step workflows & CRM setups. Documentation + handover call.',
+    features: [
+      'Multi-step workflows & CRM setups',
+      'Full error handling & logging',
+      '3-6 node workflow or AI agent',
+      'Documentation + handover call',
+      '30-day bug support',
+    ],
+    cta: 'Get Professional Build',
+    url: 'https://cal.com/prime-s/30min',
+  },
+  {
+    tier: 'Premium AI Integration',
+    usd: '$300 - $800',
+    inr: '₹25,000 - ₹65,000',
+    color: 'amber',
+    popular: true,
+    desc: 'End-to-end AI systems, SaaS MVPs & enterprise pipelines.',
+    features: [
+      'End-to-end AI systems',
+      'Multi-model orchestration',
+      'SaaS MVPs & enterprise pipelines',
+      'Full system architecture',
+      'Unlimited revisions in scope',
+    ],
+    cta: 'Build Something Premium',
+    url: 'https://cal.com/prime-s/30min',
+  },
+  {
+    tier: 'Advanced Enterprise Systems',
+    usd: 'Up to $1,000',
+    inr: '₹75,000 - ₹1,00,000+',
+    color: 'violet',
+    desc: 'High-level complex architectures. Full architecture ownership.',
+    features: [
+      'Complex architectures',
+      'Full architecture ownership',
+      'Multi-department automation',
+      'Ongoing async support',
+      'Architecture reviews & Roadmap planning',
+    ],
+    cta: 'Discuss Scope',
+    url: 'https://cal.com/prime-s/30min',
+  },
+];
+---
+
+<section id="pricing" class="pt-16 md:pt-28 scroll-mt-20">
+  <SectionHeader number="06" command="> ./pricing --fixed-scope" title="Transparent Pricing & Scopes" />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+    Fixed scopes, predictable milestones. No mysterious hourly billing or sudden surprises.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    {TIERS.map((t) => (
+      <div class={`relative rounded-2xl bg-panel/85 border p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 ${
+        t.popular
+          ? 'border-amber/50 shadow-[0_0_35px_rgba(245,166,35,0.15)] bg-gradient-to-b from-[#141b2b] to-panel'
+          : 'border-white/10 hover:border-cyan/40'
+      }`}>
+        {t.popular && (
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber text-bg font-mono text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md">
+            MOST POPULAR // HIGH ROI
+          </div>
+        )}
+
+        <div>
+          <span class="font-mono text-xs uppercase tracking-wider text-text-muted block mb-2">{t.tier}</span>
+          <div class="flex items-baseline gap-2 mb-1">
+            <span class="text-3xl sm:text-4xl font-bold font-mono text-white">{t.usd}</span>
+          </div>
+          <span class="text-xs font-mono text-cyan block mb-4">INR: {t.inr}</span>
+          <p class="text-zinc-400 text-xs sm:text-sm mb-6 leading-relaxed font-sans">{t.desc}</p>
+
+          <ul class="space-y-3 mb-8 border-t border-white/[0.06] pt-6 font-sans text-xs sm:text-sm text-zinc-300">
+            {t.features.map((feat) => (
+              <li class="flex items-start gap-2.5">
+                <span class={t.popular ? 'text-amber' : 'text-cyan'}>✓</span>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <a
+          href={t.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class={`w-full py-3.5 px-4 rounded-xl font-mono text-xs uppercase tracking-widest text-center transition-all duration-200 font-bold block ${
+            t.popular
+              ? 'bg-amber text-bg hover:bg-amber/90 shadow-lg shadow-amber/20'
+              : 'bg-white/5 hover:bg-cyan/15 text-white hover:text-cyan border border-white/10 hover:border-cyan/50'
+          }`}
+        >
+          {t.cta} &rarr;
+        </a>
+      </div>
+    ))}
+  </div>
+
+  {/* Retainer Card */}
+  <div class="rounded-2xl border border-white/10 bg-[#090b11]/90 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div>
+      <span class="font-mono text-xs uppercase tracking-widest text-cyan font-bold">[ ONGOING PARTNERSHIP ]</span>
+      <h3 class="text-xl sm:text-2xl font-bold text-white mt-1 font-sans">Monthly Retainer & Fractional CTO</h3>
+      <p class="text-zinc-400 text-xs sm:text-sm mt-1 max-w-xl">
+        Dedicated automation pipeline ownership, rapid bug fixes, weekly architectural reviews, and prioritized delivery.
+      </p>
+    </div>
+    <a
+      href="https://cal.com/prime-s/30min"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="px-6 py-3.5 bg-cyan/10 hover:bg-cyan hover:text-bg border border-cyan/40 text-cyan text-xs font-mono uppercase tracking-widest rounded-xl transition-all duration-300 font-bold shrink-0"
+    >
+      Discuss Retainer &rarr;
+    </a>
+  </div>
+</section>

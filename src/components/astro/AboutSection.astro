@@ -1,0 +1,127 @@
+---
+import SectionHeader from './SectionHeader.astro';
+---
+
+<section id="whoami" class="relative py-20 md:py-28 overflow-hidden scroll-mt-20">
+  <SectionHeader number="01" command="> whoami --verbose" title="Architecting Autonomy" />
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+    {/* Card 01: Operator Creed */}
+    <div class="group relative rounded-2xl bg-[#0d111a]/80 border border-white/10 p-6 sm:p-7 shadow-xl hover:border-cyan/40 transition-all duration-300">
+      <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-400 border-b border-white/[0.06] pb-3 mb-4">
+        <span class="text-cyan font-bold">[ 01 ]</span>
+        <span class="text-zinc-200 font-semibold uppercase tracking-wider">operator_creed</span>
+        <span class="text-purple-400 ml-auto font-mono text-xs">TERM // 01</span>
+      </div>
+
+      <blockquote class="text-white italic text-sm md:text-base border-l-2 border-cyan/60 pl-3 py-1 leading-relaxed font-sans mb-4">
+        &quot;Self-taught. No CS degree. No team. Everything here was built by directly doing — from central India, one working pipeline at a time.&quot;
+      </blockquote>
+
+      <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans mb-4">
+        I believe in engineering working blueprints over theoretical ideals. Production deployments should be resilient, scalable, and completely autonomic.
+      </p>
+
+      <div class="bg-black/60 p-3.5 rounded-xl border border-white/[0.06] font-mono text-[11px] text-zinc-300 space-y-1.5">
+        <div class="text-emerald-400 font-semibold">$&gt; primuez --execute-creed</div>
+        <div>[SUCCESS] PRACTICALITY_OVER_HYPOTHESIS = TRUE</div>
+        <div>[SUCCESS] BARE_METAL_AUTONOMY = ACTIVE</div>
+        <div class="text-zinc-400">// Raipur Core Integration // रायपुर, छ.ग.</div>
+      </div>
+    </div>
+
+    {/* Card 02: Core Identity */}
+    <div class="group relative rounded-2xl bg-[#0d111a]/80 border border-white/10 p-6 sm:p-7 shadow-xl hover:border-cyan/40 transition-all duration-300">
+      <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-400 border-b border-white/[0.06] pb-3 mb-4">
+        <span class="text-cyan font-bold">[ 02 ]</span>
+        <span class="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
+        <span class="text-cyan ml-auto font-mono text-xs">AI // CORE</span>
+      </div>
+
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight font-sans mb-3">
+        I am <span class="shader-text-iridescent font-bold">Rahul Kasturiya</span>
+        <span class="text-zinc-300 block mt-1 text-lg font-medium">Known as Primuez.</span>
+      </h3>
+
+      <div class="space-y-3 text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans">
+        <p>
+          I build automation systems using n8n, Cloudflare Workers, and AI — connecting the tools businesses already use so manual work disappears.
+        </p>
+        <p class="text-zinc-400 text-xs leading-relaxed">
+          I've shipped live SaaS products (InkTwin, PrimuezSure), built AI agents for tax and legal queries, and designed enterprise automation architecture for manufacturing workflows. If a system can be automated, I can build it.
+        </p>
+      </div>
+    </div>
+
+    {/* Card 03: System Specs */}
+    <div class="group relative rounded-2xl bg-[#0d111a]/80 border border-white/10 p-6 sm:p-7 shadow-xl hover:border-amber/40 transition-all duration-300">
+      <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-400 border-b border-white/[0.06] pb-3 mb-4">
+        <span class="text-amber font-bold">[ 03 ]</span>
+        <span class="text-zinc-200 font-semibold uppercase tracking-wider">system_specs</span>
+        <span class="text-amber ml-auto font-mono text-xs">SPECS // V2</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div class="p-3.5 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+          <span class="text-cyan font-mono text-[10px] uppercase tracking-widest block mb-1">Experience</span>
+          <span class="text-white text-sm font-bold block leading-tight">AI Automation</span>
+          <span class="text-zinc-400 text-[10px] block mt-0.5">Since July 2025</span>
+        </div>
+
+        <div class="p-3.5 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+          <span class="text-rose-400 font-mono text-[10px] uppercase tracking-widest block mb-1">Coordinates</span>
+          <span class="text-white text-sm font-bold block leading-tight">Indore, MP, India</span>
+          <span class="text-zinc-400 text-[10px] block mt-0.5">Raipur Core Center</span>
+        </div>
+
+        <div class="p-3.5 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+          <span class="text-purple-400 font-mono text-[10px] uppercase tracking-widest block mb-1">Education</span>
+          <span class="text-white text-sm font-bold block leading-tight">KPS · SSIPS (BCA)</span>
+          <span class="text-zinc-400 text-[10px] block mt-0.5">Systems Foundations</span>
+        </div>
+
+        <div class="p-3.5 bg-white/[0.02] border border-white/[0.06] rounded-xl">
+          <span class="text-emerald-400 font-mono text-[10px] uppercase tracking-widest block mb-1">Dialect Compilers</span>
+          <span class="text-white text-sm font-bold block leading-tight">Hindi · English · Sindhi</span>
+          <span class="text-zinc-400 text-[10px] block mt-0.5">Multi-channel</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Card 04: Live Telemetry */}
+    <div class="group relative rounded-2xl bg-[#0d111a]/80 border border-white/10 p-6 sm:p-7 shadow-xl hover:border-emerald-500/40 transition-all duration-300">
+      <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-400 border-b border-white/[0.06] pb-3 mb-4">
+        <span class="text-emerald-400 font-bold">[ 04 ]</span>
+        <span class="text-zinc-200 font-semibold uppercase tracking-wider">live_telemetry</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400 ml-auto animate-pulse"></span>
+      </div>
+
+      <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans mb-4">
+        I build self-governing networks of automation, replacing expensive human latency loops with highly robust agent architectures. My systems think, execute, and self-correct 24/7.
+      </p>
+
+      <div class="flex flex-col gap-2 p-3.5 bg-black/50 border border-white/[0.06] rounded-xl font-mono text-[11px] text-zinc-300">
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">STATUS:</span>
+          <span class="text-cyan font-bold">ACTIVE ENGINE</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">COORDINATES:</span>
+          <span class="text-white">RAIPUR CORE // INDIA</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">INFRASTRUCTURE:</span>
+          <span class="text-cyan font-bold">VPS // DOCKER // TRAEFIK</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">ACTIVE PIPELINES:</span>
+          <span class="text-amber font-bold">NOMINAL</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">AUTONOMOUS AGENTS:</span>
+          <span class="text-emerald-400 font-bold">ONLINE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

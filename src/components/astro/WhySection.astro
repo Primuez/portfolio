@@ -1,0 +1,110 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const WHY_ITEMS = [
+  {
+    num: '01',
+    title: 'We Ship, Not Just Plan',
+    detail: "Real products. Live URLs. InkTwin and PrimuezSure aren't concepts on a slide deck — they're deployed, working SaaS tools built by a solo developer from Raipur.",
+    extended: "We build live, production-grade assets, not speculative wireframes. We engineer the complete lifecycle: responsive frontends, resilient background workers, and automated security controls. We sell the exact same execution we use to power our own business."
+  },
+  {
+    num: '02',
+    title: 'Automation-First Thinking',
+    detail: 'Every solution starts with: what can be automated? Powered by n8n, LLMs, autonomous agents, and custom API pipelines — we remove the manual work before it becomes your problem.',
+    extended: 'Every business bottleneck is solved at the architecture level. By combining high-density n8n workflow grids, Cloudflare Edge workers, and self-correcting AI sandboxes, we bypass human latency.'
+  },
+  {
+    num: '03',
+    title: 'Certified & Self-Taught',
+    detail: "n8n Official Badge Holder. Triple Oracle Certified. SimpliLearn Certified. But more importantly — everything here was built by doing, not just studying.",
+    extended: "Holding official n8n creator badges and developer certifications is just the baseline. The real proof is in the code. We operate with a deep, self-taught systems knowledge forged by hands-on engineering."
+  },
+  {
+    num: '04',
+    title: 'Young, Hungry & Agile',
+    detail: "Still in college, already running a SaaS brand. Zero bureaucratic red tape. That means faster turnaround, lower overhead, and direct access to the architect.",
+    extended: "Free from the bloat of traditional agencies and legacy processes. We deliver custom integrations in days rather than months. You deal directly with the system architect."
+  }
+];
+---
+
+<section id="why-primuez" class="pt-16 md:pt-28 scroll-mt-20">
+  <SectionHeader number="07" command="> diff --strategic ./agency ./primuez" title="Why Work With Primuez" />
+
+  <p class="text-text-muted mt-2 mb-10 max-w-2xl text-base leading-relaxed font-sans">
+    Direct execution over agency bloat. Built by someone who ships real code every single day.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+    {WHY_ITEMS.map((item) => (
+      <div class="group p-6 sm:p-7 rounded-2xl bg-panel/80 border border-white/10 hover:border-cyan/30 transition-all duration-300">
+        <div class="flex items-center gap-2 font-mono text-cyan text-xs font-bold mb-3">
+          <span>// {item.num}</span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2 font-sans group-hover:text-cyan transition-colors">
+          {item.title}
+        </h3>
+        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mb-3 font-sans">
+          {item.detail}
+        </p>
+        <p class="text-zinc-400 text-xs leading-relaxed font-sans border-t border-white/[0.04] pt-3">
+          {item.extended}
+        </p>
+      </div>
+    ))}
+  </div>
+
+  {/* Fit Check Container */}
+  <div class="rounded-2xl border border-white/10 bg-[#090b11]/90 p-6 sm:p-8">
+    <div class="text-center max-w-xl mx-auto mb-8">
+      <span class="font-mono text-xs uppercase tracking-widest text-amber font-bold">[ CRITICAL FILTER ]</span>
+      <h3 class="text-2xl font-bold text-white mt-1 font-sans">Is This a Good Fit?</h3>
+      <p class="text-zinc-400 text-xs sm:text-sm mt-1">I value both of our time. Let's make sure we're right for each other.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Good Fit */}
+      <div class="p-6 rounded-xl bg-emerald-950/20 border border-emerald-500/30">
+        <h4 class="font-mono text-xs uppercase tracking-wider text-emerald-400 font-bold mb-4 flex items-center gap-2">
+          <span>✅</span> Good Fit If You Are:
+        </h4>
+        <ul class="space-y-3 text-xs sm:text-sm text-zinc-300">
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold mt-0.5">•</span>
+            <span>A manufacturer, trader, or CA drowning in manual data entry across ERPs, spreadsheets, and portals.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold mt-0.5">•</span>
+            <span>A founder or operator who wants production systems delivered fast without layers of management.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-400 font-bold mt-0.5">•</span>
+            <span>Ready to automate repetitive operations to scale revenue and eliminate human error.</span>
+          </li>
+        </ul>
+      </div>
+
+      {/* Not a Fit */}
+      <div class="p-6 rounded-xl bg-rose-950/20 border border-rose-500/30">
+        <h4 class="font-mono text-xs uppercase tracking-wider text-rose-400 font-bold mb-4 flex items-center gap-2">
+          <span>❌</span> Not a Fit If You Want:
+        </h4>
+        <ul class="space-y-3 text-xs sm:text-sm text-zinc-300">
+          <li class="flex items-start gap-2">
+            <span class="text-rose-400 font-bold mt-0.5">•</span>
+            <span>A $10 Fiverr bot or the absolute cheapest bidder who cuts corners on security and error handling.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-rose-400 font-bold mt-0.5">•</span>
+            <span>Weeks of bureaucratic committee meetings and PowerPoint decks instead of shipping working code.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-rose-400 font-bold mt-0.5">•</span>
+            <span>Speculative hypothetical research with no clear business milestone or ROI.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
