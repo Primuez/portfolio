@@ -118,7 +118,7 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
 ];
 
 export default function ProjectsIsland() {
-  // All categories strictly default to compact on initial load at all viewports (zero flash)
+  // All categories strictly default to compact (closed) on initial load at all viewports
   const [openCategories, setOpenCategories] = useState<{ [key: number]: boolean }>({});
 
   const toggleCategory = (idx: number) => {
@@ -133,118 +133,134 @@ export default function ProjectsIsland() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 projects-stack-container pb-8">
       {PROJECT_CATEGORIES.map((cat, idx) => {
         const isOpen = !!openCategories[idx];
         return (
           <div
             key={idx}
             style={{
-              top: `${88 + idx * 16}px`,
+              top: `${80 + idx * 24}px`,
             }}
-            className="sticky border border-white/10 rounded-2xl bg-[#090b16]/95 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-cyan/40 shadow-2xl mb-8 transform-gpu"
+            className="sticky project-deck-card p-1.5 rounded-[2rem] bg-gradient-to-b from-white/10 via-white/[0.03] to-transparent border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-all duration-300 hover:border-cyan/40 mb-8 backdrop-blur-2xl"
           >
-            <button
-              type="button"
-              onClick={() => toggleCategory(idx)}
-              className="w-full p-6 text-left flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-cyan/5 transition-colors select-none cursor-pointer"
-            >
-              <div>
-                <span className="font-mono text-cyan text-[10px] tracking-widest uppercase block mb-1">
-                  0{idx + 1} // PORTFOLIO CATEGORY
-                </span>
-                <h3 className="text-xl md:text-2xl font-bold text-white tracking-wide font-sans">
-                  {cat.title}
-                </h3>
-                <p className="text-text-muted text-xs md:text-sm mt-1 leading-relaxed font-sans">
-                  {cat.tagline}
-                </p>
-              </div>
-              <div className="flex items-center gap-2 font-mono text-[10px] uppercase text-cyan shrink-0">
-                <span>{isOpen ? '▼ Collapse' : '▶ Expand'}</span>
-              </div>
-            </button>
-
-            {isOpen && (
-              <div className="border-t border-white/5 bg-black/30 p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {cat.projects.map((project, pIdx) => (
-                  <div
-                    key={pIdx}
-                    className="p-5 rounded-xl bg-panel/70 border border-white/[0.06] hover:border-cyan/30 transition-all duration-200 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        {project.logoUrl ? (
-                          <img
-                            src={project.logoUrl}
-                            alt={project.name}
-                            className="w-8 h-8 rounded object-contain bg-white/5 p-1"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <span className="text-xl">⚡</span>
-                        )}
-                        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
-                          {project.status}
-                        </span>
-                      </div>
-
-                      <h4 className="text-base font-bold text-white font-sans mt-2 mb-1">
-                        {project.name}
-                      </h4>
-
-                      <p className="text-zinc-300 text-xs leading-relaxed mb-3 font-sans">
-                        {project.desc}
-                      </p>
-
-                      <div className="p-3 rounded-lg bg-black/40 border border-white/[0.04] mb-4">
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-cyan block mb-1">
-                          ARCHITECTURE //
-                        </span>
-                        <p className="text-zinc-400 text-[11px] leading-relaxed font-sans">
-                          {project.techDetails}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {project.tags.map((tag, tIdx) => (
-                          <span
-                            key={tIdx}
-                            className="text-[9px] font-mono text-text-muted bg-white/[0.04] px-2 py-0.5 rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      {project.url && (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-cyan hover:underline font-bold"
-                        >
-                          <span>Visit Live Project</span>
-                          <span>↗</span>
-                        </a>
-                      )}
-
-                      {project.hasCustomBtn && (
-                        <button
-                          type="button"
-                          onClick={openWorkflowModal}
-                          className="w-full mt-2 py-2.5 px-3 bg-cyan/10 hover:bg-cyan hover:text-bg border border-cyan/40 text-cyan rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-200 font-bold flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(0,240,255,0.15)]"
-                        >
-                          <span>⚙ View Architecture Diagram</span>
-                        </button>
-                      )}
-                    </div>
+            <div className="rounded-[calc(2rem-0.375rem)] bg-[#070b12]/95 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => toggleCategory(idx)}
+                className="w-full p-6 sm:p-7 text-left flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-cyan/5 transition-colors select-none cursor-pointer"
+              >
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="font-mono text-cyan text-[10px] tracking-widest uppercase bg-cyan/10 border border-cyan/20 px-2 py-0.5 rounded">
+                      DECK_0{idx + 1} // ARCHITECTURE
+                    </span>
+                    <span className="text-[10px] font-mono text-zinc-500">
+                      [{cat.projects.length} VERIFIED SYSTEMS]
+                    </span>
                   </div>
-                ))}
-              </div>
-            )}
+                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-wide font-sans">
+                    {cat.title}
+                  </h3>
+                  <p className="text-zinc-400 text-xs sm:text-sm mt-1 leading-relaxed font-sans max-w-2xl">
+                    {cat.tagline}
+                  </p>
+                </div>
+                
+                {/* Nested Island Button Pill (High-End-Visual-Design) */}
+                <div className="flex items-center gap-3 self-end md:self-center shrink-0">
+                  <div className="px-4 py-2 rounded-full border border-cyan/40 bg-cyan/10 text-cyan font-mono text-[11px] uppercase tracking-wider font-bold flex items-center gap-2 group-hover:bg-cyan group-hover:text-black transition-all">
+                    <span>{isOpen ? 'Collapse Category' : 'Inspect Systems'}</span>
+                    <span className="text-xs transition-transform duration-200">
+                      {isOpen ? '▲' : '▼'}
+                    </span>
+                  </div>
+                </div>
+              </button>
+
+              {isOpen && (
+                <div className="border-t border-white/10 bg-black/40 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
+                  {cat.projects.map((project, pIdx) => (
+                    <div
+                      key={pIdx}
+                      className="p-1 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan/40 transition-all duration-300 flex flex-col justify-between shadow-xl"
+                    >
+                      <div className="p-5 rounded-[calc(1rem-0.25rem)] bg-[#090e18] flex flex-col justify-between h-full">
+                        <div>
+                          <div className="flex items-start justify-between gap-2 mb-3">
+                            {project.logoUrl ? (
+                              <img
+                                src={project.logoUrl}
+                                alt={project.name}
+                                className="w-8 h-8 rounded object-contain bg-white/5 p-1"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <span className="text-xl">⚡</span>
+                            )}
+                            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                              {project.status}
+                            </span>
+                          </div>
+
+                          <h4 className="text-base font-bold text-white font-sans mb-1.5 leading-snug">
+                            {project.name}
+                          </h4>
+
+                          <p className="text-zinc-300 text-xs leading-relaxed mb-4 font-sans">
+                            {project.desc}
+                          </p>
+
+                          <div className="p-3.5 rounded-xl bg-black/50 border border-white/[0.04] mb-4">
+                            <span className="font-mono text-[9px] uppercase tracking-wider text-cyan block mb-1">
+                              VERIFIED STACK ARCHITECTURE //
+                            </span>
+                            <p className="text-zinc-400 text-[11px] leading-relaxed font-sans">
+                              {project.techDetails}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex flex-wrap gap-1.5 mb-4">
+                            {project.tags.map((tag, tIdx) => (
+                              <span
+                                key={tIdx}
+                                className="text-[9px] font-mono text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.02]"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          {project.url && (
+                            <a
+                              href={project.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-mono text-cyan hover:text-white font-bold transition-colors"
+                            >
+                              <span>Visit Live System</span>
+                              <span>↗</span>
+                            </a>
+                          )}
+
+                          {project.hasCustomBtn && (
+                            <button
+                              type="button"
+                              onClick={openWorkflowModal}
+                              className="w-full mt-2 py-2.5 px-3 bg-cyan/15 hover:bg-cyan hover:text-black border border-cyan/40 text-cyan rounded-xl font-mono text-xs uppercase tracking-wider transition-all duration-200 font-bold flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+                            >
+                              <span>⚙ View Architecture Diagram</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         );
       })}
