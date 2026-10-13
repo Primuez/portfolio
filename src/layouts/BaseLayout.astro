@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/islands/Navbar';
+import GlobalChrome from '../components/islands/GlobalChrome';
 import ModalsIsland from '../components/islands/ModalsIsland';
 
 interface Props {
@@ -98,6 +99,9 @@ const jsonLd = {
 
     {/* Navigation Island */}
     <Navbar client:load />
+
+    {/* Global Interactive Chrome (Progress Bar, Cursor, ScrollToTop) */}
+    <GlobalChrome client:idle />
 
     {/* Main Page Content */}
     <slot />
