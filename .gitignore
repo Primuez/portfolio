@@ -18,12 +18,3 @@ node_modules
 .env
 .env.*
 !.env.example
-.env*
-.open-next
-
-# Astro & Cloudflare build artifacts
-dist/
-.astro/
-.wrangler/
-package*.next.json
-_legacy_nextjs/
