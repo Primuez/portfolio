@@ -179,6 +179,116 @@ export default function CredentialsSection() {
               </div>
             </CVAccordion>
 
+            <CVAccordion title="Linux Foundation (Open Source & AI Standards)">
+              <p className="text-sm text-text-muted mb-3">7x verified credentials across secure AI development, prompt vault migration, OpenAPI, PyTorch, and AI compliance standards.</p>
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFD121: Developing Secure Software</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Credly Verified</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/64211ae0-da26-4aaf-9d72-4dd87658a17f/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFEL1012: Secure AI/ML-Driven Software Development</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Credly Verified</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/44445a2c-1c99-4369-ab64-df5e2b013a3a/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFEL1008: Migrating AI Workflows Across Platforms</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Credly Verified</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/c4454f12-56f0-4e14-8e67-bf556cf0d608/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFEL1011: OpenAPI Fundamentals</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Credly Verified</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/a6d75dd7-7cc6-420b-8773-313accec7f20/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFS116: PyTorch &amp; Deep Learning for Decision Makers</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Credly Verified</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/6a0e5633-d2bf-41c4-bcd2-2947a40e7ca8/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFS120: Conversational AI Compliance &amp; Risk Mitigation</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · NIST &amp; EU AI Act</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/dece5521-c778-4345-9dde-d2a713c2d063/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-cyan/20 hover:border-cyan/40 transition-colors">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-xs font-bold text-white leading-tight">LFS118: Ethical Principles for Conversational AI</span>
+                    <span className="text-[10px] text-cyan font-mono mt-0.5">The Linux Foundation · Credly Verified</span>
+                  </div>
+                  <a
+                    href="https://www.credly.com/badges/74ceefe5-33da-4ae0-ae80-973fc0e379d3/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase bg-amber/10 text-amber border border-amber/30 px-3 py-1.5 hover:bg-amber hover:text-bg transition-colors flex items-center gap-1 shrink-0"
+                  >
+                    Credly <ExternalLink size={10} />
+                  </a>
+                </div>
+              </div>
+            </CVAccordion>
+
             <CVAccordion title="Cybersecurity & Defense (IBM & Cohesity)">
               <p className="text-sm text-text-muted mb-3">Enterprise cyber resilience, offensive &amp; defensive threat analysis, and cryptographic security architectures.</p>
               <div className="flex flex-col gap-2.5">
