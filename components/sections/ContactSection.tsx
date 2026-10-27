@@ -417,11 +417,6 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           </FallingPiece>
         </div>
 
-        {/* Live On-Page Interactive Contact & Project Form */}
-        <div className="mt-8 max-w-4xl mx-auto px-2 sm:px-4 z-20 relative text-left">
-          <WorkWithMeForm inline />
-        </div>
-
         {/* Email */}
         <div className="mt-12 flex justify-center">
           <FallingPiece {...fp('eml')}>
@@ -519,6 +514,12 @@ export default function ContactSection() {
         <h2 id="contact-heading" className="sr-only">
           How can you get in touch with Primuez to start an AI automation project?
         </h2>
+
+        {/* Dedicated Live On-Page Intake Form */}
+        <div className="max-w-4xl mx-auto px-4 my-8 text-left z-30 relative">
+          <WorkWithMeForm inline />
+        </div>
+
         <GravityCollapse onContact={() => { trackEvent('click_contact_form'); setModalType('form'); }} />
       </motion.div>
     </section>
