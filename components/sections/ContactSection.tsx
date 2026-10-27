@@ -10,6 +10,7 @@ import { ShaderLogo } from '@/components/ShaderText';
 import { ShaderLogoGlow } from '@/components/ShaderLogoGlow';
 import { SectionHeader } from '@/components/SectionHeader';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
+import { WorkWithMeForm } from '@/components/WorkWithMeForm';
 import { trackEvent } from '@/lib/analytics';
 
 function SocialIcon({ icon, label, href, highlight }: { icon: React.ReactNode; label: string; href: string; highlight?: boolean }) {
@@ -414,6 +415,11 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
               <Send size={16} /> Let&apos;s Connect / Fill Form
             </GlassButton>
           </FallingPiece>
+        </div>
+
+        {/* Live On-Page Interactive Contact & Project Form */}
+        <div className="mt-8 max-w-4xl mx-auto px-2 sm:px-4 z-20 relative text-left">
+          <WorkWithMeForm inline />
         </div>
 
         {/* Email */}

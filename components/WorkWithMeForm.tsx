@@ -28,7 +28,8 @@ import {
 } from 'lucide-react';
 
 interface WorkWithMeFormProps {
-  onClose: () => void;
+  onClose?: () => void;
+  inline?: boolean;
 }
 
 const SERVICES = [
@@ -58,7 +59,7 @@ const TIMELINES = [
 const CONTACT_METHODS = ['WhatsApp', 'Telegram', 'Email', 'Discord', 'Other'];
 const SOURCES = ['YouTube (@Primuez)', 'LinkedIn', 'X / Twitter', 'GitHub', 'Upwork / Fiverr', 'Direct Referral'];
 
-export function WorkWithMeForm({ onClose }: WorkWithMeFormProps) {
+export function WorkWithMeForm({ onClose, inline = false }: WorkWithMeFormProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -173,11 +174,13 @@ export function WorkWithMeForm({ onClose }: WorkWithMeFormProps) {
 
   return (
     <motion.div
-      initial={{ scale: 0.95, opacity: 0, y: 20 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.95, opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
       onClick={(e) => e.stopPropagation()}
-      className="bg-[#0a0a0f] border-2 border-cyan/40 rounded-2xl w-full max-w-4xl shadow-[0_0_50px_rgba(0,240,255,0.2)] relative max-h-[90vh] flex flex-col overflow-hidden text-white font-mono"
+      className={`bg-[#0a0a0f] border-2 border-cyan/40 rounded-2xl w-full max-w-4xl shadow-[0_0_50px_rgba(0,240,255,0.2)] relative flex flex-col text-white font-mono ${
+        inline ? 'my-8 text-left' : 'max-h-[90vh] overflow-hidden'
+      }`}
     >
       {/* Top Header Bar */}
       <div className="bg-[#0f121d] border-b border-cyan/20 px-6 py-4 flex justify-between items-center z-10">
@@ -190,12 +193,15 @@ export function WorkWithMeForm({ onClose }: WorkWithMeFormProps) {
             <Send size={15} /> DIRECT COMM-LINK // WORK WITH PRIMUEZ
           </span>
         </div>
-        <button
-          onClick={onClose}
-          className="text-gray-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5 flex items-center gap-1.5 text-xs font-bold"
-        >
-          <X size={16} /> <span className="hidden sm:inline">CLOSE</span>
-        </button>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5 flex items-center gap-1.5 text-xs font-bold"
+          >
+            <X size={16} /> <span className="hidden sm:inline">CLOSE</span>
+          </button>
+        )}
       </div>
 
       {/* Step Progress Indicator (when not completed) */}
