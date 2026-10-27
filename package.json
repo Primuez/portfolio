@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "astro dev --port 5000 --host 0.0.0.0",
-    "build": "astro build",
+    "build": "node scripts/opennext-shim.js",
     "preview": "astro preview --port 5000 --host 0.0.0.0",
     "check": "astro check",
-    "build:cloudflare": "astro build",
+    "build:cloudflare": "node scripts/opennext-shim.js",
     "deploy:cloudflare": "wrangler deploy",
     "build:next": "next build",
     "postinstall": "node scripts/postinstall.js"
