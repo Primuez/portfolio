@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Download, Activity, Terminal, Send } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
+import { WorkWithMeForm } from '@/components/WorkWithMeForm';
 
 const CertPdfViewer = React.lazy(() => import('@/components/CertPdfViewer').then(m => ({ default: m.CertPdfViewer })));
 
@@ -121,25 +122,7 @@ export default function ModalsSection() {
         >
           {/* WORK WITH ME FORM MODAL */}
           {modalType === 'form' && (
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-panel border border-cyan/30 rounded-xl w-full max-w-4xl shadow-[0_0_40px_rgba(0,240,255,0.2)] relative h-[85vh] flex flex-col overflow-hidden"
-            >
-              <div className="bg-bg/80 border-b border-cyan/20 px-6 py-4 flex justify-between items-center font-mono text-sm">
-                <span className="text-cyan flex items-center gap-2"><Send size={14}/> Send Your Project Details</span>
-                <button onClick={() => setModalType(null)} className="text-text-muted hover:text-white transition-colors">✕ CLOSE</button>
-              </div>
-              <div className="flex-1 w-full relative bg-bg">
-                <iframe 
-                  src="https://n8n.srv923105.hstgr.cloud/form/7af19c92-308e-4232-aab8-368b790c8bc2" 
-                  className="absolute inset-0 w-full h-full border-none bg-transparent"
-                  title="Work With Me Form"
-                ></iframe>
-              </div>
-            </motion.div>
+            <WorkWithMeForm onClose={() => setModalType(null)} />
           )}
 
           {/* HTML CERTIFICATE MODAL */}
