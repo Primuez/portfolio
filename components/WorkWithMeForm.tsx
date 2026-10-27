@@ -59,6 +59,7 @@ const TIMELINES = [
 const CONTACT_METHODS = ['WhatsApp', 'Telegram', 'Email', 'Discord', 'Other'];
 const SOURCES = ['YouTube (@Primuez)', 'LinkedIn', 'X / Twitter', 'GitHub', 'Upwork / Fiverr', 'Direct Referral'];
 
+// Direct Intake & CRM Pipeline Component - Version 2.0 (Dual-Mode: Inline & Modal)
 export function WorkWithMeForm({ onClose, inline = false }: WorkWithMeFormProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
