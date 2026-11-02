@@ -17,6 +17,7 @@ dist/
 .astro/
 .open-next/
 .wrangler/
+audit/
 
 # Secrets and environment files
 .env
