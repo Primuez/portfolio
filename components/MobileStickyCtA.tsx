@@ -1,17 +1,20 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useUI } from '@/lib/contexts/UIContext';
+import { trackEvent } from '@/lib/analytics';
 
 /**
  * Mobile-only sticky CTA bar.
  * - Visible only below 768px viewport width
  * - Appears after user scrolls past the Hero section (uses IntersectionObserver)
  * - Fixed to bottom of screen, full-width, flush edges
- * - Links to the contact section
+ * - Opens the interactive lead intake form modal and scrolls to contact
  */
 export function MobileStickyCtA() {
   const [visible, setVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { setModalType } = useUI();
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -47,6 +50,16 @@ export function MobileStickyCtA() {
     };
   }, [isMobile]);
 
+  const handleLetsTalk = (e: React.MouseEvent) => {
+    e.preventDefault();
+    trackEvent('click_mobile_sticky_letstalk');
+    setModalType('form');
+    const contactEl = document.getElementById('contact');
+    if (contactEl) {
+      contactEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   // Don't render anything on desktop
   if (!isMobile) return null;
 
@@ -59,13 +72,14 @@ export function MobileStickyCtA() {
     >
       {/* Subtle top edge gradient for depth */}
       <div className="h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
-      <div className="bg-[#0a0e1a]/95 backdrop-blur-md border-t border-white/[0.06] px-4 py-2">
-        <a
-          href="#contact"
-          className="flex items-center justify-center w-full min-h-[56px] bg-cyan/90 hover:bg-cyan text-[#0a0a0f] font-mono text-sm font-bold uppercase tracking-widest transition-colors duration-200"
+      <div className="bg-[#0a0e1a]/95 backdrop-blur-md border-t border-white/[0.06] px-4 py-2 pb-safe">
+        <button
+          type="button"
+          onClick={handleLetsTalk}
+          className="flex items-center justify-center w-full min-h-[56px] bg-cyan/90 hover:bg-cyan text-[#0a0a0f] font-mono text-sm font-bold uppercase tracking-widest transition-all duration-200 cursor-pointer active:scale-[0.98] rounded-lg shadow-[0_0_20px_rgba(0,240,255,0.25)]"
         >
           Let&apos;s Talk &rarr;
-        </a>
+        </button>
       </div>
     </div>
   );
