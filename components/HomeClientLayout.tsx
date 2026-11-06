@@ -37,7 +37,7 @@ function ScrollToTopButton({ scrolled }: { scrolled: boolean }) {
             trackEvent('click_back_to_top');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="fixed bottom-20 right-6 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-11 md:h-11 rounded-full bg-panel/90 border border-cyan/30 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 w-10 h-10 md:w-11 md:h-11 rounded-full bg-black/85 border border-cyan/40 backdrop-blur-md flex items-center justify-center text-cyan hover:bg-cyan/10 hover:border-cyan/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group active:scale-90"
           aria-label="Scroll to top"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-y-0.5 transition-transform">

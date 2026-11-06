@@ -20,7 +20,8 @@ function SocialIcon({ icon, label, href, highlight }: { icon: React.ReactNode; l
       rel="noopener noreferrer"
       draggable={false}
       onDragStart={(e) => e.preventDefault()}
-      className={`group relative flex items-center justify-center w-12 h-12 bg-panel rounded-lg text-text-muted hover:text-white transition-all duration-300 hover:-translate-y-1
+      aria-label={label}
+      className={`group relative flex items-center justify-center w-11 h-11 md:w-12 md:h-12 bg-panel rounded-lg text-text-muted hover:text-white transition-all duration-300 hover:-translate-y-1
         ${highlight 
           ? 'border border-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.15)] hover:border-cyan hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]' 
           : 'border border-cyan/20 hover:border-white/50 hover:shadow-[0_0_15px_rgba(255,255,255,0.15)]'}`}
@@ -122,13 +123,15 @@ function FallingPiece({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dx, dy]);
 
-  const canDrag = collapsed && isDraggable && !permanent;
+  const isMobile = useIsMobile();
+  const canDrag = collapsed && isDraggable && !permanent && !isMobile;
 
   // Drag props only spread when actually draggable — prevents Framer
-  // gesture handlers from running when drag is disabled
+  // gesture handlers from running when drag is disabled.
+  // Use numeric constraints to avoid Framer Motion crash during viewport resize.
   const dragProps = canDrag ? {
     drag: true as const,
-    dragConstraints: container,
+    dragConstraints: { left: -500, right: 500, top: -350, bottom: 350 },
     dragMomentum: true,
     // Lower power = pieces slide further after throw (air hockey)
     dragTransitionPower: 180,
@@ -243,9 +246,9 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
   useEffect(() => {
     setMounted(true);
-    if (pendingCollapse.current) setCollapsed(true);
+    if (pendingCollapse.current && !isMobile) setCollapsed(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     if (!collapsed) {
@@ -345,7 +348,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       <motion.div
         className="absolute inset-0 pointer-events-none"
         onViewportEnter={() => {
-          if (permanent || hasTriggered.current) return;
+          if (isMobile || permanent || hasTriggered.current) return;
           hasTriggered.current = true;
           if (mounted) setCollapsed(true);
           else pendingCollapse.current = true;
@@ -388,11 +391,11 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
           pieces handle their own pointer-events. */}
       <div className={`text-center pt-12 ${!collapsed && !permanent ? 'pointer-events-none' : ''}`}>
         {/* Heading */}
-        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-4 gap-y-2 leading-tight text-white">
-          <FallingPiece {...fp('w0')}><span className="inline-block px-1">Ready</span></FallingPiece>
-          <FallingPiece {...fp('w1')}><span className="inline-block px-1">to stop</span></FallingPiece>
-          <FallingPiece {...fp('w2')}><span className="inline-block px-1">doing this</span></FallingPiece>
-          <FallingPiece {...fp('w3')} className="text-cyan"><span className="inline-block px-1">manually?</span></FallingPiece>
+        <div className="text-3xl md:text-5xl font-bold mb-6 flex flex-wrap justify-center gap-x-2.5 md:gap-x-4 gap-y-2 leading-tight text-white">
+          <FallingPiece {...fp('w0')}><span>Ready</span></FallingPiece>
+          <FallingPiece {...fp('w1')}><span>to stop</span></FallingPiece>
+          <FallingPiece {...fp('w2')}><span>doing this</span></FallingPiece>
+          <FallingPiece {...fp('w3')} className="text-cyan"><span>manually?</span></FallingPiece>
         </div>
 
         {/* Subtitle */}
@@ -417,36 +420,36 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
         </div>
 
         {/* Email */}
-        <div className="mt-12 flex justify-center">
+        <div className="mt-8 flex justify-center px-4">
           <FallingPiece {...fp('eml')}>
-            <p className="font-mono text-sm bg-bg/40 backdrop-blur-sm rounded-md px-3 py-2 flex items-center gap-2 flex-wrap justify-center pointer-events-auto">
-              Or direct comm-link:{' '}
-              <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors py-2 md:py-0">
+            <div className="font-mono text-sm bg-panel/80 border border-white/[0.08] rounded-xl px-4 py-2.5 flex items-center justify-center gap-3 flex-wrap pointer-events-auto shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+              <span className="text-zinc-400 text-xs hidden xs:inline">Direct comm-link:</span>
+              <a href="mailto:contact@primuez.in" draggable={false} onDragStart={(e) => e.preventDefault()} className="text-amber hover:text-white transition-colors font-semibold">
                 contact@primuez.in
               </a>
               <button
                 onClick={copyEmail}
-                className={`inline-flex items-center gap-1 px-3 py-2 md:px-2 md:py-0.5 rounded border text-[10px] uppercase tracking-widest transition-all duration-200 ${copied ? 'border-cyan/60 text-cyan bg-cyan/10' : 'border-white/20 text-white/40 hover:border-white/40 hover:text-white/70'}`}
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md border text-[11px] font-mono uppercase tracking-wider transition-all duration-200 active:scale-95 ${copied ? 'border-cyan text-cyan bg-cyan/20' : 'border-cyan/40 text-cyan bg-cyan/5 hover:bg-cyan/15 hover:border-cyan'}`}
                 aria-label="Copy email"
               >
                 {copied ? '✓ copied' : 'copy'}
               </button>
-            </p>
+            </div>
           </FallingPiece>
         </div>
 
         {/* Socials */}
-        <div className="mt-12 pb-10 flex flex-wrap justify-center gap-4">
+        <div className="mt-8 pb-32 md:pb-16 flex flex-wrap justify-center gap-2.5 sm:gap-3 md:gap-4 max-w-xs sm:max-w-md md:max-w-xl mx-auto px-4">
           {[
-            { id: 'c15', icon: <span className="font-mono font-bold text-lg leading-none text-cyan">15</span>, label: '15-Min Quick Chat', href: 'https://cal.com/prime-s/15min', highlight: true },
-            { id: 'c30', icon: <span className="font-mono font-bold text-lg leading-none text-amber">30</span>, label: '30-Min Scope Call', href: 'https://cal.com/prime-s/30min', highlight: true },
-            { id: 's0', icon: <Github size={20} />,    label: 'GitHub (primuez)',  href: 'https://github.com/primuez' },
-            { id: 's1', icon: <Github size={20} />,    label: 'GitHub (primmius)', href: 'https://github.com/primmius' },
-            { id: 's2', icon: <Linkedin size={20} />,  label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363' },
-            { id: 's3', icon: <Twitter size={20} />,   label: 'X / Twitter',       href: 'https://x.com/Primuez' },
-            { id: 's4', icon: <Instagram size={20} />, label: 'Instagram',         href: 'https://www.instagram.com/primuez5' },
-            { id: 's5', icon: <span className="font-bold text-lg leading-none">k</span>,  label: 'Ko-fi',  href: 'https://ko-fi.com/primuez' },
-            { id: 's6', icon: <span className="font-bold text-lg leading-none">Up</span>, label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f' },
+            { id: 'c15', icon: <span className="font-mono font-bold text-base leading-none text-cyan">15</span>, label: '15-Min Quick Chat', href: 'https://cal.com/prime-s/15min', highlight: true },
+            { id: 'c30', icon: <span className="font-mono font-bold text-base leading-none text-amber">30</span>, label: '30-Min Scope Call', href: 'https://cal.com/prime-s/30min', highlight: true },
+            { id: 's0', icon: <Github size={18} />,    label: 'GitHub',            href: 'https://github.com/primuez' },
+            { id: 's1', icon: <Send size={16} className="text-cyan" />, label: 'Telegram', href: 'https://t.me/primuez' },
+            { id: 's2', icon: <Linkedin size={18} />,  label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rahul-kasturiya-796910363' },
+            { id: 's3', icon: <Twitter size={18} />,   label: 'X / Twitter',       href: 'https://x.com/Primuez' },
+            { id: 's4', icon: <Instagram size={18} />, label: 'Instagram',         href: 'https://www.instagram.com/primuez5' },
+            { id: 's5', icon: <span className="font-bold text-base leading-none">k</span>,  label: 'Ko-fi',  href: 'https://ko-fi.com/primuez' },
+            { id: 's6', icon: <span className="font-mono font-bold text-xs uppercase tracking-wider text-emerald-400">UW</span>, label: 'Upwork', href: 'https://www.upwork.com/freelancers/~012ee7737a8d40746f' },
           ].map((s) => (
             <FallingPiece key={s.id} {...fp(s.id)}>
               <SocialIcon icon={s.icon} label={s.label} href={s.href} highlight={s.highlight} />
@@ -464,7 +467,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       )}
 
       {/* Footer is now the literal boundary for GravityCollapse pieces */}
-      <footer aria-label="Site footer" className={`border-t border-white/[0.06] bg-bg relative z-10 transition-opacity duration-700 ${!collapsed && !permanent ? 'opacity-30 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
+      <footer aria-label="Site footer" className="border-t border-white/[0.06] bg-bg relative z-10 opacity-100 pointer-events-auto">
         <div className="w-full px-4 sm:px-6 md:px-12 py-12 md:py-16">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start gap-2">

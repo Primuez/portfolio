@@ -447,10 +447,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning className={`dark ${spaceMono.variable} ${syne.variable}`} style={{ backgroundColor: '#0a0a0f', color: '#ffffff', colorScheme: 'dark' }}>
       <body suppressHydrationWarning style={{ backgroundColor: '#0a0a0f', color: '#ffffff', colorScheme: 'dark' }} className="bg-[#0a0a0f] text-[#ffffff] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
-        {/* SVG Noise Texture Overlay — pointer-events: none, GPU-accelerated */}
+        {/* SVG Noise Texture Overlay — pointer-events: none, GPU-accelerated (desktop only for smooth mobile scroll) */}
         <div
           aria-hidden="true"
-          className="fixed inset-0 pointer-events-none z-50 opacity-[0.035] mix-blend-overlay gpu-accelerated"
+          className="hidden md:block fixed inset-0 pointer-events-none z-50 opacity-[0.035] mix-blend-overlay gpu-accelerated"
         >
           <svg className="w-full h-full">
             <filter id="noiseFilter">

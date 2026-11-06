@@ -393,10 +393,10 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body style="background-color: #0a0a0f; color: #ffffff; color-scheme: dark;" class="bg-[#0a0a0f] text-[#ffffff] font-sans antialiased selection:bg-[#00f0ff]/20 selection:text-white overflow-x-hidden">
-    <!-- SVG Noise Texture Overlay — pointer-events: none, GPU-accelerated -->
+    <!-- SVG Noise Texture Overlay — pointer-events: none, GPU-accelerated (desktop only for buttery 120Hz mobile scroll) -->
     <div
       aria-hidden="true"
-      class="fixed inset-0 pointer-events-none z-50 opacity-[0.035] mix-blend-overlay gpu-accelerated"
+      class="hidden md:block fixed inset-0 pointer-events-none z-50 opacity-[0.035] mix-blend-overlay gpu-accelerated"
     >
       <svg class="w-full h-full">
         <filter id="noiseFilter">

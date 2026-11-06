@@ -32,21 +32,40 @@ export function MobileStickyCtA() {
     }
 
     const heroEl = document.getElementById('hero');
+    const contactEl = document.getElementById('contact');
     if (!heroEl) return;
 
-    // Show CTA once user scrolls past the hero section
-    observerRef.current = new IntersectionObserver(
+    let heroPast = false;
+    let contactInView = false;
+
+    const updateVisibility = () => {
+      setVisible(heroPast && !contactInView);
+    };
+
+    const heroObserver = new IntersectionObserver(
       ([entry]) => {
-        // When hero is NOT intersecting (scrolled past), show CTA
-        setVisible(!entry.isIntersecting);
+        heroPast = !entry.isIntersecting;
+        updateVisibility();
       },
       { threshold: 0, rootMargin: '0px' }
     );
+    heroObserver.observe(heroEl);
 
-    observerRef.current.observe(heroEl);
+    let contactObserver: IntersectionObserver | null = null;
+    if (contactEl) {
+      contactObserver = new IntersectionObserver(
+        ([entry]) => {
+          contactInView = entry.isIntersecting;
+          updateVisibility();
+        },
+        { threshold: 0.1, rootMargin: '0px' }
+      );
+      contactObserver.observe(contactEl);
+    }
 
     return () => {
-      observerRef.current?.disconnect();
+      heroObserver.disconnect();
+      contactObserver?.disconnect();
     };
   }, [isMobile]);
 

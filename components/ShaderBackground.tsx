@@ -318,26 +318,25 @@ export function ShaderBackground({
     };
   }, [initGL, render]);
 
-  if (typeof window !== 'undefined' && isMobileDevice()) {
-    return (
+  return (
+    <>
+      {/* Mobile CSS fallback gradient — 0 JS, 0 WebGL, 0 hydration mismatch */}
       <div
-        className={`pointer-events-none fixed inset-0 z-0 w-full h-full ${className}`}
+        className={`pointer-events-none block md:hidden ${className}`}
         style={{
           opacity,
           background: 'radial-gradient(ellipse at 50% 20%, rgba(0, 240, 255, 0.05) 0%, rgba(168, 85, 247, 0.03) 40%, transparent 70%)',
         }}
         aria-hidden="true"
       />
-    );
-  }
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className={`pointer-events-none ${className}`}
-      style={{ opacity }}
-      aria-hidden="true"
-    />
+      {/* Desktop WebGL shader canvas — hidden on mobile */}
+      <canvas
+        ref={canvasRef}
+        className={`pointer-events-none hidden md:block ${className}`}
+        style={{ opacity }}
+        aria-hidden="true"
+      />
+    </>
   );
 }
 

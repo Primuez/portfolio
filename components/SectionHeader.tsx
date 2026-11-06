@@ -21,8 +21,8 @@ export function SectionHeader({ number, command, title, center = false }: Sectio
       style={{ willChange: 'transform, opacity' }}
       className={`mb-10 ${center ? 'text-center' : ''}`}
     >
-      <div className="font-mono text-[11px] tracking-[0.25em] text-text-muted/60 mb-3">
-        <span className="text-cyan/50">{number}</span> &nbsp; <span className="text-text-muted/40">{command}</span>
+      <div className="font-mono text-[11px] tracking-[0.25em] mb-3">
+        <span className="text-cyan font-bold">{number}</span> &nbsp; <span className="text-zinc-400 font-medium">{command}</span>
       </div>
       <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight">
         <ShaderText preset="aurora">{title}</ShaderText>
