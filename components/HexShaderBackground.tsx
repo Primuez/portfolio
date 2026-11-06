@@ -101,42 +101,55 @@ export function HexShaderBackground() {
       // Color composition
       vec3 bgColor = vec3(0.0);
       
-      // Base hex grid - very subtle
+      // Base hex grid - visible cyber honeycomb structure
       vec3 gridColor = vec3(0.0, 0.94, 1.0); // Cyan
-      float gridOpacity = 0.04 + sparkleAnim * 0.02;
+      vec3 amberColor = vec3(0.98, 0.75, 0.14); // Amber accent
+      float gridOpacity = 0.10 + sparkleAnim * 0.05;
       
       // Activated hex fill (near mouse)
-      float fillOpacity = hexActivation * 0.12 * (1.0 - edge);
+      float fillOpacity = hexActivation * 0.18 * (1.0 - edge);
       vec3 fillColor = mix(
         vec3(0.0, 0.6, 0.8),
         vec3(0.0, 0.94, 1.0),
         waveActivation
       );
       
-      // Hex border glow near mouse
-      float borderGlow = border * (gridOpacity + hexActivation * 0.35 + waveActivation * 0.2);
+      // Ambient travelling energy pulses along paths (alive even without mouse)
+      float pathEnergy1 = sin(hexId.x * 0.35 + hexId.y * 0.25 + t * 1.6) * 0.5 + 0.5;
+      float pathEnergy2 = cos(hexId.x * 0.2 - hexId.y * 0.4 - t * 1.2) * 0.5 + 0.5;
+      float pathGlow = border * (pathEnergy1 * 0.10 + pathEnergy2 * 0.06);
+
+      // Radial ambient cyber pulse across right and center
+      float ambientWave = sin(length(uv - vec2(0.25, 0.0)) * 5.0 - t * 1.4) * 0.5 + 0.5;
+      float ambientHexPulse = (1.0 - edge) * ambientWave * 0.025;
       
-      // Ambient travelling energy along paths
-      float pathEnergy = sin(hexId.x * 0.3 + hexId.y * 0.2 + t * 1.5) * 0.5 + 0.5;
-      float pathGlow = border * pathEnergy * 0.03;
+      // Hex border glow near mouse + ambient travelling energy
+      float borderGlow = border * (gridOpacity + hexActivation * 0.45 + waveActivation * 0.25);
       
       // Compose final color
       vec3 color = bgColor;
       color += gridColor * borderGlow;
       color += fillColor * fillOpacity;
-      color += gridColor * pathGlow;
+      color += mix(gridColor, amberColor, sparkleAnim * 0.3) * pathGlow;
+      color += gridColor * ambientHexPulse;
       
       // Add a subtle center glow around mouse
-      color += vec3(0.0, 0.94, 1.0) * mouseGlow * 0.04;
+      color += vec3(0.0, 0.94, 1.0) * mouseGlow * 0.06;
       
       // Vignette
-      float vignette = 1.0 - smoothstep(0.4, 1.0, length(uv) * 0.9);
+      float vignette = 1.0 - smoothstep(0.45, 1.1, length(uv) * 0.85);
       color *= vignette;
       
-      // Overall opacity - keep subtle as background
-      color *= 0.85;
+      // Overall intensity
+      color *= 0.95;
       
-      gl_FragColor = vec4(color, 1.0);
+      // Calculate alpha based on color luminance and active hex elements
+      // Empty hex areas are completely transparent, allowing the underlying
+      // flowing iridescent liquid glass ShaderBackground to shine through cleanly!
+      float maxBrightness = max(color.r, max(color.g, color.b));
+      float alpha = clamp(maxBrightness * 1.8, 0.0, 0.85);
+      
+      gl_FragColor = vec4(color, alpha);
     }
   `;
 
@@ -144,7 +157,7 @@ export function HexShaderBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: false });
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: true });
     if (!gl || gl.isContextLost()) return;
     glRef.current = gl;
 
@@ -202,6 +215,8 @@ export function HexShaderBackground() {
     gl.uniform2f(gl.getUniformLocation(program, 'u_resolution'), w, h);
     gl.uniform2f(gl.getUniformLocation(program, 'u_mouse'), mouseRef.current.x, 1.0 - mouseRef.current.y);
 
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     rafRef.current = requestAnimationFrame(render);
   }, []);

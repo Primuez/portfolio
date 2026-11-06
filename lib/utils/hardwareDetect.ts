@@ -4,13 +4,17 @@ export function isMobileDevice(): boolean {
   // 1. Check viewport width (< 768px is mobile)
   if (window.innerWidth < 768) return true;
 
-  // 2. Check mobile User Agent
+  // 2. Large display override: Displays >= 1024px (desktops, ultrawides, Smart TVs)
+  // must never degrade to mobile even if UA strings include Android (Android TV) or webOS (LG TV)
+  if (window.innerWidth >= 1024) return false;
+
+  // 3. Check mobile User Agent on compact viewports (< 1024px)
   const ua = navigator.userAgent || '';
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
     return true;
   }
 
-  // 3. Touch device with compact screen (< 1024px)
+  // 4. Touch device with compact screen (< 1024px)
   if (('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth < 1024) {
     return true;
   }

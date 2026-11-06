@@ -111,7 +111,7 @@ export function ShaderBackground({
       
       // Iridescent angle based on noise and position
       float iridAngle = n1 * 3.14159 + t * 0.5 + mouseDist * 2.0 + vel * 1.5;
-      vec3 iridColor = iridescence(iridAngle, 0.15 + mouseInfluence * 0.3);
+      vec3 iridColor = iridescence(iridAngle, 0.22 + mouseInfluence * 0.35);
       
       // Base color palette: deep space with cyan/violet/amber undertones
       vec3 col1 = vec3(0.02, 0.04, 0.10); // Deep void
@@ -122,12 +122,12 @@ export function ShaderBackground({
       
       // Mix colors based on noise layers
       vec3 color = mix(col1, col2, n1 * 0.5 + n4 * 0.2);
-      color = mix(color, col3, (n2 * 0.12 + mouseInfluence) * (1.0 + vel * 0.5));
-      color = mix(color, col4, n3 * 0.08 + vel * 0.05);
-      color = mix(color, col5, n4 * 0.04);
+      color = mix(color, col3, (n2 * 0.16 + mouseInfluence) * (1.0 + vel * 0.5));
+      color = mix(color, col4, n3 * 0.10 + vel * 0.05);
+      color = mix(color, col5, n4 * 0.05);
       
       // Add iridescence layer
-      color += iridColor * (0.5 + vel * 0.5);
+      color += iridColor * (0.65 + vel * 0.5);
       
       // Glass refraction highlight near cursor
       float highlight = smoothstep(0.3, 0.0, mouseDist) * (0.08 + vel * 0.12);
@@ -138,8 +138,8 @@ export function ShaderBackground({
       float vignette = 1.0 - smoothstep(0.3, 1.2, length(uv - 0.5) * vignetteStrength);
       color *= vignette;
       
-      // Overall intensity — keep as premium subtle background
-      float intensity = u_variant > 0.5 ? 0.10 : 0.14;
+      // Overall intensity — tuned for visible ambient motion even at rest
+      float intensity = u_variant > 0.5 ? 0.12 : 0.20;
       color *= intensity;
       
       // Subtle scanline for texture
