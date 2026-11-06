@@ -31,7 +31,7 @@ export function CertPdfViewer({ url, title }: CertPdfViewerProps) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const update = () => setPageWidth(Math.min(el.clientWidth - 24, 600));
+    const update = () => setPageWidth(Math.min(el.clientWidth - 8, 800));
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);

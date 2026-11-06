@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle2, Download, Activity, Terminal, Send } from 'lucide-react';
+import { CheckCircle2, Download, Activity, Terminal, Send, X, ExternalLink } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { WorkWithMeForm } from '@/components/WorkWithMeForm';
 
@@ -128,41 +128,57 @@ export default function ModalsSection() {
           {/* HTML CERTIFICATE MODAL */}
           {modalType === 'cert' && certData && (
             <motion.div 
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              initial={{ scale: 0.95, opacity: 0, y: 16 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              exit={{ scale: 0.95, opacity: 0, y: 16 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#0f1520] border-2 border-cyan/50 rounded-lg w-full max-w-3xl shadow-[0_0_60px_rgba(0,240,255,0.15)] relative flex flex-col overflow-hidden"
+              className="bg-[#0c101a] border border-cyan/40 rounded-2xl w-full max-w-4xl shadow-[0_0_60px_rgba(0,240,255,0.18)] relative flex flex-col max-h-[92vh] overflow-hidden"
             >
-              {/* Background decorative elements */}
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan to-transparent"></div>
+              {/* Background decorative accent bar */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan to-transparent z-20"></div>
               
-              <button onClick={() => setModalType(null)} className="absolute top-3 right-3 min-[375px]:top-4 min-[375px]:right-4 text-text-muted hover:text-white transition-colors z-20"><CheckCircle2 size={24}/></button>
+              <button 
+                onClick={() => setModalType(null)} 
+                className="absolute top-3 right-3 p-1.5 rounded-lg bg-black/50 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors z-30 active:scale-95"
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
 
               {certData.pdfUrl ? (
-                <div className="flex flex-col w-full">
-                  <div className="px-4 pr-12 pt-6 pb-4 min-[375px]:px-6 min-[375px]:pt-8 font-mono text-xs text-cyan uppercase tracking-widest border-b border-cyan/20 break-words">
+                <div className="flex flex-col w-full h-full overflow-hidden">
+                  <div className="px-4 pr-12 py-3.5 sm:px-6 font-mono text-xs md:text-sm text-cyan font-bold tracking-wider border-b border-white/[0.08] truncate bg-[#090d16]">
                     {certData.title}
                   </div>
-                  {isMobile ? (
-                    <React.Suspense fallback={<div className="p-6 text-center text-xs font-mono text-cyan/70">LOADING VIEWER...</div>}>
-                      <CertPdfViewer url={certData.pdfUrl!} title={certData.title} />
-                    </React.Suspense>
-                  ) : (
-                    <iframe
-                      src={certData.pdfUrl}
-                      className="w-full"
-                      style={{ height: '70vh', border: 'none' }}
-                      title={certData.title}
-                    />
-                  )}
-                  <div className="flex justify-center py-4 border-t border-white/5">
+                  <div className="flex-1 overflow-auto bg-[#06080e] flex items-center justify-center">
+                    {isMobile ? (
+                      <React.Suspense fallback={<div className="p-6 text-center text-xs font-mono text-cyan/70">LOADING VIEWER...</div>}>
+                        <CertPdfViewer url={certData.pdfUrl!} title={certData.title} />
+                      </React.Suspense>
+                    ) : (
+                      <iframe
+                        src={certData.pdfUrl}
+                        className="w-full"
+                        style={{ height: '70vh', border: 'none' }}
+                        title={certData.title}
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-3 py-3 px-4 border-t border-white/[0.08] bg-[#090d16]">
+                    <a
+                      href={certData.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan text-black font-bold px-4 py-2 rounded-lg hover:bg-cyan/90 transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)] active:scale-95"
+                    >
+                      <ExternalLink size={13} /> Open Fullscreen
+                    </a>
                     <a
                       href={certData.pdfUrl}
                       download
-                      className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-5 py-2 hover:bg-cyan hover:text-bg transition-colors"
+                      className="inline-flex items-center gap-2 font-mono text-xs uppercase bg-cyan/10 text-cyan border border-cyan/30 px-4 py-2 rounded-lg hover:bg-cyan/20 transition-colors active:scale-95"
                     >
-                      <Download size={14} /> Download Certificate
+                      <Download size={13} /> Download PDF
                     </a>
                   </div>
                 </div>

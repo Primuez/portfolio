@@ -7,7 +7,6 @@ import { MapPin, GraduationCap, Calendar, Languages, Terminal, Activity, Brain }
 import { SectionHeader } from '@/components/SectionHeader';
 import { ShaderIridescentText } from '@/components/ShaderText';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { MobileAboutSection } from '@/components/sections/MobileAboutSection';
 
 /* ── Hardware-accelerated smooth entrance variants ── */
 const cardA1Variants = {
@@ -38,14 +37,6 @@ const cardTransition = (delay: number, isMobile = false) => ({
 
 export const AboutSection: React.FC = () => {
   const isMobile = useIsMobile();
-  const [isDesktop, setIsDesktop] = React.useState(false);
-
-  React.useEffect(() => {
-    const check = () => setIsDesktop(window.innerWidth >= 1024);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
 
   /* ── Parallax scroll hooks (always called unconditionally) ── */
   const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({
@@ -54,21 +45,15 @@ export const AboutSection: React.FC = () => {
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 24, restDelta: 0.001 });
 
-  // Parallax strictly enabled ONLY on 2-column desktop (window.innerWidth >= 1024)
-  const yColA = useTransform(smoothProgress, [0, 1], [-120, 120]);
-  const yColB = useTransform(smoothProgress, [0, 1], [120, -120]);
+  // Dramatic parallax range on desktop
+  const yColA = useTransform(smoothProgress, [0, 1], [-160, 160]);
+  const yColB = useTransform(smoothProgress, [0, 1], [160, -160]);
 
   const springA = useSpring(yColA, { stiffness: 50, damping: 24 });
   const springB = useSpring(yColB, { stiffness: 50, damping: 24 });
 
-  const yA = isDesktop ? springA : 0;
-  const yB = isDesktop ? springB : 0;
-
-  // Flat stable cards on mobile — zero main thread fighting
-  const yCardA1 = 0;
-  const yCardA2 = 0;
-  const yCardB1 = 0;
-  const yCardB2 = 0;
+  const yA = isMobile ? 0 : springA;
+  const yB = isMobile ? 0 : springB;
 
   return (
     <section
@@ -82,20 +67,23 @@ export const AboutSection: React.FC = () => {
 
       <SectionHeader number="01" command="> whoami --verbose" title="Architecting Autonomy" />
 
-      {/* ── DESKTOP 2-COLUMN BENTO GRID (>= 1024px) ── */}
-      <div className="hidden lg:grid lg:grid-cols-2 gap-8 mt-12 z-10 [perspective:1200px]">
+      {/* ════════════════════════════════════════════════════
+          Balanced 2-column Bento Grid
+          Column A: Core Identity + System Specs
+          Column B: Live Telemetry + Operator Creed
+          ════════════════════════════════════════════════════ */}
+      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10 md:[perspective:1200px]">
 
         {/* ╔═══ COLUMN A ═══╗ */}
-        <motion.div style={{ y: yA }} className="flex flex-col gap-5 md:gap-8">
+        <motion.div style={isMobile ? undefined : { y: yA }} className="flex flex-col gap-5 md:gap-8">
 
           {/* Card A1: Operator Creed — slides in from left */}
           <motion.div
             variants={cardA1Variants}
-            initial={isMobile ? "visible" : "hidden"}
+            initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: isMobile ? 0.01 : 0.1, margin: isMobile ? "100px 0px" : "0px" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0, isMobile)}
-            style={{ y: yCardA1, willChange: isMobile ? 'auto' : 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-purple-500/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -129,11 +117,10 @@ export const AboutSection: React.FC = () => {
           {/* Card A2: System Specs — rises up */}
           <motion.div
             variants={cardA2Variants}
-            initial={isMobile ? "visible" : "hidden"}
+            initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: isMobile ? 0.01 : 0.1, margin: isMobile ? "100px 0px" : "0px" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0.12, isMobile)}
-            style={{ y: yCardA2, willChange: isMobile ? 'auto' : 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-amber/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -171,11 +158,10 @@ export const AboutSection: React.FC = () => {
           {/* Card B2: Core Identity — slides in from right */}
           <motion.div
             variants={cardB2Variants}
-            initial={isMobile ? "visible" : "hidden"}
+            initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: isMobile ? 0.01 : 0.1, margin: isMobile ? "100px 0px" : "0px" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0.06, isMobile)}
-            style={{ y: yCardB2, willChange: isMobile ? 'auto' : 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -209,11 +195,10 @@ export const AboutSection: React.FC = () => {
           {/* Card B1: Live Telemetry — slides in from right */}
           <motion.div
             variants={cardB1Variants}
-            initial={isMobile ? "visible" : "hidden"}
+            initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: isMobile ? 0.01 : 0.1, margin: isMobile ? "100px 0px" : "0px" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={cardTransition(0.18, isMobile)}
-            style={{ y: yCardB1, willChange: isMobile ? 'auto' : 'transform, opacity' }}
             className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-white/[0.02] border border-white/[0.06] p-[1px] sm:p-1 md:p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:border-cyan/35 transition-colors duration-700"
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
@@ -273,11 +258,6 @@ export const AboutSection: React.FC = () => {
             </div>
           </motion.div>
         </motion.div>
-      </div>
-
-      {/* ── MOBILE / TABLET DEDICATED VIEW (< 1024px) ── */}
-      <div className="block lg:hidden mt-6 z-10">
-        <MobileAboutSection />
       </div>
     </section>
   );

@@ -123,8 +123,7 @@ function FallingPiece({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dx, dy]);
 
-  const isMobile = useIsMobile();
-  const canDrag = collapsed && isDraggable && !permanent && !isMobile;
+  const canDrag = collapsed && isDraggable && !permanent;
 
   // Drag props only spread when actually draggable — prevents Framer
   // gesture handlers from running when drag is disabled.
@@ -246,9 +245,9 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
 
   useEffect(() => {
     setMounted(true);
-    if (pendingCollapse.current && !isMobile) setCollapsed(true);
+    if (pendingCollapse.current) setCollapsed(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, []);
 
   useEffect(() => {
     if (!collapsed) {
@@ -348,7 +347,7 @@ function GravityCollapse({ onContact }: { onContact: () => void }) {
       <motion.div
         className="absolute inset-0 pointer-events-none"
         onViewportEnter={() => {
-          if (isMobile || permanent || hasTriggered.current) return;
+          if (permanent || hasTriggered.current) return;
           hasTriggered.current = true;
           if (mounted) setCollapsed(true);
           else pendingCollapse.current = true;
