@@ -37,6 +37,14 @@ const cardTransition = (delay: number, isMobile = false) => ({
 
 export const AboutSection: React.FC = () => {
   const isMobile = useIsMobile();
+  const [isDesktop, setIsDesktop] = React.useState(false);
+
+  React.useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   /* ── Parallax scroll hooks (always called unconditionally) ── */
   const { ref: containerRef, scrollYProgress } = useScrollTarget<HTMLElement>({
@@ -45,15 +53,15 @@ export const AboutSection: React.FC = () => {
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 24, restDelta: 0.001 });
 
-  // Dramatic parallax range on desktop
-  const yColA = useTransform(smoothProgress, [0, 1], [-160, 160]);
-  const yColB = useTransform(smoothProgress, [0, 1], [160, -160]);
+  // Parallax strictly enabled ONLY on 2-column desktop (window.innerWidth >= 1024)
+  const yColA = useTransform(smoothProgress, [0, 1], [-120, 120]);
+  const yColB = useTransform(smoothProgress, [0, 1], [120, -120]);
 
   const springA = useSpring(yColA, { stiffness: 50, damping: 24 });
   const springB = useSpring(yColB, { stiffness: 50, damping: 24 });
 
-  const yA = isMobile ? 0 : springA;
-  const yB = isMobile ? 0 : springB;
+  const yA = isDesktop ? springA : 0;
+  const yB = isDesktop ? springB : 0;
 
   // Flat stable cards on mobile — zero main thread fighting
   const yCardA1 = 0;
@@ -81,7 +89,7 @@ export const AboutSection: React.FC = () => {
       <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10 md:[perspective:1200px]">
 
         {/* ╔═══ COLUMN A ═══╗ */}
-        <motion.div style={isMobile ? undefined : { y: yA }} className="flex flex-col gap-5 md:gap-8">
+        <motion.div style={{ y: yA }} className="flex flex-col gap-5 md:gap-8">
 
           {/* Card A1: Operator Creed — slides in from left */}
           <motion.div
@@ -141,7 +149,7 @@ export const AboutSection: React.FC = () => {
               <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-4">
                 {[
                   { icon: <Calendar size={18} strokeWidth={1.2} className="text-cyan" />, label: 'Experience', value: 'AI Automation', sub: 'Since July 2025' },
-                  { icon: <MapPin size={18} strokeWidth={1.2} className="text-rose-400" />, label: 'Coordinates', value: 'Indore, MP, India', sub: 'Raipur Core Center' },
+                  { icon: <MapPin size={18} strokeWidth={1.2} className="text-rose-400" />, label: 'Coordinates', value: 'Raipur, CG, India', sub: 'Raipur Core Center' },
                   { icon: <GraduationCap size={18} strokeWidth={1.2} className="text-purple-400" />, label: 'Education', value: 'KPS · SSIPS (BCA)', sub: 'Systems Foundations' },
                   { icon: <Languages size={18} strokeWidth={1.2} className="text-emerald-400" />, label: 'Dialect Compilers', value: 'Hindi · English · Sindhi', sub: 'Multi-channel' },
                 ].map((item, i) => (
@@ -161,7 +169,7 @@ export const AboutSection: React.FC = () => {
         </motion.div>
 
         {/* ╔═══ COLUMN B ═══╗ */}
-        <motion.div style={isMobile ? undefined : { y: yB }} className="flex flex-col gap-5 md:gap-8">
+        <motion.div style={{ y: yB }} className="flex flex-col gap-5 md:gap-8">
 
           {/* Card B2: Core Identity — slides in from right */}
           <motion.div
@@ -175,7 +183,7 @@ export const AboutSection: React.FC = () => {
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
               <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
-                <span>[ 04 ]</span>
+                <span>[ 03 ]</span>
                 <span className="text-zinc-200 font-semibold uppercase tracking-wider">autonomic_brain</span>
                 <Brain size={14} strokeWidth={1.2} className="text-cyan animate-pulse ml-auto" />
               </div>
@@ -213,7 +221,7 @@ export const AboutSection: React.FC = () => {
           >
             <div className="rounded-[calc(1.5rem-0.375rem)] md:rounded-[calc(2rem-0.375rem)] bg-[#05060a]/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] p-4 sm:p-6 md:p-7">
               <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-400/80 border-b border-white/[0.04] pb-3 md:pb-4 mb-4 md:mb-5">
-                <span>[ 03 ]</span>
+                <span>[ 04 ]</span>
                 <span className="text-zinc-200 font-semibold uppercase tracking-wider">live_telemetry</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-auto" />
               </div>
