@@ -7,6 +7,7 @@ import { MapPin, GraduationCap, Calendar, Languages, Terminal, Activity, Brain }
 import { SectionHeader } from '@/components/SectionHeader';
 import { ShaderIridescentText } from '@/components/ShaderText';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileAboutSection } from '@/components/sections/MobileAboutSection';
 
 /* ── Hardware-accelerated smooth entrance variants ── */
 const cardA1Variants = {
@@ -52,8 +53,8 @@ export const AboutSection: React.FC = () => {
   const springA = useSpring(yColA, { stiffness: 50, damping: 24 });
   const springB = useSpring(yColB, { stiffness: 50, damping: 24 });
 
-  const yA = isMobile ? 0 : springA;
-  const yB = isMobile ? 0 : springB;
+  const yA = springA;
+  const yB = springB;
 
   return (
     <section
@@ -68,14 +69,14 @@ export const AboutSection: React.FC = () => {
       <SectionHeader number="01" command="> whoami --verbose" title="Architecting Autonomy" />
 
       {/* ════════════════════════════════════════════════════
-          Balanced 2-column Bento Grid
+          DESKTOP: Balanced 2-column Bento Grid (>= 1024px)
           Column A: Core Identity + System Specs
           Column B: Live Telemetry + Operator Creed
           ════════════════════════════════════════════════════ */}
-      <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8 mt-10 md:mt-12 z-10 md:[perspective:1200px]">
+      <div className="hidden lg:grid relative grid-cols-2 gap-8 mt-12 z-10 [perspective:1200px]">
 
         {/* ╔═══ COLUMN A ═══╗ */}
-        <motion.div style={isMobile ? undefined : { y: yA }} className="flex flex-col gap-5 md:gap-8">
+        <motion.div style={{ y: yA }} className="flex flex-col gap-8">
 
           {/* Card A1: Operator Creed — slides in from left */}
           <motion.div
@@ -258,6 +259,11 @@ export const AboutSection: React.FC = () => {
             </div>
           </motion.div>
         </motion.div>
+      </div>
+
+      {/* ── DEDICATED MOBILE CYBER RAIL (< 1024px) ── */}
+      <div className="block lg:hidden mt-8 z-10">
+        <MobileAboutSection />
       </div>
     </section>
   );
