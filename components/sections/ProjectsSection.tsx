@@ -12,7 +12,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { LiquidGlassParallaxSection } from '@/components/ui/liquid-glass-container';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
-import { useUI } from '@/lib/contexts/UIContext';
+import { useUI, type ModalType } from '@/lib/contexts/UIContext';
 import { trackEvent } from '@/lib/analytics';
 
 interface Project {
@@ -26,6 +26,8 @@ interface Project {
   bannerUrl?: string;
   colSpan?: string;
   hasCustomBtn?: boolean;
+  customBtnText?: string;
+  customBtnModal?: ModalType;
 }
 
 interface ProjectCategory {
@@ -77,7 +79,11 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
         desc: "Autonomous tax audit and working capital preservation agent. Reconciles purchase ledgers against GSTR-2B to enforce Section 16(2)(aa) compliance, halts payment to defaulting suppliers, and drafts itemized legal recovery notices.",
         techDetails: "Built in n8n with Gemini 3.8 Flash, fuzzy invoice reconciliation, and penny-rounding tolerance. Queries live vendor GSTIN filings via self-hosted SearXNG, generating CFO audit briefings, withholding schedules, and automated WhatsApp/Email chase notices.",
         tags: ["n8n", "Gemini 3.8 Flash", "GST Section 16(2)(aa)", "SearXNG", "WhatsApp API", "Autonomous Agent"],
-        logoUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=200&h=200&q=80"
+        logoUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=200&h=200&q=80",
+        colSpan: "md:col-span-2 lg:col-span-3",
+        hasCustomBtn: true,
+        customBtnText: "View Live Agent Pipeline Telemetry",
+        customBtnModal: "telemetry"
       },
       {
         name: "Pre-Liquidity Wealth & M&A Advisory Engine",
@@ -199,11 +205,15 @@ function ProjectCategoryBlock({ category, index, total }: { category: ProjectCat
                       <div className="mt-4 flex justify-center">
                         <GlassButton 
                           size="lg"
-                          onClick={() => { trackEvent('click_project_architecture'); setModalType('workflow'); }}
+                          onClick={() => { 
+                            const targetModal = project.customBtnModal || 'workflow';
+                            trackEvent(targetModal === 'telemetry' ? 'click_project_telemetry' : 'click_project_architecture'); 
+                            setModalType(targetModal); 
+                          }}
                           glowColor="rgba(0, 240, 255, 0.2)"
                           className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer"
                         >
-                          <Activity size={18} /> View Interactive Architecture Diagram
+                          <Activity size={18} /> {project.customBtnText || 'View Interactive Architecture Diagram'}
                         </GlassButton>
                       </div>
                     )}

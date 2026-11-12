@@ -108,8 +108,20 @@ const TIMELINES = [
   '🔄 Flexible Planning'
 ];
 
-const QUICK_TOOLS = [
-  'WhatsApp', 'n8n', 'Google Sheets', 'Shopify', 'Stripe', 'HubSpot', 'PostgreSQL', 'Telegram'
+const QUICK_TOOL_TAGS = [
+  { name: 'WhatsApp', group: 'Messaging' },
+  { name: 'Google Sheets', group: 'Data' },
+  { name: 'Gmail / Workspace', group: 'Comms' },
+  { name: 'Stripe', group: 'Payments' },
+  { name: 'Shopify', group: 'E-com' },
+  { name: 'HubSpot', group: 'CRM' },
+  { name: 'Zoho / Odoo', group: 'CRM' },
+  { name: 'Telegram', group: 'Messaging' },
+  { name: 'Airtable', group: 'Data' },
+  { name: 'Notion', group: 'Ops' },
+  { name: 'n8n', group: 'Automation' },
+  { name: 'PostgreSQL', group: 'DB' },
+  { name: 'Starting fresh (Need recommendations)', group: 'New' },
 ];
 
 const CONTACT_METHODS = [
@@ -303,7 +315,8 @@ export function WorkWithMeForm({ onClose, inline = false }: WorkWithMeFormProps)
               }`}>
                 {step > 1 ? <Check size={11} /> : '1'}
               </span>
-              <span>Objectives & Budget</span>
+              <span className="hidden sm:inline">Objectives & Budget</span>
+              <span className="sm:hidden">Budget</span>
             </button>
 
             <span className="text-zinc-700">/</span>
@@ -321,7 +334,8 @@ export function WorkWithMeForm({ onClose, inline = false }: WorkWithMeFormProps)
               }`}>
                 {step > 2 ? <Check size={11} /> : '2'}
               </span>
-              <span>Specification</span>
+              <span className="hidden sm:inline">Specification</span>
+              <span className="sm:hidden">Scope</span>
             </button>
 
             <span className="text-zinc-700">/</span>
@@ -339,7 +353,8 @@ export function WorkWithMeForm({ onClose, inline = false }: WorkWithMeFormProps)
               }`}>
                 3
               </span>
-              <span>Contact & Channel</span>
+              <span className="hidden sm:inline">Contact & Channel</span>
+              <span className="sm:hidden">Contact</span>
             </button>
           </div>
 
@@ -546,49 +561,66 @@ export function WorkWithMeForm({ onClose, inline = false }: WorkWithMeFormProps)
                       <Cpu size={13} className="text-cyan" /> 01 // What workflow or bottleneck are you solving? <span className="text-cyan">*</span>
                     </label>
                     <textarea
-                      rows={5}
+                      rows={3}
                       value={formData.projectDescription}
                       onChange={(e) => updateField('projectDescription', e.target.value)}
                       placeholder="Outline what manual process consumes your time (e.g., qualifying leads on WhatsApp, syncing orders into Google Sheets, generating PDFs, or deploying an autonomous voice agent)..."
-                      className="w-full bg-[#090c15] border border-white/[0.14] hover:border-white/[0.24] focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan/30 rounded-xl p-4 text-xs md:text-sm text-white placeholder-zinc-400 leading-relaxed transition-all"
+                      className="w-full bg-[#090c15] border border-white/[0.14] hover:border-white/[0.24] focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan/30 rounded-xl p-3 text-xs md:text-sm text-white placeholder-zinc-400 leading-relaxed transition-all resize-none"
                     />
-                    <div className="flex justify-between items-center font-mono text-[10px] text-zinc-500 mt-1.5">
+                    <div className="flex justify-between items-center font-mono text-[10px] text-zinc-500 mt-1">
                       <span>Specific goals yield faster architecture plans & quotes.</span>
                       <span className="tabular-nums">{formData.projectDescription.length} chars</span>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-wider text-zinc-300 font-semibold mb-2 flex items-center gap-2">
-                      <Layers size={13} className="text-cyan" /> 02 // Stack & Current Tools (Click to add)
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.currentTools}
-                      onChange={(e) => updateField('currentTools', e.target.value)}
-                      placeholder="e.g., WhatsApp, n8n, Google Sheets, Shopify, Stripe, HubSpot..."
-                      className="w-full bg-[#090c15] border border-white/[0.14] hover:border-white/[0.24] focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan/30 rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-400 transition-all mb-2"
-                    />
-                    {/* Quick Tool Tags */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {QUICK_TOOLS.map((t) => {
-                        const active = formData.currentTools.includes(t);
+                    <div className="flex flex-col gap-1 mb-2">
+                      <label className="block font-mono text-[11px] uppercase tracking-wider text-zinc-200 font-semibold flex items-center gap-2">
+                        <Layers size={13} className="text-cyan" /> 02 // Your Current Stack & Tools
+                      </label>
+                      <p className="text-[11px] text-zinc-400 font-sans leading-relaxed">
+                        Which tools does your business already run on? (CRM, spreadsheets, messaging, payments, or custom apps). We integrate directly into your current setup so you never have to start over or learn a new platform.
+                      </p>
+                    </div>
+
+                    {/* Quick Tool Tags with Categories — DISPLAYED FIRST */}
+                    <div className="flex flex-wrap gap-1.5 mb-2.5">
+                      {QUICK_TOOL_TAGS.map((t) => {
+                        const active = formData.currentTools.includes(t.name);
+                        const isFresh = t.group === 'New';
                         return (
                           <button
-                            key={t}
+                            key={t.name}
                             type="button"
-                            onClick={() => toggleQuickTool(t)}
-                            className={`px-2.5 py-1 rounded-md text-[11px] font-mono border transition-all active:scale-[0.95] ${
+                            onClick={() => toggleQuickTool(t.name)}
+                            className={`px-2.5 py-1.5 rounded-lg text-[11px] font-mono border transition-all active:scale-[0.95] flex items-center gap-1.5 ${
                               active
-                                ? 'bg-cyan/20 border-cyan text-cyan font-bold'
-                                : 'bg-white/[0.03] border-white/[0.08] text-zinc-400 hover:text-white hover:border-white/20'
+                                ? 'bg-cyan text-black border-cyan font-bold shadow-[0_0_12px_rgba(0,240,255,0.3)]'
+                                : isFresh
+                                ? 'bg-amber/10 border-amber/30 text-amber hover:border-amber/50 hover:bg-amber/20 font-semibold'
+                                : 'bg-white/[0.04] border-white/[0.08] text-zinc-300 hover:text-white hover:border-white/20'
                             }`}
                           >
-                            {active ? `✓ ${t}` : `+ ${t}`}
+                            <span>{active ? '✓' : '+'}</span>
+                            <span>{t.name}</span>
                           </button>
                         );
                       })}
                     </div>
+
+                    {/* Custom Tool Input with Clear Placeholder */}
+                    <input
+                      type="text"
+                      value={formData.currentTools}
+                      onChange={(e) => updateField('currentTools', e.target.value)}
+                      placeholder="Selected tools appear here, or type custom ones..."
+                      className="w-full bg-[#090c15] border border-white/[0.14] hover:border-white/[0.24] focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan/30 rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 transition-all mb-1.5"
+                    />
+
+                    <p className="text-[10px] text-zinc-500 font-mono flex items-center gap-1.5">
+                      <span className="text-cyan">ℹ</span>
+                      <span>Don&apos;t worry if your exact tool isn&apos;t listed or if you&apos;re starting fresh — if it has an API, webhook, or email, we can automate it.</span>
+                    </p>
                   </div>
 
                   <div>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Download, Activity, Terminal, Send, X, ExternalLink } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { WorkWithMeForm } from '@/components/WorkWithMeForm';
+import { HeroSystemVisualizer } from '@/components/HeroSystemVisualizer';
 
 const CertPdfViewer = React.lazy(() => import('@/components/CertPdfViewer').then(m => ({ default: m.CertPdfViewer })));
 
@@ -109,6 +110,20 @@ export default function ModalsSection() {
       setIsSimulating(false);
     }
   }, [modalType]);
+
+  // Close on Escape key
+  React.useEffect(() => {
+    if (!modalType) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setModalType(null);
+        setSimStep('idle');
+        setLogs([]);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalType, setModalType]);
 
   return (
     <AnimatePresence>
@@ -567,6 +582,34 @@ export default function ModalsSection() {
 
                   </div>
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* LIVE SYSTEM TELEMETRY / PIPELINE VISUALIZER MODAL */}
+          {modalType === 'telemetry' && (
+            <motion.div 
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#0b0f17] border border-cyan/40 rounded-2xl w-full max-w-4xl shadow-[0_0_80px_rgba(0,240,255,0.2)] relative max-h-[90vh] overflow-hidden flex flex-col font-sans backdrop-blur-xl"
+            >
+              <div className="sticky top-0 bg-[#0b0f17]/95 border-b border-cyan/20 px-6 py-4 flex justify-between items-center font-mono text-sm z-50 backdrop-blur">
+                <span className="text-cyan flex items-center gap-2 font-bold tracking-wide">
+                  <Activity size={15} className="text-cyan" />
+                  SYSTEM TELEMETRY // PRIMUEZ-MESH CLUSTER
+                </span>
+                <button 
+                  onClick={() => setModalType(null)} 
+                  className="text-text-muted hover:text-white transition-colors border border-white/10 hover:border-cyan/40 px-3 py-1 rounded text-xs font-mono cursor-pointer flex items-center gap-1.5"
+                >
+                  <X size={13} />
+                  <span>CLOSE [ESC]</span>
+                </button>
+              </div>
+              <div className="p-4 sm:p-6 md:p-8 overflow-y-auto">
+                <HeroSystemVisualizer />
               </div>
             </motion.div>
           )}
