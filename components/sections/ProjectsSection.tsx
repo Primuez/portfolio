@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useSpring, useTransform, useInView } from 'motion/react';
 import { useScrollTarget } from '@/hooks/use-scroll-target';
-import { Activity } from 'lucide-react';
+import { Activity, Layers } from 'lucide-react';
 import { SectionHeader } from '@/components/SectionHeader';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { WorkflowCard } from '@/components/projects/WorkflowCard';
@@ -26,6 +26,7 @@ interface Project {
   bannerUrl?: string;
   colSpan?: string;
   hasCustomBtn?: boolean;
+  hasClusterBtn?: boolean;
 }
 
 interface ProjectCategory {
@@ -102,6 +103,16 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
         techDetails: "Ties real-time audio WebSockets to TTS and STT engines. Processes incoming commands through n8n tool-calling agents to execute operations across business apps.",
         tags: ["Voice AI", "LLM", "n8n", "Real-Time"],
         logoUrl: "/voice-ai-agent.png"
+      },
+      {
+        name: "Autonomous Mesh & 24/7 Agent Cluster",
+        status: "Production Built — 24/7 Active Mesh",
+        desc: "Distributed multi-agent pipeline execution mesh running on Linux VPS with real-time telemetry, auto-recovering webhooks, and sub-second Gemini reasoning nodes.",
+        techDetails: "Continuous state vector monitoring, Docker container supervision, and live event queue processing. Tracks live invoice OCR, ERP syncs, and legal routing cycles with 99.9% uptime.",
+        tags: ["Multi-Agent Mesh", "Gemini 3.8 Flash", "Docker / VPS", "Real-Time Telemetry", "Autonomous Operations"],
+        bannerUrl: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=400&q=80",
+        colSpan: "md:col-span-2 lg:col-span-3",
+        hasClusterBtn: true
       }
     ]
   },
@@ -131,7 +142,8 @@ const PROJECT_CATEGORIES: ProjectCategory[] = [
         tags: ["n8n", "Odoo ERP", "GST Automation", "IndiaMART", "Enterprise", "Architecture Blueprint"],
         bannerUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=400&q=80",
         colSpan: "md:col-span-2 lg:col-span-3",
-        hasCustomBtn: true
+        hasCustomBtn: true,
+        hasClusterBtn: true
       }
     ]
   }
@@ -195,16 +207,28 @@ function ProjectCategoryBlock({ category, index, total }: { category: ProjectCat
               {category.projects.map((project, pIdx) => (
                 <div key={pIdx} className={project.colSpan || ''}>
                   <ProjectCard {...project}>
-                    {project.hasCustomBtn && (
-                      <div className="mt-4 flex justify-center">
-                        <GlassButton 
-                          size="lg"
-                          onClick={() => { trackEvent('click_project_architecture'); setModalType('workflow'); }}
-                          glowColor="rgba(0, 240, 255, 0.2)"
-                          className="w-full md:w-auto glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer"
-                        >
-                          <Activity size={18} /> View Interactive Architecture Diagram
-                        </GlassButton>
+                    {(project.hasCustomBtn || project.hasClusterBtn) && (
+                      <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                        {project.hasCustomBtn && (
+                          <GlassButton 
+                            size="lg"
+                            onClick={() => { trackEvent('click_project_architecture'); setModalType('workflow'); }}
+                            glowColor="rgba(0, 240, 255, 0.2)"
+                            className="w-full sm:w-auto glass-btn-glow text-cyan hover:text-white relative z-20 cursor-pointer"
+                          >
+                            <Activity size={18} /> View Interactive Architecture Diagram
+                          </GlassButton>
+                        )}
+                        {project.hasClusterBtn && (
+                          <GlassButton 
+                            size="lg"
+                            onClick={() => { trackEvent('click_project_cluster'); setModalType('cluster'); }}
+                            glowColor="rgba(245, 166, 35, 0.2)"
+                            className="w-full sm:w-auto glass-btn-glow text-amber hover:text-white relative z-20 cursor-pointer"
+                          >
+                            <Layers size={18} /> View Active Pipeline Cluster
+                          </GlassButton>
+                        )}
                       </div>
                     )}
                   </ProjectCard>

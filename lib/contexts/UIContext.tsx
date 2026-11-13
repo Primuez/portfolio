@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useSyncExternalStore } from 'react';
 
-export type ModalType = 'form' | 'cert' | 'workflow' | null;
+export type ModalType = 'form' | 'cert' | 'workflow' | 'cluster' | null;
 
 export interface UIState {
   isMobile: boolean;
