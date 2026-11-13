@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle2, Download, Activity, Terminal, Send, X, ExternalLink } from 'lucide-react';
+import { CheckCircle2, Download, Activity, Terminal, Send, X, ExternalLink, Layers } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UIContext';
 import { WorkWithMeForm } from '@/components/WorkWithMeForm';
+import { HeroSystemVisualizer } from '@/components/HeroSystemVisualizer';
 
 const CertPdfViewer = React.lazy(() => import('@/components/CertPdfViewer').then(m => ({ default: m.CertPdfViewer })));
 
@@ -567,6 +568,39 @@ export default function ModalsSection() {
 
                   </div>
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* INTERACTIVE CLUSTER MODAL */}
+          {modalType === 'cluster' && (
+            <motion.div 
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#07090e]/95 border border-cyan/40 rounded-2xl w-full max-w-4xl shadow-[0_0_80px_rgba(0,240,255,0.25)] relative max-h-[90vh] overflow-y-auto flex flex-col font-sans backdrop-blur-xl"
+            >
+              <div className="sticky top-0 bg-[#07090e]/95 border-b border-cyan/20 px-6 py-4 flex justify-between items-center font-mono text-sm z-50 backdrop-blur">
+                <span className="text-cyan flex items-center gap-2 font-bold tracking-wider">
+                  <Layers size={16} className="text-cyan animate-pulse" /> PRIMUEZ-MESH // 24/7 ACTIVE CLUSTER
+                </span>
+                <button 
+                  onClick={() => setModalType(null)} 
+                  className="text-text-muted hover:text-white transition-colors border border-white/10 hover:border-cyan/40 px-3 py-1 rounded cursor-pointer text-xs uppercase tracking-widest font-mono"
+                >
+                  CLOSE
+                </button>
+              </div>
+              
+              <div className="p-4 sm:p-6 md:p-8 flex-1">
+                <div className="mb-4">
+                  <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight">Active Pipeline Execution Cluster</h3>
+                  <p className="text-zinc-400 text-xs md:text-sm mt-1 leading-relaxed">
+                    Live telemetry stream and real-time pipeline monitoring running 24/7 on autonomous infrastructure.
+                  </p>
+                </div>
+                <HeroSystemVisualizer />
               </div>
             </motion.div>
           )}

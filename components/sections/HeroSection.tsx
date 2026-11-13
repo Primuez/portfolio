@@ -4,7 +4,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Download, Code2, Terminal } from 'lucide-react';
 import { HexShaderBackground } from '@/components/HexShaderBackground';
-import { HeroSystemVisualizer } from '@/components/HeroSystemVisualizer';
 import { GlassButton } from '@/components/ui/apple-tahoe-liquid-glass-button';
 import { LiquidGlassTitle } from '@/components/ui/liquid-glass-logo';
 import { ShaderIridescentText } from '@/components/ShaderText';
@@ -37,12 +36,8 @@ export const HeroSection: React.FC = () => {
         <HexShaderBackground />
       </div>
 
-      {/* Main Container: Centered max-w-7xl 2-Column Grid */}
-      <div className="max-w-7xl mx-auto w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
-          
-          {/* Left Column (7 cols): Copy, Proof, CTAs */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
+      {/* Main Container: Focused Clean Layout */}
+      <div className="max-w-3xl relative z-10">
             <motion.a
               href="#process"
               initial={{ opacity: 0, y: 20 }}
@@ -180,20 +175,6 @@ export const HeroSection: React.FC = () => {
                 <Terminal size={13} className="text-cyan/70" /> 10+ Systems Running 24/7
               </span>
             </motion.div>
-          </div>
-
-          {/* Right Column (5 cols): Live Telemetry / Cyber System Visualizer */}
-          <div className="hidden lg:block lg:col-span-5 w-full">
-            <motion.div
-              initial={{ opacity: 0, x: 24, scale: 0.98 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <HeroSystemVisualizer />
-            </motion.div>
-          </div>
-
-        </div>
       </div>
     </section>
   );
