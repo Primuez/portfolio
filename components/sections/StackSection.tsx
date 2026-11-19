@@ -372,9 +372,9 @@ export default function StackSection() {
 
   const cliTools: Tool[] = [
     { name: 'Claude Code CLI', desc: 'Interactive terminal pair-programming & git automation', icon: icons.claudecode },
-    { name: 'Gemini CLI', desc: 'Command-line code review, semantic search & reasoning', icon: icons.geminicli },
+    { name: 'OpenAI Codex & Operator', desc: 'Autonomous coding, script execution & agent workflows', icon: icons.claudecode },
+    { name: 'Google Antigravity & Gemini CLI', desc: 'Command-line reasoning, code synthesis & subagent orchestration', icon: icons.geminicli },
     { name: 'Google Workspace CLI (gws)', desc: 'Automated Workspace integrations & GCP OAuth', icon: icons.gws },
-    { name: '1Password CLI (op)', desc: 'Secure environment secrets management & OP vaults', icon: icons.onepassword },
     { name: 'uv & Python Toolchain', desc: 'Ultra-fast package manager & PEP-compliant virtual environments', icon: icons.uv }
   ];
 

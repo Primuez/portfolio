@@ -11,10 +11,10 @@ import { useUI } from '@/lib/contexts/UIContext';
 import { trackEvent } from '@/lib/analytics';
 
 const phrases = [
-  "Workflow Automation.",
-  "Zero Manual Entry.",
-  "Systems That Scale.",
-  "Built for Indian SMEs."
+  "Forward Deployed AI.",
+  "Full-Stack Products.",
+  "Autonomous Agent Systems.",
+  "Shipped by One Person."
 ];
 
 export const HeroSection: React.FC = () => {
@@ -39,14 +39,14 @@ export const HeroSection: React.FC = () => {
       {/* Main Container: Focused Clean Layout */}
       <div className="max-w-3xl relative z-10">
             <motion.a
-              href="#process"
+              href="#projects"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
               className="font-mono text-amber/80 text-xs md:text-sm mb-3 flex items-center gap-2 hover:text-amber transition-colors duration-200 py-1"
             >
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="opacity-80">See how a manufacturer eliminated 3 hours of daily manual entry &rarr;</span>
+              <span className="opacity-80">Explore live production SaaS apps &amp; agent architectures &rarr;</span>
             </motion.a>
             
             <motion.div
@@ -76,8 +76,8 @@ export const HeroSection: React.FC = () => {
               className="text-[2.15rem] md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] mb-4 md:mb-5 tracking-tight"
             >
               <LiquidGlassTitle>
-                I Build Autonomous Systems <br/>
-                <ShaderIridescentText as="span" className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">That Give You Your Time Back.</ShaderIridescentText>
+                Forward Deployed AI <br/>
+                <ShaderIridescentText as="span" className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">&amp; Full-Stack Product Engineer.</ShaderIridescentText>
               </LiquidGlassTitle>
             </motion.h1>
 
@@ -87,7 +87,7 @@ export const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-text-muted text-sm md:text-base lg:text-lg max-w-2xl mb-3 leading-relaxed font-sans text-balance"
             >
-              From AI agents that handle tax and legal queries to n8n pipelines that eliminate manual data entry — systems built and running.
+              I architect, build, and deploy production AI applications, agent harnesses (Claude Code, Codex, Antigravity), and full-stack systems with Google Auth, database credit ledgers, and payment rails — shipped solo with zero bloat.
             </motion.p>
 
             <motion.div
@@ -96,7 +96,7 @@ export const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="font-mono text-xs text-amber/95 mb-5 md:mb-6 border-l border-amber/40 pl-3 leading-relaxed max-w-2xl"
             >
-              InkTwin and PrimuezSure — live SaaS products built and running. Tax Advisor and Legal Advisor agents — deployed and working.
+              PrimuezSure &amp; InkTwin — live full-stack SaaS products built end-to-end by one person.
             </motion.div>
 
             <motion.div

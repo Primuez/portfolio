@@ -37,26 +37,26 @@ interface ProjectCategory {
 
 const PROJECT_CATEGORIES: ProjectCategory[] = [
   {
-    title: "SaaS & Programmatic SEO Products",
-    tagline: "Live, production-grade applications serving real users and generating traffic.",
+    title: "Full-Stack Products & AI SaaS",
+    tagline: "Live, production applications engineered solo: Google OAuth, databases, payment rails & AI engines.",
     projects: [
-      {
-        name: "InkTwin",
-        url: "https://ink-twin.primuez.in",
-        status: "Live",
-        desc: "For students, creators, and professionals who want to automate manual writing — instantly convert text to your custom handwriting font to effortlessly generate documents.",
-        techDetails: "Generates custom handwriting fonts from a photo. Performs OCR and stroke vectorization using Hono on Cloudflare Workers, storing user state in D1 and files in R2 CDN. Includes AI solver powered by Gemini API.",
-        tags: ["Cloudflare Workers", "AI", "JavaScript", "Font Generation"],
-        logoUrl: "/logo-inktwin.png"
-      },
       {
         name: "PrimuezSure Advisor",
         url: "https://primuezsure.primuez.in",
         status: "Live",
-        desc: "For insurance advisors who need instant, multilingual policy decoding and automated fraud prevention, built securely on official data.",
-        techDetails: "Integrates Retrieval-Augmented Generation (RAG) over PDF insurance policy clauses. Built on Cloudflare Workers with serverless vector embeddings for sub-second multilingual response times.",
-        tags: ["AI Agent", "SaaS", "Cloudflare Workers", "LLM"],
+        desc: "Autonomous full-stack insurance intelligence & policy auditing platform with real-time credit balance metering.",
+        techDetails: "Engineered solo: Complete user authentication via Google OAuth, PostgreSQL/Supabase database for real-time balance & credit ledger management, automated payment gateway integration, and PDF RAG policy analysis.",
+        tags: ["Full-Stack Product", "Google OAuth", "Supabase DB", "Payment Rails", "Vercel", "Solo Built"],
         logoUrl: "/logo-primuezsure.png"
+      },
+      {
+        name: "InkTwin",
+        url: "https://ink-twin.primuez.in",
+        status: "Live",
+        desc: "Full-stack AI document generation & handwriting canvas engine. Converts arbitrary text and documents into realistic custom handwriting with zero manual effort.",
+        techDetails: "Engineered solo: Client-side SVG vectorizer, custom glyph font synthesis engine, PDF generation pipelines, and Gemini multimodal layout services. Deployed globally with sub-second latency.",
+        tags: ["Full-Stack AI", "Gemini Multimodal", "Client Vectorizer", "Font Builder", "TypeScript"],
+        logoUrl: "/logo-inktwin.png"
       },
       {
         name: "GhostRank SEO Engine",

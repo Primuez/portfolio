@@ -183,10 +183,10 @@ export const AboutSection: React.FC = () => {
 
               <div className="space-y-3 text-zinc-200 text-sm md:text-base leading-relaxed font-sans text-balance">
                 <p>
-                  I build automation systems using n8n, Cloudflare Workers, and AI — connecting the tools businesses already use so manual work disappears.
+                  I operate as a Forward Deployed AI & Full-Stack Systems Engineer. I architect and ship end-to-end applications, modern agent runtimes (Claude Code, Codex, Antigravity), and production infrastructure (Google OAuth, real-time database credit ledgers, and payment rails) entirely solo.
                 </p>
                 <p className="text-zinc-300/90 text-xs md:text-sm">
-                  I&apos;ve shipped live SaaS products (InkTwin, PrimuezSure), built AI agents for tax and legal queries, and designed enterprise automation architecture for manufacturing workflows. If a system can be automated, I can build it.
+                  I&apos;ve shipped live production SaaS products (PrimuezSure, InkTwin), built autonomous institutional agents for financial and legal due diligence, and designed enterprise backbones. Zero bloat, high execution velocity.
                 </p>
               </div>
             </div>
